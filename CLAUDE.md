@@ -64,18 +64,18 @@ fork260509-rev2/                            ← workspace root（傘狀 repo rev
 ├── fork260509-soybean-admin-base/         ← Vue 3 starter，base-web worktree 源倉（gitignored，本機必留）
 ├── fork260509-soybean-admin-docs/         ← 文件站（gitignored，整合不用，僅參考）
 ├── fork260509-rev2-anew-rust-api/         ← Rust axum + Casbin backend，rust-api worktree 源倉（gitignored，本機必留）
-├── base-web/                              ← ⏳ worktree + submodule（外層記 gitlink SHA）
-├── rust-api/                              ← ⏳ worktree + submodule（外層記 gitlink SHA）
+├── base-web/                              ← worktree + submodule（外層記 gitlink SHA）
+├── rust-api/                              ← worktree + submodule（外層記 gitlink SHA）
 ├── docker-compose.yml                     ← ⏳ outer root compose；dev/prod override = docker-compose.{dev,prod}.yml（見 §8.2）
 └── deploy/                                ← ⏳ 部署支援檔（nginx conf / secrets / dev-certs / cleanup 等；見 §8.2）
 ```
 
 **關鍵事實**：
-- `base-web/` `rust-api/` 是 worktree + submodule 雙重身分（見 §1 與 §4 操作手冊）— 外層 commit 只記 SHA pin、不記檔案 diff；別人 clone 用 `--recurse-submodules`。⏳ rev2 尚未 add worktree。
+- `base-web/` `rust-api/` 是 worktree + submodule 雙重身分（見 §1 與 §4 操作手冊）— 外層 commit 只記 SHA pin、不記檔案 diff；別人 clone 用 `--recurse-submodules`。
 - `fork260509-*` 源倉 gitignored，但**本機必須留著**（worktree 源倉）；別台機器若用 submodule clone 重來則不需要這些源倉。rev2 目前有 3 個源倉（`fork260509-soybean-admin-base`、`fork260509-soybean-admin-docs`、`fork260509-rev2-anew-rust-api`），不含 nestjs。
 - Vue 源倉 GitHub repo 名稱 = `fork260509-soybean-admin-base`（從原 `fork260509-soybean-admin` rename 而來，舊 URL 仍 redirect）。
 - 知識圖譜輸出 `GRAPH_REPORT.md` / `graph.json` / `graph.html` 都只存在 `graphify-out/`；要看就直接開 `graphify-out/GRAPH_REPORT.md`，或瀏覽器開 `graphify-out/graph.html` 看互動圖。⏳ rev2 尚未跑 graphify。
-- 外層 git 追蹤：`CLAUDE.md`、`.gitignore`、`.gitmodules`、`.gitattributes`、`.graphifyignore`、`.specify/`（spec-kit 結構）、`.claude/{settings.json, hook-git-submodule-SOP.sh, skills/}`。⏳ 未來落地後新增：`docker-compose*.yml`、`docs/`、`specs/`、`deploy/`、`graphify-out/{graph.json, GRAPH_REPORT.md, graph.html, obsidian/}`，以及 `base-web` `rust-api` 兩個 gitlink SHA。
+- 外層 git 追蹤：`CLAUDE.md`、`.gitignore`、`.gitmodules`、`.gitattributes`、`.graphifyignore`、`.specify/`（spec-kit 結構）、`.claude/{settings.json, hook-git-submodule-SOP.sh, skills/}`，以及 `base-web` `rust-api` 兩個 gitlink SHA。⏳ 未來落地後新增：`docker-compose*.yml`、`docs/`、`specs/`、`deploy/`、`graphify-out/{graph.json, GRAPH_REPORT.md, graph.html, obsidian/}`。
 
 ## 3. feature 開發工作流（SDD 設計鏈 → TDD 實作）
 
@@ -201,7 +201,7 @@ chore(submodule): bump rust-api 到 abc1234 — <fork 提交主旨>
 
 ### 4.3 session 開場健檢
 
-> SessionStart hook 已落地（`.claude/settings.json` 註冊 + `hook-git-submodule-SOP.sh` 腳本）；待第一個 worktree add 後，`git submodule status` 與 `ls base-web/.git rust-api/.git` 兩段檢查才會完整觸發。
+> SessionStart hook 已落地（`.claude/settings.json` 註冊 + `hook-git-submodule-SOP.sh` 腳本）；worktree（`base-web` / `rust-api`）已 add，所有檢查現已可完整觸發。
 
 每次 session 開頭由 `.claude/hook-git-submodule-SOP.sh`（SessionStart hook）自動執行並回報：
 
@@ -217,17 +217,19 @@ hook 另會 cat `docs/INTEGRATION-CHECKLIST.md` ⏳ 全檔注入 session context
 `git submodule status` 行首判讀與處置：
 - **空格** — outer pin == worktree HEAD，乾淨。
 - **`+`** — worktree HEAD 已超前 outer pin。**主動提示** user：「base-web/ 或 rust-api/ worktree 已超前 outer pin，要不要 `git add <dir> && git commit` 更新 pin？」
-- **`-`** — 新 clone 的機器、submodule 尚未 init。跑 `git submodule update --init --recursive`。
+- **`-`** — 兩種情況，**先判斷 `base-web/.git` 與 `rust-api/.git` 是檔案還是目錄**：
+  - **檔案（本機 worktree 模式）** → `-` 是**正常且永遠出現**，因 `.git/modules/<name>/` 不存在、submodule 內容由 worktree 提供。**不要**跑 `git submodule update --init --recursive`，會跟 worktree 的 `.git` gitlink 衝突。
+  - **不存在 / 目錄為空（新 clone 機器）** → submodule 尚未 init，跑 `git submodule update --init --recursive`。
 
 若 worktree 的 `.git` 不存在（被誤刪或在新機器）→ 提示走 §4.4 重建。
 
 ### 4.4 一次性初始化（worktree + 手寫 .gitmodules）
 
-> ⏳ **rev2 尚未跑此步驟**（`.gitmodules` 已寫入，但 worktree 未 add、submodule 未 init）；下列為**待執行**的腳本範本。
+> **rev2 歷史記錄補充**：
+> - base-web 側：fork 源倉 `fork260509-soybean-admin-base` 當時在 `example` 分支；worktree add 用 `-b rev2-admin-base-web` 從 origin/example 建新分支（source repo 仍留在 example）。
+> - rust-api 側：`rev2-admin-rust-api` 分支早已建好並 push 到 remote；worktree add 不用 `-b`，跑 `git worktree add ../rust-api rev2-admin-rust-api`、Step 2 的 push 也跳過。
 >
-> **rev2 現況補充**：
-> - base-web 側：fork 源倉 `fork260509-soybean-admin-base` 目前在 `example` 分支；worktree add 時需 `-b rev2-admin-base-web` 建新分支。
-> - rust-api 側：fork 源倉 `fork260509-rev2-anew-rust-api` 的 `rev2-admin-rust-api` 分支**已建好並 push 到 remote**；worktree add 時**不用** `-b`，改 `git worktree add ../rust-api rev2-admin-rust-api`、Step 2 的 push 也可跳過。
+> **rev2 已完成此步驟(fee9f29 + d810aee);** 下列為 **新機器重建 / 災後恢復** 的腳本範本。
 
 ```bash
 # Step 1：建立 worktree（從 fork 源倉開新分支）
