@@ -1,0 +1,8 @@
+[submodule "base-web"]
+	path = base-web
+	url = https://github.com/miso168net/fork260509-soybean-admin-base.git
+	branch = rev2-admin-base-web
+[submodule "rust-api"]
+	path = rust-api
+	url = https://github.com/miso168net/fork260509-rev2-anew-rust-api.git
+	branch = rev2-admin-rust-api
