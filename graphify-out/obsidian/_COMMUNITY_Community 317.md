@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[eslint.config.js_1]] - code - fork260509-soybean-admin-docs/eslint.config.js
+- [[index.html (Vite entry)]] - code - fork260509-soybean-admin-base/index.html
 
 ## Live Query (requires Dataview plugin)
 

@@ -1,21 +1,22 @@
 ---
 type: community
-cohesion: 0.33
-members: 6
+cohesion: 0.43
+members: 7
 ---
 
 # Community 88
 
-**Cohesion:** 0.33 - loosely connected
-**Members:** 6 nodes
+**Cohesion:** 0.43 - moderately connected
+**Members:** 7 nodes
 
 ## Members
-- [[collapsedWidth]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
-- [[inverted_1]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
-- [[mixChildMenuWidth]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
-- [[mixWidth]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
-- [[sider_1]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
-- [[width]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[en-us.ts]] - code - fork260509-soybean-admin-base/src/locales/langs/en-us.ts
+- [[local]] - code - fork260509-soybean-admin-base/src/locales/langs/en-us.ts
+- [[local_1]] - code - fork260509-soybean-admin-base/src/locales/langs/zh-cn.ts
+- [[locale.ts]] - code - fork260509-soybean-admin-base/src/locales/locale.ts
+- [[locales]] - code - fork260509-soybean-admin-base/src/locales/locale.ts
+- [[setupI18n()]] - code - fork260509-soybean-admin-base/src/locales/index.ts
+- [[zh-cn.ts]] - code - fork260509-soybean-admin-base/src/locales/langs/zh-cn.ts
 
 ## Live Query (requires Dataview plugin)
 
@@ -25,9 +26,9 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 1 edge to [[_COMMUNITY_Per-Package TSConfig (sub-34)]]
-- 1 edge to [[_COMMUNITY_Community 56]]
+- 2 edges to [[_COMMUNITY_Dev Dependencies]]
+- 2 edges to [[_COMMUNITY_Auth Store & Permissions]]
 
 ## Top bridge nodes
-- [[sider_1]] - degree 6, connects to 1 community
-- [[collapsedWidth]] - degree 2, connects to 1 community
+- [[setupI18n()]] - degree 4, connects to 2 communities
+- [[locale.ts]] - degree 4, connects to 1 community

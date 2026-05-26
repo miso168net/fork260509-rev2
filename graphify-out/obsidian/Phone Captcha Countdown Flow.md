@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/hooks/business/captcha.ts"
 type: "concept"
-community: "Docs Site TSConfig (NEW)"
+community: "API Service Aliases (auth/captcha)"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/Docs_Site_TSConfig_NEW
+  - community/API_Service_Aliases_auth/captcha
 ---
 
 # Phone Captcha Countdown Flow
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[useCaptcha]] - `implements` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/Docs_Site_TSConfig_NEW
+#graphify/concept #graphify/INFERRED #community/API_Service_Aliases_auth/captcha

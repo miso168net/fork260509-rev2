@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[@saalova tsconfig]] - document - fork260509-soybean-admin-base/packages/alova/tsconfig.json
+- [[reset-pwd.vue]] - code - fork260509-soybean-admin-base/src/views/_builtin/login/modules/reset-pwd.vue
 
 ## Live Query (requires Dataview plugin)
 

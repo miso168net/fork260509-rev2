@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/color/src/shared/index.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "Community 38"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Community_38
 ---
 
 # index.ts
@@ -19,4 +19,4 @@ tags:
 - [[name.ts_1]] - `re_exports` [EXTRACTED]
 - [[recommend.ts]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Community_38

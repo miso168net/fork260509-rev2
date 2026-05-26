@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/router/index.ts"
 type: "code"
-community: "Route Type Hierarchy"
+community: "Dev Dependencies"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Route_Type_Hierarchy
+  - community/Dev_Dependencies
 ---
 
 # index.ts
@@ -25,4 +25,4 @@ tags:
 - [[router.ts_1]] - `imports_from` [EXTRACTED]
 - [[setupRouter()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Route_Type_Hierarchy
+#graphify/code #graphify/EXTRACTED #community/Dev_Dependencies

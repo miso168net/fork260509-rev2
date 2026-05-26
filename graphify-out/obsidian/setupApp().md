@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/main.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "Dev Dependencies"
 location: "L17"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - community/Dev_Dependencies
 ---
 
 # setupApp()
@@ -26,4 +26,4 @@ tags:
 - [[setupProNaiveComponents()]] - `calls` [EXTRACTED]
 - [[setupRouter()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/EXTRACTED #community/Dev_Dependencies

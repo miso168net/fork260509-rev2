@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[SoybeanAdmin Route Guard State Machine]] - concept
+- [[simple-git-hooks + lint-staged pipeline]] - concept
 
 ## Live Query (requires Dataview plugin)
 

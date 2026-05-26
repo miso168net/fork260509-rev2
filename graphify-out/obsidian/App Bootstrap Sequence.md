@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/main.ts"
 type: "concept"
-community: "Auth Store & Permissions"
+community: "Dev Dependencies"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/Auth_Store__Permissions
+  - community/Dev_Dependencies
 ---
 
 # App Bootstrap Sequence
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[setupApp()]] - `implements` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/Auth_Store__Permissions
+#graphify/concept #graphify/INFERRED #community/Dev_Dependencies

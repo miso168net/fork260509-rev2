@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[.vscodeextensions.json (volar, unocss, eslint, prettier recs)]] - code - fork260509-soybean-admin-docs/.vscode/extensions.json
+- [[pnpm-workspace.yaml (onlyBuiltDependencies unrs-resolver)]] - code - fork260509-soybean-admin-docs/pnpm-workspace.yaml
 
 ## Live Query (requires Dataview plugin)
 

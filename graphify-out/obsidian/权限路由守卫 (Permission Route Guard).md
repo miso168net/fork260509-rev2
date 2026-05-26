@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Form Validation & Bootstrap"
+community: "Theme & Settings UI"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Form_Validation__Bootstrap
+  - community/Theme__Settings_UI
 ---
 
 # 权限路由守卫 (Permission Route Guard)
@@ -16,4 +16,4 @@ tags:
 - [[路由初始化 (Route Initialization)]] - `` [EXTRACTED]
 - [[路由跳转 (Route Jump)]] - `` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Form_Validation__Bootstrap
+#graphify/concept #graphify/EXTRACTED #community/Theme__Settings_UI

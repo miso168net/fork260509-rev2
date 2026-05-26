@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[header-banner.vue]] - code - fork260509-soybean-admin-base/src/views/home/modules/header-banner.vue
+- [[creativity-banner.vue]] - code - fork260509-soybean-admin-base/src/views/home/modules/creativity-banner.vue
 
 ## Live Query (requires Dataview plugin)
 

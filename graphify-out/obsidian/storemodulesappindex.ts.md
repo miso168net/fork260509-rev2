@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/store/modules/app/index.ts"
 type: "code"
-community: "API Service Aliases (auth/captcha)"
+community: "Per-Package TSConfig (sub-33)"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/API_Service_Aliases_auth/captcha
+  - community/Per-Package_TSConfig_sub-33
 ---
 
 # store/modules/app/index.ts
@@ -24,4 +24,4 @@ tags:
 - [[storemodulestabindex.ts]] - `references` [EXTRACTED]
 - [[storemodulesthemeindex.ts]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha
+#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-33

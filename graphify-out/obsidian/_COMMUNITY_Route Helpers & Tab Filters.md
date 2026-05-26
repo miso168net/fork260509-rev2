@@ -1,33 +1,33 @@
 ---
 type: community
-cohesion: 0.24
+cohesion: 0.13
 members: 18
 ---
 
 # Route Helpers & Tab Filters
 
-**Cohesion:** 0.24 - loosely connected
+**Cohesion:** 0.13 - loosely connected
 **Members:** 18 nodes
 
 ## Members
-- [[extractTabsByAllRoutes()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
-- [[filterTabsById()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
-- [[findTabByRouteName()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
-- [[getAllTabs()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
-- [[getDefaultHomeTab()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
-- [[getFixedTabIds()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
-- [[getFixedTabs()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
-- [[getRouteIcons()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
-- [[getRoutePath()]] - code - fork260509-soybean-admin-base/src/router/elegant/transform.ts
-- [[getTabByRoute()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
-- [[getTabIdByRoute()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
-- [[index.ts_36]] - code - fork260509-soybean-admin-base/src/store/modules/tab/index.ts
-- [[isFixedTab()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
-- [[isTabInTabs()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
-- [[reorderFixedTabs()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
-- [[shared.ts_7]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
-- [[updateTabByI18nKey()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
-- [[updateTabsLabel()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[.vscodelaunch.json (Vue debugger on 9527 + TS debugger)]] - code - fork260509-soybean-admin-docs/.vscode/launch.json
+- [[CHANGELOG.md (soybean-admin-base)]] - document - fork260509-soybean-admin-base/CHANGELOG.md
+- [[CHANGELOG.zh_CN.md (soybean-admin-base)]] - document - fork260509-soybean-admin-base/CHANGELOG.zh_CN.md
+- [[CustomLayout.vue (wraps DefaultTheme Layout with NoticeBar at layout-top)]] - code - fork260509-soybean-admin-docs/.vitepress/theme/CustomLayout.vue
+- [[NoticeBar.vue (reactive notice from locale via useData)]] - code - fork260509-soybean-admin-docs/.vitepress/theme/NoticeBar.vue
+- [[SoybeanAdmin v2 (v2.0.0+)]] - concept - fork260509-soybean-admin-base/CHANGELOG.md
+- [[VitePress config (locales enzhjp, sidebar, algolia)]] - code - fork260509-soybean-admin-docs/.vitepress/config.ts
+- [[eslint.config.js (@soybeanjseslint-config + markdown formatter)]] - code - fork260509-soybean-admin-docs/eslint.config.js
+- [[icon.ts (qqSvg export for socialLinks)]] - code - fork260509-soybean-admin-docs/.vitepress/icon.ts
+- [[jp.ts (Japanese VitePress locale)]] - code - fork260509-soybean-admin-docs/.vitepress/locales/jp.ts
+- [[oxlint  oxfmt]] - concept - fork260509-soybean-admin-base/CHANGELOG.md
+- [[pnpm monorepo]] - concept - fork260509-soybean-admin-base/pnpm-workspace.yaml
+- [[pnpm-workspace.yaml]] - code - fork260509-soybean-admin-base/pnpm-workspace.yaml
+- [[soybean-admin-docs package.json (VitePress 1.6.4 site)]] - code - fork260509-soybean-admin-docs/package.json
+- [[tsconfig.json (strict ESNext, includes .vitepress + src)]] - code - fork260509-soybean-admin-docs/tsconfig.json
+- [[types.d.ts (augments vitepress LocaleSpecificConfig with notice)]] - code - fork260509-soybean-admin-docs/.vitepress/types.d.ts
+- [[useTable hook]] - concept - fork260509-soybean-admin-base/CHANGELOG.md
+- [[zh.ts (Simplified Chinese VitePress locale)]] - code - fork260509-soybean-admin-docs/.vitepress/locales/zh.ts
 
 ## Live Query (requires Dataview plugin)
 
@@ -37,15 +37,7 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 6 edges to [[_COMMUNITY_Community 46]]
-- 4 edges to [[_COMMUNITY_Route Type Hierarchy]]
-- 3 edges to [[_COMMUNITY_Community 45]]
-- 2 edges to [[_COMMUNITY_Community 84]]
-- 2 edges to [[_COMMUNITY_Docs Site TSConfig (NEW)]]
-- 2 edges to [[_COMMUNITY_Community 41]]
-- 2 edges to [[_COMMUNITY_Per-Package TSConfig (sub-31)]]
+- 1 edge to [[_COMMUNITY_Per-Package TSConfig (sub-33)]]
 
 ## Top bridge nodes
-- [[index.ts_36]] - degree 27, connects to 6 communities
-- [[getRoutePath()]] - degree 6, connects to 3 communities
-- [[shared.ts_7]] - degree 20, connects to 2 communities
+- [[CustomLayout.vue (wraps DefaultTheme Layout with NoticeBar at layout-top)]] - degree 2, connects to 1 community

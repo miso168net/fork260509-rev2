@@ -1,12 +1,12 @@
 # Graph Report - .  (2026-05-26)
 
 ## Corpus Check
-- 0 files · ~248,434 words
+- 0 files · ~0 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2110 nodes · 2582 edges · 358 communities (232 shown, 126 thin omitted)
-- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 181 edges (avg confidence: 0.86)
+- 2099 nodes · 2578 edges · 355 communities (236 shown, 119 thin omitted)
+- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 179 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -69,7 +69,6 @@
 - [[_COMMUNITY_Community 56|Community 56]]
 - [[_COMMUNITY_Community 57|Community 57]]
 - [[_COMMUNITY_Community 58|Community 58]]
-- [[_COMMUNITY_Docs Site Config Files|Docs Site Config Files]]
 - [[_COMMUNITY_Community 60|Community 60]]
 - [[_COMMUNITY_Community 61|Community 61]]
 - [[_COMMUNITY_Community 62|Community 62]]
@@ -120,14 +119,15 @@
 - [[_COMMUNITY_Community 107|Community 107]]
 - [[_COMMUNITY_Community 108|Community 108]]
 - [[_COMMUNITY_Community 109|Community 109]]
+- [[_COMMUNITY_Community 110|Community 110]]
 - [[_COMMUNITY_Community 111|Community 111]]
+- [[_COMMUNITY_Community 112|Community 112]]
 - [[_COMMUNITY_Community 113|Community 113]]
 - [[_COMMUNITY_Community 114|Community 114]]
-- [[_COMMUNITY_Community 115|Community 115]]
-- [[_COMMUNITY_Community 116|Community 116]]
 - [[_COMMUNITY_VitePress Locale Configs|VitePress Locale Configs]]
 - [[_COMMUNITY_Community 118|Community 118]]
 - [[_COMMUNITY_Community 119|Community 119]]
+- [[_COMMUNITY_Community 120|Community 120]]
 - [[_COMMUNITY_Community 121|Community 121]]
 - [[_COMMUNITY_Community 122|Community 122]]
 - [[_COMMUNITY_Community 123|Community 123]]
@@ -137,7 +137,6 @@
 - [[_COMMUNITY_Community 127|Community 127]]
 - [[_COMMUNITY_Community 128|Community 128]]
 - [[_COMMUNITY_Community 129|Community 129]]
-- [[_COMMUNITY_Community 130|Community 130]]
 - [[_COMMUNITY_Community 131|Community 131]]
 - [[_COMMUNITY_Community 132|Community 132]]
 - [[_COMMUNITY_Community 133|Community 133]]
@@ -147,20 +146,21 @@
 - [[_COMMUNITY_Community 137|Community 137]]
 - [[_COMMUNITY_Community 138|Community 138]]
 - [[_COMMUNITY_Community 139|Community 139]]
+- [[_COMMUNITY_Community 140|Community 140]]
 - [[_COMMUNITY_Community 141|Community 141]]
 - [[_COMMUNITY_Docs Site Engines Constraint|Docs Site Engines Constraint]]
 - [[_COMMUNITY_Community 143|Community 143]]
+- [[_COMMUNITY_Community 145|Community 145]]
 - [[_COMMUNITY_Community 147|Community 147]]
 - [[_COMMUNITY_Community 148|Community 148]]
 - [[_COMMUNITY_Workspace Integration Docs (empty placeholders)|Workspace Integration Docs (empty placeholders)]]
-- [[_COMMUNITY_Community 150|Community 150]]
-- [[_COMMUNITY_Community 151|Community 151]]
 - [[_COMMUNITY_Community 152|Community 152]]
+- [[_COMMUNITY_Community 153|Community 153]]
 - [[_COMMUNITY_Community 154|Community 154]]
-- [[_COMMUNITY_Community 155|Community 155]]
 - [[_COMMUNITY_Community 156|Community 156]]
 - [[_COMMUNITY_Community 157|Community 157]]
 - [[_COMMUNITY_Community 158|Community 158]]
+- [[_COMMUNITY_Community 159|Community 159]]
 - [[_COMMUNITY_Community 160|Community 160]]
 - [[_COMMUNITY_Community 161|Community 161]]
 - [[_COMMUNITY_Community 162|Community 162]]
@@ -171,7 +171,6 @@
 - [[_COMMUNITY_Community 167|Community 167]]
 - [[_COMMUNITY_Community 168|Community 168]]
 - [[_COMMUNITY_Community 169|Community 169]]
-- [[_COMMUNITY_Community 216|Community 216]]
 - [[_COMMUNITY_Community 217|Community 217]]
 - [[_COMMUNITY_Community 218|Community 218]]
 - [[_COMMUNITY_Community 219|Community 219]]
@@ -190,7 +189,7 @@
 - [[_COMMUNITY_Community 232|Community 232]]
 - [[_COMMUNITY_Community 233|Community 233]]
 - [[_COMMUNITY_Community 234|Community 234]]
-- [[_COMMUNITY_Community 283|Community 283]]
+- [[_COMMUNITY_Community 235|Community 235]]
 - [[_COMMUNITY_Community 284|Community 284]]
 - [[_COMMUNITY_Community 285|Community 285]]
 - [[_COMMUNITY_Community 286|Community 286]]
@@ -224,7 +223,7 @@
 - [[_COMMUNITY_Community 314|Community 314]]
 - [[_COMMUNITY_Community 315|Community 315]]
 - [[_COMMUNITY_Community 316|Community 316]]
-- [[_COMMUNITY_Community 320|Community 320]]
+- [[_COMMUNITY_Community 317|Community 317]]
 - [[_COMMUNITY_Community 321|Community 321]]
 - [[_COMMUNITY_Community 322|Community 322]]
 - [[_COMMUNITY_Community 323|Community 323]]
@@ -259,9 +258,6 @@
 - [[_COMMUNITY_Community 352|Community 352]]
 - [[_COMMUNITY_Community 353|Community 353]]
 - [[_COMMUNITY_Community 354|Community 354]]
-- [[_COMMUNITY_Community 355|Community 355]]
-- [[_COMMUNITY_Community 356|Community 356]]
-- [[_COMMUNITY_Community 357|Community 357]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `compilerOptions` - 18 edges
@@ -284,122 +280,122 @@
   fork260509-soybean-admin-docs/.vitepress/config.ts → fork260509-soybean-admin-base/CHANGELOG.md
 - `createFlatRequest 实例创建实战` --calls--> `createCommonRequest()`  [EXTRACTED]
   fork260509-soybean-admin-docs/src/zh/guide/request/usage.md → fork260509-soybean-admin-base/packages/axios/src/index.ts
-- `RequestOptions type (alova)` --semantically_similar_to--> `RequestOption interface (axios)`  [INFERRED] [semantically similar]
-  fork260509-soybean-admin-base/packages/alova/src/type.ts → fork260509-soybean-admin-base/packages/axios/src/type.ts
+- `store/modules/theme/index.ts` --references--> `CustomLayout.vue (wraps DefaultTheme Layout with NoticeBar at layout-top)`  [EXTRACTED]
+  fork260509-soybean-admin-base/src/store/modules/theme/index.ts → fork260509-soybean-admin-docs/.vitepress/theme/CustomLayout.vue
 
-## Communities (358 total, 126 thin omitted)
+## Communities (355 total, 119 thin omitted)
 
 ### Community 0 - "Color Palette Engine"
 Cohesion: 0.05
-Nodes (65): colorNames lookup table (~1580 hex+name pairs), colorPalettes (Tailwind-style 22 families x 11 shades), getHue (private), getValue (private), getColorName (nearest-name lookup over colorNames), color type defs (ColorPalette / Family / Match / Index / Number), colord (3rd-party color utility lib), UnoCSS Shortcuts (+57 more)
+Nodes (46): PromptObject, release(), generateRoute(), PromptObject, updatePkg(), Conventional Commits CLI tooling, defaultOptions, loadCliOptions() (+38 more)
 
 ### Community 1 - "Build & Release Scripts"
-Cohesion: 0.05
-Nodes (46): PromptObject, release(), generateRoute(), PromptObject, updatePkg(), Conventional Commits CLI tooling, defaultOptions, loadCliOptions() (+38 more)
+Cohesion: 0.06
+Nodes (47): BACKEND_ERROR_CODE constant (alova), alova fetch adapter re-export, createAlovaRequest factory, RequestOptions type (alova), BACKEND_ERROR_CODE constant (axios), REQUEST_ID_KEY constant, createCommonRequest internal factory, createFlatRequest public factory (+39 more)
 
 ### Community 2 - "Alova Request Adapter (+docs)"
 Cohesion: 0.06
-Nodes (46): BACKEND_ERROR_CODE constant (alova), alova fetch adapter re-export, createAlovaRequest factory, RequestOptions type (alova), BACKEND_ERROR_CODE constant (axios), REQUEST_ID_KEY constant, createCommonRequest internal factory, createFlatRequest public factory (+38 more)
-
-### Community 3 - "API Service Aliases (auth/captcha)"
-Cohesion: 0.05
-Nodes (34): service/api/auth.ts, service-alova/api/auth.ts, service/api/index.ts, service-alova/api/index.ts, service/api/route.ts, service-alova/api/route.ts, UserModel, service/api/system-manage.ts (+26 more)
-
-### Community 4 - "Form & Table Hooks"
-Cohesion: 0.06
 Nodes (43): AdminLayout component, createLayoutCssVars(), createLayoutCssVarsByCssVarsProps(), admin-layout/index module, LAYOUT_MAX_Z_INDEX, LAYOUT_SCROLL_EL_ID, admin-layout/shared, CSS custom properties theming (--soy-* vars) (+35 more)
 
-### Community 5 - "Admin Layout Package"
-Cohesion: 0.06
-Nodes (34): useAppStore, defaultTransform(), getColumnChecks(), PaginationParams, useNaivePaginatedTable(), useNaiveTable(), UseNaiveTableOptions, useTableOperate() (+26 more)
+### Community 3 - "API Service Aliases (auth/captcha)"
+Cohesion: 0.07
+Nodes (40): useAppStore, useCaptcha, useSvgIcon(), defaultTransform(), getColumnChecks(), PaginationParams, useNaivePaginatedTable(), useNaiveTable() (+32 more)
 
-### Community 6 - "Theme Constants & Maps"
-Cohesion: 0.05
-Nodes (42): loginModuleRecord, themeLayoutModeOptions, themeLayoutModeRecord, themePageAnimationModeRecord, themeSchemaOptions, themeSchemaRecord, themeScrollModeRecord, themeTabModeOptions (+34 more)
-
-### Community 7 - "Runtime Dependencies"
+### Community 4 - "Form & Table Hooks"
 Cohesion: 0.05
 Nodes (44): BetterScroll, dependencies, @antv/data-set, @antv/g2, @antv/g6, clipboard, dayjs, defu (+36 more)
 
-### Community 8 - "Theme & Settings UI"
+### Community 5 - "Admin Layout Package"
 Cohesion: 0.10
 Nodes (33): AppearanceSettings (appearance/index.vue), LayoutModeCard (layout-mode-card.vue), SearchFooter (search-footer.vue), SearchModal (search-modal.vue), SearchResult (search-result.vue), SettingItem (setting-item.vue), useAppStore (concept), constants/app (concept) (+25 more)
 
-### Community 9 - "Global Type Declarations"
+### Community 6 - "Theme Constants & Maps"
 Cohesion: 0.05
 Nodes (39): BaseToken, Breadcrumb, ColorPaletteNumber, DemoResponse, DropdownKey, FormMsg, FormRule, GetI18nKey (+31 more)
 
-### Community 10 - "Auth Store & Permissions"
-Cohesion: 0.09
-Nodes (23): AppProvider, ContextHolder, DarkModeContainer, App Bootstrap Sequence, App.I18n.LangType (zh-CN/en-US), Naive UI Provider Pattern, createProgressGuard(), local (+15 more)
+### Community 7 - "Runtime Dependencies"
+Cohesion: 0.08
+Nodes (31): getFlowData(), addNode, removeNode, AntvPluginView, ChartHooks, ECOption, useEcharts(), ChartHooks (+23 more)
 
-### Community 11 - "Form Validation & Bootstrap"
+### Community 8 - "Theme & Settings UI"
 Cohesion: 0.06
 Nodes (36): 结束 (End), 权限路由守卫 (Permission Route Guard), 开始 (Start), 初始化权限路由 (Init Permission Routes), 是否初始化了权限路由?, 是否是常量路由(无需登录权限)?, 是否初始化了固定路由?, 是否已登录? (+28 more)
 
-### Community 12 - "Naive UI Theme Tokens"
+### Community 9 - "Global Type Declarations"
 Cohesion: 0.06
 Nodes (34): bgColor, borderRadiusMedium, fontWeightStrong, header, sider, tab, borderRadius, paddingMedium (+26 more)
 
-### Community 13 - "Layout Geometry & Scroll"
+### Community 10 - "Auth Store & Permissions"
+Cohesion: 0.13
+Nodes (16): useAuthStore, clearAuthStorage(), getToken(), useAuth, Button-level Permission Check, handleRefreshToken(), handleRefreshToken(), i18n (+8 more)
+
+### Community 11 - "Form Validation & Bootstrap"
 Cohesion: 0.07
 Nodes (23): fixedHeaderAndTab, footerLeftGapClass, headerLeftGapClass, isContentScroll, isHorizontal, isVertical, isWrapperScroll, leftGapClass (+15 more)
 
-### Community 14 - "Dev Dependencies"
+### Community 12 - "Naive UI Theme Tokens"
+Cohesion: 0.08
+Nodes (27): author, email, bugs, url, dependencies, vue, description, engines (+19 more)
+
+### Community 13 - "Layout Geometry & Scroll"
 Cohesion: 0.07
 Nodes (27): devDependencies, @amap/amap-jsapi-types, consola, eslint, kolorist, oxfmt, oxlint, pro-naive-ui-resolver (+19 more)
 
-### Community 15 - "SVG Icon System"
-Cohesion: 0.11
-Nodes (14): useAuthStore, useAuth, Button-level Permission Check, handleRefreshToken(), handleRefreshToken(), { baseURL }, { baseURL, otherBaseURL }, demoRequest (+6 more)
+### Community 14 - "Dev Dependencies"
+Cohesion: 0.13
+Nodes (16): App Bootstrap Sequence, App.I18n.LangType (zh-CN/en-US), enum/index, SetupStoreId, setDayjsLocale(), getLocale(), setupAppErrorHandle(), setupProNaiveComponents() (+8 more)
 
-### Community 16 - "TypeScript Compiler Config (root)"
+### Community 15 - "SVG Icon System"
 Cohesion: 0.08
 Nodes (23): compilerOptions, allowSyntheticDefaultImports, esModuleInterop, forceConsistentCasingInFileNames, isolatedModules, jsx, jsxImportSource, lib (+15 more)
 
-### Community 17 - "Chart Plugin Views"
-Cohesion: 0.16
-Nodes (20): getFlowData(), addNode, removeNode, AntvPluginView, EChartsOptions, initGaugeChart, AntFlowConfig, draw (+12 more)
+### Community 16 - "TypeScript Compiler Config (root)"
+Cohesion: 0.13
+Nodes (12): Auth + role-based route gate, getRouteName(), routeMap, createProgressGuard(), createRouteGuard(), getRouteQueryOfLoginRoute(), initRoute(), createDocumentTitleGuard() (+4 more)
 
-### Community 18 - "VS Code Workspace Settings"
+### Community 17 - "Chart Plugin Views"
 Cohesion: 0.10
 Nodes (21): editor.codeActionsOnSave, source.fixAll.eslint, source.fixAll.oxc, source.organizeImports, editor.defaultFormatter, editor.formatOnSave, eslint.validate, i18n-ally.displayLanguage (+13 more)
 
+### Community 18 - "VS Code Workspace Settings"
+Cohesion: 0.19
+Nodes (17): colorNames lookup table (~1580 hex+name pairs), colorPalettes (Tailwind-style 22 families x 11 shades), getColorName (nearest-name lookup over colorNames), color type defs (ColorPalette / Family / Match / Index / Number), colord (3rd-party color utility lib), colorNameMap, colorNames, getNearestColorPaletteFamily() (+9 more)
+
 ### Community 19 - "Route Type Hierarchy"
-Cohesion: 0.16
-Nodes (15): Elegant Router DSL (layout.X$view.Y), layouts, views, generatedRoutes, transformElegantRouteToVueRoute(), historyCreatorMap, router, setupRouter() (+7 more)
-
-### Community 20 - "Docs Site TSConfig (NEW)"
-Cohesion: 0.12
-Nodes (12): useCaptcha, useSvgIcon(), useRouterPush(), Phone Captcha Countdown Flow, constants/reg, [provideMixMenuContext, useMixMenuContext], useMenu(), useMixMenu() (+4 more)
-
-### Community 21 - "Global Search Module"
 Cohesion: 0.10
 Nodes (20): compilerOptions, allowSyntheticDefaultImports, baseUrl, esModuleInterop, forceConsistentCasingInFileNames, isolatedModules, jsx, jsxImportSource (+12 more)
 
-### Community 22 - "Common UI Toggle Components"
+### Community 20 - "Docs Site TSConfig (NEW)"
 Cohesion: 0.12
 Nodes (12): activePath, getActivePathIndex(), handleClose(), handleEnter(), handleSearch, handleUp(), keyword, currentRotation (+4 more)
 
-### Community 23 - "Global Layout Components"
+### Community 21 - "Global Search Module"
 Cohesion: 0.14
 Nodes (19): IconTooltip, LangSwitch, MenuToggler, PinToggler, ReloadButton, ThemeSchemaSwitch, Iconify + Local SVG Dual Render Pattern, Theme Schema Record/Options Pattern (+11 more)
 
-### Community 24 - "Elegant Router DSL"
+### Community 22 - "Common UI Toggle Components"
 Cohesion: 0.15
-Nodes (20): BaseLayout, BlankLayout, dark, light, GlobalBreadcrumb, GlobalContent, GlobalFooter, ThemeButton (+12 more)
+Nodes (19): BaseLayout, BlankLayout, dark, light, GlobalBreadcrumb, GlobalContent, GlobalFooter, ThemeButton (+11 more)
+
+### Community 23 - "Global Layout Components"
+Cohesion: 0.13
+Nodes (18): @sa/alova package, @sa/axios package, author, email, bugs, url, description, homepage (+10 more)
+
+### Community 24 - "Elegant Router DSL"
+Cohesion: 0.18
+Nodes (16): getPaletteColorByNumber(), overrideThemeSettings, addThemeVarsToGlobal(), createThemePaletteColors(), createThemeToken(), getCssVarByTokens(), getNaiveTheme(), getNaiveThemeColors() (+8 more)
 
 ### Community 25 - "Route Helpers & Tab Filters"
+Cohesion: 0.13
+Nodes (17): CHANGELOG.md (soybean-admin-base), CHANGELOG.zh_CN.md (soybean-admin-base), oxlint / oxfmt, pnpm monorepo, useTable hook, SoybeanAdmin v2 (v2.0.0+), eslint.config.js (@soybeanjs/eslint-config + markdown formatter), soybean-admin-docs package.json (VitePress 1.6.4 site) (+9 more)
+
+### Community 26 - "Per-Package TSConfig (sub-26)"
 Cohesion: 0.24
 Nodes (15): getRoutePath(), extractTabsByAllRoutes(), filterTabsById(), findTabByRouteName(), getAllTabs(), getDefaultHomeTab(), getFixedTabIds(), getFixedTabs() (+7 more)
 
-### Community 26 - "Per-Package TSConfig (sub-26)"
-Cohesion: 0.12
-Nodes (16): compilerOptions, allowSyntheticDefaultImports, esModuleInterop, forceConsistentCasingInFileNames, jsx, lib, module, moduleResolution (+8 more)
-
 ### Community 27 - "Per-Package TSConfig (sub-27)"
 Cohesion: 0.12
-Nodes (16): compilerOptions, allowSyntheticDefaultImports, esModuleInterop, forceConsistentCasingInFileNames, jsx, lib, module, moduleResolution (+8 more)
+Nodes (16): loginModuleRecord, themeLayoutModeOptions, themeLayoutModeRecord, themePageAnimationModeRecord, themeSchemaOptions, themeSchemaRecord, themeScrollModeRecord, themeTabModeOptions (+8 more)
 
 ### Community 28 - "Per-Package TSConfig (sub-28)"
 Cohesion: 0.12
@@ -414,404 +410,416 @@ Cohesion: 0.12
 Nodes (16): compilerOptions, allowSyntheticDefaultImports, esModuleInterop, forceConsistentCasingInFileNames, jsx, lib, module, moduleResolution (+8 more)
 
 ### Community 31 - "Per-Package TSConfig (sub-31)"
-Cohesion: 0.16
-Nodes (11): ChartHooks, ECOption, useEcharts(), ChartHooks, useVChart(), barOptions, gaugeOptions, lineOptions (+3 more)
+Cohesion: 0.12
+Nodes (16): compilerOptions, allowSyntheticDefaultImports, esModuleInterop, forceConsistentCasingInFileNames, jsx, lib, module, moduleResolution (+8 more)
 
 ### Community 32 - "Per-Package TSConfig (sub-32)"
 Cohesion: 0.12
-Nodes (16): AllRole, CommonSearchParams, IconType, Menu, MenuButton, MenuList, MenuPropsOfRoute, MenuTree (+8 more)
+Nodes (16): compilerOptions, allowSyntheticDefaultImports, esModuleInterop, forceConsistentCasingInFileNames, jsx, lib, module, moduleResolution (+8 more)
 
 ### Community 33 - "Per-Package TSConfig (sub-33)"
-Cohesion: 0.14
-Nodes (16): CHANGELOG.md (soybean-admin-base), CHANGELOG.zh_CN.md (soybean-admin-base), oxlint / oxfmt, pnpm monorepo, useTable hook, SoybeanAdmin v2 (v2.0.0+), eslint.config.js (@soybeanjs/eslint-config + markdown formatter), soybean-admin-docs package.json (VitePress 1.6.4 site) (+8 more)
+Cohesion: 0.18
+Nodes (17): store/modules/app/index.ts, store/modules/auth/shared.ts, static vs dynamic auth route mode, JWT refresh token flow, pinia setup store pattern, localStg persistence layer, tab lifecycle (add/remove/fix/clear/cache), naive-ui theme token + dark mode + watermark (+9 more)
 
 ### Community 34 - "Per-Package TSConfig (sub-34)"
-Cohesion: 0.15
-Nodes (16): desc, footer, header, breadcrumb, globalSearch, multilingual, i18nkey, name (+8 more)
+Cohesion: 0.12
+Nodes (16): AllRole, CommonSearchParams, IconType, Menu, MenuButton, MenuList, MenuPropsOfRoute, MenuTree (+8 more)
 
 ### Community 35 - "Per-Package TSConfig (sub-35)"
 Cohesion: 0.12
 Nodes (16): compilerOptions, allowSyntheticDefaultImports, esModuleInterop, forceConsistentCasingInFileNames, jsx, lib, module, moduleResolution (+8 more)
 
 ### Community 36 - "Per-Package TSConfig (sub-36)"
-Cohesion: 0.12
-Nodes (16): compilerOptions, allowSyntheticDefaultImports, esModuleInterop, forceConsistentCasingInFileNames, jsx, lib, module, moduleResolution (+8 more)
+Cohesion: 0.15
+Nodes (16): desc, footer, header, breadcrumb, globalSearch, multilingual, i18nkey, name (+8 more)
 
 ### Community 37 - "Router Guard Flow (diagram)"
+Cohesion: 0.20
+Nodes (12): Elegant Router DSL (layout.X$view.Y), layouts, views, generatedRoutes, transformElegantRouteToVueRoute(), builtinRoutes, createBuiltinVueRoutes(), NOT_FOUND_ROUTE (+4 more)
+
+### Community 38 - "Community 38"
+Cohesion: 0.20
+Nodes (11): assets.ts (svg/uno/global css bundle), getLogoSvg(), setupLoading(), ColorIndex, ColorPalette, ColorPaletteFamily, ColorPaletteFamilyWithNearestPalette, ColorPaletteMatch (+3 more)
+
+### Community 39 - "Community 39"
 Cohesion: 0.12
 Nodes (16): compilerOptions, allowSyntheticDefaultImports, esModuleInterop, forceConsistentCasingInFileNames, jsx, lib, module, moduleResolution (+8 more)
 
-### Community 38 - "Community 38"
-Cohesion: 0.16
-Nodes (15): @sa/alova package, @sa/axios package, author, email, bugs, url, description, homepage (+7 more)
+### Community 40 - "Community 40"
+Cohesion: 0.12
+Nodes (16): compilerOptions, allowSyntheticDefaultImports, esModuleInterop, forceConsistentCasingInFileNames, jsx, lib, module, moduleResolution (+8 more)
 
-### Community 39 - "Community 39"
+### Community 41 - "Community 41"
 Cohesion: 0.23
 Nodes (13): fetchCustomBackendError(), fetchGetUserInfo(), fetchLogin(), fetchRefreshToken(), fetchGetConstantRoutes(), fetchGetUserRoutes(), fetchIsRouteExist(), fetchGetAllPages() (+5 more)
 
-### Community 40 - "Community 40"
-Cohesion: 0.13
-Nodes (15): scripts, build, build:test, cleanup, commit, commit:zh, dev, dev:prod (+7 more)
-
-### Community 41 - "Community 41"
-Cohesion: 0.24
-Nodes (11): filterAuthRouteByRoles(), getBreadcrumbsByRoute(), getCacheRouteNames(), getGlobalMenuByBaseRoute(), getGlobalMenusByAuthRoutes(), getSelectedMenuKeyPathByKey(), isRouteExistByRouteName(), sortRouteByOrder() (+3 more)
-
 ### Community 42 - "Community 42"
-Cohesion: 0.13
-Nodes (14): colourWeakness, desc, fixedHeaderAndTab, grayscale, i18nkey, isInfoFollowPrimary, name, page (+6 more)
+Cohesion: 0.23
+Nodes (15): service/api/auth.ts, service-alova/api/auth.ts, service/api/index.ts, service-alova/api/index.ts, service/api/route.ts, service-alova/api/route.ts, service/api/system-manage.ts, service-alova/api/system-manage.ts (+7 more)
 
 ### Community 43 - "Community 43"
 Cohesion: 0.16
 Nodes (15): showIcon, footer, fixed, right, header, breadcrumb, globalSearch, multilingual (+7 more)
 
 ### Community 44 - "Community 44"
-Cohesion: 0.14
-Nodes (13): *, dependencies, colord, crypto-js, klona, localforage, nanoid, devDependencies (+5 more)
+Cohesion: 0.13
+Nodes (14): colourWeakness, desc, fixedHeaderAndTab, grayscale, i18nkey, isInfoFollowPrimary, name, page (+6 more)
 
 ### Community 45 - "Community 45"
 Cohesion: 0.24
-Nodes (9): Auth + role-based route gate, getRouteName(), routeMap, createRouteGuard(), getRouteQueryOfLoginRoute(), initRoute(), createDocumentTitleGuard(), $t (i18n global translator) (+1 more)
+Nodes (11): filterAuthRouteByRoles(), getBreadcrumbsByRoute(), getCacheRouteNames(), getGlobalMenuByBaseRoute(), getGlobalMenusByAuthRoutes(), getSelectedMenuKeyPathByKey(), isRouteExistByRouteName(), sortRouteByOrder() (+3 more)
 
 ### Community 46 - "Community 46"
-Cohesion: 0.30
-Nodes (8): clearAuthStorage(), getToken(), i18n, setLocale(), useTabStore, localforage, localStg, sessionStg
+Cohesion: 0.13
+Nodes (15): scripts, build, build:test, cleanup, commit, commit:zh, dev, dev:prod (+7 more)
 
 ### Community 47 - "Docs Site Package Metadata"
+Cohesion: 0.13
+Nodes (15): Alova Recommendation (JP), devDependencies, eslint, eslint-plugin-vue, @soybeanjs/eslint-config, @types/node, typescript, vitepress (+7 more)
+
+### Community 48 - "Community 48"
+Cohesion: 0.16
+Nodes (15): Api.Auth.UserInfo, Api.Common.CommonRecord, Api.Route.MenuRoute, Api.Route.UserRoute, Api.SystemManage.Menu, Api.SystemManage.Role, Api.SystemManage.User, App.Global.Menu (+7 more)
+
+### Community 49 - "Community 49"
+Cohesion: 0.14
+Nodes (13): *, dependencies, colord, crypto-js, klona, localforage, nanoid, devDependencies (+5 more)
+
+### Community 50 - "Community 50"
+Cohesion: 0.16
+Nodes (6): Crypto, createLocalforage(), createStorage(), LocalForage, LocalforageDriver, StorageType
+
+### Community 51 - "Community 51"
 Cohesion: 0.22
 Nodes (14): CRUD admin table pattern, manage/menu admin page, menu modules shared utils, MenuOperateModal, { layout, page }, { path, param }, ButtonAuthModal, manage/role admin page (+6 more)
 
-### Community 48 - "Community 48"
-Cohesion: 0.18
-Nodes (13): author, email, bugs, url, dependencies, vue, description, homepage (+5 more)
+### Community 52 - "Community 52"
+Cohesion: 0.16
+Nodes (11): enableStatusOptions, enableStatusRecord, menuIconTypeOptions, menuIconTypeRecord, menuTypeOptions, menuTypeRecord, userGenderOptions, userGenderRecord (+3 more)
 
-### Community 49 - "Community 49"
-Cohesion: 0.15
-Nodes (12): *, dependencies, alova, @alova/mock, @sa/utils, exports, ./client, ./fetch (+4 more)
+### Community 53 - "Community 53"
+Cohesion: 0.21
+Nodes (11): UnoCSS Shortcuts, Azir Preset, Compact Preset, Dark Preset, Default Preset, presetSoybeanAdmin(), colorPaletteVars, createColorPaletteVars() (+3 more)
 
-### Community 50 - "Community 50"
-Cohesion: 0.15
-Nodes (11): categories, correctness, suspicious, plugins, rules, import/no-unassigned-import, unicorn/consistent-function-scoping, unicorn/no-array-reverse (+3 more)
-
-### Community 51 - "Community 51"
+### Community 54 - "Community 54"
 Cohesion: 0.15
 Nodes (12): *, dependencies, axios, axios-retry, qs, @sa/utils, devDependencies, @types/qs (+4 more)
 
-### Community 52 - "Community 52"
+### Community 55 - "Deploy & Integration Concepts"
+Cohesion: 0.15
+Nodes (11): categories, correctness, suspicious, plugins, rules, import/no-unassigned-import, unicorn/consistent-function-scoping, unicorn/no-array-reverse (+3 more)
+
+### Community 56 - "Community 56"
+Cohesion: 0.15
+Nodes (12): *, dependencies, alova, @alova/mock, @sa/utils, exports, ./client, ./fetch (+4 more)
+
+### Community 57 - "Community 57"
 Cohesion: 0.22
 Nodes (13): guide_hooks_concept_default_transform, guide_hooks_concept_use_naive_paginated_table, guide_hooks_concept_use_naive_table, guide_hooks_concept_use_table, guide_hooks_concept_use_table_operate, guide_hooks_use_table_doc, guide_request_backend_doc, guide_request_concept_app_service_response (+5 more)
 
-### Community 53 - "Community 53"
+### Community 58 - "Community 58"
 Cohesion: 0.15
 Nodes (12): colourWeakness, desc, fixedHeaderAndTab, grayscale, i18nkey, isInfoFollowPrimary, name, recommendColor (+4 more)
 
-### Community 54 - "Community 54"
-Cohesion: 0.18
-Nodes (13): base-text, container, colors, boxShadow, sider, collapsedWidth, inverted, mixChildMenuWidth (+5 more)
-
-### Community 55 - "Deploy & Integration Concepts"
-Cohesion: 0.21
-Nodes (12): guide_router_cache_doc, guide_router_component_doc, guide_router_concept_auth_route_mode, guide_router_concept_elegant_router, guide_router_concept_route_meta, guide_router_concept_router_push_hook, guide_router_create_doc, guide_router_dynamic_doc (+4 more)
-
-### Community 56 - "Community 56"
-Cohesion: 0.20
-Nodes (12): base-text, container, colors, boxShadow, sider, inverted, mixChildMenuWidth, mixWidth (+4 more)
-
-### Community 57 - "Community 57"
+### Community 60 - "Community 60"
 Cohesion: 0.17
 Nodes (11): Align, DataTableBaseColumn, DataTableExpandColumn, DataTableSelectionColumn, SetTableColumnKey, TableColumn, TableColumnCheck, TableColumnFixed (+3 more)
 
-### Community 58 - "Community 58"
+### Community 61 - "Community 61"
+Cohesion: 0.21
+Nodes (12): guide_router_cache_doc, guide_router_component_doc, guide_router_concept_auth_route_mode, guide_router_concept_elegant_router, guide_router_concept_route_meta, guide_router_concept_router_push_hook, guide_router_create_doc, guide_router_dynamic_doc (+4 more)
+
+### Community 62 - "Community 62"
+Cohesion: 0.20
+Nodes (12): base-text, container, colors, boxShadow, sider, inverted, mixChildMenuWidth, mixWidth (+4 more)
+
+### Community 63 - "Community 63"
+Cohesion: 0.23
+Nodes (7): { baseURL }, mockAdapter, state, RequestInstance, createProxyPattern(), createServiceConfig(), getServiceBaseURL()
+
+### Community 64 - "Docs Site npm Scripts"
+Cohesion: 0.26
+Nodes (10): getHue (private), getValue (private), darkColor, getAntDColorPalette(), getAntDPaletteColorByIndex(), getHue(), getSaturation(), getValue() (+2 more)
+
+### Community 65 - "Community 65"
 Cohesion: 0.18
 Nodes (10): *, dependencies, @sa/utils, simplebar-vue, devDependencies, typed-css-modules, exports, name (+2 more)
 
-### Community 59 - "Docs Site Config Files"
+### Community 67 - "Community 67"
 Cohesion: 0.18
 Nodes (10): barMarkPointSpec, circularProgressTickSpec, colors, dataSpecs, goldenMedals, histogramDifferentBinSpec, liquidChartSmartInvertSpec, rankingBarSpec (+2 more)
 
-### Community 60 - "Community 60"
+### Community 68 - "Community 68"
 Cohesion: 0.18
-Nodes (11): scripts, build, cleanup, commit, commit:zh, dev, lint, preview (+3 more)
+Nodes (11): JP Awesome Ecosystem, JP sa CLI Commands, JP Git Hooks Doc, JP CLI Intro, JP Cooperation Page, JP Guide Intro, JP Quick Start, JP Code Sync Guide (+3 more)
 
-### Community 61 - "Community 61"
+### Community 69 - "VSCode Debugging Guide (3 screenshots)"
 Cohesion: 0.20
 Nodes (9): arrowParens, experimentalSortPackageJson, sortScripts, htmlWhitespaceSensitivity, ignorePatterns, printWidth, singleQuote, trailingComma (+1 more)
 
-### Community 62 - "Community 62"
+### Community 70 - "Community 70"
 Cohesion: 0.27
 Nodes (10): showIcon, footer, fixed, right, header, breadcrumb, globalSearch, multilingual (+2 more)
 
-### Community 63 - "Community 63"
+### Community 71 - "Community 71"
 Cohesion: 0.20
 Nodes (10): recommend_alova_lib, recommend_index_intro, recommend_klona_lib, recommend_page_spy_tool, recommend_soybeanjs_cli, standard_index_intro, Standards: Lint / Formatting, Standards: Naming Conventions (+2 more)
 
-### Community 64 - "Docs Site npm Scripts"
+### Community 72 - "Community 72"
 Cohesion: 0.28
 Nodes (9): 断点 (Breakpoint) 设置示例, VSCode 调试面板 (Run and Debug), VSCode 调试指南 01 截图, transformToKebabCase 示例代码, TS Debugger 启动配置, VSCode 调试工具栏（调试选项）, VSCode 调试指南 截图 02, VSCode Variables 监视面板 (+1 more)
 
-### Community 65 - "Community 65"
-Cohesion: 0.22
-Nodes (8): *, dependencies, colord, @sa/utils, exports, name, typesVersions, version
-
-### Community 66 - "Community 66"
+### Community 73 - "Community 73"
 Cohesion: 0.25
 Nodes (9): plugin demo views (third-party SDK showcase), TENCENT_MAP_SDK_URL constant, TencentMap.vue plugin component, PDF preview view (vue-pdf-embed), Pinyin plugin view (pinyin-pro + dompurify), Print plugin view (print-js), Swiper plugin view, TypeIt plugin view (+1 more)
 
-### Community 67 - "Community 67"
+### Community 74 - "Routing Guide Docs (CN/JP)"
+Cohesion: 0.22
+Nodes (8): *, dependencies, colord, @sa/utils, exports, name, typesVersions, version
+
+### Community 75 - "Docs Site DevDependencies"
 Cohesion: 0.22
 Nodes (8): *, dependencies, @sa/axios, @sa/utils, exports, name, typesVersions, version
 
-### Community 68 - "Community 68"
+### Community 76 - "Community 76"
 Cohesion: 0.22
-Nodes (9): JP Awesome Ecosystem, JP Cooperation Page, JP Guide Intro, JP Router Cache, JP Route Creation, Elegant Router plugin, UnoCSS Dark Mode (class strategy), UnoCSS Theme Doc (+1 more)
+Nodes (9): VITE_AUTH_ROUTE_MODE env, VITE_HTTP_PROXY env toggle, JP FAQ, createRequest / createFlatRequest, JP Request Proxy, JP Request Usage, JP Dynamic Route Doc, JP Router Guard (+1 more)
 
-### Community 69 - "VSCode Debugging Guide (3 screenshots)"
+### Community 77 - "Community 77"
 Cohesion: 0.22
 Nodes (9): JP useRouterPush Doc, 路由缓存（keep-alive + meta.keepAlive）, 路由组件命名（layout.base / view.* / layout.base$view.*）, 路由文件创建（pnpm gen-route 与手动）, 动态/静态路由模式与权限控制, 路由守卫流程图, 系统路由总览与 RouteMeta, useRouterPush Hook (+1 more)
 
-### Community 70 - "Community 70"
-Cohesion: 0.22
-Nodes (9): devDependencies, eslint, eslint-plugin-vue, @soybeanjs/eslint-config, @types/node, typescript, vitepress, vue-eslint-parser (+1 more)
-
-### Community 71 - "Community 71"
+### Community 78 - "Community 78"
 Cohesion: 0.25
 Nodes (7): barColors, barColors0, customGanttColumns, GanttConstructorOptions, getOption(), initVTableGantt(), stopHandle
 
-### Community 72 - "Community 72"
+### Community 79 - "Community 79"
 Cohesion: 0.32
-Nodes (3): getLayout(), getLayoutAndPage(), getPage()
+Nodes (6): AppProvider, ContextHolder, DarkModeContainer, Naive UI Provider Pattern, naiveDateLocale, naiveLocale
 
-### Community 73 - "Community 73"
+### Community 80 - "Community 80"
 Cohesion: 0.29
 Nodes (8): ECharts home dashboard, home/CardData module, home/CreativityBanner module, home/HeaderBanner module, home dashboard page, home/LineChart module, home/PieChart module, home/ProjectNews module
 
-### Community 74 - "Routing Guide Docs (CN/JP)"
+### Community 81 - "Community 81"
+Cohesion: 0.32
+Nodes (3): getLayout(), getLayoutAndPage(), getPage()
+
+### Community 82 - "Community 82"
+Cohesion: 0.29
+Nodes (8): base-text, container, colors, boxShadow, inverted, tokens, dark, light
+
+### Community 83 - "Community 83"
+Cohesion: 0.43
+Nodes (6): useRouterPush(), [provideMixMenuContext, useMixMenuContext], useMenu(), useMixMenu(), HorizontalMenu, useRouteStore
+
+### Community 84 - "Community 84"
 Cohesion: 0.25
 Nodes (8): Coding Standards Overview (JP), Naming Conventions (JP), TS Convention (JP, stub), Vue SFC Convention (JP), VSCode Debug Tutorial (JP), Git Setup Tutorial (JP), Tutorial Index (JP), Node.js Install via nvm/fnm (JP)
 
-### Community 75 - "Docs Site DevDependencies"
+### Community 85 - "Community 85"
 Cohesion: 0.33
 Nodes (7): guide_cli_command_doc, guide_cli_git_hooks_doc, guide_cli_intro_doc, guide_quick_start_concept_pnpm_scripts, guide_quick_start_concept_sa_cli, guide_quick_start_doc, guide_sync_doc
 
-### Community 76 - "Community 76"
+### Community 86 - "Theme & Icon Guide Docs"
 Cohesion: 0.33
 Nodes (7): guide_icon_concept_svg_icon_component, guide_icon_concept_use_svg_icon_render, guide_icon_intro_doc, guide_icon_usage_doc, guide_theme_concept_setup_loading, guide_theme_loading_doc, guide_theme_logo_doc
 
-### Community 77 - "Community 77"
-Cohesion: 0.29
-Nodes (7): WaveBg, 系统图标原理, 图标使用四式（静态/动态/render/离线）, 主题配置（themeSettings 与 overrideThemeSettings）, 主题系统原理, 系统加载动画 setupLoading, SystemLogo 组件
-
-### Community 78 - "Community 78"
-Cohesion: 0.29
-Nodes (7): VITE_AUTH_ROUTE_MODE env, JP Router Component Doc, JP Dynamic Route Doc, JP Router Guard, JP Router Intro, RouteMeta (interface), RouteKey
-
-### Community 79 - "Community 79"
-Cohesion: 0.29
-Nodes (7): VITE_HTTP_PROXY env toggle, JP FAQ, JP Request Backend Response Doc, createRequest / createFlatRequest, JP Request Intro, JP Request Proxy, JP Request Usage
-
-### Community 80 - "Community 80"
+### Community 87 - "Community 87"
 Cohesion: 0.52
 Nodes (7): alova request demo, login index, BindWechat, CodeLogin, PwdLogin, Register, ResetPwd
 
-### Community 81 - "Community 81"
+### Community 88 - "Community 88"
+Cohesion: 0.43
+Nodes (4): local, local, setupI18n(), locales
+
+### Community 89 - "Getting Started / CLI Docs"
+Cohesion: 0.29
+Nodes (7): WaveBg, 系统图标原理, 图标使用四式（静态/动态/render/离线）, 主题配置（themeSettings 与 overrideThemeSettings）, 主题系统原理, 系统加载动画 setupLoading, SystemLogo 组件
+
+### Community 90 - "Community 90"
 Cohesion: 0.67
 Nodes (6): BrowserVisibilityRequest, CaptchaVerification, CrossComponentRequest, alova scenes index, NetworkToggleRequest, PollingRequest
 
-### Community 82 - "Community 82"
+### Community 91 - "Community 91"
 Cohesion: 0.33
 Nodes (5): CommonRecord, CommonSearchParams, EnableStatus, PaginatingCommonParams, PaginatingQueryRecord
 
-### Community 83 - "Community 83"
+### Community 92 - "Community 92"
 Cohesion: 0.33
 Nodes (5): ganttTasks, initGantt, DhtmlxGanttView, VTableGanttRecords, VTableGanttView
 
-### Community 84 - "Community 84"
-Cohesion: 0.53
-Nodes (3): enum/index, SetupStoreId, resetSetupStore()
-
-### Community 85 - "Community 85"
+### Community 93 - "Community 93"
 Cohesion: 0.33
 Nodes (5): customListRecords, listTableRecords, pivotChartColumns, pivotChartIndicators, pivotChartRows
 
-### Community 86 - "Theme & Icon Guide Docs"
+### Community 94 - "Community 94"
 Cohesion: 0.33
 Nodes (6): sa CLI 命令清单, Git Hooks 与提交校验, sa CLI 概述, SoybeanAdmin 介绍, 快速开始, 同步上游代码（cherry-pick 流程）
 
-### Community 87 - "Community 87"
+### Community 95 - "Community 95"
 Cohesion: 0.47
 Nodes (6): useBoolean composable, useContext composable (provide/inject pair factory), useLoading composable, createHookRequest factory (wraps @sa/axios), useTable composable (paginated table data + column checks), @sa/axios createFlatRequest
 
-### Community 88 - "Community 88"
+### Community 96 - "Community 96"
+Cohesion: 0.33
+Nodes (6): JP Router Cache, JP Router Component Doc, JP Route Creation, Elegant Router plugin, JP Router Intro, RouteKey
+
+### Community 97 - "Community 97"
 Cohesion: 0.33
 Nodes (6): sider, inverted, mixChildMenuWidth, mixWidth, width, collapsedWidth
 
-### Community 89 - "Getting Started / CLI Docs"
+### Community 98 - "Community 98"
 Cohesion: 0.33
 Nodes (6): layout, scrollMode, tab, cache, closeTabByMiddleClick, mode
 
-### Community 90 - "Community 90"
+### Community 99 - "Community 99"
+Cohesion: 0.33
+Nodes (6): sider, collapsedWidth, mixChildMenuWidth, mixCollapsedWidth, mixWidth, width
+
+### Community 100 - "Community 100"
 Cohesion: 0.33
 Nodes (6): layout, scrollMode, tab, cache, closeTabByMiddleClick, mode
 
-### Community 91 - "Community 91"
+### Community 101 - "Community 101"
 Cohesion: 0.33
 Nodes (6): System Loading Animation (JP), SystemLogo Component (JP), Theme Settings Override (JP), Theme System Architecture (JP), Component Library Theme (NaiveUI + Antd) (JP), UnoCSS Theme Integration (JP)
 
-### Community 92 - "Community 92"
-Cohesion: 0.33
-Nodes (6): Alova Recommendation (JP), klona Deep-Clone Lib (JP), PageSpy Remote Debug (JP), Recommendations Preamble (JP), @soybeanjs/cli (JP), Lint & Format (ESLint + Prettier) (JP)
-
-### Community 93 - "Community 93"
+### Community 102 - "SPA Loading Screen UI"
 Cohesion: 0.33
 Nodes (5): *, exports, name, typesVersions, version
 
-### Community 94 - "Community 94"
+### Community 103 - "Community 103"
 Cohesion: 0.40
 Nodes (5): Pre-Mount SPA Loading Screen (design pattern), Dot-Ring Loading Spinner (visual element), loading01.png — Soybean SPA Loading Screen, Soybean Trefoil Logo (visual element), Title Text — 'Soybean 管理系统'
 
-### Community 95 - "Community 95"
+### Community 104 - "Community 104"
 Cohesion: 0.40
 Nodes (4): generateBarcode, BarcodePluginView, icons, IconPluginView
 
-### Community 96 - "Community 96"
-Cohesion: 0.40
-Nodes (4): darkMenu, isTopHybridHeaderFirst, menuWrapperClass, showLogo
-
-### Community 97 - "Community 97"
+### Community 105 - "Community 105"
 Cohesion: 0.40
 Nodes (4): Option, RecordNullable, StrategicPattern, YesOrNo
 
-### Community 98 - "Community 98"
+### Community 106 - "Community 106"
+Cohesion: 0.40
+Nodes (4): darkMenu, isTopHybridHeaderFirst, menuWrapperClass, showLogo
+
+### Community 107 - "Community 107"
 Cohesion: 0.60
 Nodes (5): hide-child one, hide-child three, hide-child two, LookForward, multi-tab
 
-### Community 99 - "Community 99"
-Cohesion: 0.40
-Nodes (5): JP sa CLI Commands, JP Git Hooks Doc, JP CLI Intro, JP Quick Start, JP Code Sync Guide
-
-### Community 100 - "Community 100"
+### Community 108 - "Community 108"
 Cohesion: 0.40
 Nodes (5): otherColor, error, info, success, warning
 
-### Community 101 - "Community 101"
+### Community 109 - "Community 109"
 Cohesion: 0.40
 Nodes (5): otherColor, error, info, success, warning
 
-### Community 102 - "SPA Loading Screen UI"
+### Community 110 - "Community 110"
 Cohesion: 0.40
 Nodes (5): watermark, enableTime, enableUserName, text, timeFormat
 
-### Community 103 - "Community 103"
-Cohesion: 0.40
-Nodes (5): ContextConsumer, ContextName, ContextProvider, ContextValue, useContext()
-
-### Community 104 - "Community 104"
+### Community 111 - "Community 111"
 Cohesion: 0.83
 Nodes (4): 403 page, 404 page, 500 page, ExceptionBase
 
-### Community 105 - "Community 105"
+### Community 112 - "Community 112"
 Cohesion: 0.67
 Nodes (4): BaiduMap, GaodeMap, MapComponentsBarrel, MapPluginView
 
-### Community 106 - "Community 106"
-Cohesion: 0.50
-Nodes (4): multi-menu/first_child placeholder, multi-menu/second_child_home placeholder, function/super-page placeholder, user-detail dynamic id page
-
-### Community 107 - "Community 107"
+### Community 113 - "Community 113"
 Cohesion: 0.50
 Nodes (3): ElegantConstRoute, MenuRoute, UserRoute
 
-### Community 108 - "Community 108"
+### Community 114 - "Community 114"
 Cohesion: 0.50
 Nodes (3): Map, Point, Window
 
-### Community 109 - "Community 109"
-Cohesion: 0.50
-Nodes (3): basicGanttRecords, customGanttRecords, linkGanttRecords
-
-### Community 113 - "Community 113"
+### Community 118 - "Community 118"
 Cohesion: 0.50
 Nodes (4): renderVditor, MarkdownEditorView, renderWangEditor, QuillEditorView
 
-### Community 114 - "Community 114"
+### Community 119 - "Community 119"
+Cohesion: 0.50
+Nodes (4): multi-menu/first_child placeholder, multi-menu/second_child_home placeholder, function/super-page placeholder, user-detail dynamic id page
+
+### Community 120 - "Community 120"
 Cohesion: 0.50
 Nodes (4): theme_get_antd_theme_fn, theme_get_naive_theme_fn, theme_ui_concept, theme_unocss_concept
 
-### Community 115 - "Community 115"
+### Community 121 - "Community 121"
 Cohesion: 0.67
 Nodes (4): Tutorial: Debugging (VSCode), Tutorial: Git Setup, tutorial_index_intro, Tutorial: NodeJS Install (nvm + fnm)
 
-### Community 117 - "VitePress Locale Configs"
-Cohesion: 0.67
-Nodes (3): TableColumnSetting, TableHeaderOperation, Table Column Settings Model
-
-### Community 119 - "Community 119"
-Cohesion: 0.67
-Nodes (3): Dynamic vs Static permission routing, history mode SPA 404 (nginx try_files /index.html fix), src/faq/index.md (FAQ: cache, routing, naming, CORS, SPA 404)
-
-### Community 121 - "Community 121"
-Cohesion: 0.67
-Nodes (3): ElegantVueRouter customRoutes, routePathTransformer, Router Structure Convention (JP)
-
 ### Community 122 - "Community 122"
-Cohesion: 0.67
-Nodes (3): exportExcel, getTableValue, ExcelPluginView
-
-### Community 123 - "Community 123"
-Cohesion: 0.67
-Nodes (3): engines, node, pnpm
+Cohesion: 0.50
+Nodes (3): basicGanttRecords, customGanttRecords, linkGanttRecords
 
 ### Community 124 - "Community 124"
 Cohesion: 0.67
-Nodes (3): simple-git-hooks, commit-msg, pre-commit
+Nodes (3): TableColumnSetting, TableHeaderOperation, Table Column Settings Model
 
-### Community 129 - "Community 129"
-Cohesion: 1.00
-Nodes (3): guide_theme_concept_get_antd_theme, guide_theme_concept_get_naive_theme, guide_theme_ui_doc
-
-### Community 130 - "Community 130"
-Cohesion: 0.67
-Nodes (3): guide_theme_concept_theme_setting, guide_theme_config_doc, guide_theme_intro_doc
-
-### Community 131 - "Community 131"
+### Community 126 - "Community 126"
 Cohesion: 0.67
 Nodes (3): @sa/color package manifest, @sa/hooks package manifest, @sa/materials package manifest
 
-### Community 132 - "Community 132"
+### Community 127 - "Community 127"
 Cohesion: 0.67
-Nodes (3): JP Icon Intro, JP Icon Usage, useSvgIcon (hook)
+Nodes (3): ElegantVueRouter customRoutes, routePathTransformer, Router Structure Convention (JP)
+
+### Community 128 - "Community 128"
+Cohesion: 0.67
+Nodes (3): exportExcel, getTableValue, ExcelPluginView
 
 ### Community 133 - "Community 133"
-Cohesion: 0.67
-Nodes (3): page, animate, animateMode
+Cohesion: 1.00
+Nodes (3): guide_theme_concept_get_antd_theme, guide_theme_concept_get_naive_theme, guide_theme_ui_doc
 
 ### Community 134 - "Community 134"
 Cohesion: 0.67
-Nodes (3): src/guide/intro.md (project intro, stack, branches, prerequisites), src/index.md (English VitePress home page with team + SbUiPromo), SbUiPromo.vue (SoybeanUI promotion card + mobile drawer)
+Nodes (3): guide_theme_concept_theme_setting, guide_theme_config_doc, guide_theme_intro_doc
 
 ### Community 135 - "Community 135"
+Cohesion: 0.67
+Nodes (3): JP Icon Intro, JP Icon Usage, useSvgIcon (hook)
+
+### Community 137 - "Community 137"
+Cohesion: 0.67
+Nodes (3): page, animate, animateMode
+
+### Community 138 - "Community 138"
+Cohesion: 0.67
+Nodes (3): Dynamic vs Static permission routing, history mode SPA 404 (nginx try_files /index.html fix), src/faq/index.md (FAQ: cache, routing, naming, CORS, SPA 404)
+
+### Community 139 - "Community 139"
+Cohesion: 0.67
+Nodes (3): src/guide/intro.md (project intro, stack, branches, prerequisites), src/index.md (English VitePress home page with team + SbUiPromo), SbUiPromo.vue (SoybeanUI promotion card + mobile drawer)
+
+### Community 140 - "Community 140"
 Cohesion: 0.67
 Nodes (3): engines, node, pnpm
 
 ## Knowledge Gaps
-- **923 isolated node(s):** `ignorePatterns`, `printWidth`, `singleQuote`, `trailingComma`, `arrowParens` (+918 more)
+- **914 isolated node(s):** `ignorePatterns`, `printWidth`, `singleQuote`, `trailingComma`, `arrowParens` (+909 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **126 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **119 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `devDependencies` connect `Dev Dependencies` to `Community 70`, `Auth Store & Permissions`, `Community 124`, `Community 38`?**
-  _High betweenness centrality (0.058) - this node is a cross-community bridge._
-- **Why does `useThemeStore` connect `Per-Package TSConfig (sub-31)` to `Community 46`, `Chart Plugin Views`, `Community 83`, `Docs Site TSConfig (NEW)`, `Route Helpers & Tab Filters`?**
-  _High betweenness centrality (0.037) - this node is a cross-community bridge._
-- **Why does `$t (i18n global translator)` connect `Community 45` to `Color Palette Engine`, `Admin Layout Package`, `Theme Constants & Maps`, `Community 41`, `Auth Store & Permissions`, `Community 46`, `SVG Icon System`, `Docs Site TSConfig (NEW)`, `Route Helpers & Tab Filters`?**
-  _High betweenness centrality (0.035) - this node is a cross-community bridge._
+- **Why does `devDependencies` connect `Layout Geometry & Scroll` to `Docs Site Package Metadata`, `Dev Dependencies`, `Global Layout Components`?**
+  _High betweenness centrality (0.055) - this node is a cross-community bridge._
+- **Why does `$t (i18n global translator)` connect `TypeScript Compiler Config (root)` to `API Service Aliases (auth/captcha)`, `Community 38`, `Auth Store & Permissions`, `Community 45`, `Community 52`, `Per-Package TSConfig (sub-26)`, `Community 63`?**
+  _High betweenness centrality (0.036) - this node is a cross-community bridge._
+- **Why does `ThemeSetting` connect `Elegant Router DSL` to `Community 53`, `Theme Constants & Maps`?**
+  _High betweenness centrality (0.034) - this node is a cross-community bridge._
 - **What connects `ignorePatterns`, `printWidth`, `singleQuote` to the rest of the system?**
-  _925 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _914 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Color Palette Engine` be split into smaller, more focused modules?**
-  _Cohesion score 0.05134825014343087 - nodes in this community are weakly interconnected._
-- **Should `Build & Release Scripts` be split into smaller, more focused modules?**
   _Cohesion score 0.053185271770894216 - nodes in this community are weakly interconnected._
+- **Should `Build & Release Scripts` be split into smaller, more focused modules?**
+  _Cohesion score 0.05928614640048397 - nodes in this community are weakly interconnected._
 - **Should `Alova Request Adapter (+docs)` be split into smaller, more focused modules?**
-  _Cohesion score 0.06110102843315184 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05580693815987934 - nodes in this community are weakly interconnected._

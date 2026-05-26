@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/utils/src/crypto.ts"
 type: "code"
-community: "Admin Layout Package"
+community: "Community 50"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Admin_Layout_Package
+  - community/Community_50
 ---
 
 # crypto.ts
@@ -15,4 +15,4 @@ tags:
 - [[Crypto]] - `contains` [EXTRACTED]
 - [[index.ts_20]] - `re_exports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Admin_Layout_Package
+#graphify/code #graphify/EXTRACTED #community/Community_50

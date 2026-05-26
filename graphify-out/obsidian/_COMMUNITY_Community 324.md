@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[srcawesomeindex.md (Ecosystem table of community projects)]] - document - fork260509-soybean-admin-docs/src/awesome/index.md
+- [[.vscodesettings.json (eslint codeActionsOnSave, prettier disabled)]] - code - fork260509-soybean-admin-docs/.vscode/settings.json
 
 ## Live Query (requires Dataview plugin)
 

@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/service-alova/request/type.ts"
 type: "code"
-community: "API Service Aliases (auth/captcha)"
+community: "Community 42"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/API_Service_Aliases_auth/captcha
+  - community/Community_42
 ---
 
 # service-alova/request/type.ts
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[alova_1]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha
+#graphify/code #graphify/EXTRACTED #community/Community_42

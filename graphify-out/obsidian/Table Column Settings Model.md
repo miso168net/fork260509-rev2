@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/components/advanced/table-column-setting.vue"
 type: "concept"
-community: "VitePress Locale Configs"
+community: "Community 124"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/VitePress_Locale_Configs
+  - community/Community_124
 ---
 
 # Table Column Settings Model
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[TableColumnSetting]] - `implements` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/VitePress_Locale_Configs
+#graphify/concept #graphify/INFERRED #community/Community_124

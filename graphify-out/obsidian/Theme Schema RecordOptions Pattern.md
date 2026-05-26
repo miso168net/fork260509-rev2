@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/constants/app.ts"
 type: "concept"
-community: "Global Layout Components"
+community: "Global Search Module"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/Global_Layout_Components
+  - community/Global_Search_Module
 ---
 
 # Theme Schema Record/Options Pattern
@@ -14,4 +14,4 @@ tags:
 - [[ThemeSchemaSwitch]] - `references` [INFERRED]
 - [[constantsapp]] - `implements` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/Global_Layout_Components
+#graphify/concept #graphify/INFERRED #community/Global_Search_Module

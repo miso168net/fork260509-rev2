@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/components/common/dark-mode-container.vue"
 type: "code"
-community: "Auth Store & Permissions"
+community: "Community 79"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Auth_Store__Permissions
+  - community/Community_79
 ---
 
 # DarkModeContainer
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[AppProvider]] - `conceptually_related_to` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Auth_Store__Permissions
+#graphify/code #graphify/INFERRED #community/Community_79

@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[standard_synthesis_stub]] - document
+- [[SoybeanAdmin Route Guard State Machine]] - concept
 
 ## Live Query (requires Dataview plugin)
 

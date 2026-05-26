@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Docs Site npm Scripts"
+community: "Community 72"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Docs_Site_npm_Scripts
+  - community/Community_72
 ---
 
 # TS Debugger 启动配置
@@ -14,4 +14,4 @@ tags:
 - [[VSCode 调试指南 01 截图]] - `illustrates` [EXTRACTED]
 - [[VSCode 调试面板 (Run and Debug)]] - `selected_in` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Docs_Site_npm_Scripts
+#graphify/concept #graphify/EXTRACTED #community/Community_72

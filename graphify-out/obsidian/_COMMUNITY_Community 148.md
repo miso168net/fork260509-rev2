@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[index.vue_31]] - code - fork260509-soybean-admin-base/src/views/manage/menu/index.vue
-- [[label]] - code - fork260509-soybean-admin-base/src/views/manage/menu/index.vue
+- [[index.vue_43]] - code - fork260509-soybean-admin-base/src/views/plugin/excel/index.vue
+- [[label_3]] - code - fork260509-soybean-admin-base/src/views/plugin/excel/index.vue
 
 ## Live Query (requires Dataview plugin)
 

@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/alova/package.json"
 type: "document"
-community: "Community 38"
+community: "Global Layout Components"
 tags:
   - graphify/document
   - graphify/INFERRED
-  - community/Community_38
+  - community/Global_Layout_Components
 ---
 
 # @sa/alova package
@@ -14,4 +14,4 @@ tags:
 - [[@saaxios package]] - `semantically_similar_to` [INFERRED]
 - [[package.json]] - `references` [INFERRED]
 
-#graphify/document #graphify/INFERRED #community/Community_38
+#graphify/document #graphify/INFERRED #community/Global_Layout_Components

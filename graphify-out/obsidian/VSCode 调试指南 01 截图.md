@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "image"
-community: "Docs Site npm Scripts"
+community: "Community 72"
 tags:
   - graphify/image
   - graphify/EXTRACTED
-  - community/Docs_Site_npm_Scripts
+  - community/Community_72
 ---
 
 # VSCode 调试指南 01 截图
@@ -18,4 +18,4 @@ tags:
 - [[transformToKebabCase 示例代码]] - `contains` [EXTRACTED]
 - [[断点 (Breakpoint) 设置示例]] - `illustrates` [EXTRACTED]
 
-#graphify/image #graphify/EXTRACTED #community/Docs_Site_npm_Scripts
+#graphify/image #graphify/EXTRACTED #community/Community_72

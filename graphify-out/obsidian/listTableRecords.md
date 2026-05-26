@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/plugin/tables/vtable/data.ts"
 type: "code"
-community: "Community 85"
+community: "Community 93"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_85
+  - community/Community_93
 ---
 
 # listTableRecords
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[data.ts_5]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_85
+#graphify/code #graphify/EXTRACTED #community/Community_93

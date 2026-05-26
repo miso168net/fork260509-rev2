@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-docs/src/zh/guide/theme/logo.md"
 type: "document"
-community: "Community 77"
+community: "Getting Started / CLI Docs"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_77
+  - community/Getting_Started_/_CLI_Docs
 ---
 
 # SystemLogo 组件
@@ -15,4 +15,4 @@ tags:
 - [[系统加载动画 setupLoading]] - `` [EXTRACTED]
 - [[系统图标原理]] - `` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_77
+#graphify/document #graphify/EXTRACTED #community/Getting_Started_/_CLI_Docs

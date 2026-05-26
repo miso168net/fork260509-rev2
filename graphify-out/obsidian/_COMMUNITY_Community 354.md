@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[design decision devprod 雙 profile 分離]] - concept - docs/superpowers/000-base-web-docker-bootstrap.md
+- [[说明 (Legend)]] - concept
 
 ## Live Query (requires Dataview plugin)
 

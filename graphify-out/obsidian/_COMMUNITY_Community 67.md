@@ -1,24 +1,26 @@
 ---
 type: community
-cohesion: 0.22
-members: 9
+cohesion: 0.18
+members: 11
 ---
 
 # Community 67
 
-**Cohesion:** 0.22 - loosely connected
-**Members:** 9 nodes
+**Cohesion:** 0.18 - loosely connected
+**Members:** 11 nodes
 
 ## Members
-- [[unnamed_3]] - code - fork260509-soybean-admin-base/packages/hooks/package.json
-- [[@saaxios_1]] - code - fork260509-soybean-admin-base/packages/hooks/package.json
-- [[@sautils_4]] - code - fork260509-soybean-admin-base/packages/hooks/package.json
-- [[dependencies_4]] - code - fork260509-soybean-admin-base/packages/hooks/package.json
-- [[exports_3]] - code - fork260509-soybean-admin-base/packages/hooks/package.json
-- [[name_4]] - code - fork260509-soybean-admin-base/packages/hooks/package.json
-- [[package.json_4]] - code - fork260509-soybean-admin-base/packages/hooks/package.json
-- [[typesVersions_3]] - code - fork260509-soybean-admin-base/packages/hooks/package.json
-- [[version_5]] - code - fork260509-soybean-admin-base/packages/hooks/package.json
+- [[barMarkPointSpec]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/vchart/data.ts
+- [[circularProgressTickSpec]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/vchart/data.ts
+- [[colors_3]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/vchart/data.ts
+- [[data.ts_2]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/vchart/data.ts
+- [[dataSpecs]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/vchart/data.ts
+- [[goldenMedals]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/vchart/data.ts
+- [[histogramDifferentBinSpec]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/vchart/data.ts
+- [[liquidChartSmartInvertSpec]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/vchart/data.ts
+- [[rankingBarSpec]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/vchart/data.ts
+- [[shapeWordCloudSpec]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/vchart/data.ts
+- [[stackedDashAreaSpec]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/vchart/data.ts
 
 ## Live Query (requires Dataview plugin)
 

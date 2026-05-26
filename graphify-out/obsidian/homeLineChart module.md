@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/home/modules/line-chart.vue"
 type: "code"
-community: "Community 73"
+community: "Community 80"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_73
+  - community/Community_80
 ---
 
 # home/LineChart module
@@ -14,4 +14,4 @@ tags:
 - [[home dashboard page]] - `references` [EXTRACTED]
 - [[homePieChart module]] - `semantically_similar_to` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_73
+#graphify/code #graphify/EXTRACTED #community/Community_80

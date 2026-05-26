@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Community 79"
+community: "Community 76"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Community_79
+  - community/Community_76
 ---
 
 # JP Request Proxy
@@ -15,4 +15,4 @@ tags:
 - [[JP Request Usage]] - `semantically_similar_to` [EXTRACTED]
 - [[VITE_HTTP_PROXY env toggle]] - `documents` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Community_79
+#graphify/concept #graphify/EXTRACTED #community/Community_76

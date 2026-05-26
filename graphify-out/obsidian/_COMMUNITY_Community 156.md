@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[guide_request_concept_proxy_pattern]] - concept
-- [[guide_request_proxy_doc]] - concept
+- [[LocaleSpecificConfig]] - code - fork260509-soybean-admin-docs/.vitepress/types.d.ts
+- [[types.d.ts]] - code - fork260509-soybean-admin-docs/.vitepress/types.d.ts
 
 ## Live Query (requires Dataview plugin)
 

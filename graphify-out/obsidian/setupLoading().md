@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/plugins/loading.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "Community 38"
 location: "L8"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Community_38
 ---
 
 # setupLoading()
@@ -23,4 +23,4 @@ tags:
 - [[setupApp()]] - `calls` [EXTRACTED]
 - [[toggleHtmlClass()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Community_38

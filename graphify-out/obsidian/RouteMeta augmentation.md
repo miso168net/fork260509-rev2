@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/typings/router.d.ts"
 type: "code"
-community: "Theme Constants & Maps"
+community: "Community 48"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Theme_Constants__Maps
+  - community/Community_48
 ---
 
 # RouteMeta augmentation
@@ -15,4 +15,4 @@ tags:
 - [[App.I18n.Schema]] - `references` [EXTRACTED]
 - [[RouteMap (elegant-router)]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Theme_Constants__Maps
+#graphify/code #graphify/EXTRACTED #community/Community_48

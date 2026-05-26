@@ -1,16 +1,17 @@
 ---
 type: community
 cohesion: 1.00
-members: 1
+members: 2
 ---
 
 # Community 170
 
 **Cohesion:** 1.00 - tightly connected
-**Members:** 1 nodes
+**Members:** 2 nodes
 
 ## Members
-- [[client.ts]] - code - fork260509-soybean-admin-base/packages/alova/src/client.ts
+- [[agent.ts]] - code - fork260509-soybean-admin-base/src/utils/agent.ts
+- [[isPC()]] - code - fork260509-soybean-admin-base/src/utils/agent.ts
 
 ## Live Query (requires Dataview plugin)
 

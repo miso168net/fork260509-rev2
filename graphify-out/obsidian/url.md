@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/package.json"
 type: "code"
-community: "Community 38"
+community: "Global Layout Components"
 location: "L17"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_38
+  - community/Global_Layout_Components
 ---
 
 # url
@@ -16,4 +16,4 @@ tags:
 - [[bugs]] - `contains` [EXTRACTED]
 - [[repository]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_38
+#graphify/code #graphify/EXTRACTED #community/Global_Layout_Components

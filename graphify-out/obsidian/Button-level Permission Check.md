@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/hooks/business/auth.ts"
 type: "concept"
-community: "SVG Icon System"
+community: "Auth Store & Permissions"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/SVG_Icon_System
+  - community/Auth_Store__Permissions
 ---
 
 # Button-level Permission Check
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[useAuth]] - `implements` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/SVG_Icon_System
+#graphify/concept #graphify/INFERRED #community/Auth_Store__Permissions

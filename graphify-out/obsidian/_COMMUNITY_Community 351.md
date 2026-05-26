@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[tutorial_other_stub]] - document
+- [[standard_tools_stub]] - document
 
 ## Live Query (requires Dataview plugin)
 

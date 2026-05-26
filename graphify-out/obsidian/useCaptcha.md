@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/hooks/business/captcha.ts"
 type: "code"
-community: "Docs Site TSConfig (NEW)"
+community: "API Service Aliases (auth/captcha)"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Docs_Site_TSConfig_NEW
+  - community/API_Service_Aliases_auth/captcha
 ---
 
 # useCaptcha
@@ -17,4 +17,4 @@ tags:
 - [[useCountDown()]] - `calls` [INFERRED]
 - [[useLoading()]] - `calls` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Docs_Site_TSConfig_NEW
+#graphify/code #graphify/INFERRED #community/API_Service_Aliases_auth/captcha

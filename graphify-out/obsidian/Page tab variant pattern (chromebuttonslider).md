@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/index.vue"
 type: "concept"
-community: "Form & Table Hooks"
+community: "Alova Request Adapter (+docs)"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/Form__Table_Hooks
+  - community/Alova_Request_Adapter_docs
 ---
 
 # Page tab variant pattern (chrome/button/slider)
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[PageTab component]] - `implements` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/Form__Table_Hooks
+#graphify/concept #graphify/INFERRED #community/Alova_Request_Adapter_docs

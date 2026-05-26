@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[index.vue_24]] - code - fork260509-soybean-admin-base/src/views/function/hide-child/two/index.vue
+- [[index.vue_23]] - code - fork260509-soybean-admin-base/src/views/function/hide-child/three/index.vue
 
 ## Live Query (requires Dataview plugin)
 

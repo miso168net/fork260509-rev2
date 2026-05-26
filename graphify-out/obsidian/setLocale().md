@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/locales/index.ts"
 type: "code"
-community: "Community 46"
+community: "Auth Store & Permissions"
 location: "L24"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_46
+  - community/Auth_Store__Permissions
 ---
 
 # setLocale()
@@ -16,4 +16,4 @@ tags:
 - [[index.ts_23]] - `contains` [EXTRACTED]
 - [[index.ts_33]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_46
+#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions

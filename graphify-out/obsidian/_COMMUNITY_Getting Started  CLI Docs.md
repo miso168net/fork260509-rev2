@@ -1,21 +1,22 @@
 ---
 type: community
-cohesion: 0.33
-members: 6
+cohesion: 0.29
+members: 7
 ---
 
 # Getting Started / CLI Docs
 
-**Cohesion:** 0.33 - loosely connected
-**Members:** 6 nodes
+**Cohesion:** 0.29 - loosely connected
+**Members:** 7 nodes
 
 ## Members
-- [[cache_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
-- [[closeTabByMiddleClick_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
-- [[layout_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
-- [[mode_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
-- [[scrollMode]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
-- [[tab_2]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[SystemLogo 组件]] - document - fork260509-soybean-admin-docs/src/zh/guide/theme/logo.md
+- [[WaveBg]] - code - fork260509-soybean-admin-base/src/components/custom/wave-bg.vue
+- [[主题系统原理]] - document - fork260509-soybean-admin-docs/src/zh/guide/theme/intro.md
+- [[主题配置（themeSettings 与 overrideThemeSettings）]] - document - fork260509-soybean-admin-docs/src/zh/guide/theme/config.md
+- [[图标使用四式（静态动态render离线）]] - document - fork260509-soybean-admin-docs/src/zh/guide/icon/usage.md
+- [[系统加载动画 setupLoading]] - document - fork260509-soybean-admin-docs/src/zh/guide/theme/loading.md
+- [[系统图标原理]] - document - fork260509-soybean-admin-docs/src/zh/guide/icon/intro.md
 
 ## Live Query (requires Dataview plugin)
 
@@ -23,12 +24,3 @@ members: 6
 TABLE source_file, type FROM #community/Getting_Started_/_CLI_Docs
 SORT file.name ASC
 ```
-
-## Connections to other communities
-- 2 edges to [[_COMMUNITY_Community 42]]
-- 2 edges to [[_COMMUNITY_Community 56]]
-- 2 edges to [[_COMMUNITY_Community 43]]
-
-## Top bridge nodes
-- [[tab_2]] - degree 7, connects to 3 communities
-- [[layout_1]] - degree 4, connects to 2 communities

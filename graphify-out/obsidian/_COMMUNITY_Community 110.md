@@ -1,19 +1,20 @@
 ---
 type: community
-cohesion: 0.50
-members: 4
+cohesion: 0.40
+members: 5
 ---
 
 # Community 110
 
-**Cohesion:** 0.50 - moderately connected
-**Members:** 4 nodes
+**Cohesion:** 0.40 - moderately connected
+**Members:** 5 nodes
 
 ## Members
-- [[baidu-map.vue]] - code - fork260509-soybean-admin-base/src/views/plugin/map/components/baidu-map.vue
-- [[gaode-map.vue]] - code - fork260509-soybean-admin-base/src/views/plugin/map/components/gaode-map.vue
-- [[index.ts_39]] - code - fork260509-soybean-admin-base/src/views/plugin/map/components/index.ts
-- [[tencent-map.vue]] - code - fork260509-soybean-admin-base/src/views/plugin/map/components/tencent-map.vue
+- [[enableTime_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[enableUserName_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[text_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[timeFormat_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[watermark_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -21,3 +22,10 @@ members: 4
 TABLE source_file, type FROM #community/Community_110
 SORT file.name ASC
 ```
+
+## Connections to other communities
+- 1 edge to [[_COMMUNITY_Community 58]]
+- 1 edge to [[_COMMUNITY_Community 70]]
+
+## Top bridge nodes
+- [[watermark_1]] - degree 6, connects to 2 communities

@@ -1,51 +1,43 @@
 ---
 type: community
-cohesion: 0.06
-members: 36
+cohesion: 0.08
+members: 28
 ---
 
 # Naive UI Theme Tokens
 
-**Cohesion:** 0.06 - loosely connected
-**Members:** 36 nodes
+**Cohesion:** 0.08 - loosely connected
+**Members:** 28 nodes
 
 ## Members
-- [[Alert]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[Card]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[Input]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[azir.json]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[base-text]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[bgColor]] - code - fork260509-soybean-admin-base/src/views/_builtin/login/index.vue
-- [[borderRadius]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[borderRadiusMedium]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[boxShadow]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[colors]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[container]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[dark_1]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[desc]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[error]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[fontWeightStrong]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[header]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[i18nkey]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[index.vue_64]] - code - fork260509-soybean-admin-base/src/views/_builtin/login/index.vue
-- [[info]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[inverted]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[isInfoFollowPrimary]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[layout]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[light_1]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[naiveui]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[name_9]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[otherColor]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[paddingMedium]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[recommendColor]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[sider]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[success]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[tab]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[themeColor]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[themeScheme]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[tokens]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[version_10]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
-- [[warning]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[author_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[bugs_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[build_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[cleanup_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[commit_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[commitzh_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[dependencies_7]] - code - fork260509-soybean-admin-docs/package.json
+- [[description_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[dev_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[email_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[engines_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[homepage_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[license_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[lint_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[name_13]] - code - fork260509-soybean-admin-docs/package.json
+- [[node_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[package.json_9]] - code - fork260509-soybean-admin-docs/package.json
+- [[pnpm_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[preview_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[release_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[repository_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[scripts_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[type_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[typecheck_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[update-pkg]] - code - fork260509-soybean-admin-docs/package.json
+- [[url_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[version_14]] - code - fork260509-soybean-admin-docs/package.json
+- [[vue_1]] - code - fork260509-soybean-admin-docs/package.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -53,3 +45,9 @@ members: 36
 TABLE source_file, type FROM #community/Naive_UI_Theme_Tokens
 SORT file.name ASC
 ```
+
+## Connections to other communities
+- 1 edge to [[_COMMUNITY_Docs Site Package Metadata]]
+
+## Top bridge nodes
+- [[package.json_9]] - degree 13, connects to 1 community

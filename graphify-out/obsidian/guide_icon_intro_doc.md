@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Community 76"
+community: "Theme & Icon Guide Docs"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Community_76
+  - community/Theme__Icon_Guide_Docs
 ---
 
 # guide_icon_intro_doc
@@ -15,4 +15,4 @@ tags:
 - [[guide_icon_usage_doc]] - `extends` [EXTRACTED]
 - [[guide_theme_logo_doc]] - `references` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Community_76
+#graphify/concept #graphify/EXTRACTED #community/Theme__Icon_Guide_Docs

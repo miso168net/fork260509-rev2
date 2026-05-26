@@ -1,25 +1,27 @@
 ---
 type: community
-cohesion: 0.20
-members: 10
+cohesion: 0.21
+members: 12
 ---
 
 # Community 61
 
-**Cohesion:** 0.20 - loosely connected
-**Members:** 10 nodes
+**Cohesion:** 0.21 - loosely connected
+**Members:** 12 nodes
 
 ## Members
-- [[.oxfmtrc.json]] - code - fork260509-soybean-admin-base/.oxfmtrc.json
-- [[VS Code editor settings (i18n-ally, oxc)]] - document - fork260509-soybean-admin-base/.vscode/settings.json
-- [[arrowParens]] - code - fork260509-soybean-admin-base/.oxfmtrc.json
-- [[experimentalSortPackageJson]] - code - fork260509-soybean-admin-base/.oxfmtrc.json
-- [[htmlWhitespaceSensitivity]] - code - fork260509-soybean-admin-base/.oxfmtrc.json
-- [[ignorePatterns]] - code - fork260509-soybean-admin-base/.oxfmtrc.json
-- [[printWidth]] - code - fork260509-soybean-admin-base/.oxfmtrc.json
-- [[singleQuote]] - code - fork260509-soybean-admin-base/.oxfmtrc.json
-- [[sortScripts]] - code - fork260509-soybean-admin-base/.oxfmtrc.json
-- [[trailingComma]] - code - fork260509-soybean-admin-base/.oxfmtrc.json
+- [[guide_router_cache_doc]] - concept
+- [[guide_router_component_doc]] - concept
+- [[guide_router_concept_auth_route_mode]] - concept
+- [[guide_router_concept_elegant_router]] - concept
+- [[guide_router_concept_route_meta]] - concept
+- [[guide_router_concept_router_push_hook]] - concept
+- [[guide_router_create_doc]] - concept
+- [[guide_router_dynamic_doc]] - concept
+- [[guide_router_guard_doc]] - concept
+- [[guide_router_intro_doc]] - concept
+- [[guide_router_push_doc]] - concept
+- [[guide_router_structure_doc]] - concept
 
 ## Live Query (requires Dataview plugin)
 

@@ -1,30 +1,31 @@
 ---
 type: community
-cohesion: 0.24
-members: 15
+cohesion: 0.23
+members: 16
 ---
 
 # Community 41
 
-**Cohesion:** 0.24 - loosely connected
-**Members:** 15 nodes
+**Cohesion:** 0.23 - loosely connected
+**Members:** 16 nodes
 
 ## Members
-- [[filterAuthRouteByRoles()]] - code - fork260509-soybean-admin-base/src/store/modules/route/shared.ts
-- [[findMenuPath()]] - code - fork260509-soybean-admin-base/src/store/modules/route/shared.ts
-- [[getBreadcrumbsByRoute()]] - code - fork260509-soybean-admin-base/src/store/modules/route/shared.ts
-- [[getCacheRouteNames()]] - code - fork260509-soybean-admin-base/src/store/modules/route/shared.ts
-- [[getGlobalMenuByBaseRoute()]] - code - fork260509-soybean-admin-base/src/store/modules/route/shared.ts
-- [[getGlobalMenusByAuthRoutes()]] - code - fork260509-soybean-admin-base/src/store/modules/route/shared.ts
-- [[getSelectedMenuKeyPathByKey()]] - code - fork260509-soybean-admin-base/src/store/modules/route/shared.ts
-- [[index.ts_35]] - code - fork260509-soybean-admin-base/src/store/modules/route/index.ts
-- [[isRouteExistByRouteName()]] - code - fork260509-soybean-admin-base/src/store/modules/route/shared.ts
-- [[recursiveGetIsRouteExistByRouteName()]] - code - fork260509-soybean-admin-base/src/store/modules/route/shared.ts
-- [[shared.ts_6]] - code - fork260509-soybean-admin-base/src/store/modules/route/shared.ts
-- [[sortRouteByOrder()]] - code - fork260509-soybean-admin-base/src/store/modules/route/shared.ts
-- [[transformMenuToBreadcrumb()]] - code - fork260509-soybean-admin-base/src/store/modules/route/shared.ts
-- [[transformMenuToSearchMenus()]] - code - fork260509-soybean-admin-base/src/store/modules/route/shared.ts
-- [[updateLocaleOfGlobalMenus()]] - code - fork260509-soybean-admin-base/src/store/modules/route/shared.ts
+- [[auth.ts_1]] - code - fork260509-soybean-admin-base/src/service/api/auth.ts
+- [[fetchCustomBackendError()]] - code - fork260509-soybean-admin-base/src/service/api/auth.ts
+- [[fetchGetAllPages()]] - code - fork260509-soybean-admin-base/src/service/api/system-manage.ts
+- [[fetchGetAllRoles()]] - code - fork260509-soybean-admin-base/src/service/api/system-manage.ts
+- [[fetchGetConstantRoutes()]] - code - fork260509-soybean-admin-base/src/service/api/route.ts
+- [[fetchGetMenuList()]] - code - fork260509-soybean-admin-base/src/service/api/system-manage.ts
+- [[fetchGetMenuTree()]] - code - fork260509-soybean-admin-base/src/service/api/system-manage.ts
+- [[fetchGetRoleList()]] - code - fork260509-soybean-admin-base/src/service/api/system-manage.ts
+- [[fetchGetUserInfo()]] - code - fork260509-soybean-admin-base/src/service/api/auth.ts
+- [[fetchGetUserRoutes()]] - code - fork260509-soybean-admin-base/src/service/api/route.ts
+- [[fetchIsRouteExist()]] - code - fork260509-soybean-admin-base/src/service/api/route.ts
+- [[fetchLogin()]] - code - fork260509-soybean-admin-base/src/service/api/auth.ts
+- [[fetchRefreshToken()]] - code - fork260509-soybean-admin-base/src/service/api/auth.ts
+- [[request]] - code - fork260509-soybean-admin-base/src/service/request/index.ts
+- [[route.ts_1]] - code - fork260509-soybean-admin-base/src/service/api/route.ts
+- [[system-manage.ts]] - code - fork260509-soybean-admin-base/src/service/api/system-manage.ts
 
 ## Live Query (requires Dataview plugin)
 
@@ -34,15 +35,13 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 7 edges to [[_COMMUNITY_Route Type Hierarchy]]
-- 6 edges to [[_COMMUNITY_Docs Site TSConfig (NEW)]]
-- 4 edges to [[_COMMUNITY_Community 46]]
-- 4 edges to [[_COMMUNITY_Community 45]]
-- 2 edges to [[_COMMUNITY_Community 84]]
-- 2 edges to [[_COMMUNITY_Route Helpers & Tab Filters]]
-- 2 edges to [[_COMMUNITY_SVG Icon System]]
+- 7 edges to [[_COMMUNITY_Auth Store & Permissions]]
+- 1 edge to [[_COMMUNITY_API Service Aliases (authcaptcha)]]
+- 1 edge to [[_COMMUNITY_Community 66]]
 
 ## Top bridge nodes
-- [[index.ts_35]] - degree 32, connects to 7 communities
-- [[shared.ts_6]] - degree 18, connects to 3 communities
-- [[getGlobalMenuByBaseRoute()]] - degree 3, connects to 1 community
+- [[request]] - degree 17, connects to 2 communities
+- [[system-manage.ts]] - degree 9, connects to 1 community
+- [[auth.ts_1]] - degree 7, connects to 1 community
+- [[route.ts_1]] - degree 6, connects to 1 community
+- [[fetchGetUserInfo()]] - degree 4, connects to 1 community

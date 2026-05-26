@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/components/custom/github-link.vue"
 type: "code"
-community: "Docs Site Engines Constraint"
+community: "Community 147"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Docs_Site_Engines_Constraint
+  - community/Community_147
 ---
 
 # GithubLink
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[WebSiteLink]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Docs_Site_Engines_Constraint
+#graphify/code #graphify/EXTRACTED #community/Community_147

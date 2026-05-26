@@ -10,10 +10,10 @@ members: 4
 **Members:** 4 nodes
 
 ## Members
-- [[MarkdownEditorView]] - code - fork260509-soybean-admin-base/src/views/plugin/editor/markdown/index.vue
-- [[QuillEditorView]] - code - fork260509-soybean-admin-base/src/views/plugin/editor/quill/index.vue
-- [[renderVditor]] - code - fork260509-soybean-admin-base/src/views/plugin/editor/markdown/index.vue
-- [[renderWangEditor]] - code - fork260509-soybean-admin-base/src/views/plugin/editor/quill/index.vue
+- [[ElegantConstRoute_1]] - code - fork260509-soybean-admin-base/src/typings/api/route.d.ts
+- [[MenuRoute]] - code - fork260509-soybean-admin-base/src/typings/api/route.d.ts
+- [[UserRoute]] - code - fork260509-soybean-admin-base/src/typings/api/route.d.ts
+- [[route.d.ts]] - code - fork260509-soybean-admin-base/src/typings/api/route.d.ts
 
 ## Live Query (requires Dataview plugin)
 

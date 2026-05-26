@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[StorageType.Session]] - code - fork260509-soybean-admin-base/src/typings/storage.d.ts
+- [[GlobalComponents augmentation]] - code - fork260509-soybean-admin-base/src/typings/components.d.ts
 
 ## Live Query (requires Dataview plugin)
 

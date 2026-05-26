@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/components/custom/button-icon.vue"
 type: "code"
-community: "Global Layout Components"
+community: "Global Search Module"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Global_Layout_Components
+  - community/Global_Search_Module
 ---
 
 # ButtonIcon
@@ -20,4 +20,4 @@ tags:
 - [[ThemeSchemaSwitch]] - `references` [EXTRACTED]
 - [[Tooltip-wrapped Icon Button Pattern]] - `implements` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Global_Layout_Components
+#graphify/code #graphify/EXTRACTED #community/Global_Search_Module

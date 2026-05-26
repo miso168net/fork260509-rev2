@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[index.vue_21]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/index.vue
+- [[index.vue_20]] - code - fork260509-soybean-admin-base/src/views/alova/request/index.vue
 
 ## Live Query (requires Dataview plugin)
 

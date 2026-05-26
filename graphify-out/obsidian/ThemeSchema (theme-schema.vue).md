@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/appearance/modules/theme-schema.vue"
 type: "code"
-community: "Theme & Settings UI"
+community: "Admin Layout Package"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Theme__Settings_UI
+  - community/Admin_Layout_Package
 ---
 
 # ThemeSchema (theme-schema.vue)
@@ -17,4 +17,4 @@ tags:
 - [[constantsapp (concept)]] - `references` [EXTRACTED]
 - [[useThemeStore (concept)]] - `shares_data_with` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Theme__Settings_UI
+#graphify/code #graphify/EXTRACTED #community/Admin_Layout_Package

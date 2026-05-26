@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/theme/preset/azir.json"
 type: "code"
-community: "Naive UI Theme Tokens"
+community: "Global Type Declarations"
 location: "L46"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Naive_UI_Theme_Tokens
+  - community/Global_Type_Declarations
 ---
 
 # paddingMedium
@@ -15,4 +15,4 @@ tags:
 - [[Alert]] - `contains` [EXTRACTED]
 - [[Card]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Naive_UI_Theme_Tokens
+#graphify/code #graphify/EXTRACTED #community/Global_Type_Declarations

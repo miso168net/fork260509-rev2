@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/alova/scenes/index.vue"
 type: "code"
-community: "Community 81"
+community: "Community 90"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_81
+  - community/Community_90
 ---
 
 # alova scenes index
@@ -17,4 +17,4 @@ tags:
 - [[NetworkToggleRequest]] - `references` [EXTRACTED]
 - [[PollingRequest]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_81
+#graphify/code #graphify/EXTRACTED #community/Community_90

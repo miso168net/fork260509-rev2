@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/CHANGELOG.md"
 type: "document"
-community: "Per-Package TSConfig (sub-33)"
+community: "Route Helpers & Tab Filters"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-33
+  - community/Route_Helpers__Tab_Filters
 ---
 
 # CHANGELOG.md (soybean-admin-base)
@@ -17,4 +17,4 @@ tags:
 - [[pnpm monorepo]] - `references` [EXTRACTED]
 - [[useTable hook]] - `references` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-33
+#graphify/document #graphify/EXTRACTED #community/Route_Helpers__Tab_Filters

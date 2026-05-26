@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/plugin/barcode/index.vue"
 type: "code"
-community: "Community 95"
+community: "Community 104"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_95
+  - community/Community_104
 ---
 
 # generateBarcode
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[BarcodePluginView]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_95
+#graphify/code #graphify/EXTRACTED #community/Community_104

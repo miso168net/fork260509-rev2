@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Community 68"
+community: "Community 96"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Community_68
+  - community/Community_96
 ---
 
 # Elegant Router plugin
@@ -16,4 +16,4 @@ tags:
 - [[JP Router Cache]] - `depends_on` [EXTRACTED]
 - [[JP Router Intro]] - `documents` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Community_68
+#graphify/concept #graphify/EXTRACTED #community/Community_96

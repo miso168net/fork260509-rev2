@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/store/modules/app/index.ts"
 type: "code"
-community: "Admin Layout Package"
+community: "API Service Aliases (auth/captcha)"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Admin_Layout_Package
+  - community/API_Service_Aliases_auth/captcha
 ---
 
 # useAppStore
@@ -17,4 +17,4 @@ tags:
 - [[useNaivePaginatedTable()]] - `calls` [EXTRACTED]
 - [[useNaiveTable()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Admin_Layout_Package
+#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha

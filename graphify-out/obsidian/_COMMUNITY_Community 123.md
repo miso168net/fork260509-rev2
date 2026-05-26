@@ -10,9 +10,9 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[engines]] - code - fork260509-soybean-admin-base/package.json
-- [[node]] - code - fork260509-soybean-admin-base/package.json
-- [[pnpm]] - code - fork260509-soybean-admin-base/package.json
+- [[PkgJson]] - code - fork260509-soybean-admin-base/src/views/about/index.vue
+- [[index.vue_19]] - code - fork260509-soybean-admin-base/src/views/about/index.vue
+- [[transformVersionData()]] - code - fork260509-soybean-admin-base/src/views/about/index.vue
 
 ## Live Query (requires Dataview plugin)
 
@@ -20,9 +20,3 @@ members: 3
 TABLE source_file, type FROM #community/Community_123
 SORT file.name ASC
 ```
-
-## Connections to other communities
-- 1 edge to [[_COMMUNITY_Community 38]]
-
-## Top bridge nodes
-- [[engines]] - degree 3, connects to 1 community

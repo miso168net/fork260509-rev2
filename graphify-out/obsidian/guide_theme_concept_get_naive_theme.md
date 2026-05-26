@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Community 129"
+community: "Community 133"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Community_129
+  - community/Community_133
 ---
 
 # guide_theme_concept_get_naive_theme
@@ -14,4 +14,4 @@ tags:
 - [[guide_theme_concept_get_antd_theme]] - `semantically_similar_to` [EXTRACTED]
 - [[guide_theme_ui_doc]] - `describes` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Community_129
+#graphify/concept #graphify/EXTRACTED #community/Community_133

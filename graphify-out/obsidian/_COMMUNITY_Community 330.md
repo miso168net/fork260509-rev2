@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[Donate Page]] - document
+- [[JP Tutorial Software Install Guide]] - document
 
 ## Live Query (requires Dataview plugin)
 

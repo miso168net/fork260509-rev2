@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[useSvgIconRender composable]] - code - fork260509-soybean-admin-base/packages/hooks/src/use-svg-icon-render.ts
+- [[@sahooks barrel entry]] - code - fork260509-soybean-admin-base/packages/hooks/src/index.ts
 
 ## Live Query (requires Dataview plugin)
 

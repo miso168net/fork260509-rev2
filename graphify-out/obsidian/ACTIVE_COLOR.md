@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/shared.ts"
 type: "code"
-community: "Form & Table Hooks"
+community: "Alova Request Adapter (+docs)"
 location: "5"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Form__Table_Hooks
+  - community/Alova_Request_Adapter_docs
 ---
 
 # ACTIVE_COLOR
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[PageTab component]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Form__Table_Hooks
+#graphify/code #graphify/EXTRACTED #community/Alova_Request_Adapter_docs

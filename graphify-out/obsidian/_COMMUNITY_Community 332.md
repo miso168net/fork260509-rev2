@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[Recommend Alova]] - document
+- [[SoybeanAdmin Router Guard Flow Diagram]] - image
 
 ## Live Query (requires Dataview plugin)
 

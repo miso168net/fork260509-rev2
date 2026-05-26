@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/locales/naive.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "Community 79"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - community/Community_79
 ---
 
 # naive.ts
@@ -15,4 +15,4 @@ tags:
 - [[naiveDateLocale]] - `contains` [EXTRACTED]
 - [[naiveLocale]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/EXTRACTED #community/Community_79

@@ -1,55 +1,51 @@
 ---
 type: community
-cohesion: 0.05
-members: 40
+cohesion: 0.06
+members: 36
 ---
 
 # Global Type Declarations
 
-**Cohesion:** 0.05 - loosely connected
-**Members:** 40 nodes
+**Cohesion:** 0.06 - loosely connected
+**Members:** 36 nodes
 
 ## Members
-- [[$T]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[BaseToken]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[Breadcrumb]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[ColorPaletteNumber_1]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[DemoResponse]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[DropdownKey]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[FormMsg]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[FormRule]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[GetI18nKey]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[HeaderProps]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[I18nKey]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[I18nRouteKey]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[LangOption]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[LangType]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[LastLevelRouteKey]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[Menu]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[NaiveUIThemeOverride]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[OtherBaseURLKey]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[OtherColor]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[OtherServiceConfigItem]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[Response]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[RouteLocationNormalizedLoaded]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[RouteMap]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[RoutePath]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[RouterPushOptions]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[Schema]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[ServiceConfig]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[SimpleServiceConfig]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[Tab]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[TabRoute]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[ThemeColor]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[ThemeColorKey]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[ThemePaletteColor]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[ThemeSettingToken]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[ThemeSettingTokenBoxShadow]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[ThemeTokenCSSVars]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[ThemeTokenColor]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[TranslateOptions]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[VNode]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[app.d.ts]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[Alert]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[Card]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[Input]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[azir.json]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[base-text]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[bgColor]] - code - fork260509-soybean-admin-base/src/views/_builtin/login/index.vue
+- [[borderRadius]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[borderRadiusMedium]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[boxShadow]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[colors]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[container]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[dark_1]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[desc]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[error]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[fontWeightStrong]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[header]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[i18nkey]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[index.vue_64]] - code - fork260509-soybean-admin-base/src/views/_builtin/login/index.vue
+- [[info]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[inverted]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[isInfoFollowPrimary]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[layout]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[light_1]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[naiveui]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[name_9]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[otherColor]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[paddingMedium]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[recommendColor]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[sider]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[success]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[tab]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[themeColor]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[themeScheme]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[tokens]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[version_10]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
+- [[warning]] - code - fork260509-soybean-admin-base/src/theme/preset/azir.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -57,10 +53,3 @@ members: 40
 TABLE source_file, type FROM #community/Global_Type_Declarations
 SORT file.name ASC
 ```
-
-## Connections to other communities
-- 1 edge to [[_COMMUNITY_Color Palette Engine]]
-- 1 edge to [[_COMMUNITY_Community 78]]
-
-## Top bridge nodes
-- [[app.d.ts]] - degree 41, connects to 2 communities

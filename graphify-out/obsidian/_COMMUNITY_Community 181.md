@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[full-screen.vue]] - code - fork260509-soybean-admin-base/src/components/common/full-screen.vue
+- [[exception-base.vue]] - code - fork260509-soybean-admin-base/src/components/common/exception-base.vue
 
 ## Live Query (requires Dataview plugin)
 

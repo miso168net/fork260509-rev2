@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[originOpts_1]] - code - fork260509-soybean-admin-base/src/views/home/modules/pie-chart.vue
-- [[pie-chart.vue]] - code - fork260509-soybean-admin-base/src/views/home/modules/pie-chart.vue
+- [[GithubLink]] - code - fork260509-soybean-admin-base/src/components/custom/github-link.vue
+- [[WebSiteLink]] - code - fork260509-soybean-admin-base/src/components/custom/web-site-link.vue
 
 ## Live Query (requires Dataview plugin)
 

@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/typings/api/common.d.ts"
 type: "code"
-community: "Community 82"
+community: "Community 91"
 location: "L19"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_82
+  - community/Community_91
 ---
 
 # PaginatingQueryRecord
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[common.d.ts_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_82
+#graphify/code #graphify/EXTRACTED #community/Community_91

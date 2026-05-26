@@ -1,32 +1,32 @@
 ---
 type: community
-cohesion: 0.12
+cohesion: 0.15
 members: 17
 ---
 
 # Per-Package TSConfig (sub-36)
 
-**Cohesion:** 0.12 - loosely connected
+**Cohesion:** 0.15 - loosely connected
 **Members:** 17 nodes
 
 ## Members
-- [[allowSyntheticDefaultImports_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[compilerOptions_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[esModuleInterop_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[exclude_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[forceConsistentCasingInFileNames_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[include_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[jsx_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[lib_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[module_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[moduleResolution_8]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[noUnusedLocals_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[resolveJsonModule_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[strict_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[strictNullChecks_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[target_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[tsconfig.json_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
-- [[types_7]] - code - fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json
+- [[breadcrumb]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[cache]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[closeTabByMiddleClick]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[compact.json]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[desc_1]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[footer]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[globalSearch]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[header_1]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[height]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[i18nkey_1]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[mode]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[multilingual]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[name_10]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[tab_1]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[themeRadius]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[version_11]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
+- [[visible]] - code - fork260509-soybean-admin-base/src/theme/preset/compact.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -34,3 +34,11 @@ members: 17
 TABLE source_file, type FROM #community/Per-Package_TSConfig_sub-36
 SORT file.name ASC
 ```
+
+## Connections to other communities
+- 1 edge to [[_COMMUNITY_Community 97]]
+- 1 edge to [[_COMMUNITY_Community 44]]
+
+## Top bridge nodes
+- [[compact.json]] - degree 9, connects to 1 community
+- [[themeRadius]] - degree 2, connects to 1 community

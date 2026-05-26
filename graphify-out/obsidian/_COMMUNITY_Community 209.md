@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[index.vue_17]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/index.vue
+- [[watermark-settings.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/general/modules/watermark-settings.vue
 
 ## Live Query (requires Dataview plugin)
 

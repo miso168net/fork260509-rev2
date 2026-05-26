@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/color/src/shared/colord.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "VS Code Workspace Settings"
 location: "L17"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/VS_Code_Workspace_Settings
 ---
 
 # getRgb()
@@ -21,4 +21,4 @@ tags:
 - [[setupLoading()]] - `calls` [EXTRACTED]
 - [[shared.ts_8]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/VS_Code_Workspace_Settings

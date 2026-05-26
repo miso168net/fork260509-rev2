@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[Api.Common.PaginatingCommonParams]] - code - fork260509-soybean-admin-base/src/typings/api/common.d.ts
+- [[Api.Auth.LoginToken]] - code - fork260509-soybean-admin-base/src/typings/api/auth.d.ts
 
 ## Live Query (requires Dataview plugin)
 

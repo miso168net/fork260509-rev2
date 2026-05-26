@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-menu/modules/top-hybrid-sidebar-first.vue"
 type: "code"
-community: "Elegant Router DSL"
+community: "Common UI Toggle Components"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Elegant_Router_DSL
+  - community/Common_UI_Toggle_Components
 ---
 
 # TopHybridSidebarFirst
@@ -16,4 +16,4 @@ tags:
 - [[TopHybridHeaderFirst]] - `semantically_similar_to` [INFERRED]
 - [[useMixMenuContext]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Elegant_Router_DSL
+#graphify/code #graphify/EXTRACTED #community/Common_UI_Toggle_Components

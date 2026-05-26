@@ -1,14 +1,14 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/typings/elegant-router.d.ts"
 type: "code"
-community: "Community 234"
+community: "Community 235"
 location: "L369"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_234
+  - community/Community_235
 ---
 
 # CustomMultiLevelRoute
 
-#graphify/code #graphify/EXTRACTED #community/Community_234
+#graphify/code #graphify/EXTRACTED #community/Community_235

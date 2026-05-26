@@ -10,9 +10,9 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[@sacolor package manifest]] - code - fork260509-soybean-admin-base/packages/color/package.json
-- [[@sahooks package manifest]] - code - fork260509-soybean-admin-base/packages/hooks/package.json
-- [[@samaterials package manifest]] - code - fork260509-soybean-admin-base/packages/materials/package.json
+- [[color()]] - code - fork260509-soybean-admin-base/src/views/plugin/tables/vtable/index.vue
+- [[index]] - code - fork260509-soybean-admin-base/src/views/plugin/tables/vtable/index.vue
+- [[index.vue_52]] - code - fork260509-soybean-admin-base/src/views/plugin/tables/vtable/index.vue
 
 ## Live Query (requires Dataview plugin)
 

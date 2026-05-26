@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/typings/common.d.ts"
 type: "code"
-community: "Community 97"
+community: "Community 105"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_97
+  - community/Community_105
 ---
 
 # common.d.ts
@@ -17,4 +17,4 @@ tags:
 - [[StrategicPattern]] - `contains` [EXTRACTED]
 - [[YesOrNo]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_97
+#graphify/code #graphify/EXTRACTED #community/Community_105

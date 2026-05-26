@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[jsonClone]] - code - fork260509-soybean-admin-base/packages/utils/src/klona.ts
+- [[@samaterials tsconfig]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
 
 ## Live Query (requires Dataview plugin)
 

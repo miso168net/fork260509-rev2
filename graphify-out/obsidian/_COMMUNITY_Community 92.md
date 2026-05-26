@@ -10,12 +10,12 @@ members: 6
 **Members:** 6 nodes
 
 ## Members
-- [[@soybeanjscli (JP)]] - document
-- [[Alova Recommendation (JP)]] - document
-- [[Lint & Format (ESLint + Prettier) (JP)]] - document
-- [[PageSpy Remote Debug (JP)]] - document
-- [[Recommendations Preamble (JP)]] - document
-- [[klona Deep-Clone Lib (JP)]] - document
+- [[DhtmlxGanttView]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/dhtmlx/index.vue
+- [[VTableGanttRecords]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/data.ts
+- [[VTableGanttView]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/index.vue
+- [[data.ts_3]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/dhtmlx/data.ts
+- [[ganttTasks]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/dhtmlx/data.ts
+- [[initGantt]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/dhtmlx/index.vue
 
 ## Live Query (requires Dataview plugin)
 
@@ -25,9 +25,10 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 1 edge to [[_COMMUNITY_Community 70]]
-- 1 edge to [[_COMMUNITY_Routing Guide Docs (CNJP)]]
+- 1 edge to [[_COMMUNITY_Form & Table Hooks]]
+- 1 edge to [[_COMMUNITY_Runtime Dependencies]]
+- 1 edge to [[_COMMUNITY_Community 73]]
 
 ## Top bridge nodes
-- [[@soybeanjscli (JP)]] - degree 3, connects to 1 community
-- [[Lint & Format (ESLint + Prettier) (JP)]] - degree 2, connects to 1 community
+- [[VTableGanttView]] - degree 4, connects to 2 communities
+- [[DhtmlxGanttView]] - degree 4, connects to 1 community

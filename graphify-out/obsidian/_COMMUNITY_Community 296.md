@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[nanoid_1]] - code - fork260509-soybean-admin-base/packages/utils/src/nanoid.ts
+- [[jsonClone]] - code - fork260509-soybean-admin-base/packages/utils/src/klona.ts
 
 ## Live Query (requires Dataview plugin)
 

@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/scripts/src/commands/git-commit.ts"
 type: "concept"
-community: "Build & Release Scripts"
+community: "Color Palette Engine"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/Build__Release_Scripts
+  - community/Color_Palette_Engine
 ---
 
 # Conventional Commits CLI tooling
@@ -15,4 +15,4 @@ tags:
 - [[gitCommitVerify()]] - `implements` [INFERRED]
 - [[locales_1]] - `references` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/Build__Release_Scripts
+#graphify/concept #graphify/INFERRED #community/Color_Palette_Engine

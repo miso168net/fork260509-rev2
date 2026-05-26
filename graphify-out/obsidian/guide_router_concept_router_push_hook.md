@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Deploy & Integration Concepts"
+community: "Community 61"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Deploy__Integration_Concepts
+  - community/Community_61
 ---
 
 # guide_router_concept_router_push_hook
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[guide_router_push_doc]] - `describes` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Deploy__Integration_Concepts
+#graphify/concept #graphify/EXTRACTED #community/Community_61

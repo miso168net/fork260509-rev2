@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[index.vue_43]] - code - fork260509-soybean-admin-base/src/views/plugin/excel/index.vue
-- [[label_3]] - code - fork260509-soybean-admin-base/src/views/plugin/excel/index.vue
+- [[line-chart.vue]] - code - fork260509-soybean-admin-base/src/views/home/modules/line-chart.vue
+- [[originOpts]] - code - fork260509-soybean-admin-base/src/views/home/modules/line-chart.vue
 
 ## Live Query (requires Dataview plugin)
 

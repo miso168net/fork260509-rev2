@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/manage/role/index.vue"
 type: "code"
-community: "Workspace Integration Docs (empty placeholders)"
+community: "Community 153"
 location: "L74"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Workspace_Integration_Docs_empty_placeholders
+  - community/Community_153
 ---
 
 # label
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[index.vue_32]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Workspace_Integration_Docs_empty_placeholders
+#graphify/code #graphify/EXTRACTED #community/Community_153

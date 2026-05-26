@@ -1,19 +1,20 @@
 ---
 type: community
-cohesion: 0.50
-members: 4
+cohesion: 0.40
+members: 5
 ---
 
 # Community 108
 
-**Cohesion:** 0.50 - moderately connected
-**Members:** 4 nodes
+**Cohesion:** 0.40 - moderately connected
+**Members:** 5 nodes
 
 ## Members
-- [[Map]] - code - fork260509-soybean-admin-base/src/typings/package.d.ts
-- [[Point]] - code - fork260509-soybean-admin-base/src/typings/package.d.ts
-- [[Window_1]] - code - fork260509-soybean-admin-base/src/typings/package.d.ts
-- [[package.d.ts]] - code - fork260509-soybean-admin-base/src/typings/package.d.ts
+- [[error_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[info_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[otherColor_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[success_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[warning_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -21,3 +22,9 @@ members: 4
 TABLE source_file, type FROM #community/Community_108
 SORT file.name ASC
 ```
+
+## Connections to other communities
+- 1 edge to [[_COMMUNITY_Community 44]]
+
+## Top bridge nodes
+- [[otherColor_1]] - degree 5, connects to 1 community

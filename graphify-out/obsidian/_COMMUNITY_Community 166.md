@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[GlobalComponents]] - code - fork260509-soybean-admin-base/src/typings/components.d.ts
-- [[components.d.ts]] - code - fork260509-soybean-admin-base/src/typings/components.d.ts
+- [[functiontoggle-auth demo page]] - code - fork260509-soybean-admin-base/src/views/function/toggle-auth/index.vue
+- [[role-based authorization toggle]] - concept - fork260509-soybean-admin-base/src/views/function/toggle-auth/index.vue
 
 ## Live Query (requires Dataview plugin)
 

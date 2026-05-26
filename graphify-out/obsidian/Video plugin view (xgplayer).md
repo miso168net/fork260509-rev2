@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/plugin/video/index.vue"
 type: "code"
-community: "Community 66"
+community: "Community 73"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_66
+  - community/Community_73
 ---
 
 # Video plugin view (xgplayer)
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[plugin demo views (third-party SDK showcase)]] - `conceptually_related_to` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Community_66
+#graphify/code #graphify/INFERRED #community/Community_73

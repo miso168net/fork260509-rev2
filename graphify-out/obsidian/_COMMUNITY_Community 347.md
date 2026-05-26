@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[simple-git-hooks + lint-staged pipeline]] - concept
+- [[ZH FAQ]] - document
 
 ## Live Query (requires Dataview plugin)
 

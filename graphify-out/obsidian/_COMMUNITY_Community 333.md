@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[Recommend Section Preface]] - document
+- [[Recommend Alova]] - document
 
 ## Live Query (requires Dataview plugin)
 

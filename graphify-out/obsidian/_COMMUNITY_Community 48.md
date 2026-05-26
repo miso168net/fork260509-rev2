@@ -1,29 +1,30 @@
 ---
 type: community
-cohesion: 0.18
-members: 14
+cohesion: 0.16
+members: 15
 ---
 
 # Community 48
 
-**Cohesion:** 0.18 - loosely connected
-**Members:** 14 nodes
+**Cohesion:** 0.16 - loosely connected
+**Members:** 15 nodes
 
 ## Members
-- [[author_1]] - code - fork260509-soybean-admin-docs/package.json
-- [[bugs_1]] - code - fork260509-soybean-admin-docs/package.json
-- [[dependencies_7]] - code - fork260509-soybean-admin-docs/package.json
-- [[description_1]] - code - fork260509-soybean-admin-docs/package.json
-- [[email_1]] - code - fork260509-soybean-admin-docs/package.json
-- [[homepage_1]] - code - fork260509-soybean-admin-docs/package.json
-- [[license_1]] - code - fork260509-soybean-admin-docs/package.json
-- [[name_13]] - code - fork260509-soybean-admin-docs/package.json
-- [[package.json_9]] - code - fork260509-soybean-admin-docs/package.json
-- [[repository_1]] - code - fork260509-soybean-admin-docs/package.json
-- [[type_1]] - code - fork260509-soybean-admin-docs/package.json
-- [[url_1]] - code - fork260509-soybean-admin-docs/package.json
-- [[version_14]] - code - fork260509-soybean-admin-docs/package.json
-- [[vue_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[Api.Auth.UserInfo]] - code - fork260509-soybean-admin-base/src/typings/api/auth.d.ts
+- [[Api.Common.CommonRecord]] - code - fork260509-soybean-admin-base/src/typings/api/common.d.ts
+- [[Api.Route.MenuRoute]] - code - fork260509-soybean-admin-base/src/typings/api/route.d.ts
+- [[Api.Route.UserRoute]] - code - fork260509-soybean-admin-base/src/typings/api/route.d.ts
+- [[Api.SystemManage.Menu]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
+- [[Api.SystemManage.Role]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
+- [[Api.SystemManage.User]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
+- [[App.Global.Menu]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[App.Global.Tab]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[App.I18n.Schema]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[CommonType namespace]] - code - fork260509-soybean-admin-base/src/typings/common.d.ts
+- [[RouteMap (elegant-router)]] - code - fork260509-soybean-admin-base/src/typings/elegant-router.d.ts
+- [[RouteMeta augmentation]] - code - fork260509-soybean-admin-base/src/typings/router.d.ts
+- [[StorageType.Local]] - code - fork260509-soybean-admin-base/src/typings/storage.d.ts
+- [[translateOptions()]] - code - fork260509-soybean-admin-base/src/utils/common.ts
 
 ## Live Query (requires Dataview plugin)
 
@@ -33,9 +34,10 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 1 edge to [[_COMMUNITY_Community 135]]
-- 1 edge to [[_COMMUNITY_Community 60]]
-- 1 edge to [[_COMMUNITY_Community 70]]
+- 2 edges to [[_COMMUNITY_Community 52]]
+- 1 edge to [[_COMMUNITY_Community 53]]
 
 ## Top bridge nodes
-- [[package.json_9]] - degree 13, connects to 3 communities
+- [[CommonType namespace]] - degree 4, connects to 1 community
+- [[StorageType.Local]] - degree 3, connects to 1 community
+- [[translateOptions()]] - degree 2, connects to 1 community

@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/store/index.ts"
 type: "code"
-community: "Community 84"
+community: "Dev Dependencies"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_84
+  - community/Dev_Dependencies
 ---
 
 # index.ts
@@ -17,4 +17,4 @@ tags:
 - [[main.ts]] - `imports_from` [EXTRACTED]
 - [[resetSetupStore()]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_84
+#graphify/code #graphify/EXTRACTED #community/Dev_Dependencies

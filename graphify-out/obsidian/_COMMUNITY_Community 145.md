@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[agent.ts]] - code - fork260509-soybean-admin-base/src/utils/agent.ts
-- [[isPC()]] - code - fork260509-soybean-admin-base/src/utils/agent.ts
+- [[CopyPluginView]] - code - fork260509-soybean-admin-base/src/views/plugin/copy/index.vue
+- [[handleCopy]] - code - fork260509-soybean-admin-base/src/views/plugin/copy/index.vue
 
 ## Live Query (requires Dataview plugin)
 

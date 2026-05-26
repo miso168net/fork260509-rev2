@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[polling-request.vue]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/modules/polling-request.vue
+- [[captcha-verification.vue]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/modules/captcha-verification.vue
 
 ## Live Query (requires Dataview plugin)
 

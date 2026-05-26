@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/router/elegant/transform.ts"
 type: "concept"
-community: "Route Type Hierarchy"
+community: "Router Guard Flow (diagram)"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/Route_Type_Hierarchy
+  - community/Router_Guard_Flow_diagram
 ---
 
 # Elegant Router DSL (layout.X$view.Y)
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[transformElegantRouteToVueRoute()]] - `implements` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/Route_Type_Hierarchy
+#graphify/concept #graphify/INFERRED #community/Router_Guard_Flow_diagram

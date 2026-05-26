@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "document"
-community: "Community 121"
+community: "Community 127"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_121
+  - community/Community_127
 ---
 
 # Router Structure Convention (JP)
@@ -14,4 +14,4 @@ tags:
 - [[ElegantVueRouter customRoutes]] - `describes` [EXTRACTED]
 - [[routePathTransformer]] - `describes` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_121
+#graphify/document #graphify/EXTRACTED #community/Community_127

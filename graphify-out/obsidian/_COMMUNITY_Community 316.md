@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[index.html (Vite entry)]] - code - fork260509-soybean-admin-base/index.html
+- [[README.en_US.md (soybean-admin-base)]] - document - fork260509-soybean-admin-base/README.en_US.md
 
 ## Live Query (requires Dataview plugin)
 

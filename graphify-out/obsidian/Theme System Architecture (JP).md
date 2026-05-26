@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "document"
-community: "Community 91"
+community: "Community 101"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_91
+  - community/Community_101
 ---
 
 # Theme System Architecture (JP)
@@ -15,4 +15,4 @@ tags:
 - [[Theme Settings Override (JP)]] - `configures` [EXTRACTED]
 - [[UnoCSS Theme Integration (JP)]] - `decomposed_into` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_91
+#graphify/document #graphify/EXTRACTED #community/Community_101

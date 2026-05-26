@@ -1,24 +1,25 @@
 ---
 type: community
-cohesion: 0.25
-members: 9
+cohesion: 0.20
+members: 10
 ---
 
 # Community 71
 
-**Cohesion:** 0.25 - loosely connected
-**Members:** 9 nodes
+**Cohesion:** 0.20 - loosely connected
+**Members:** 10 nodes
 
 ## Members
-- [[GanttConstructorOptions]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/index.vue
-- [[barColors]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/index.vue
-- [[barColors0]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/index.vue
-- [[customGanttColumns]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/index.vue
-- [[format()_1]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/index.vue
-- [[getOption()]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/index.vue
-- [[index.vue_45]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/index.vue
-- [[initVTableGantt()]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/index.vue
-- [[stopHandle]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/index.vue
+- [[Standards Lint  Formatting]] - document
+- [[Standards Naming Conventions]] - document
+- [[Standards Vue SFC Writing Order]] - document
+- [[recommend_alova_lib]] - document
+- [[recommend_index_intro]] - document
+- [[recommend_klona_lib]] - document
+- [[recommend_page_spy_tool]] - document
+- [[recommend_soybeanjs_cli]] - document
+- [[standard_index_intro]] - document
+- [[standard_ts_stub]] - document
 
 ## Live Query (requires Dataview plugin)
 

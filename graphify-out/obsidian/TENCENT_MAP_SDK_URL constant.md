@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/constants/map-sdk.ts"
 type: "code"
-community: "Community 66"
+community: "Community 73"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_66
+  - community/Community_73
 ---
 
 # TENCENT_MAP_SDK_URL constant
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[TencentMap.vue plugin component]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_66
+#graphify/code #graphify/EXTRACTED #community/Community_73

@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/.vscode/settings.json"
 type: "code"
-community: "VS Code Workspace Settings"
+community: "Chart Plugin Views"
 location: "L8"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/VS_Code_Workspace_Settings
+  - community/Chart_Plugin_Views
 ---
 
 # eslint.validate
@@ -15,4 +15,4 @@ tags:
 - [[settings.json]] - `contains` [EXTRACTED]
 - [[settings.json_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/VS_Code_Workspace_Settings
+#graphify/code #graphify/EXTRACTED #community/Chart_Plugin_Views

@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/pro-naive/form/step/index.vue"
 type: "code"
-community: "Admin Layout Package"
+community: "API Service Aliases (auth/captcha)"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Admin_Layout_Package
+  - community/API_Service_Aliases_auth/captcha
 ---
 
 # ProForm step example
@@ -15,4 +15,4 @@ tags:
 - [[ProForm basic example]] - `semantically_similar_to` [INFERRED]
 - [[pro-naive-ui example views]] - `conceptually_related_to` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Admin_Layout_Package
+#graphify/code #graphify/INFERRED #community/API_Service_Aliases_auth/captcha

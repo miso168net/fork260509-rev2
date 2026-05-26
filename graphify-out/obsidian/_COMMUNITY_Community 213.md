@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[tab-settings.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/tab-settings.vue
+- [[layout-mode.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/layout-mode.vue
 
 ## Live Query (requires Dataview plugin)
 

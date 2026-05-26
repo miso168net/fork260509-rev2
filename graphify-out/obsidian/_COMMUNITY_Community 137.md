@@ -10,9 +10,9 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[color()]] - code - fork260509-soybean-admin-base/src/views/plugin/tables/vtable/index.vue
-- [[index]] - code - fork260509-soybean-admin-base/src/views/plugin/tables/vtable/index.vue
-- [[index.vue_52]] - code - fork260509-soybean-admin-base/src/views/plugin/tables/vtable/index.vue
+- [[animate_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[animateMode_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[page_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -20,3 +20,9 @@ members: 3
 TABLE source_file, type FROM #community/Community_137
 SORT file.name ASC
 ```
+
+## Connections to other communities
+- 1 edge to [[_COMMUNITY_Community 58]]
+
+## Top bridge nodes
+- [[page_1]] - degree 3, connects to 1 community

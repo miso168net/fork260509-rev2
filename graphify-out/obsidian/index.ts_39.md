@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/plugin/map/components/index.ts"
 type: "code"
-community: "Community 110"
+community: "Community 115"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_110
+  - community/Community_115
 ---
 
 # index.ts
@@ -16,4 +16,4 @@ tags:
 - [[gaode-map.vue]] - `imports_from` [EXTRACTED]
 - [[tencent-map.vue]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_110
+#graphify/code #graphify/EXTRACTED #community/Community_115

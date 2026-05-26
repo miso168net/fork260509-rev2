@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/alova/src/index.ts"
 type: "concept"
-community: "Alova Request Adapter (+docs)"
+community: "Build & Release Scripts"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/Alova_Request_Adapter_docs
+  - community/Build__Release_Scripts
 ---
 
 # Token refresh on 401 workflow
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[createAlovaRequest factory]] - `implements` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/Alova_Request_Adapter_docs
+#graphify/concept #graphify/INFERRED #community/Build__Release_Scripts

@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Form Validation & Bootstrap"
+community: "Theme & Settings UI"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Form_Validation__Bootstrap
+  - community/Theme__Settings_UI
 ---
 
 # 是否需要重定向? (Need redirect?)
@@ -15,4 +15,4 @@ tags:
 - [[是否需要权限 (Need permission)]] - `` [EXTRACTED]
 - [[直接跳转 (Direct jump)]] - `` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Form_Validation__Bootstrap
+#graphify/concept #graphify/EXTRACTED #community/Theme__Settings_UI

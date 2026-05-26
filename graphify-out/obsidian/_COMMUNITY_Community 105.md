@@ -1,19 +1,20 @@
 ---
 type: community
-cohesion: 0.67
-members: 4
+cohesion: 0.40
+members: 5
 ---
 
 # Community 105
 
-**Cohesion:** 0.67 - moderately connected
-**Members:** 4 nodes
+**Cohesion:** 0.40 - moderately connected
+**Members:** 5 nodes
 
 ## Members
-- [[BaiduMap]] - code - fork260509-soybean-admin-base/src/views/plugin/map/components/baidu-map.vue
-- [[GaodeMap]] - code - fork260509-soybean-admin-base/src/views/plugin/map/components/gaode-map.vue
-- [[MapComponentsBarrel]] - code - fork260509-soybean-admin-base/src/views/plugin/map/components/index.ts
-- [[MapPluginView]] - code - fork260509-soybean-admin-base/src/views/plugin/map/index.vue
+- [[Option]] - code - fork260509-soybean-admin-base/src/typings/common.d.ts
+- [[RecordNullable]] - code - fork260509-soybean-admin-base/src/typings/common.d.ts
+- [[StrategicPattern]] - code - fork260509-soybean-admin-base/src/typings/common.d.ts
+- [[YesOrNo]] - code - fork260509-soybean-admin-base/src/typings/common.d.ts
+- [[common.d.ts]] - code - fork260509-soybean-admin-base/src/typings/common.d.ts
 
 ## Live Query (requires Dataview plugin)
 

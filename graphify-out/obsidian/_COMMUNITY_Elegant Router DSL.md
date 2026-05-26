@@ -1,35 +1,34 @@
 ---
 type: community
-cohesion: 0.15
-members: 20
+cohesion: 0.18
+members: 19
 ---
 
 # Elegant Router DSL
 
-**Cohesion:** 0.15 - loosely connected
-**Members:** 20 nodes
+**Cohesion:** 0.18 - loosely connected
+**Members:** 19 nodes
 
 ## Members
-- [[BaseLayout]] - code - fork260509-soybean-admin-base/src/layouts/base-layout/index.vue
-- [[BlankLayout]] - code - fork260509-soybean-admin-base/src/layouts/blank-layout/index.vue
-- [[FirstLevelMenu]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-menu/components/first-level-menu.vue
-- [[GlobalBreadcrumb]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-breadcrumb/index.vue
-- [[GlobalContent]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-content/index.vue
-- [[GlobalFooter]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-footer/index.vue
-- [[GlobalHeader]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-header/index.vue
-- [[GlobalLogo]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-logo/index.vue
-- [[GlobalMenu]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-menu/index.vue
-- [[GlobalSearch]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-search/index.vue
-- [[HorizontalMenu]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-menu/modules/horizontal-menu.vue
-- [[ThemeButton]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-header/components/theme-button.vue
-- [[TopHybridHeaderFirst]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-menu/modules/top-hybrid-header-first.vue
-- [[TopHybridSidebarFirst]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-menu/modules/top-hybrid-sidebar-first.vue
-- [[VerticalHybridHeaderFirst]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-menu/modules/vertical-hybrid-header-first.vue
-- [[VerticalMenu]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-menu/modules/vertical-menu.vue
-- [[dark]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-menu/components/first-level-menu.vue
-- [[light]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-menu/components/first-level-menu.vue
-- [[provideMixMenuContext]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-menu/context/index.ts
-- [[useMixMenuContext]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-menu/context/index.ts
+- [[NaiveColorAction]] - code - fork260509-soybean-admin-base/src/store/modules/theme/shared.ts
+- [[NaiveColorKey]] - code - fork260509-soybean-admin-base/src/store/modules/theme/shared.ts
+- [[NaiveColorScene]] - code - fork260509-soybean-admin-base/src/store/modules/theme/shared.ts
+- [[NaiveThemeColor]] - code - fork260509-soybean-admin-base/src/store/modules/theme/shared.ts
+- [[ThemeSetting]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[addThemeVarsToGlobal()]] - code - fork260509-soybean-admin-base/src/store/modules/theme/shared.ts
+- [[createThemePaletteColors()]] - code - fork260509-soybean-admin-base/src/store/modules/theme/shared.ts
+- [[createThemeToken()]] - code - fork260509-soybean-admin-base/src/store/modules/theme/shared.ts
+- [[getCssVarByTokens()]] - code - fork260509-soybean-admin-base/src/store/modules/theme/shared.ts
+- [[getNaiveTheme()]] - code - fork260509-soybean-admin-base/src/store/modules/theme/shared.ts
+- [[getNaiveThemeColors()]] - code - fork260509-soybean-admin-base/src/store/modules/theme/shared.ts
+- [[getPaletteColorByNumber()]] - code - fork260509-soybean-admin-base/packages/color/src/palette/index.ts
+- [[index.ts_37]] - code - fork260509-soybean-admin-base/src/store/modules/theme/index.ts
+- [[initThemeSettings()]] - code - fork260509-soybean-admin-base/src/store/modules/theme/shared.ts
+- [[overrideThemeSettings]] - code - fork260509-soybean-admin-base/src/theme/settings.ts
+- [[settings.ts]] - code - fork260509-soybean-admin-base/src/theme/settings.ts
+- [[shared.ts_8]] - code - fork260509-soybean-admin-base/src/store/modules/theme/shared.ts
+- [[toggleAuxiliaryColorModes()]] - code - fork260509-soybean-admin-base/src/store/modules/theme/shared.ts
+- [[toggleCssDarkMode()]] - code - fork260509-soybean-admin-base/src/store/modules/theme/shared.ts
 
 ## Live Query (requires Dataview plugin)
 
@@ -39,11 +38,22 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 6 edges to [[_COMMUNITY_Docs Site TSConfig (NEW)]]
+- 8 edges to [[_COMMUNITY_Community 38]]
+- 7 edges to [[_COMMUNITY_Auth Store & Permissions]]
+- 4 edges to [[_COMMUNITY_Runtime Dependencies]]
+- 4 edges to [[_COMMUNITY_Community 53]]
+- 2 edges to [[_COMMUNITY_VS Code Workspace Settings]]
+- 2 edges to [[_COMMUNITY_Alova Request Adapter (+docs)]]
+- 2 edges to [[_COMMUNITY_Dev Dependencies]]
+- 1 edge to [[_COMMUNITY_Per-Package TSConfig (sub-27)]]
+- 1 edge to [[_COMMUNITY_Community 83]]
+- 1 edge to [[_COMMUNITY_Per-Package TSConfig (sub-26)]]
+- 1 edge to [[_COMMUNITY_Community 52]]
+- 1 edge to [[_COMMUNITY_Theme Constants & Maps]]
 
 ## Top bridge nodes
-- [[GlobalHeader]] - degree 6, connects to 1 community
-- [[useMixMenuContext]] - degree 5, connects to 1 community
-- [[HorizontalMenu]] - degree 4, connects to 1 community
-- [[TopHybridHeaderFirst]] - degree 4, connects to 1 community
-- [[GlobalBreadcrumb]] - degree 2, connects to 1 community
+- [[shared.ts_8]] - degree 29, connects to 7 communities
+- [[index.ts_37]] - degree 22, connects to 6 communities
+- [[ThemeSetting]] - degree 4, connects to 2 communities
+- [[getPaletteColorByNumber()]] - degree 5, connects to 1 community
+- [[getNaiveThemeColors()]] - degree 4, connects to 1 community

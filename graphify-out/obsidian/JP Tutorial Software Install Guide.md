@@ -1,13 +1,13 @@
 ---
 source_file: ""
 type: "document"
-community: "Community 329"
+community: "Community 330"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_329
+  - community/Community_330
 ---
 
 # JP Tutorial: Software Install Guide
 
-#graphify/document #graphify/EXTRACTED #community/Community_329
+#graphify/document #graphify/EXTRACTED #community/Community_330

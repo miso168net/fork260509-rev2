@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/uno-preset/src/index.ts"
 type: "concept"
-community: "Color Palette Engine"
+community: "Community 53"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/Color_Palette_Engine
+  - community/Community_53
 ---
 
 # UnoCSS Shortcuts
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[presetSoybeanAdmin()]] - `implements` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/Color_Palette_Engine
+#graphify/concept #graphify/INFERRED #community/Community_53

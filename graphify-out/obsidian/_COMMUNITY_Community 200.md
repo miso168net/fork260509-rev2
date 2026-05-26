@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[layout-mode-card.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/components/layout-mode-card.vue
+- [[index.vue_14]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/index.vue
 
 ## Live Query (requires Dataview plugin)
 

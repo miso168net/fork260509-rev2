@@ -1,19 +1,20 @@
 ---
 type: community
-cohesion: 0.50
-members: 4
+cohesion: 0.40
+members: 5
 ---
 
 # Community 109
 
-**Cohesion:** 0.50 - moderately connected
-**Members:** 4 nodes
+**Cohesion:** 0.40 - moderately connected
+**Members:** 5 nodes
 
 ## Members
-- [[basicGanttRecords]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/data.ts
-- [[customGanttRecords]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/data.ts
-- [[data.ts_4]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/data.ts
-- [[linkGanttRecords]] - code - fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/data.ts
+- [[error_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[info_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[otherColor_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[success_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[warning_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -21,3 +22,9 @@ members: 4
 TABLE source_file, type FROM #community/Community_109
 SORT file.name ASC
 ```
+
+## Connections to other communities
+- 1 edge to [[_COMMUNITY_Community 58]]
+
+## Top bridge nodes
+- [[otherColor_2]] - degree 5, connects to 1 community

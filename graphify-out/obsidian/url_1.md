@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-docs/package.json"
 type: "code"
-community: "Community 48"
+community: "Naive UI Theme Tokens"
 location: "L17"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_48
+  - community/Naive_UI_Theme_Tokens
 ---
 
 # url
@@ -16,4 +16,4 @@ tags:
 - [[bugs_1]] - `contains` [EXTRACTED]
 - [[repository_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_48
+#graphify/code #graphify/EXTRACTED #community/Naive_UI_Theme_Tokens

@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/hooks/src/use-context.ts"
 type: "code"
-community: "Community 103"
+community: "API Service Aliases (auth/captcha)"
 location: "L9"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_103
+  - community/API_Service_Aliases_auth/captcha
 ---
 
 # ContextConsumer
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[useContext()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_103
+#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha

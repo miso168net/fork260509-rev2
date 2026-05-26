@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/plugins/dayjs.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "Dev Dependencies"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - community/Dev_Dependencies
 ---
 
 # dayjs.ts
@@ -17,4 +17,4 @@ tags:
 - [[setDayjsLocale()]] - `imports` [EXTRACTED]
 - [[setupDayjs()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/EXTRACTED #community/Dev_Dependencies

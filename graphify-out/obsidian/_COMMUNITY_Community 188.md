@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[soybean-avatar.vue]] - code - fork260509-soybean-admin-base/src/components/custom/soybean-avatar.vue
+- [[look-forward.vue]] - code - fork260509-soybean-admin-base/src/components/custom/look-forward.vue
 
 ## Live Query (requires Dataview plugin)
 

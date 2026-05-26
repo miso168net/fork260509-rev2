@@ -1,18 +1,19 @@
 ---
 type: community
 cohesion: 0.67
-members: 3
+members: 4
 ---
 
 # VitePress Locale Configs
 
 **Cohesion:** 0.67 - moderately connected
-**Members:** 3 nodes
+**Members:** 4 nodes
 
 ## Members
-- [[Table Column Settings Model]] - concept - fork260509-soybean-admin-base/src/components/advanced/table-column-setting.vue
-- [[TableColumnSetting]] - code - fork260509-soybean-admin-base/src/components/advanced/table-column-setting.vue
-- [[TableHeaderOperation]] - code - fork260509-soybean-admin-base/src/components/advanced/table-header-operation.vue
+- [[configurations]] - code - fork260509-soybean-admin-base/.vscode/launch.json
+- [[launch.json]] - code - fork260509-soybean-admin-base/.vscode/launch.json
+- [[launch.json_1]] - code - fork260509-soybean-admin-docs/.vscode/launch.json
+- [[version_1]] - code - fork260509-soybean-admin-base/.vscode/launch.json
 
 ## Live Query (requires Dataview plugin)
 

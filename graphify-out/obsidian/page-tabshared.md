@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/shared.ts"
 type: "code"
-community: "Form & Table Hooks"
+community: "Alova Request Adapter (+docs)"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Form__Table_Hooks
+  - community/Alova_Request_Adapter_docs
 ---
 
 # page-tab/shared
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[CSS custom properties theming (--soy- vars)]] - `implements` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Form__Table_Hooks
+#graphify/code #graphify/INFERRED #community/Alova_Request_Adapter_docs

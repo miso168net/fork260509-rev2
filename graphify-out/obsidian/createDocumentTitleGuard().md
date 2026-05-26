@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/router/guard/title.ts"
 type: "code"
-community: "Community 45"
+community: "TypeScript Compiler Config (root)"
 location: "L5"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_45
+  - community/TypeScript_Compiler_Config_root
 ---
 
 # createDocumentTitleGuard()
@@ -18,4 +18,4 @@ tags:
 - [[title.ts]] - `contains` [EXTRACTED]
 - [[结束 (End)]] - `` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_45
+#graphify/code #graphify/EXTRACTED #community/TypeScript_Compiler_Config_root

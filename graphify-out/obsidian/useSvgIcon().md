@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/hooks/common/icon.ts"
 type: "code"
-community: "Docs Site TSConfig (NEW)"
+community: "API Service Aliases (auth/captcha)"
 location: "L4"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Docs_Site_TSConfig_NEW
+  - community/API_Service_Aliases_auth/captcha
 ---
 
 # useSvgIcon()
@@ -18,4 +18,4 @@ tags:
 - [[shared.ts_6]] - `imports` [EXTRACTED]
 - [[useSvgIconRender()]] - `calls` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Docs_Site_TSConfig_NEW
+#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha

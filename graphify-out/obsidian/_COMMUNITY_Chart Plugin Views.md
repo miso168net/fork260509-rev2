@@ -1,39 +1,38 @@
 ---
 type: community
-cohesion: 0.16
-members: 24
+cohesion: 0.10
+members: 23
 ---
 
 # Chart Plugin Views
 
-**Cohesion:** 0.16 - loosely connected
-**Members:** 24 nodes
+**Cohesion:** 0.10 - loosely connected
+**Members:** 23 nodes
 
 ## Members
-- [[AntFlowConfig]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/antv-g6-flow.ts
-- [[AntvFlow]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/antv-flow.vue
-- [[AntvPluginView]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/index.vue
-- [[CustomEdgeData]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/types.ts
-- [[CustomGraphData]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/types.ts
-- [[CustomNodeData]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/types.ts
-- [[EChartsOptions]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/echarts/data.ts
-- [[NodeStatus]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/types.ts
-- [[NodeStatusConfig]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/status.ts
-- [[VChartPluginView]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/vchart/index.vue
-- [[VChartSpecs]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/vchart/data.ts
-- [[addNode]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/index.vue
-- [[antv-g6-flow.ts]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/antv-g6-flow.ts
-- [[data.ts]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/data.ts
-- [[draw]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/antv-flow.vue
-- [[getFlowData()]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/data.ts
-- [[getNodeIcon()]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/status.ts
-- [[getNodeStatusTag()]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/status.ts
-- [[initGaugeChart]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/echarts/index.vue
-- [[nodeStatus]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/status.ts
-- [[removeNode]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/index.vue
-- [[status.ts]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/status.ts
-- [[types.ts]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/types.ts
-- [[useAntFlow]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/antv-g6-flow.ts
+- [[baseUrl]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[editor.codeActionsOnSave]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[editor.defaultFormatter]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[editor.formatOnSave]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[eslint.validate]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[i18n-ally.displayLanguage]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[i18n-ally.editor.preferEditor]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[i18n-ally.enabledFrameworks]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[i18n-ally.enabledParsers]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[i18n-ally.keystyle]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[i18n-ally.localesPaths]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[i18n-ally.parsers.typescript.compilerOptions]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[ignoreDeprecations]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[moduleResolution_1]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[oxc.fmt.configPath]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[prettier.enable]] - code - fork260509-soybean-admin-docs/.vscode/settings.json
+- [[rootDir]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[settings.json]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[settings.json_1]] - code - fork260509-soybean-admin-docs/.vscode/settings.json
+- [[source.fixAll.eslint]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[source.fixAll.oxc]] - code - fork260509-soybean-admin-base/.vscode/settings.json
+- [[source.organizeImports]] - code - fork260509-soybean-admin-docs/.vscode/settings.json
+- [[unocss.root]] - code - fork260509-soybean-admin-base/.vscode/settings.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -41,10 +40,3 @@ members: 24
 TABLE source_file, type FROM #community/Chart_Plugin_Views
 SORT file.name ASC
 ```
-
-## Connections to other communities
-- 3 edges to [[_COMMUNITY_Per-Package TSConfig (sub-31)]]
-
-## Top bridge nodes
-- [[antv-g6-flow.ts]] - degree 11, connects to 1 community
-- [[useAntFlow]] - degree 7, connects to 1 community

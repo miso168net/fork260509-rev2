@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/router/guard/route.ts"
 type: "concept"
-community: "Community 45"
+community: "TypeScript Compiler Config (root)"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Community_45
+  - community/TypeScript_Compiler_Config_root
 ---
 
 # Auth + role-based route gate
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[createRouteGuard()]] - `implements` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Community_45
+#graphify/concept #graphify/EXTRACTED #community/TypeScript_Compiler_Config_root

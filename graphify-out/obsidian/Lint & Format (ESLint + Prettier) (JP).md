@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "document"
-community: "Community 92"
+community: "Docs Site Package Metadata"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_92
+  - community/Docs_Site_Package_Metadata
 ---
 
 # Lint & Format (ESLint + Prettier) (JP)
@@ -14,4 +14,4 @@ tags:
 - [[@soybeanjscli (JP)]] - `invokes` [EXTRACTED]
 - [[Coding Standards Overview (JP)]] - `decomposed_into` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_92
+#graphify/document #graphify/EXTRACTED #community/Docs_Site_Package_Metadata

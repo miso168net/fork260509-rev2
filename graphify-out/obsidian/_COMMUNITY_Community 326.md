@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[Comprehensive (JP, stub)]] - document
+- [[Donation List (JP)]] - document
 
 ## Live Query (requires Dataview plugin)
 

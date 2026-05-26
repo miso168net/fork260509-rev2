@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[index.vue_50]] - code - fork260509-soybean-admin-base/src/views/plugin/print/index.vue
+- [[index.vue_49]] - code - fork260509-soybean-admin-base/src/views/plugin/pinyin/index.vue
 
 ## Live Query (requires Dataview plugin)
 

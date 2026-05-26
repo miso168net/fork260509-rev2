@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Community 79"
+community: "Build & Release Scripts"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Community_79
+  - community/Build__Release_Scripts
 ---
 
 # JP Request Intro
@@ -15,4 +15,4 @@ tags:
 - [[RequestOption interface (axios)]] - `documents` [EXTRACTED]
 - [[createRequest  createFlatRequest]] - `documents` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Community_79
+#graphify/concept #graphify/EXTRACTED #community/Build__Release_Scripts

@@ -1,13 +1,13 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/constants/map-sdk.ts"
 type: "code"
-community: "Community 299"
+community: "Community 300"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_299
+  - community/Community_300
 ---
 
 # constants/map-sdk
 
-#graphify/code #graphify/EXTRACTED #community/Community_299
+#graphify/code #graphify/EXTRACTED #community/Community_300

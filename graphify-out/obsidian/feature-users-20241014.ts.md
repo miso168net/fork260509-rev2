@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/service-alova/mocks/feature-users-20241014.ts"
 type: "code"
-community: "SVG Icon System"
+community: "Community 63"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/SVG_Icon_System
+  - community/Community_63
 ---
 
 # feature-users-20241014.ts
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[index.ts_31]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/SVG_Icon_System
+#graphify/code #graphify/EXTRACTED #community/Community_63

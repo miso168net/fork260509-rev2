@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/vite.config.ts"
 type: "code"
-community: "TypeScript Compiler Config (root)"
+community: "SVG Icon System"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/TypeScript_Compiler_Config_root
+  - community/SVG_Icon_System
 ---
 
 # vite.config.ts
@@ -18,4 +18,4 @@ tags:
 - [[uno.config.ts]] - `conceptually_related_to` [INFERRED]
 - [[viteEnv]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/TypeScript_Compiler_Config_root
+#graphify/code #graphify/EXTRACTED #community/SVG_Icon_System

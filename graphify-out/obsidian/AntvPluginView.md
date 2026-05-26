@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/plugin/charts/antv/index.vue"
 type: "code"
-community: "Chart Plugin Views"
+community: "Runtime Dependencies"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Chart_Plugin_Views
+  - community/Runtime_Dependencies
 ---
 
 # AntvPluginView
@@ -17,4 +17,4 @@ tags:
 - [[getFlowData()]] - `calls` [EXTRACTED]
 - [[removeNode]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Chart_Plugin_Views
+#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies

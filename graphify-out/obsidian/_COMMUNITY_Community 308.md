@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[about page]] - code - fork260509-soybean-admin-base/src/views/about/index.vue
+- [[iframe-page url]] - code - fork260509-soybean-admin-base/src/views/_builtin/iframe-page/[url].vue
 
 ## Live Query (requires Dataview plugin)
 

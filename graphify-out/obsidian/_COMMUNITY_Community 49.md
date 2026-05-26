@@ -1,28 +1,29 @@
 ---
 type: community
-cohesion: 0.15
-members: 13
+cohesion: 0.14
+members: 14
 ---
 
 # Community 49
 
-**Cohesion:** 0.15 - loosely connected
-**Members:** 13 nodes
+**Cohesion:** 0.14 - loosely connected
+**Members:** 14 nodes
 
 ## Members
-- [[unnamed]] - code - fork260509-soybean-admin-base/packages/alova/package.json
-- [[.client]] - code - fork260509-soybean-admin-base/packages/alova/package.json
-- [[.fetch]] - code - fork260509-soybean-admin-base/packages/alova/package.json
-- [[.mock]] - code - fork260509-soybean-admin-base/packages/alova/package.json
-- [[@alovamock]] - code - fork260509-soybean-admin-base/packages/alova/package.json
-- [[@sautils_1]] - code - fork260509-soybean-admin-base/packages/alova/package.json
-- [[alova]] - code - fork260509-soybean-admin-base/packages/alova/package.json
-- [[dependencies_1]] - code - fork260509-soybean-admin-base/packages/alova/package.json
-- [[exports]] - code - fork260509-soybean-admin-base/packages/alova/package.json
-- [[name_1]] - code - fork260509-soybean-admin-base/packages/alova/package.json
-- [[package.json_1]] - code - fork260509-soybean-admin-base/packages/alova/package.json
-- [[typesVersions]] - code - fork260509-soybean-admin-base/packages/alova/package.json
-- [[version_2]] - code - fork260509-soybean-admin-base/packages/alova/package.json
+- [[unnamed_7]] - code - fork260509-soybean-admin-base/packages/utils/package.json
+- [[@typescrypto-js]] - code - fork260509-soybean-admin-base/packages/utils/package.json
+- [[colord_1]] - code - fork260509-soybean-admin-base/packages/utils/package.json
+- [[crypto-js]] - code - fork260509-soybean-admin-base/packages/utils/package.json
+- [[dependencies_6]] - code - fork260509-soybean-admin-base/packages/utils/package.json
+- [[devDependencies_4]] - code - fork260509-soybean-admin-base/packages/utils/package.json
+- [[exports_7]] - code - fork260509-soybean-admin-base/packages/utils/package.json
+- [[klona]] - code - fork260509-soybean-admin-base/packages/utils/package.json
+- [[localforage]] - code - fork260509-soybean-admin-base/packages/utils/package.json
+- [[name_8]] - code - fork260509-soybean-admin-base/packages/utils/package.json
+- [[nanoid]] - code - fork260509-soybean-admin-base/packages/utils/package.json
+- [[package.json_8]] - code - fork260509-soybean-admin-base/packages/utils/package.json
+- [[typesVersions_7]] - code - fork260509-soybean-admin-base/packages/utils/package.json
+- [[version_9]] - code - fork260509-soybean-admin-base/packages/utils/package.json
 
 ## Live Query (requires Dataview plugin)
 

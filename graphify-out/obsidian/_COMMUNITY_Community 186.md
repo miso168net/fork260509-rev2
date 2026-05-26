@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[github-link.vue]] - code - fork260509-soybean-admin-base/src/components/custom/github-link.vue
+- [[better-scroll.vue]] - code - fork260509-soybean-admin-base/src/components/custom/better-scroll.vue
 
 ## Live Query (requires Dataview plugin)
 

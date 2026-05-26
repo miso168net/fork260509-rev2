@@ -1,21 +1,22 @@
 ---
 type: community
 cohesion: 0.33
-members: 6
+members: 7
 ---
 
 # Community 85
 
 **Cohesion:** 0.33 - loosely connected
-**Members:** 6 nodes
+**Members:** 7 nodes
 
 ## Members
-- [[customListRecords]] - code - fork260509-soybean-admin-base/src/views/plugin/tables/vtable/data.ts
-- [[data.ts_5]] - code - fork260509-soybean-admin-base/src/views/plugin/tables/vtable/data.ts
-- [[listTableRecords]] - code - fork260509-soybean-admin-base/src/views/plugin/tables/vtable/data.ts
-- [[pivotChartColumns]] - code - fork260509-soybean-admin-base/src/views/plugin/tables/vtable/data.ts
-- [[pivotChartIndicators]] - code - fork260509-soybean-admin-base/src/views/plugin/tables/vtable/data.ts
-- [[pivotChartRows]] - code - fork260509-soybean-admin-base/src/views/plugin/tables/vtable/data.ts
+- [[guide_cli_command_doc]] - concept
+- [[guide_cli_git_hooks_doc]] - concept
+- [[guide_cli_intro_doc]] - concept
+- [[guide_quick_start_concept_pnpm_scripts]] - concept
+- [[guide_quick_start_concept_sa_cli]] - concept
+- [[guide_quick_start_doc]] - concept
+- [[guide_sync_doc]] - concept
 
 ## Live Query (requires Dataview plugin)
 

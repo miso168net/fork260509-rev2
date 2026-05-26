@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[standard_tools_stub]] - document
+- [[standard_synthesis_stub]] - document
 
 ## Live Query (requires Dataview plugin)
 

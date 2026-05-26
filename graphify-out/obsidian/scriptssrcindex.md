@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/scripts/src/index.ts"
 type: "code"
-community: "Build & Release Scripts"
+community: "Color Palette Engine"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Build__Release_Scripts
+  - community/Color_Palette_Engine
 ---
 
 # scripts/src/index
@@ -16,4 +16,4 @@ tags:
 - [[scriptsbin entry]] - `references` [EXTRACTED]
 - [[setupCli()]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Build__Release_Scripts
+#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine

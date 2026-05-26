@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/components/common/app-provider.vue"
 type: "code"
-community: "Auth Store & Permissions"
+community: "Community 79"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Auth_Store__Permissions
+  - community/Community_79
 ---
 
 # ContextHolder
@@ -15,4 +15,4 @@ tags:
 - [[AppProvider]] - `references` [EXTRACTED]
 - [[Naive UI Provider Pattern]] - `implements` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Auth_Store__Permissions
+#graphify/code #graphify/INFERRED #community/Community_79

@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[Theme preset application pipeline]] - concept - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/preset/modules/theme-preset.vue
-- [[ThemePreset.vue (apply theme preset)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/preset/modules/theme-preset.vue
+- [[index.vue_31]] - code - fork260509-soybean-admin-base/src/views/manage/menu/index.vue
+- [[label]] - code - fork260509-soybean-admin-base/src/views/manage/menu/index.vue
 
 ## Live Query (requires Dataview plugin)
 

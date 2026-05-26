@@ -1,18 +1,19 @@
 ---
 type: community
-cohesion: 0.67
-members: 3
+cohesion: 0.50
+members: 4
 ---
 
 # Community 116
 
-**Cohesion:** 0.67 - moderately connected
-**Members:** 3 nodes
+**Cohesion:** 0.50 - moderately connected
+**Members:** 4 nodes
 
 ## Members
-- [[PkgJson]] - code - fork260509-soybean-admin-base/src/views/about/index.vue
-- [[index.vue_19]] - code - fork260509-soybean-admin-base/src/views/about/index.vue
-- [[transformVersionData()]] - code - fork260509-soybean-admin-base/src/views/about/index.vue
+- [[config.ts]] - code - fork260509-soybean-admin-docs/.vitepress/config.ts
+- [[icon.ts_2]] - code - fork260509-soybean-admin-docs/.vitepress/icon.ts
+- [[jp.ts]] - code - fork260509-soybean-admin-docs/.vitepress/locales/jp.ts
+- [[zh.ts]] - code - fork260509-soybean-admin-docs/.vitepress/locales/zh.ts
 
 ## Live Query (requires Dataview plugin)
 

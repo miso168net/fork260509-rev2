@@ -1,62 +1,55 @@
 ---
 type: community
 cohesion: 0.05
-members: 47
+members: 40
 ---
 
 # Theme Constants & Maps
 
 **Cohesion:** 0.05 - loosely connected
-**Members:** 47 nodes
+**Members:** 40 nodes
 
 ## Members
-- [[Api.Auth.UserInfo]] - code - fork260509-soybean-admin-base/src/typings/api/auth.d.ts
-- [[Api.Common.CommonRecord]] - code - fork260509-soybean-admin-base/src/typings/api/common.d.ts
-- [[Api.Route.MenuRoute]] - code - fork260509-soybean-admin-base/src/typings/api/route.d.ts
-- [[Api.Route.UserRoute]] - code - fork260509-soybean-admin-base/src/typings/api/route.d.ts
-- [[Api.SystemManage.Menu]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[Api.SystemManage.Role]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[Api.SystemManage.User]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[App.Global.Menu]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[App.Global.Tab]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[App.I18n.Schema]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
-- [[CommonType namespace]] - code - fork260509-soybean-admin-base/src/typings/common.d.ts
-- [[LoginModule]] - code - fork260509-soybean-admin-base/src/typings/union-key.d.ts
-- [[RouteMap (elegant-router)]] - code - fork260509-soybean-admin-base/src/typings/elegant-router.d.ts
-- [[RouteMeta augmentation]] - code - fork260509-soybean-admin-base/src/typings/router.d.ts
-- [[StorageType.Local]] - code - fork260509-soybean-admin-base/src/typings/storage.d.ts
-- [[ThemePageAnimateMode]] - code - fork260509-soybean-admin-base/src/typings/union-key.d.ts
-- [[ThemeScheme]] - code - fork260509-soybean-admin-base/src/typings/union-key.d.ts
-- [[ThemeScrollMode]] - code - fork260509-soybean-admin-base/src/typings/union-key.d.ts
-- [[ThemeTabMode]] - code - fork260509-soybean-admin-base/src/typings/union-key.d.ts
-- [[UnoCssAnimateKey]] - code - fork260509-soybean-admin-base/src/typings/union-key.d.ts
-- [[app.ts]] - code - fork260509-soybean-admin-base/src/constants/app.ts
-- [[business.ts]] - code - fork260509-soybean-admin-base/src/constants/business.ts
-- [[common.ts]] - code - fork260509-soybean-admin-base/src/constants/common.ts
-- [[common.ts_1]] - code - fork260509-soybean-admin-base/src/utils/common.ts
-- [[enableStatusOptions]] - code - fork260509-soybean-admin-base/src/constants/business.ts
-- [[enableStatusRecord]] - code - fork260509-soybean-admin-base/src/constants/business.ts
-- [[loginModuleRecord]] - code - fork260509-soybean-admin-base/src/constants/app.ts
-- [[menuIconTypeOptions]] - code - fork260509-soybean-admin-base/src/constants/business.ts
-- [[menuIconTypeRecord]] - code - fork260509-soybean-admin-base/src/constants/business.ts
-- [[menuTypeOptions]] - code - fork260509-soybean-admin-base/src/constants/business.ts
-- [[menuTypeRecord]] - code - fork260509-soybean-admin-base/src/constants/business.ts
-- [[themeLayoutModeOptions]] - code - fork260509-soybean-admin-base/src/constants/app.ts
-- [[themeLayoutModeRecord]] - code - fork260509-soybean-admin-base/src/constants/app.ts
-- [[themePageAnimationModeRecord]] - code - fork260509-soybean-admin-base/src/constants/app.ts
-- [[themeSchemaOptions]] - code - fork260509-soybean-admin-base/src/constants/app.ts
-- [[themeSchemaRecord]] - code - fork260509-soybean-admin-base/src/constants/app.ts
-- [[themeScrollModeRecord]] - code - fork260509-soybean-admin-base/src/constants/app.ts
-- [[themeTabModeOptions]] - code - fork260509-soybean-admin-base/src/constants/app.ts
-- [[themeTabModeRecord]] - code - fork260509-soybean-admin-base/src/constants/app.ts
-- [[transformRecordToOption()]] - code - fork260509-soybean-admin-base/src/utils/common.ts
-- [[translateOptions()]] - code - fork260509-soybean-admin-base/src/utils/common.ts
-- [[union-key.d.ts]] - code - fork260509-soybean-admin-base/src/typings/union-key.d.ts
-- [[userGenderOptions]] - code - fork260509-soybean-admin-base/src/constants/business.ts
-- [[userGenderRecord]] - code - fork260509-soybean-admin-base/src/constants/business.ts
-- [[watermarkTimeFormatOptions]] - code - fork260509-soybean-admin-base/src/constants/app.ts
-- [[yesOrNoOptions]] - code - fork260509-soybean-admin-base/src/constants/common.ts
-- [[yesOrNoRecord]] - code - fork260509-soybean-admin-base/src/constants/common.ts
+- [[$T]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[BaseToken]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[Breadcrumb]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[ColorPaletteNumber_1]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[DemoResponse]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[DropdownKey]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[FormMsg]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[FormRule]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[GetI18nKey]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[HeaderProps]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[I18nKey]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[I18nRouteKey]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[LangOption]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[LangType]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[LastLevelRouteKey]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[Menu]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[NaiveUIThemeOverride]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[OtherBaseURLKey]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[OtherColor]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[OtherServiceConfigItem]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[Response]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[RouteLocationNormalizedLoaded]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[RouteMap]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[RoutePath]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[RouterPushOptions]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[Schema]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[ServiceConfig]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[SimpleServiceConfig]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[Tab]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[TabRoute]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[ThemeColor]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[ThemeColorKey]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[ThemePaletteColor]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[ThemeSettingToken]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[ThemeSettingTokenBoxShadow]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[ThemeTokenCSSVars]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[ThemeTokenColor]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[TranslateOptions]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[VNode]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[app.d.ts]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
 
 ## Live Query (requires Dataview plugin)
 
@@ -66,11 +59,8 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 6 edges to [[_COMMUNITY_Color Palette Engine]]
-- 1 edge to [[_COMMUNITY_Community 46]]
-- 1 edge to [[_COMMUNITY_Community 45]]
+- 1 edge to [[_COMMUNITY_Elegant Router DSL]]
+- 1 edge to [[_COMMUNITY_Community 96]]
 
 ## Top bridge nodes
-- [[common.ts_1]] - degree 10, connects to 3 communities
-- [[app.ts]] - degree 15, connects to 1 community
-- [[StorageType.Local]] - degree 3, connects to 1 community
+- [[app.d.ts]] - degree 41, connects to 2 communities

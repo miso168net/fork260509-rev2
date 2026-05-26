@@ -1,19 +1,19 @@
 ---
 type: community
-cohesion: 0.50
+cohesion: 0.67
 members: 4
 ---
 
 # Community 112
 
-**Cohesion:** 0.50 - moderately connected
+**Cohesion:** 0.67 - moderately connected
 **Members:** 4 nodes
 
 ## Members
-- [[config.ts]] - code - fork260509-soybean-admin-docs/.vitepress/config.ts
-- [[icon.ts_2]] - code - fork260509-soybean-admin-docs/.vitepress/icon.ts
-- [[jp.ts]] - code - fork260509-soybean-admin-docs/.vitepress/locales/jp.ts
-- [[zh.ts]] - code - fork260509-soybean-admin-docs/.vitepress/locales/zh.ts
+- [[BaiduMap]] - code - fork260509-soybean-admin-base/src/views/plugin/map/components/baidu-map.vue
+- [[GaodeMap]] - code - fork260509-soybean-admin-base/src/views/plugin/map/components/gaode-map.vue
+- [[MapComponentsBarrel]] - code - fork260509-soybean-admin-base/src/views/plugin/map/components/index.ts
+- [[MapPluginView]] - code - fork260509-soybean-admin-base/src/views/plugin/map/index.vue
 
 ## Live Query (requires Dataview plugin)
 

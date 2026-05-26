@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[pnpm-workspace.yaml (onlyBuiltDependencies unrs-resolver)]] - code - fork260509-soybean-admin-docs/pnpm-workspace.yaml
+- [[soybean-admin-docs CHANGELOG v1.0.0 (2024-04-24)]] - document - fork260509-soybean-admin-docs/CHANGELOG.md
 
 ## Live Query (requires Dataview plugin)
 

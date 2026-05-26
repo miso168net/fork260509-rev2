@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[line-chart.vue]] - code - fork260509-soybean-admin-base/src/views/home/modules/line-chart.vue
-- [[originOpts]] - code - fork260509-soybean-admin-base/src/views/home/modules/line-chart.vue
+- [[guide_request_concept_proxy_pattern]] - concept
+- [[guide_request_proxy_doc]] - concept
 
 ## Live Query (requires Dataview plugin)
 

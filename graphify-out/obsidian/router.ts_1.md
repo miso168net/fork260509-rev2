@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/hooks/common/router.ts"
 type: "code"
-community: "Route Type Hierarchy"
+community: "Community 83"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Route_Type_Hierarchy
+  - community/Community_83
 ---
 
 # router.ts
@@ -19,4 +19,4 @@ tags:
 - [[router]] - `imports` [EXTRACTED]
 - [[useRouterPush()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Route_Type_Hierarchy
+#graphify/code #graphify/EXTRACTED #community/Community_83

@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[CustomRouteKey]] - code - fork260509-soybean-admin-base/src/typings/elegant-router.d.ts
+- [[RoutePath_1]] - code - fork260509-soybean-admin-base/src/typings/elegant-router.d.ts
 
 ## Live Query (requires Dataview plugin)
 

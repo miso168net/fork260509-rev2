@@ -1,17 +1,18 @@
 ---
 type: community
-cohesion: 1.00
-members: 2
+cohesion: 0.67
+members: 3
 ---
 
 # Community 138
 
-**Cohesion:** 1.00 - tightly connected
-**Members:** 2 nodes
+**Cohesion:** 0.67 - moderately connected
+**Members:** 3 nodes
 
 ## Members
-- [[index.vue_37]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/index.vue
-- [[nodeData]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/index.vue
+- [[Dynamic vs Static permission routing]] - concept - fork260509-soybean-admin-docs/src/faq/index.md
+- [[history mode SPA 404 (nginx try_files index.html fix)]] - concept - fork260509-soybean-admin-docs/src/faq/index.md
+- [[srcfaqindex.md (FAQ cache, routing, naming, CORS, SPA 404)]] - document - fork260509-soybean-admin-docs/src/faq/index.md
 
 ## Live Query (requires Dataview plugin)
 

@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/antv-g6-flow.ts"
 type: "code"
-community: "Chart Plugin Views"
+community: "Runtime Dependencies"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Chart_Plugin_Views
+  - community/Runtime_Dependencies
 ---
 
 # useAntFlow
@@ -19,4 +19,4 @@ tags:
 - [[nodeStatus]] - `references` [EXTRACTED]
 - [[useThemeStore]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Chart_Plugin_Views
+#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies

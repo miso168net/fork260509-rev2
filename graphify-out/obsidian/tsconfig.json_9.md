@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-docs/tsconfig.json"
 type: "code"
-community: "Global Search Module"
+community: "Route Type Hierarchy"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Global_Search_Module
+  - community/Route_Type_Hierarchy
 ---
 
 # tsconfig.json
@@ -16,4 +16,4 @@ tags:
 - [[exclude_9]] - `contains` [EXTRACTED]
 - [[include_9]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Global_Search_Module
+#graphify/code #graphify/EXTRACTED #community/Route_Type_Hierarchy

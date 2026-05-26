@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[路由守卫 (Route Guard)]] - concept
+- [[tutorial_other_stub]] - document
 
 ## Live Query (requires Dataview plugin)
 

@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[debug pnpm 11.3.0 + node 20.19 corepack ESM bug]] - rationale - docs/superpowers/000-base-web-docker-bootstrap.md
-- [[design decision 跳過 corepack 改用 npm install -g pnpm@10]] - concept - docs/superpowers/000-base-web-docker-bootstrap.md
+- [[originOpts_1]] - code - fork260509-soybean-admin-base/src/views/home/modules/pie-chart.vue
+- [[pie-chart.vue]] - code - fork260509-soybean-admin-base/src/views/home/modules/pie-chart.vue
 
 ## Live Query (requires Dataview plugin)
 

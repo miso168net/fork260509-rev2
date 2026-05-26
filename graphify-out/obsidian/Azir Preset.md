@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/theme/preset/azir.json"
 type: "concept"
-community: "Color Palette Engine"
+community: "Community 53"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/Color_Palette_Engine
+  - community/Community_53
 ---
 
 # Azir Preset
@@ -14,4 +14,4 @@ tags:
 - [[App.Theme.ThemeSetting]] - `implements` [INFERRED]
 - [[Default Preset]] - `semantically_similar_to` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/Color_Palette_Engine
+#graphify/concept #graphify/INFERRED #community/Community_53

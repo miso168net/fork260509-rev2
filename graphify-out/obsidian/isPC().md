@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/utils/agent.ts"
 type: "code"
-community: "Community 145"
+community: "Community 170"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_145
+  - community/Community_170
 ---
 
 # isPC()
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[agent.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_145
+#graphify/code #graphify/EXTRACTED #community/Community_170

@@ -1,27 +1,28 @@
 ---
 type: community
-cohesion: 0.17
-members: 12
+cohesion: 0.22
+members: 13
 ---
 
 # Community 57
 
-**Cohesion:** 0.17 - loosely connected
-**Members:** 12 nodes
+**Cohesion:** 0.22 - loosely connected
+**Members:** 13 nodes
 
 ## Members
-- [[Align]] - code - fork260509-soybean-admin-base/src/typings/naive-ui.d.ts
-- [[DataTableBaseColumn]] - code - fork260509-soybean-admin-base/src/typings/naive-ui.d.ts
-- [[DataTableExpandColumn]] - code - fork260509-soybean-admin-base/src/typings/naive-ui.d.ts
-- [[DataTableSelectionColumn]] - code - fork260509-soybean-admin-base/src/typings/naive-ui.d.ts
-- [[SetTableColumnKey]] - code - fork260509-soybean-admin-base/src/typings/naive-ui.d.ts
-- [[TableColumn]] - code - fork260509-soybean-admin-base/src/typings/naive-ui.d.ts
-- [[TableColumnCheck_1]] - code - fork260509-soybean-admin-base/src/typings/naive-ui.d.ts
-- [[TableColumnFixed]] - code - fork260509-soybean-admin-base/src/typings/naive-ui.d.ts
-- [[TableColumnWithKey]] - code - fork260509-soybean-admin-base/src/typings/naive-ui.d.ts
-- [[TableOperateType]] - code - fork260509-soybean-admin-base/src/typings/naive-ui.d.ts
-- [[ThemeColor_1]] - code - fork260509-soybean-admin-base/src/typings/naive-ui.d.ts
-- [[naive-ui.d.ts]] - code - fork260509-soybean-admin-base/src/typings/naive-ui.d.ts
+- [[guide_hooks_concept_default_transform]] - concept
+- [[guide_hooks_concept_use_naive_paginated_table]] - concept
+- [[guide_hooks_concept_use_naive_table]] - concept
+- [[guide_hooks_concept_use_table]] - concept
+- [[guide_hooks_concept_use_table_operate]] - concept
+- [[guide_hooks_use_table_doc]] - concept
+- [[guide_request_backend_doc]] - concept
+- [[guide_request_concept_app_service_response]] - concept
+- [[guide_request_concept_create_flat_request]] - concept
+- [[guide_request_concept_create_request]] - concept
+- [[guide_request_concept_request_option]] - concept
+- [[guide_request_intro_doc]] - concept
+- [[guide_request_usage_doc]] - concept
 
 ## Live Query (requires Dataview plugin)
 

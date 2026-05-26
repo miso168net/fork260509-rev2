@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/axios/src/constant.ts"
 type: "code"
-community: "Alova Request Adapter (+docs)"
+community: "Build & Release Scripts"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Alova_Request_Adapter_docs
+  - community/Build__Release_Scripts
 ---
 
 # constant.ts
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[index.ts_1]] - `re_exports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Alova_Request_Adapter_docs
+#graphify/code #graphify/EXTRACTED #community/Build__Release_Scripts

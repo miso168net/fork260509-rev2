@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/service/request/index.ts"
 type: "code"
-community: "API Service Aliases (auth/captcha)"
+community: "Community 42"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/API_Service_Aliases_auth/captcha
+  - community/Community_42
 ---
 
 # service/request/index.ts
@@ -20,4 +20,4 @@ tags:
 - [[servicerequesttype.ts]] - `references` [EXTRACTED]
 - [[storemodulesappindex.ts]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha
+#graphify/code #graphify/EXTRACTED #community/Community_42

@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-docs/src/zh/guide/theme/loading.md"
 type: "document"
-community: "Community 77"
+community: "Getting Started / CLI Docs"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_77
+  - community/Getting_Started_/_CLI_Docs
 ---
 
 # 系统加载动画 setupLoading
@@ -14,4 +14,4 @@ tags:
 - [[SystemLogo 组件]] - `` [EXTRACTED]
 - [[主题配置（themeSettings 与 overrideThemeSettings）]] - `` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_77
+#graphify/document #graphify/EXTRACTED #community/Getting_Started_/_CLI_Docs

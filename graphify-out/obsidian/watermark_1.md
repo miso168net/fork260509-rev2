@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/theme/preset/default.json"
 type: "code"
-community: "SPA Loading Screen UI"
+community: "Community 110"
 location: "L62"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/SPA_Loading_Screen_UI
+  - community/Community_110
 ---
 
 # watermark
@@ -19,4 +19,4 @@ tags:
 - [[timeFormat_1]] - `contains` [EXTRACTED]
 - [[visible_2]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/SPA_Loading_Screen_UI
+#graphify/code #graphify/EXTRACTED #community/Community_110

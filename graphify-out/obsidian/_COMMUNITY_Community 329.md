@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[JP Tutorial Software Install Guide]] - document
+- [[Other Tutorial (JP, stub)]] - document
 
 ## Live Query (requires Dataview plugin)
 

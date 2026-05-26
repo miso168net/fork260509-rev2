@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[index.vue_55]] - code - fork260509-soybean-admin-base/src/views/pro-naive/form/basic/index.vue
+- [[ConfigProvider.vue]] - code - fork260509-soybean-admin-base/src/views/pro-naive/ConfigProvider.vue
 
 ## Live Query (requires Dataview plugin)
 

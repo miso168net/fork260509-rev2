@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[Donation List (JP)]] - document
+- [[srcawesomeindex.md (Ecosystem table of community projects)]] - document - fork260509-soybean-admin-docs/src/awesome/index.md
 
 ## Live Query (requires Dataview plugin)
 

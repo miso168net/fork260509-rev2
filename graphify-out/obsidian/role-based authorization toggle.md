@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/function/toggle-auth/index.vue"
 type: "concept"
-community: "Community 165"
+community: "Community 166"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/Community_165
+  - community/Community_166
 ---
 
 # role-based authorization toggle
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[functiontoggle-auth demo page]] - `implements` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/Community_165
+#graphify/concept #graphify/INFERRED #community/Community_166

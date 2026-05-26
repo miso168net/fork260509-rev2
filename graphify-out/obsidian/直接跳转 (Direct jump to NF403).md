@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Form Validation & Bootstrap"
+community: "Theme & Settings UI"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Form_Validation__Bootstrap
+  - community/Theme__Settings_UI
 ---
 
 # 直接跳转 (Direct jump to NF/403)
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[是否不允许访问 (Forbidden)]] - `` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Form_Validation__Bootstrap
+#graphify/concept #graphify/EXTRACTED #community/Theme__Settings_UI

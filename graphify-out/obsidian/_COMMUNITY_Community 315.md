@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[README.en_US.md (soybean-admin-base)]] - document - fork260509-soybean-admin-base/README.en_US.md
+- [[GitHub Action release via githublogen on tag]] - code - fork260509-soybean-admin-base/.github/workflows/release.yml
 
 ## Live Query (requires Dataview plugin)
 

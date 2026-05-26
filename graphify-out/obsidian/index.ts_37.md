@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/store/modules/theme/index.ts"
 type: "code"
-community: "Per-Package TSConfig (sub-31)"
+community: "Elegant Router DSL"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-31
+  - community/Elegant_Router_DSL
 ---
 
 # index.ts
@@ -35,4 +35,4 @@ tags:
 - [[useThemeStore]] - `contains` [EXTRACTED]
 - [[vchart.ts]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-31
+#graphify/code #graphify/EXTRACTED #community/Elegant_Router_DSL

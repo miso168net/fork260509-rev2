@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[SoybeanAvatar]] - code - fork260509-soybean-admin-base/src/components/custom/soybean-avatar.vue
+- [[CountTo]] - code - fork260509-soybean-admin-base/src/components/custom/count-to.vue
 
 ## Live Query (requires Dataview plugin)
 

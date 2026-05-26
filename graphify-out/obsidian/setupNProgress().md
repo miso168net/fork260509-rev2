@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/plugins/nprogress.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "TypeScript Compiler Config (root)"
 location: "L4"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - community/TypeScript_Compiler_Config_root
 ---
 
 # setupNProgress()
@@ -18,4 +18,4 @@ tags:
 - [[plugins index barrel]] - `references` [EXTRACTED]
 - [[setupApp()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/EXTRACTED #community/TypeScript_Compiler_Config_root

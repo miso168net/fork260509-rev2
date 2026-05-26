@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[App.Service.Response]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[App namespace (ThemeGlobalI18nService)]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
 
 ## Live Query (requires Dataview plugin)
 

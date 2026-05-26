@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[Bug report template (zh-CN)]] - document - fork260509-soybean-admin-base/.github/ISSUE_TEMPLATE/bug-report_cn.yaml
+- [[User Center placeholder view]] - code - fork260509-soybean-admin-base/src/views/user-center/index.vue
 
 ## Live Query (requires Dataview plugin)
 

@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[SoybeanAdmin Router Guard Flow Diagram]] - image
+- [[Donate Page]] - document
 
 ## Live Query (requires Dataview plugin)
 

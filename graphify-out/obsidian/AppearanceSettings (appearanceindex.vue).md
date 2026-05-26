@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/appearance/index.vue"
 type: "code"
-community: "Theme & Settings UI"
+community: "Admin Layout Package"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Theme__Settings_UI
+  - community/Admin_Layout_Package
 ---
 
 # AppearanceSettings (appearance/index.vue)
@@ -16,4 +16,4 @@ tags:
 - [[ThemeRadius (theme-radius.vue)]] - `references` [EXTRACTED]
 - [[ThemeSchema (theme-schema.vue)]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Theme__Settings_UI
+#graphify/code #graphify/EXTRACTED #community/Admin_Layout_Package

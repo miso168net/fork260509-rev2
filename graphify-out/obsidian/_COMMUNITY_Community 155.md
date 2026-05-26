@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[el]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-content/index.vue
-- [[index.vue_6]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-content/index.vue
+- [[CustomLayout.vue]] - code - fork260509-soybean-admin-docs/.vitepress/theme/CustomLayout.vue
+- [[index.ts_40]] - code - fork260509-soybean-admin-docs/.vitepress/theme/index.ts
 
 ## Live Query (requires Dataview plugin)
 

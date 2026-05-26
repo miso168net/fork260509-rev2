@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[.vscodesettings.json (eslint codeActionsOnSave, prettier disabled)]] - code - fork260509-soybean-admin-docs/.vscode/settings.json
+- [[.vscodeextensions.json (volar, unocss, eslint, prettier recs)]] - code - fork260509-soybean-admin-docs/.vscode/extensions.json
 
 ## Live Query (requires Dataview plugin)
 

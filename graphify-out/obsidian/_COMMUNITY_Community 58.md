@@ -1,26 +1,28 @@
 ---
 type: community
-cohesion: 0.18
-members: 11
+cohesion: 0.15
+members: 13
 ---
 
 # Community 58
 
-**Cohesion:** 0.18 - loosely connected
-**Members:** 11 nodes
+**Cohesion:** 0.15 - loosely connected
+**Members:** 13 nodes
 
 ## Members
-- [[unnamed_4]] - code - fork260509-soybean-admin-base/packages/materials/package.json
-- [[@sautils_5]] - code - fork260509-soybean-admin-base/packages/materials/package.json
-- [[dependencies_5]] - code - fork260509-soybean-admin-base/packages/materials/package.json
-- [[devDependencies_2]] - code - fork260509-soybean-admin-base/packages/materials/package.json
-- [[exports_4]] - code - fork260509-soybean-admin-base/packages/materials/package.json
-- [[name_5]] - code - fork260509-soybean-admin-base/packages/materials/package.json
-- [[package.json_5]] - code - fork260509-soybean-admin-base/packages/materials/package.json
-- [[simplebar-vue]] - code - fork260509-soybean-admin-base/packages/materials/package.json
-- [[typed-css-modules]] - code - fork260509-soybean-admin-base/packages/materials/package.json
-- [[typesVersions_4]] - code - fork260509-soybean-admin-base/packages/materials/package.json
-- [[version_6]] - code - fork260509-soybean-admin-base/packages/materials/package.json
+- [[colourWeakness_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[default.json]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[desc_3]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[fixedHeaderAndTab_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[grayscale_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[i18nkey_3]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[isInfoFollowPrimary_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[name_12]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[recommendColor_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[themeColor_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[themeRadius_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[themeScheme_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[version_13]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -28,3 +30,15 @@ members: 11
 TABLE source_file, type FROM #community/Community_58
 SORT file.name ASC
 ```
+
+## Connections to other communities
+- 2 edges to [[_COMMUNITY_Community 100]]
+- 2 edges to [[_COMMUNITY_Community 70]]
+- 1 edge to [[_COMMUNITY_Community 109]]
+- 1 edge to [[_COMMUNITY_Community 137]]
+- 1 edge to [[_COMMUNITY_Community 99]]
+- 1 edge to [[_COMMUNITY_Community 110]]
+- 1 edge to [[_COMMUNITY_Community 82]]
+
+## Top bridge nodes
+- [[default.json]] - degree 21, connects to 7 communities

@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[web-site-link.vue]] - code - fork260509-soybean-admin-base/src/components/custom/web-site-link.vue
+- [[soybean-avatar.vue]] - code - fork260509-soybean-admin-base/src/components/custom/soybean-avatar.vue
 
 ## Live Query (requires Dataview plugin)
 

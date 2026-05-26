@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/router/elegant/imports.ts"
 type: "code"
-community: "Route Type Hierarchy"
+community: "Router Guard Flow (diagram)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Route_Type_Hierarchy
+  - community/Router_Guard_Flow_diagram
 ---
 
 # imports.ts
@@ -19,4 +19,4 @@ tags:
 - [[layouts]] - `contains` [EXTRACTED]
 - [[views]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Route_Type_Hierarchy
+#graphify/code #graphify/EXTRACTED #community/Router_Guard_Flow_diagram

@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/service/api/index.ts"
 type: "code"
-community: "SVG Icon System"
+community: "Auth Store & Permissions"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/SVG_Icon_System
+  - community/Auth_Store__Permissions
 ---
 
 # index.ts
@@ -19,4 +19,4 @@ tags:
 - [[shared.ts_3]] - `imports_from` [EXTRACTED]
 - [[system-manage.ts]] - `re_exports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/SVG_Icon_System
+#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions

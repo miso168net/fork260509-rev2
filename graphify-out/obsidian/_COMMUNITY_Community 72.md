@@ -1,23 +1,24 @@
 ---
 type: community
-cohesion: 0.32
-members: 8
+cohesion: 0.28
+members: 9
 ---
 
 # Community 72
 
-**Cohesion:** 0.32 - loosely connected
-**Members:** 8 nodes
+**Cohesion:** 0.28 - loosely connected
+**Members:** 9 nodes
 
 ## Members
-- [[getLayout()]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
-- [[getLayoutAndPage()]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
-- [[getPage()]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
-- [[getPathParamFromRoutePath()]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
-- [[getRoutePathByRouteName()]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
-- [[getRoutePathWithParam()]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
-- [[shared.ts_9]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
-- [[transformLayoutAndPageToComponent()]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
+- [[TS Debugger 启动配置]] - concept
+- [[VSCode Variables 监视面板]] - concept
+- [[VSCode 调试工具栏（调试选项）]] - concept
+- [[VSCode 调试指南 01 截图]] - image
+- [[VSCode 调试指南 截图 02]] - image
+- [[VSCode 调试面板 (Run and Debug)]] - concept
+- [[VSCode调试指南03.png]] - image
+- [[transformToKebabCase 示例代码]] - concept
+- [[断点 (Breakpoint) 设置示例]] - concept
 
 ## Live Query (requires Dataview plugin)
 

@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Community 132"
+community: "Community 135"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Community_132
+  - community/Community_135
 ---
 
 # useSvgIcon (hook)
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[JP Icon Usage]] - `documents` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Community_132
+#graphify/concept #graphify/EXTRACTED #community/Community_135

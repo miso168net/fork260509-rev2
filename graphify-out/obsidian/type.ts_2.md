@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/service/request/type.ts"
 type: "code"
-community: "SVG Icon System"
+community: "Community 63"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/SVG_Icon_System
+  - community/Community_63
 ---
 
 # type.ts
@@ -16,4 +16,4 @@ tags:
 - [[index.ts_29]] - `imports_from` [EXTRACTED]
 - [[shared.ts_3]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/SVG_Icon_System
+#graphify/code #graphify/EXTRACTED #community/Community_63

@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/manage/menu/index.vue"
 type: "code"
-community: "Docs Site Package Metadata"
+community: "Community 51"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Docs_Site_Package_Metadata
+  - community/Community_51
 ---
 
 # manage/menu admin page
@@ -16,4 +16,4 @@ tags:
 - [[managerole admin page]] - `semantically_similar_to` [INFERRED]
 - [[menu modules shared utils]] - `shares_data_with` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Docs_Site_Package_Metadata
+#graphify/code #graphify/INFERRED #community/Community_51

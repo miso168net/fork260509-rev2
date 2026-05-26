@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/index.vue"
 type: "code"
-community: "Community 71"
+community: "Community 78"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_71
+  - community/Community_78
 ---
 
 # index.vue
@@ -21,4 +21,4 @@ tags:
 - [[initVTableGantt()]] - `contains` [EXTRACTED]
 - [[stopHandle]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_71
+#graphify/code #graphify/EXTRACTED #community/Community_78

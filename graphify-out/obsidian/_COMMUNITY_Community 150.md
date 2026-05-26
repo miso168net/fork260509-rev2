@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[index.vue_33]] - code - fork260509-soybean-admin-base/src/views/manage/user/index.vue
-- [[label_2]] - code - fork260509-soybean-admin-base/src/views/manage/user/index.vue
+- [[getLocalIcons()]] - code - fork260509-soybean-admin-base/src/utils/icon.ts
+- [[icon.ts_1]] - code - fork260509-soybean-admin-base/src/utils/icon.ts
 
 ## Live Query (requires Dataview plugin)
 

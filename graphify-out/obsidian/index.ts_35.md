@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/store/modules/route/index.ts"
 type: "code"
-community: "Community 41"
+community: "Community 45"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_41
+  - community/Community_45
 ---
 
 # index.ts
@@ -45,4 +45,4 @@ tags:
 - [[useRouteStore]] - `contains` [EXTRACTED]
 - [[useTabStore]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_41
+#graphify/code #graphify/EXTRACTED #community/Community_45

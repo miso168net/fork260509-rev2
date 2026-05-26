@@ -1,13 +1,13 @@
 ---
 source_file: ""
 type: "document"
-community: "Community 339"
+community: "Community 340"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_339
+  - community/Community_340
 ---
 
 # Standards: TypeScript (empty)
 
-#graphify/document #graphify/EXTRACTED #community/Community_339
+#graphify/document #graphify/EXTRACTED #community/Community_340

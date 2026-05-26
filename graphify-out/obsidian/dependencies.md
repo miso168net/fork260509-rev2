@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/package.json"
 type: "code"
-community: "Runtime Dependencies"
+community: "Form & Table Hooks"
 location: "L46"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Runtime_Dependencies
+  - community/Form__Table_Hooks
 ---
 
 # dependencies
@@ -58,4 +58,4 @@ tags:
 - [[xgplayer]] - `contains` [EXTRACTED]
 - [[xlsx]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies
+#graphify/code #graphify/EXTRACTED #community/Form__Table_Hooks

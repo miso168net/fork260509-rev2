@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/plugins/index.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "Dev Dependencies"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - community/Dev_Dependencies
 ---
 
 # index.ts
@@ -20,4 +20,4 @@ tags:
 - [[main.ts]] - `imports_from` [EXTRACTED]
 - [[nprogress.ts]] - `re_exports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/EXTRACTED #community/Dev_Dependencies

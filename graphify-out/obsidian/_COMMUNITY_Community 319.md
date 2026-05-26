@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[SbUiPromo.vue]] - code - fork260509-soybean-admin-docs/.vitepress/theme/SbUiPromo.vue
+- [[NoticeBar.vue]] - code - fork260509-soybean-admin-docs/.vitepress/theme/NoticeBar.vue
 
 ## Live Query (requires Dataview plugin)
 

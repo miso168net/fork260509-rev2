@@ -1,32 +1,33 @@
 ---
 type: community
-cohesion: 0.12
-members: 17
+cohesion: 0.24
+members: 18
 ---
 
 # Per-Package TSConfig (sub-26)
 
-**Cohesion:** 0.12 - loosely connected
-**Members:** 17 nodes
+**Cohesion:** 0.24 - loosely connected
+**Members:** 18 nodes
 
 ## Members
-- [[allowSyntheticDefaultImports_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[compilerOptions_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[esModuleInterop_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[exclude_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[forceConsistentCasingInFileNames_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[include_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[jsx_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[lib_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[module_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[moduleResolution_4]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[noUnusedLocals_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[resolveJsonModule_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[strict_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[strictNullChecks_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[target_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[tsconfig.json_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
-- [[types_3]] - code - fork260509-soybean-admin-base/packages/color/tsconfig.json
+- [[extractTabsByAllRoutes()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[filterTabsById()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[findTabByRouteName()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[getAllTabs()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[getDefaultHomeTab()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[getFixedTabIds()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[getFixedTabs()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[getRouteIcons()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[getRoutePath()]] - code - fork260509-soybean-admin-base/src/router/elegant/transform.ts
+- [[getTabByRoute()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[getTabIdByRoute()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[index.ts_36]] - code - fork260509-soybean-admin-base/src/store/modules/tab/index.ts
+- [[isFixedTab()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[isTabInTabs()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[reorderFixedTabs()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[shared.ts_7]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[updateTabByI18nKey()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[updateTabsLabel()]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
 
 ## Live Query (requires Dataview plugin)
 
@@ -34,3 +35,18 @@ members: 17
 TABLE source_file, type FROM #community/Per-Package_TSConfig_sub-26
 SORT file.name ASC
 ```
+
+## Connections to other communities
+- 6 edges to [[_COMMUNITY_Auth Store & Permissions]]
+- 4 edges to [[_COMMUNITY_Dev Dependencies]]
+- 3 edges to [[_COMMUNITY_Community 83]]
+- 3 edges to [[_COMMUNITY_TypeScript Compiler Config (root)]]
+- 2 edges to [[_COMMUNITY_Community 45]]
+- 1 edge to [[_COMMUNITY_Router Guard Flow (diagram)]]
+- 1 edge to [[_COMMUNITY_Elegant Router DSL]]
+- 1 edge to [[_COMMUNITY_Runtime Dependencies]]
+
+## Top bridge nodes
+- [[index.ts_36]] - degree 27, connects to 6 communities
+- [[getRoutePath()]] - degree 6, connects to 3 communities
+- [[shared.ts_7]] - degree 20, connects to 2 communities

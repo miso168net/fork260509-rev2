@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Community 52"
+community: "Community 57"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Community_52
+  - community/Community_57
 ---
 
 # guide_hooks_use_table_doc
@@ -18,4 +18,4 @@ tags:
 - [[guide_hooks_concept_use_table_operate]] - `describes` [EXTRACTED]
 - [[guide_request_usage_doc]] - `semantically_similar_to` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Community_52
+#graphify/concept #graphify/EXTRACTED #community/Community_57

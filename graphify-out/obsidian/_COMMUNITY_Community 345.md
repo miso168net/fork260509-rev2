@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[ZH Cooperate Commercial Services]] - document
+- [[ZH Awesome Ecosystem Projects]] - document
 
 ## Live Query (requires Dataview plugin)
 

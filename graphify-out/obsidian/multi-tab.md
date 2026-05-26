@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/function/multi-tab/index.vue"
 type: "code"
-community: "Community 98"
+community: "Community 107"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_98
+  - community/Community_107
 ---
 
 # multi-tab
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[LookForward_1]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_98
+#graphify/code #graphify/EXTRACTED #community/Community_107

@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Community 132"
+community: "Community 135"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Community_132
+  - community/Community_135
 ---
 
 # JP Icon Intro
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[JP Icon Usage]] - `semantically_similar_to` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Community_132
+#graphify/concept #graphify/EXTRACTED #community/Community_135

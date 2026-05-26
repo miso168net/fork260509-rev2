@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/theme/vars.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "Community 53"
 location: "L2"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Community_53
 ---
 
 # createColorPaletteVars()
@@ -15,4 +15,4 @@ tags:
 - [[themeVars]] - `calls` [EXTRACTED]
 - [[vars.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Community_53

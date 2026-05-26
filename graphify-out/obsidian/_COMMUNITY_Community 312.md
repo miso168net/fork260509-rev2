@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[GitHub Action super-linter on PRs to main]] - code - fork260509-soybean-admin-base/.github/workflows/linter.yml
+- [[Feature request template (zh-CN)]] - document - fork260509-soybean-admin-base/.github/ISSUE_TEMPLATE/feature_request_cn.yaml
 
 ## Live Query (requires Dataview plugin)
 

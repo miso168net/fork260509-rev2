@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts"
 type: "code"
-community: "Docs Site Package Metadata"
+community: "Community 51"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Docs_Site_Package_Metadata
+  - community/Community_51
 ---
 
 # menu modules shared utils
@@ -14,4 +14,4 @@ tags:
 - [[MenuOperateModal]] - `references` [EXTRACTED]
 - [[managemenu admin page]] - `shares_data_with` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Docs_Site_Package_Metadata
+#graphify/code #graphify/INFERRED #community/Community_51

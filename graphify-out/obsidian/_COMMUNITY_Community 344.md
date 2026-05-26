@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[ZH Awesome Ecosystem Projects]] - document
+- [[VitePress ZH Home Page]] - document
 
 ## Live Query (requires Dataview plugin)
 

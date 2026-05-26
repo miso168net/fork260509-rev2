@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/hooks/common/form.ts"
 type: "code"
-community: "Docs Site TSConfig (NEW)"
+community: "TypeScript Compiler Config (root)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Docs_Site_TSConfig_NEW
+  - community/TypeScript_Compiler_Config_root
 ---
 
 # form.ts
@@ -18,4 +18,4 @@ tags:
 - [[useFormRules()]] - `contains` [EXTRACTED]
 - [[useNaiveForm()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Docs_Site_TSConfig_NEW
+#graphify/code #graphify/EXTRACTED #community/TypeScript_Compiler_Config_root

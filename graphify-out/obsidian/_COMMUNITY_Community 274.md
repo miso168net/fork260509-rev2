@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[index.vue_60]] - code - fork260509-soybean-admin-base/src/views/user-center/index.vue
+- [[index.vue_59]] - code - fork260509-soybean-admin-base/src/views/pro-naive/table/row-edit/index.vue
 
 ## Live Query (requires Dataview plugin)
 

@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/alova/scenes/modules/polling-request.vue"
 type: "code"
-community: "Community 81"
+community: "Community 90"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_81
+  - community/Community_90
 ---
 
 # PollingRequest
@@ -16,4 +16,4 @@ tags:
 - [[NetworkToggleRequest]] - `semantically_similar_to` [INFERRED]
 - [[alova scenes index]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/INFERRED #community/Community_81
+#graphify/code #graphify/INFERRED #community/Community_90

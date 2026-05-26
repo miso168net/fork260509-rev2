@@ -1,21 +1,23 @@
 ---
 type: community
-cohesion: 0.22
-members: 9
+cohesion: 0.18
+members: 11
 ---
 
 # Community 68
 
-**Cohesion:** 0.22 - loosely connected
-**Members:** 9 nodes
+**Cohesion:** 0.18 - loosely connected
+**Members:** 11 nodes
 
 ## Members
-- [[Elegant Router plugin]] - concept
 - [[JP Awesome Ecosystem]] - concept
+- [[JP CLI Intro]] - concept
+- [[JP Code Sync Guide]] - concept
 - [[JP Cooperation Page]] - concept
+- [[JP Git Hooks Doc]] - concept
 - [[JP Guide Intro]] - concept
-- [[JP Route Creation]] - concept
-- [[JP Router Cache]] - concept
+- [[JP Quick Start]] - concept
+- [[JP sa CLI Commands]] - concept
 - [[UnoCSS Dark Mode (class strategy)]] - concept
 - [[UnoCSS Theme Doc]] - concept
 - [[themeVars (UnoCSS injection)]] - concept
@@ -28,9 +30,7 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 1 edge to [[_COMMUNITY_Community 99]]
-- 1 edge to [[_COMMUNITY_Community 78]]
+- 1 edge to [[_COMMUNITY_Community 96]]
 
 ## Top bridge nodes
 - [[JP Guide Intro]] - degree 5, connects to 1 community
-- [[Elegant Router plugin]] - degree 4, connects to 1 community

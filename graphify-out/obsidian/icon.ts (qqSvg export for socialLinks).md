@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-docs/.vitepress/icon.ts"
 type: "code"
-community: "Per-Package TSConfig (sub-33)"
+community: "Route Helpers & Tab Filters"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-33
+  - community/Route_Helpers__Tab_Filters
 ---
 
 # icon.ts (qqSvg export for socialLinks)
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[VitePress config (locales enzhjp, sidebar, algolia)]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-33
+#graphify/code #graphify/EXTRACTED #community/Route_Helpers__Tab_Filters

@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/chrome-tab.vue"
 type: "code"
-community: "Form & Table Hooks"
+community: "Alova Request Adapter (+docs)"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Form__Table_Hooks
+  - community/Alova_Request_Adapter_docs
 ---
 
 # ChromeTab component
@@ -16,4 +16,4 @@ tags:
 - [[PageTabProps]] - `implements` [EXTRACTED]
 - [[SliderTab component]] - `semantically_similar_to` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Form__Table_Hooks
+#graphify/code #graphify/INFERRED #community/Alova_Request_Adapter_docs

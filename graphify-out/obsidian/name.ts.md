@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/color/src/constant/name.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "VS Code Workspace Settings"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/VS_Code_Workspace_Settings
 ---
 
 # name.ts
@@ -16,4 +16,4 @@ tags:
 - [[colorNames]] - `contains` [EXTRACTED]
 - [[index.ts_3]] - `re_exports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/VS_Code_Workspace_Settings

@@ -1,52 +1,46 @@
 ---
 type: community
-cohesion: 0.09
-members: 37
+cohesion: 0.13
+members: 31
 ---
 
 # Auth Store & Permissions
 
-**Cohesion:** 0.09 - loosely connected
-**Members:** 37 nodes
+**Cohesion:** 0.13 - loosely connected
+**Members:** 31 nodes
 
 ## Members
-- [[App Bootstrap Sequence]] - concept - fork260509-soybean-admin-base/src/main.ts
-- [[App.I18n.LangType (zh-CNen-US)]] - concept - fork260509-soybean-admin-base/src/locales/locale.ts
-- [[App.vue]] - code - fork260509-soybean-admin-base/src/App.vue
-- [[AppProvider]] - code - fork260509-soybean-admin-base/src/components/common/app-provider.vue
-- [[ContextHolder]] - code - fork260509-soybean-admin-base/src/components/common/app-provider.vue
-- [[DarkModeContainer]] - code - fork260509-soybean-admin-base/src/components/common/dark-mode-container.vue
-- [[Naive UI Provider Pattern]] - concept - fork260509-soybean-admin-base/src/components/common/app-provider.vue
-- [[app.ts_1]] - code - fork260509-soybean-admin-base/src/plugins/app.ts
-- [[assets.ts]] - code - fork260509-soybean-admin-base/src/plugins/assets.ts
-- [[components.ts]] - code - fork260509-soybean-admin-base/src/plugins/components.ts
-- [[createProgressGuard()]] - code - fork260509-soybean-admin-base/src/router/guard/progress.ts
-- [[dayjs.ts_1]] - code - fork260509-soybean-admin-base/src/plugins/dayjs.ts
-- [[en-us.ts]] - code - fork260509-soybean-admin-base/src/locales/langs/en-us.ts
-- [[getHtmlBuildTime()]] - code - fork260509-soybean-admin-base/src/plugins/app.ts
-- [[getLocale()]] - code - fork260509-soybean-admin-base/src/locales/index.ts
-- [[iconify.ts]] - code - fork260509-soybean-admin-base/src/plugins/iconify.ts
-- [[index.ts_24]] - code - fork260509-soybean-admin-base/src/plugins/index.ts
-- [[local]] - code - fork260509-soybean-admin-base/src/locales/langs/en-us.ts
-- [[local_1]] - code - fork260509-soybean-admin-base/src/locales/langs/zh-cn.ts
-- [[locale.ts]] - code - fork260509-soybean-admin-base/src/locales/locale.ts
-- [[locales]] - code - fork260509-soybean-admin-base/src/locales/locale.ts
-- [[main.ts]] - code - fork260509-soybean-admin-base/src/main.ts
-- [[naive.ts]] - code - fork260509-soybean-admin-base/src/locales/naive.ts
-- [[naiveDateLocale]] - code - fork260509-soybean-admin-base/src/App.vue
-- [[naiveLocale]] - code - fork260509-soybean-admin-base/src/App.vue
-- [[nprogress.ts]] - code - fork260509-soybean-admin-base/src/plugins/nprogress.ts
-- [[plugins index barrel]] - code - fork260509-soybean-admin-base/src/plugins/index.ts
-- [[setDayjsLocale()]] - code - fork260509-soybean-admin-base/src/locales/dayjs.ts
-- [[setupApp()]] - code - fork260509-soybean-admin-base/src/main.ts
-- [[setupAppErrorHandle()]] - code - fork260509-soybean-admin-base/src/plugins/app.ts
-- [[setupAppVersionNotification()]] - code - fork260509-soybean-admin-base/src/plugins/app.ts
-- [[setupDayjs()]] - code - fork260509-soybean-admin-base/src/plugins/dayjs.ts
-- [[setupI18n()]] - code - fork260509-soybean-admin-base/src/locales/index.ts
-- [[setupIconifyOffline()]] - code - fork260509-soybean-admin-base/src/plugins/iconify.ts
-- [[setupNProgress()]] - code - fork260509-soybean-admin-base/src/plugins/nprogress.ts
-- [[setupProNaiveComponents()]] - code - fork260509-soybean-admin-base/src/plugins/components.ts
-- [[zh-cn.ts]] - code - fork260509-soybean-admin-base/src/locales/langs/zh-cn.ts
+- [[Button-level Permission Check]] - concept - fork260509-soybean-admin-base/src/hooks/business/auth.ts
+- [[auth.ts]] - code - fork260509-soybean-admin-base/src/hooks/business/auth.ts
+- [[clearAuthStorage()]] - code - fork260509-soybean-admin-base/src/store/modules/auth/shared.ts
+- [[dayjs.ts]] - code - fork260509-soybean-admin-base/src/locales/dayjs.ts
+- [[demoRequest]] - code - fork260509-soybean-admin-base/src/service/request/index.ts
+- [[getAuthorization()_1]] - code - fork260509-soybean-admin-base/src/service-alova/request/shared.ts
+- [[getAuthorization()]] - code - fork260509-soybean-admin-base/src/service/request/shared.ts
+- [[getToken()]] - code - fork260509-soybean-admin-base/src/store/modules/auth/shared.ts
+- [[handleExpiredRequest()]] - code - fork260509-soybean-admin-base/src/service/request/shared.ts
+- [[handleRefreshToken()_1]] - code - fork260509-soybean-admin-base/src/service-alova/request/shared.ts
+- [[handleRefreshToken()]] - code - fork260509-soybean-admin-base/src/service/request/shared.ts
+- [[i18n]] - code - fork260509-soybean-admin-base/src/locales/index.ts
+- [[index.ts_23]] - code - fork260509-soybean-admin-base/src/locales/index.ts
+- [[index.ts_28]] - code - fork260509-soybean-admin-base/src/service/api/index.ts
+- [[index.ts_29]] - code - fork260509-soybean-admin-base/src/service/request/index.ts
+- [[index.ts_33]] - code - fork260509-soybean-admin-base/src/store/modules/app/index.ts
+- [[index.ts_34]] - code - fork260509-soybean-admin-base/src/store/modules/auth/index.ts
+- [[localStg]] - code - fork260509-soybean-admin-base/src/utils/storage.ts
+- [[localforage_1]] - code - fork260509-soybean-admin-base/src/utils/storage.ts
+- [[sessionStg]] - code - fork260509-soybean-admin-base/src/utils/storage.ts
+- [[setLocale()]] - code - fork260509-soybean-admin-base/src/locales/index.ts
+- [[shared.ts_4]] - code - fork260509-soybean-admin-base/src/service-alova/request/shared.ts
+- [[shared.ts_3]] - code - fork260509-soybean-admin-base/src/service/request/shared.ts
+- [[shared.ts_5]] - code - fork260509-soybean-admin-base/src/store/modules/auth/shared.ts
+- [[showErrorMsg()_1]] - code - fork260509-soybean-admin-base/src/service-alova/request/shared.ts
+- [[showErrorMsg()]] - code - fork260509-soybean-admin-base/src/service/request/shared.ts
+- [[storage.ts_1]] - code - fork260509-soybean-admin-base/src/utils/storage.ts
+- [[useAuth]] - code - fork260509-soybean-admin-base/src/hooks/business/auth.ts
+- [[useAuthStore]] - code - fork260509-soybean-admin-base/src/store/modules/auth/index.ts
+- [[useTabStore]] - code - fork260509-soybean-admin-base/src/store/modules/tab/index.ts
+- [[{ baseURL, otherBaseURL }]] - code - fork260509-soybean-admin-base/src/service/request/index.ts
 
 ## Live Query (requires Dataview plugin)
 
@@ -56,16 +50,26 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 9 edges to [[_COMMUNITY_Community 46]]
-- 5 edges to [[_COMMUNITY_Community 45]]
-- 4 edges to [[_COMMUNITY_Color Palette Engine]]
-- 3 edges to [[_COMMUNITY_Community 84]]
-- 3 edges to [[_COMMUNITY_Route Type Hierarchy]]
-- 1 edge to [[_COMMUNITY_Dev Dependencies]]
+- 13 edges to [[_COMMUNITY_Dev Dependencies]]
+- 11 edges to [[_COMMUNITY_TypeScript Compiler Config (root)]]
+- 9 edges to [[_COMMUNITY_Community 63]]
+- 7 edges to [[_COMMUNITY_Community 41]]
+- 7 edges to [[_COMMUNITY_Elegant Router DSL]]
+- 6 edges to [[_COMMUNITY_Community 45]]
+- 6 edges to [[_COMMUNITY_Per-Package TSConfig (sub-26)]]
+- 5 edges to [[_COMMUNITY_API Service Aliases (authcaptcha)]]
+- 4 edges to [[_COMMUNITY_Community 83]]
+- 3 edges to [[_COMMUNITY_Build & Release Scripts]]
+- 3 edges to [[_COMMUNITY_Community 50]]
+- 3 edges to [[_COMMUNITY_Community 38]]
+- 2 edges to [[_COMMUNITY_Community 88]]
+- 1 edge to [[_COMMUNITY_Community 52]]
+- 1 edge to [[_COMMUNITY_Docs Site Config Files]]
+- 1 edge to [[_COMMUNITY_Runtime Dependencies]]
 
 ## Top bridge nodes
-- [[main.ts]] - degree 17, connects to 4 communities
-- [[setupApp()]] - degree 13, connects to 3 communities
-- [[app.ts_1]] - degree 6, connects to 2 communities
-- [[index.ts_24]] - degree 7, connects to 1 community
-- [[plugins index barrel]] - degree 6, connects to 1 community
+- [[index.ts_23]] - degree 21, connects to 9 communities
+- [[index.ts_34]] - degree 25, connects to 8 communities
+- [[index.ts_33]] - degree 20, connects to 8 communities
+- [[storage.ts_1]] - degree 19, connects to 5 communities
+- [[index.ts_29]] - degree 20, connects to 4 communities

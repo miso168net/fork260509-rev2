@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[App namespace (ThemeGlobalI18nService)]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
+- [[constantsmap-sdk]] - code - fork260509-soybean-admin-base/src/constants/map-sdk.ts
 
 ## Live Query (requires Dataview plugin)
 

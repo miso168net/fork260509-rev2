@@ -10,9 +10,9 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[ImportMeta]] - code - fork260509-soybean-admin-base/src/typings/vite-env.d.ts
-- [[RouterHistoryMode]] - code - fork260509-soybean-admin-base/src/typings/vite-env.d.ts
-- [[vite-env.d.ts]] - code - fork260509-soybean-admin-base/src/typings/vite-env.d.ts
+- [[@sacolor package manifest]] - code - fork260509-soybean-admin-base/packages/color/package.json
+- [[@sahooks package manifest]] - code - fork260509-soybean-admin-base/packages/hooks/package.json
+- [[@samaterials package manifest]] - code - fork260509-soybean-admin-base/packages/materials/package.json
 
 ## Live Query (requires Dataview plugin)
 

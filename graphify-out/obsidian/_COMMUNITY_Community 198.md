@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[search-result.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-search/components/search-result.vue
+- [[search-footer.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-search/components/search-footer.vue
 
 ## Live Query (requires Dataview plugin)
 

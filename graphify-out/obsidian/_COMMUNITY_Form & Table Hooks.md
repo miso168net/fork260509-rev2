@@ -1,67 +1,59 @@
 ---
 type: community
-cohesion: 0.06
-members: 52
+cohesion: 0.05
+members: 44
 ---
 
 # Form & Table Hooks
 
-**Cohesion:** 0.06 - loosely connected
-**Members:** 52 nodes
+**Cohesion:** 0.05 - loosely connected
+**Members:** 44 nodes
 
 ## Members
-- [[ACTIVE_COLOR]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/shared.ts
-- [[AdminLayout component]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[AdminLayoutContentConfig]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[AdminLayoutFooterConfig]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[AdminLayoutProps]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[AdminLayoutSiderConfig]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[AdminLayoutTabConfig]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[ButtonTab component]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/button-tab.vue
-- [[CSS custom properties theming (--soy- vars)]] - concept - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/shared.ts
-- [[ChromeTab component]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/chrome-tab.vue
-- [[Kebab]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[KebabCase]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[LAYOUT_MAX_Z_INDEX]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/shared.ts
-- [[LAYOUT_SCROLL_EL_ID]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/shared.ts
-- [[LayoutCssVars]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[LayoutCssVars  LayoutCssVarsProps]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[LayoutMode]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[LayoutScrollMode]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[Page tab variant pattern (chromebuttonslider)]] - concept - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/index.vue
-- [[PageTab component]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/index.vue
-- [[PageTabCssVars]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[PageTabCssVars  PageTabCssVarsProps]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[PageTabCssVarsProps]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[PageTabMode]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[PageTabProps]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[Prefix]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[SimpleScrollbar component]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/simple-scrollbar/index.vue
-- [[SliderTab component]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/slider-tab.vue
-- [[SvgClose component]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/svg-close.vue
-- [[Vue admin layout pattern (headertabsidercontentfooter)]] - concept - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[addColorAlpha()]] - code - fork260509-soybean-admin-base/packages/color/src/shared/colord.ts
-- [[admin-layoutindex module]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.ts
-- [[admin-layoutshared]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/shared.ts
-- [[createCssVars()]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/shared.ts
-- [[createLayoutCssVars()]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/shared.ts
-- [[createLayoutCssVarsByCssVarsProps()]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/shared.ts
-- [[createTabCssVars()]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/shared.ts
-- [[index.ts_8]] - code - fork260509-soybean-admin-base/packages/materials/src/index.ts
-- [[index.ts_9]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.ts
-- [[index.ts_10]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/index.ts
-- [[index.ts_11]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/simple-scrollbar/index.ts
-- [[index.ts_12]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[index.vue_1]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/index.vue
-- [[index.vue_2]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/simple-scrollbar/index.vue
-- [[materialssrcindex]] - code - fork260509-soybean-admin-base/packages/materials/src/index.ts
-- [[materialstypesindex]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
-- [[page-tabindex module]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/index.ts
-- [[page-tabshared]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/shared.ts
-- [[shared.ts_1]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/shared.ts
-- [[shared.ts_2]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/shared.ts
-- [[simple-scrollbarindex module]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/simple-scrollbar/index.ts
-- [[transformColorWithOpacity()]] - code - fork260509-soybean-admin-base/packages/color/src/shared/colord.ts
+- [[@antvdata-set]] - code - fork260509-soybean-admin-base/package.json
+- [[@antvg2]] - code - fork260509-soybean-admin-base/package.json
+- [[@antvg6]] - code - fork260509-soybean-admin-base/package.json
+- [[@iconifyvue]] - code - fork260509-soybean-admin-base/package.json
+- [[@saalova]] - code - fork260509-soybean-admin-base/package.json
+- [[@saaxios]] - code - fork260509-soybean-admin-base/package.json
+- [[@sacolor]] - code - fork260509-soybean-admin-base/package.json
+- [[@sahooks]] - code - fork260509-soybean-admin-base/package.json
+- [[@samaterials]] - code - fork260509-soybean-admin-base/package.json
+- [[@sautils]] - code - fork260509-soybean-admin-base/package.json
+- [[@visactorvchart]] - code - fork260509-soybean-admin-base/package.json
+- [[@visactorvchart-theme]] - code - fork260509-soybean-admin-base/package.json
+- [[@visactorvtable-editors]] - code - fork260509-soybean-admin-base/package.json
+- [[@visactorvtable-gantt]] - code - fork260509-soybean-admin-base/package.json
+- [[@visactorvue-vtable]] - code - fork260509-soybean-admin-base/package.json
+- [[@vueusecomponents]] - code - fork260509-soybean-admin-base/package.json
+- [[@vueusecore]] - code - fork260509-soybean-admin-base/package.json
+- [[BetterScroll]] - code - fork260509-soybean-admin-base/src/components/custom/better-scroll.vue
+- [[clipboard]] - code - fork260509-soybean-admin-base/package.json
+- [[dayjs]] - code - fork260509-soybean-admin-base/package.json
+- [[defu]] - code - fork260509-soybean-admin-base/package.json
+- [[dependencies]] - code - fork260509-soybean-admin-base/package.json
+- [[dompurify]] - code - fork260509-soybean-admin-base/package.json
+- [[echarts]] - code - fork260509-soybean-admin-base/package.json
+- [[jsbarcode]] - code - fork260509-soybean-admin-base/package.json
+- [[json5]] - code - fork260509-soybean-admin-base/package.json
+- [[naive-ui]] - code - fork260509-soybean-admin-base/package.json
+- [[nprogress]] - code - fork260509-soybean-admin-base/package.json
+- [[pinia]] - code - fork260509-soybean-admin-base/package.json
+- [[pinyin-pro]] - code - fork260509-soybean-admin-base/package.json
+- [[print-js]] - code - fork260509-soybean-admin-base/package.json
+- [[pro-naive-ui]] - code - fork260509-soybean-admin-base/package.json
+- [[swiper]] - code - fork260509-soybean-admin-base/package.json
+- [[tailwind-merge]] - code - fork260509-soybean-admin-base/package.json
+- [[typeit]] - code - fork260509-soybean-admin-base/package.json
+- [[vditor]] - code - fork260509-soybean-admin-base/package.json
+- [[vue]] - code - fork260509-soybean-admin-base/package.json
+- [[vue-draggable-plus]] - code - fork260509-soybean-admin-base/package.json
+- [[vue-i18n]] - code - fork260509-soybean-admin-base/package.json
+- [[vue-pdf-embed]] - code - fork260509-soybean-admin-base/package.json
+- [[vue-router]] - code - fork260509-soybean-admin-base/package.json
+- [[wangeditor]] - code - fork260509-soybean-admin-base/package.json
+- [[xgplayer]] - code - fork260509-soybean-admin-base/package.json
+- [[xlsx]] - code - fork260509-soybean-admin-base/package.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -71,11 +63,8 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 5 edges to [[_COMMUNITY_Color Palette Engine]]
-- 1 edge to [[_COMMUNITY_Layout Geometry & Scroll]]
+- 1 edge to [[_COMMUNITY_Global Layout Components]]
+- 1 edge to [[_COMMUNITY_Community 92]]
 
 ## Top bridge nodes
-- [[shared.ts_2]] - degree 8, connects to 1 community
-- [[addColorAlpha()]] - degree 6, connects to 1 community
-- [[transformColorWithOpacity()]] - degree 4, connects to 1 community
-- [[index.ts_9]] - degree 3, connects to 1 community
+- [[dependencies]] - degree 45, connects to 2 communities

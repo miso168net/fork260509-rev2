@@ -1,36 +1,35 @@
 ---
 type: community
-cohesion: 0.10
-members: 21
+cohesion: 0.14
+members: 20
 ---
 
 # Global Search Module
 
-**Cohesion:** 0.10 - loosely connected
-**Members:** 21 nodes
+**Cohesion:** 0.14 - loosely connected
+**Members:** 20 nodes
 
 ## Members
-- [[allowSyntheticDefaultImports_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[baseUrl_1]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[compilerOptions_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[esModuleInterop_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[exclude_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[forceConsistentCasingInFileNames_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[include_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[isolatedModules_1]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[jsx_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[jsxImportSource_1]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[lib_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[module_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[moduleResolution_10]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[noUnusedLocals_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[outDir]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[resolveJsonModule_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[strict_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[strictNullChecks_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[target_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[tsconfig.json_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[types_9]] - code - fork260509-soybean-admin-docs/tsconfig.json
+- [[ButtonIcon]] - code - fork260509-soybean-admin-base/src/components/custom/button-icon.vue
+- [[CustomIconSelect]] - code - fork260509-soybean-admin-base/src/components/custom/custom-icon-select.vue
+- [[IconTooltip]] - code - fork260509-soybean-admin-base/src/components/common/icon-tooltip.vue
+- [[Iconify + Local SVG Dual Render Pattern]] - concept - fork260509-soybean-admin-base/src/components/custom/svg-icon.vue
+- [[LangSwitch]] - code - fork260509-soybean-admin-base/src/components/common/lang-switch.vue
+- [[LookForward]] - code - fork260509-soybean-admin-base/src/components/custom/look-forward.vue
+- [[MenuToggler]] - code - fork260509-soybean-admin-base/src/components/common/menu-toggler.vue
+- [[PinToggler]] - code - fork260509-soybean-admin-base/src/components/common/pin-toggler.vue
+- [[ReloadButton]] - code - fork260509-soybean-admin-base/src/components/common/reload-button.vue
+- [[SvgIcon]] - code - fork260509-soybean-admin-base/src/components/custom/svg-icon.vue
+- [[Theme Schema RecordOptions Pattern]] - concept - fork260509-soybean-admin-base/src/constants/app.ts
+- [[ThemeSchemaSwitch]] - code - fork260509-soybean-admin-base/src/components/common/theme-schema-switch.vue
+- [[Tooltip-wrapped Icon Button Pattern]] - concept - fork260509-soybean-admin-base/src/components/custom/button-icon.vue
+- [[constantsapp]] - code - fork260509-soybean-admin-base/src/constants/app.ts
+- [[constantsbusiness]] - code - fork260509-soybean-admin-base/src/constants/business.ts
+- [[constantscommon]] - code - fork260509-soybean-admin-base/src/constants/common.ts
+- [[handleChange()]] - code - fork260509-soybean-admin-base/src/components/custom/custom-icon-select.vue
+- [[iconsList]] - code - fork260509-soybean-admin-base/src/components/custom/custom-icon-select.vue
+- [[searchValue]] - code - fork260509-soybean-admin-base/src/components/custom/custom-icon-select.vue
+- [[selectedIcon]] - code - fork260509-soybean-admin-base/src/components/custom/custom-icon-select.vue
 
 ## Live Query (requires Dataview plugin)
 

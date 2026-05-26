@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/store/index.ts"
 type: "code"
-community: "API Service Aliases (auth/captcha)"
+community: "Per-Package TSConfig (sub-33)"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/API_Service_Aliases_auth/captcha
+  - community/Per-Package_TSConfig_sub-33
 ---
 
 # store/index.ts
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[pinia setup store pattern]] - `conceptually_related_to` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/API_Service_Aliases_auth/captcha
+#graphify/code #graphify/INFERRED #community/Per-Package_TSConfig_sub-33

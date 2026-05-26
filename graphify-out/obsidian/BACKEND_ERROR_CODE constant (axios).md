@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/axios/src/constant.ts"
 type: "code"
-community: "Alova Request Adapter (+docs)"
+community: "Build & Release Scripts"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Alova_Request_Adapter_docs
+  - community/Build__Release_Scripts
 ---
 
 # BACKEND_ERROR_CODE constant (axios)
@@ -15,4 +15,4 @@ tags:
 - [[BACKEND_ERROR_CODE convention]] - `implements` [INFERRED]
 - [[createCommonRequest internal factory]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/INFERRED #community/Alova_Request_Adapter_docs
+#graphify/code #graphify/INFERRED #community/Build__Release_Scripts

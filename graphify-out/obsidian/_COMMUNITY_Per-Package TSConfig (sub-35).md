@@ -10,23 +10,23 @@ members: 17
 **Members:** 17 nodes
 
 ## Members
-- [[allowSyntheticDefaultImports_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[compilerOptions_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[esModuleInterop_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[exclude_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[forceConsistentCasingInFileNames_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[include_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[jsx_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[lib_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[module_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[moduleResolution_7]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[noUnusedLocals_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[resolveJsonModule_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[strict_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[strictNullChecks_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[target_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[tsconfig.json_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
-- [[types_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[allowSyntheticDefaultImports_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[compilerOptions_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[esModuleInterop_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[exclude_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[forceConsistentCasingInFileNames_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[include_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[jsx_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[lib_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[module_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[moduleResolution_6]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[noUnusedLocals_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[resolveJsonModule_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[strict_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[strictNullChecks_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[target_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[tsconfig.json_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
+- [[types_5]] - code - fork260509-soybean-admin-base/packages/materials/tsconfig.json
 
 ## Live Query (requires Dataview plugin)
 

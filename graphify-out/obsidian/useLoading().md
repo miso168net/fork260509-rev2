@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/hooks/src/use-loading.ts"
 type: "code"
-community: "Admin Layout Package"
+community: "API Service Aliases (auth/captcha)"
 location: "L8"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Admin_Layout_Package
+  - community/API_Service_Aliases_auth/captcha
 ---
 
 # useLoading()
@@ -20,4 +20,4 @@ tags:
 - [[useCaptcha]] - `calls` [INFERRED]
 - [[useTable()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Admin_Layout_Package
+#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha

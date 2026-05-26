@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[Standards TypeScript (empty)]] - document
+- [[Standards Tools (empty)]] - document
 
 ## Live Query (requires Dataview plugin)
 

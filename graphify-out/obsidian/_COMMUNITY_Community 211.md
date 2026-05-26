@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[header-settings.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/header-settings.vue
+- [[content-settings.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/content-settings.vue
 
 ## Live Query (requires Dataview plugin)
 

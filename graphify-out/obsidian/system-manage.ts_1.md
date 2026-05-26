@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/service-alova/api/system-manage.ts"
 type: "code"
-community: "API Service Aliases (auth/captcha)"
+community: "Community 66"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/API_Service_Aliases_auth/captcha
+  - community/Community_66
 ---
 
 # system-manage.ts
@@ -27,4 +27,4 @@ tags:
 - [[index.ts_31]] - `imports_from` [EXTRACTED]
 - [[updateUser()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha
+#graphify/code #graphify/EXTRACTED #community/Community_66

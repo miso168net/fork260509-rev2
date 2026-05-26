@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[@sahooks tsconfig]] - code - fork260509-soybean-admin-base/packages/hooks/tsconfig.json
+- [[shared barrel]] - code - fork260509-soybean-admin-base/packages/color/src/shared/index.ts
 
 ## Live Query (requires Dataview plugin)
 

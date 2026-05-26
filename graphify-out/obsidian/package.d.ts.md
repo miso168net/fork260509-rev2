@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/typings/package.d.ts"
 type: "code"
-community: "Community 108"
+community: "Community 114"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_108
+  - community/Community_114
 ---
 
 # package.d.ts
@@ -16,4 +16,4 @@ tags:
 - [[Point]] - `contains` [EXTRACTED]
 - [[Window_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_108
+#graphify/code #graphify/EXTRACTED #community/Community_114

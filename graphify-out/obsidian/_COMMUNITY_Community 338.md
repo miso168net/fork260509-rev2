@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[Standards Tools (empty)]] - document
+- [[Standards Synthesis (empty)]] - document
 
 ## Live Query (requires Dataview plugin)
 

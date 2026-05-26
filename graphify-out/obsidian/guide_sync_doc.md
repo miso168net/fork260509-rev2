@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Docs Site DevDependencies"
+community: "Community 85"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Docs_Site_DevDependencies
+  - community/Community_85
 ---
 
 # guide_sync_doc
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[guide_quick_start_doc]] - `extends` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Docs_Site_DevDependencies
+#graphify/concept #graphify/EXTRACTED #community/Community_85

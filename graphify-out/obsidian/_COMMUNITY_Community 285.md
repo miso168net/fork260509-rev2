@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[@alovamock re-export]] - code - fork260509-soybean-admin-base/packages/alova/src/mock.ts
+- [[alova client re-export]] - code - fork260509-soybean-admin-base/packages/alova/src/client.ts
 
 ## Live Query (requires Dataview plugin)
 

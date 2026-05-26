@@ -1,24 +1,26 @@
 ---
 type: community
-cohesion: 0.25
-members: 9
+cohesion: 0.18
+members: 11
 ---
 
 # Community 66
 
-**Cohesion:** 0.25 - loosely connected
-**Members:** 9 nodes
+**Cohesion:** 0.18 - loosely connected
+**Members:** 11 nodes
 
 ## Members
-- [[PDF preview view (vue-pdf-embed)]] - code - fork260509-soybean-admin-base/src/views/plugin/pdf/index.vue
-- [[Pinyin plugin view (pinyin-pro + dompurify)]] - code - fork260509-soybean-admin-base/src/views/plugin/pinyin/index.vue
-- [[Print plugin view (print-js)]] - code - fork260509-soybean-admin-base/src/views/plugin/print/index.vue
-- [[Swiper plugin view]] - code - fork260509-soybean-admin-base/src/views/plugin/swiper/index.vue
-- [[TENCENT_MAP_SDK_URL constant]] - code - fork260509-soybean-admin-base/src/constants/map-sdk.ts
-- [[TencentMap.vue plugin component]] - code - fork260509-soybean-admin-base/src/views/plugin/map/components/tencent-map.vue
-- [[TypeIt plugin view]] - code - fork260509-soybean-admin-base/src/views/plugin/typeit/index.vue
-- [[Video plugin view (xgplayer)]] - code - fork260509-soybean-admin-base/src/views/plugin/video/index.vue
-- [[plugin demo views (third-party SDK showcase)]] - concept - fork260509-soybean-admin-base/src/views/plugin/
+- [[UserModel]] - code - fork260509-soybean-admin-base/src/service-alova/api/system-manage.ts
+- [[addUser()]] - code - fork260509-soybean-admin-base/src/service-alova/api/system-manage.ts
+- [[batchDeleteUser()]] - code - fork260509-soybean-admin-base/src/service-alova/api/system-manage.ts
+- [[deleteUser()]] - code - fork260509-soybean-admin-base/src/service-alova/api/system-manage.ts
+- [[fetchGetAllPages()_1]] - code - fork260509-soybean-admin-base/src/service-alova/api/system-manage.ts
+- [[fetchGetAllRoles()_1]] - code - fork260509-soybean-admin-base/src/service-alova/api/system-manage.ts
+- [[fetchGetMenuList()_1]] - code - fork260509-soybean-admin-base/src/service-alova/api/system-manage.ts
+- [[fetchGetMenuTree()_1]] - code - fork260509-soybean-admin-base/src/service-alova/api/system-manage.ts
+- [[fetchGetRoleList()_1]] - code - fork260509-soybean-admin-base/src/service-alova/api/system-manage.ts
+- [[system-manage.ts_1]] - code - fork260509-soybean-admin-base/src/service-alova/api/system-manage.ts
+- [[updateUser()]] - code - fork260509-soybean-admin-base/src/service-alova/api/system-manage.ts
 
 ## Live Query (requires Dataview plugin)
 
@@ -28,7 +30,10 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 1 edge to [[_COMMUNITY_Community 83]]
+- 1 edge to [[_COMMUNITY_Community 41]]
+- 1 edge to [[_COMMUNITY_Docs Site Config Files]]
+- 1 edge to [[_COMMUNITY_Community 63]]
+- 1 edge to [[_COMMUNITY_Community 42]]
 
 ## Top bridge nodes
-- [[plugin demo views (third-party SDK showcase)]] - degree 8, connects to 1 community
+- [[system-manage.ts_1]] - degree 14, connects to 4 communities

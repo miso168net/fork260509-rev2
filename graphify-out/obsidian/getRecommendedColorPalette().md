@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/color/src/palette/recommend.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "VS Code Workspace Settings"
 location: "L16"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/VS_Code_Workspace_Settings
 ---
 
 # getRecommendedColorPalette()
@@ -25,4 +25,4 @@ tags:
 - [[recommend.ts]] - `contains` [EXTRACTED]
 - [[transformHslToHex()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/VS_Code_Workspace_Settings

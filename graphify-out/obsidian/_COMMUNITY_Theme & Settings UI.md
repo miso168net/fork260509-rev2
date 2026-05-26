@@ -1,57 +1,51 @@
 ---
 type: community
-cohesion: 0.10
-members: 42
+cohesion: 0.06
+members: 36
 ---
 
 # Theme & Settings UI
 
-**Cohesion:** 0.10 - loosely connected
-**Members:** 42 nodes
+**Cohesion:** 0.06 - loosely connected
+**Members:** 36 nodes
 
 ## Members
-- [[$t i18n helper (concept)]] - concept - fork260509-soybean-admin-base/src/locales
-- [[AppearanceSettings (appearanceindex.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/appearance/index.vue
-- [[ConfigOperation (config-operation.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/config-operation.vue
-- [[ContentSettings (content-settings.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/content-settings.vue
-- [[FooterSettings (footer-settings.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/footer-settings.vue
-- [[GeneralSettings (generalindex.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/general/index.vue
-- [[GlobalSettings (global-settings.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/general/modules/global-settings.vue
-- [[GlobalSider (global-siderindex.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-sider/index.vue
-- [[HeaderSettings (header-settings.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/header-settings.vue
-- [[LayoutMode (layout-mode.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/layout-mode.vue
-- [[LayoutModeCard (layout-mode-card.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/components/layout-mode-card.vue
-- [[LayoutSettings (layoutindex.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/index.vue
-- [[PresetSettings (presetindex.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/preset/index.vue
-- [[SearchFooter (search-footer.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-search/components/search-footer.vue
-- [[SearchModal (search-modal.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-search/components/search-modal.vue
-- [[SearchResult (search-result.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-search/components/search-result.vue
-- [[SettingItem (setting-item.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/components/setting-item.vue
-- [[SiderSettings (sider-settings.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/sider-settings.vue
-- [[TabSettings (tab-settings.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/tab-settings.vue
-- [[ThemeColor (theme-color.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/appearance/modules/theme-color.vue
-- [[ThemeDrawer (theme-drawerindex.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/index.vue
-- [[ThemeRadius (theme-radius.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/appearance/modules/theme-radius.vue
-- [[ThemeSchema (theme-schema.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/appearance/modules/theme-schema.vue
-- [[WatermarkSettings (watermark-settings.vue)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/general/modules/watermark-settings.vue
-- [[unnamed_8]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-tab/context-menu.vue
-- [[unnamed_9]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-tab/index.vue
-- [[closeAll()]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-tab/context-menu.vue
-- [[closeCurrent()]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-tab/context-menu.vue
-- [[closeLeft()]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-tab/context-menu.vue
-- [[closeOther()]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-tab/context-menu.vue
-- [[closeRight()]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-tab/context-menu.vue
-- [[constantsapp (concept)]] - concept - fork260509-soybean-admin-base/src/constants/app
-- [[context-menu.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-tab/context-menu.vue
-- [[index.vue_13]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-tab/index.vue
-- [[opt]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-tab/context-menu.vue
-- [[pin()]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-tab/context-menu.vue
-- [[result]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-tab/context-menu.vue
-- [[unpin()]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-tab/context-menu.vue
-- [[useAppStore (concept)]] - concept - fork260509-soybean-admin-base/src/store/modules/app
-- [[useRouteStore (concept)]] - concept - fork260509-soybean-admin-base/src/store/modules/route
-- [[useTabStore (concept)]] - concept - fork260509-soybean-admin-base/src/store/modules/tab
-- [[useThemeStore (concept)]] - concept - fork260509-soybean-admin-base/src/store/modules/theme
+- [[Vue router.push]] - concept
+- [[next = 真实 (next to real route)]] - concept
+- [[next =403]] - concept
+- [[next = login]] - concept
+- [[初始化固定路由 (Init Constant Routes)]] - concept
+- [[初始化权限路由 (Init Permission Routes)]] - concept
+- [[刷新 (Refresh)]] - concept
+- [[回到上一个路由 (Back to previous route)]] - concept
+- [[地址栏回車 (Address bar enter)]] - concept
+- [[已登录访问登录页]] - concept
+- [[开始 (Jump Start)]] - concept
+- [[开始 (Start)]] - concept
+- [[执行路由跳转 (Execute route jump)]] - concept
+- [[是否不允许访问 (Forbidden)]] - concept
+- [[是否初始化了固定路由]] - concept
+- [[是否初始化了权限路由]] - concept
+- [[是否已登录]] - concept
+- [[是否是not-found路由捕获 (first check)]] - concept
+- [[是否是not-found路由捕获 (second check)]] - concept
+- [[是否是not-found路由捕获 (third check)]] - concept
+- [[是否是常量路由(无需登录权限)]] - concept
+- [[是否需要权限 (Need permission)]] - concept
+- [[是否需要登录]] - concept
+- [[是否需要重定向 (Need redirect)]] - concept
+- [[权限路由守卫 (Permission Route Guard)]] - concept
+- [[直接跳转 (Direct jump to NF403)]] - concept
+- [[直接跳转 (Direct jump)]] - concept
+- [[结束 (End)]] - concept
+- [[获取页面真实的初始路由 (Get real initial route)]] - concept
+- [[路由初始化 (Route Initialization)]] - concept
+- [[路由数据是否存在]] - concept
+- [[路由跳转 (Route Jump)]] - concept
+- [[路由跳转触发 (Route Jump Trigger)]] - concept
+- [[跳转403路由 (Jump to 403 route)]] - concept
+- [[跳转根路由 (Jump to root)]] - concept
+- [[跳转登录路由 (Jump to login route)]] - concept
 
 ## Live Query (requires Dataview plugin)
 
@@ -59,3 +53,9 @@ members: 42
 TABLE source_file, type FROM #community/Theme__Settings_UI
 SORT file.name ASC
 ```
+
+## Connections to other communities
+- 1 edge to [[_COMMUNITY_TypeScript Compiler Config (root)]]
+
+## Top bridge nodes
+- [[结束 (End)]] - degree 2, connects to 1 community

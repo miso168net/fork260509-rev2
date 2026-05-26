@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/function/multi-tab/index.vue"
 type: "code"
-community: "Community 159"
+community: "Community 151"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_159
+  - community/Community_151
 ---
 
 # index.vue
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[$t()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_159
+#graphify/code #graphify/EXTRACTED #community/Community_151

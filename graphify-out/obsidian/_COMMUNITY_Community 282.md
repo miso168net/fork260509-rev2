@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[reset-pwd.vue]] - code - fork260509-soybean-admin-base/src/views/_builtin/login/modules/reset-pwd.vue
+- [[register.vue]] - code - fork260509-soybean-admin-base/src/views/_builtin/login/modules/register.vue
 
 ## Live Query (requires Dataview plugin)
 

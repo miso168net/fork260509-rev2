@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[User Center placeholder view]] - code - fork260509-soybean-admin-base/src/views/user-center/index.vue
+- [[about page]] - code - fork260509-soybean-admin-base/src/views/about/index.vue
 
 ## Live Query (requires Dataview plugin)
 

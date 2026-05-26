@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[LocaleSpecificConfig]] - code - fork260509-soybean-admin-docs/.vitepress/types.d.ts
-- [[types.d.ts]] - code - fork260509-soybean-admin-docs/.vitepress/types.d.ts
+- [[index.vue_37]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/index.vue
+- [[nodeData]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/index.vue
 
 ## Live Query (requires Dataview plugin)
 

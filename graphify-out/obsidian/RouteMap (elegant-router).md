@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/typings/elegant-router.d.ts"
 type: "code"
-community: "Theme Constants & Maps"
+community: "Community 48"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Theme_Constants__Maps
+  - community/Community_48
 ---
 
 # RouteMap (elegant-router)
@@ -16,4 +16,4 @@ tags:
 - [[App.Global.Tab]] - `references` [EXTRACTED]
 - [[RouteMeta augmentation]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Theme_Constants__Maps
+#graphify/code #graphify/EXTRACTED #community/Community_48

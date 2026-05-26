@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[svg-close.vue]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/svg-close.vue
+- [[slider-tab.vue]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/slider-tab.vue
 
 ## Live Query (requires Dataview plugin)
 

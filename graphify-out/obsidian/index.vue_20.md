@@ -1,14 +1,14 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/alova/request/index.vue"
 type: "code"
-community: "Community 236"
+community: "Community 237"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_236
+  - community/Community_237
 ---
 
 # index.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_236
+#graphify/code #graphify/EXTRACTED #community/Community_237

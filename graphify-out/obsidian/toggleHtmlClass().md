@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/utils/common.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "Community 38"
 location: "L45"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Community_38
 ---
 
 # toggleHtmlClass()
@@ -18,4 +18,4 @@ tags:
 - [[shared.ts_8]] - `imports` [EXTRACTED]
 - [[toggleCssDarkMode()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Community_38

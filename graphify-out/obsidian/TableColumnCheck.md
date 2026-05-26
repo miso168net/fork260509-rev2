@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/hooks/src/use-table.ts"
 type: "code"
-community: "Admin Layout Package"
+community: "API Service Aliases (auth/captcha)"
 location: "L21"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Admin_Layout_Package
+  - community/API_Service_Aliases_auth/captcha
 ---
 
 # TableColumnCheck
@@ -15,4 +15,4 @@ tags:
 - [[table.ts]] - `imports` [EXTRACTED]
 - [[use-table.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Admin_Layout_Package
+#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha

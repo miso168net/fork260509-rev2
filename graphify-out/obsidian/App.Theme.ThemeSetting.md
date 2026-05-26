@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/typings/app.d.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "Community 53"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Color_Palette_Engine
+  - community/Community_53
 ---
 
 # App.Theme.ThemeSetting
@@ -22,4 +22,4 @@ tags:
 - [[resetSetupStore()]] - `conceptually_related_to` [INFERRED]
 - [[themeVars]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/INFERRED #community/Color_Palette_Engine
+#graphify/code #graphify/INFERRED #community/Community_53

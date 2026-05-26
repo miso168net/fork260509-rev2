@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Form Validation & Bootstrap"
+community: "Theme & Settings UI"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Form_Validation__Bootstrap
+  - community/Theme__Settings_UI
 ---
 
 # 路由跳转触发 (Route Jump Trigger)
@@ -15,4 +15,4 @@ tags:
 - [[刷新 (Refresh)]] - `` [EXTRACTED]
 - [[地址栏回車 (Address bar enter)]] - `` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Form_Validation__Bootstrap
+#graphify/concept #graphify/EXTRACTED #community/Theme__Settings_UI

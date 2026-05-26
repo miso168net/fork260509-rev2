@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/utils/icon.ts"
 type: "code"
-community: "Community 146"
+community: "Community 150"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_146
+  - community/Community_150
 ---
 
 # getLocalIcons()
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[icon.ts_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_146
+#graphify/code #graphify/EXTRACTED #community/Community_150

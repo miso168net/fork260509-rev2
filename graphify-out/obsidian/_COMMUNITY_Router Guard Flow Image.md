@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[Feature request template (zh-CN)]] - document - fork260509-soybean-admin-base/.github/ISSUE_TEMPLATE/feature_request_cn.yaml
+- [[Bug report template (zh-CN)]] - document - fork260509-soybean-admin-base/.github/ISSUE_TEMPLATE/bug-report_cn.yaml
 
 ## Live Query (requires Dataview plugin)
 

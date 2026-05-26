@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/locales/index.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "Community 88"
 location: "L18"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - community/Community_88
 ---
 
 # setupI18n()
@@ -17,4 +17,4 @@ tags:
 - [[main.ts]] - `imports` [EXTRACTED]
 - [[setupApp()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/EXTRACTED #community/Community_88

@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[alova client re-export]] - code - fork260509-soybean-admin-base/packages/alova/src/client.ts
+- [[@saalova tsconfig]] - document - fork260509-soybean-admin-base/packages/alova/tsconfig.json
 
 ## Live Query (requires Dataview plugin)
 

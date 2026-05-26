@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-docs/src/zh/guide/cli/intro.md"
 type: "document"
-community: "Theme & Icon Guide Docs"
+community: "Community 94"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Theme__Icon_Guide_Docs
+  - community/Community_94
 ---
 
 # sa CLI 概述
@@ -14,4 +14,4 @@ tags:
 - [[sa CLI 命令清单]] - `` [EXTRACTED]
 - [[快速开始]] - `` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Theme__Icon_Guide_Docs
+#graphify/document #graphify/EXTRACTED #community/Community_94

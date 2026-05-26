@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "document"
-community: "Community 63"
+community: "Community 71"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_63
+  - community/Community_71
 ---
 
 # recommend_soybeanjs_cli
@@ -14,4 +14,4 @@ tags:
 - [[Standards Lint  Formatting]] - `invokes_via_commit_hook` [EXTRACTED]
 - [[recommend_index_intro]] - `contains` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_63
+#graphify/document #graphify/EXTRACTED #community/Community_71

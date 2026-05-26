@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[JP Home Page]] - concept
-- [[SbUiPromo (jp index)]] - concept
+- [[el]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-content/index.vue
+- [[index.vue_6]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-content/index.vue
 
 ## Live Query (requires Dataview plugin)
 

@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[Tools Convention (JP, stub)]] - document
+- [[Comprehensive (JP, stub)]] - document
 
 ## Live Query (requires Dataview plugin)
 

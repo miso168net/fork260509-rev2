@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[shared barrel]] - code - fork260509-soybean-admin-base/packages/color/src/shared/index.ts
+- [[color constant barrel]] - code - fork260509-soybean-admin-base/packages/color/src/constant/index.ts
 
 ## Live Query (requires Dataview plugin)
 

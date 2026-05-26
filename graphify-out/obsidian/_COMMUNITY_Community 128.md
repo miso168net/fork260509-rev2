@@ -10,9 +10,9 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[extensions.json]] - code - fork260509-soybean-admin-base/.vscode/extensions.json
-- [[extensions.json_1]] - code - fork260509-soybean-admin-docs/.vscode/extensions.json
-- [[recommendations]] - code - fork260509-soybean-admin-base/.vscode/extensions.json
+- [[ExcelPluginView]] - code - fork260509-soybean-admin-base/src/views/plugin/excel/index.vue
+- [[exportExcel]] - code - fork260509-soybean-admin-base/src/views/plugin/excel/index.vue
+- [[getTableValue]] - code - fork260509-soybean-admin-base/src/views/plugin/excel/index.vue
 
 ## Live Query (requires Dataview plugin)
 

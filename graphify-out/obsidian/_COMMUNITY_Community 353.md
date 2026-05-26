@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[说明 (Legend)]] - concept
+- [[路由守卫 (Route Guard)]] - concept
 
 ## Live Query (requires Dataview plugin)
 

@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[INTEGRATION-CHECKLIST.md (empty placeholder)]] - document - docs/INTEGRATION-CHECKLIST.md
-- [[INTEGRATION-RESEARCH.md (empty placeholder)]] - document - docs/INTEGRATION-RESEARCH.md
+- [[ExceptionBase]] - code - fork260509-soybean-admin-base/src/components/common/exception-base.vue
+- [[FullScreen]] - code - fork260509-soybean-admin-base/src/components/common/full-screen.vue
 
 ## Live Query (requires Dataview plugin)
 

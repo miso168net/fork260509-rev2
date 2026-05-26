@@ -10,9 +10,9 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[isHybridLayoutMode]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/sider-settings.vue
-- [[isMixLayoutMode]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/sider-settings.vue
-- [[sider-settings.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/sider-settings.vue
+- [[LoginToken]] - code - fork260509-soybean-admin-base/src/typings/api/auth.d.ts
+- [[UserInfo]] - code - fork260509-soybean-admin-base/src/typings/api/auth.d.ts
+- [[auth.d.ts]] - code - fork260509-soybean-admin-base/src/typings/api/auth.d.ts
 
 ## Live Query (requires Dataview plugin)
 

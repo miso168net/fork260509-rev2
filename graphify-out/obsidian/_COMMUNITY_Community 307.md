@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[iframe-page url]] - code - fork260509-soybean-admin-base/src/views/_builtin/iframe-page/[url].vue
+- [[Api.Common.PaginatingCommonParams]] - code - fork260509-soybean-admin-base/src/typings/api/common.d.ts
 
 ## Live Query (requires Dataview plugin)
 

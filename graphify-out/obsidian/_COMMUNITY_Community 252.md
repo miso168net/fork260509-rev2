@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[button-auth-modal.vue]] - code - fork260509-soybean-admin-base/src/views/manage/role/modules/button-auth-modal.vue
+- [[project-news.vue]] - code - fork260509-soybean-admin-base/src/views/home/modules/project-news.vue
 
 ## Live Query (requires Dataview plugin)
 

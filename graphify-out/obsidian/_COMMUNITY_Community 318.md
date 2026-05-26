@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[NoticeBar.vue]] - code - fork260509-soybean-admin-docs/.vitepress/theme/NoticeBar.vue
+- [[eslint.config.js_1]] - code - fork260509-soybean-admin-docs/eslint.config.js
 
 ## Live Query (requires Dataview plugin)
 

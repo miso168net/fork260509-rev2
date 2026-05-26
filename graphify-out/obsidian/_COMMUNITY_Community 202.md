@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[config-operation.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/config-operation.vue
+- [[setting-item.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/components/setting-item.vue
 
 ## Live Query (requires Dataview plugin)
 

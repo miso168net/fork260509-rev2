@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[fetch.ts]] - code - fork260509-soybean-admin-base/packages/alova/src/fetch.ts
+- [[client.ts]] - code - fork260509-soybean-admin-base/packages/alova/src/client.ts
 
 ## Live Query (requires Dataview plugin)
 

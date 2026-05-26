@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[captcha-verification.vue]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/modules/captcha-verification.vue
+- [[index.vue_21]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/index.vue
 
 ## Live Query (requires Dataview plugin)
 

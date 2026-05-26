@@ -1,30 +1,32 @@
 ---
 type: community
-cohesion: 0.13
-members: 15
+cohesion: 0.12
+members: 17
 ---
 
 # Community 40
 
-**Cohesion:** 0.13 - loosely connected
-**Members:** 15 nodes
+**Cohesion:** 0.12 - loosely connected
+**Members:** 17 nodes
 
 ## Members
-- [[build]] - code - fork260509-soybean-admin-base/package.json
-- [[buildtest]] - code - fork260509-soybean-admin-base/package.json
-- [[cleanup]] - code - fork260509-soybean-admin-base/package.json
-- [[commit]] - code - fork260509-soybean-admin-base/package.json
-- [[commitzh]] - code - fork260509-soybean-admin-base/package.json
-- [[dev]] - code - fork260509-soybean-admin-base/package.json
-- [[devprod]] - code - fork260509-soybean-admin-base/package.json
-- [[fmt]] - code - fork260509-soybean-admin-base/package.json
-- [[gen-route]] - code - fork260509-soybean-admin-base/package.json
-- [[lint]] - code - fork260509-soybean-admin-base/package.json
-- [[prepare]] - code - fork260509-soybean-admin-base/package.json
-- [[preview]] - code - fork260509-soybean-admin-base/package.json
-- [[release]] - code - fork260509-soybean-admin-base/package.json
-- [[scripts]] - code - fork260509-soybean-admin-base/package.json
-- [[typecheck]] - code - fork260509-soybean-admin-base/package.json
+- [[allowSyntheticDefaultImports_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[compilerOptions_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[esModuleInterop_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[exclude_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[forceConsistentCasingInFileNames_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[include_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[jsx_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[lib_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[module_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[moduleResolution_9]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[noUnusedLocals_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[resolveJsonModule_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[strict_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[strictNullChecks_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[target_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[tsconfig.json_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
+- [[types_8]] - code - fork260509-soybean-admin-base/packages/utils/tsconfig.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -32,10 +34,3 @@ members: 15
 TABLE source_file, type FROM #community/Community_40
 SORT file.name ASC
 ```
-
-## Connections to other communities
-- 1 edge to [[_COMMUNITY_Community 38]]
-- 1 edge to [[_COMMUNITY_Build & Release Scripts]]
-
-## Top bridge nodes
-- [[scripts]] - degree 16, connects to 2 communities

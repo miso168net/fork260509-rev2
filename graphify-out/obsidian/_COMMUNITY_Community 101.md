@@ -1,20 +1,21 @@
 ---
 type: community
-cohesion: 0.40
-members: 5
+cohesion: 0.33
+members: 6
 ---
 
 # Community 101
 
-**Cohesion:** 0.40 - moderately connected
-**Members:** 5 nodes
+**Cohesion:** 0.33 - loosely connected
+**Members:** 6 nodes
 
 ## Members
-- [[error_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[info_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[otherColor_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[success_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[warning_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[Component Library Theme (NaiveUI + Antd) (JP)]] - document
+- [[System Loading Animation (JP)]] - document
+- [[SystemLogo Component (JP)]] - document
+- [[Theme Settings Override (JP)]] - document
+- [[Theme System Architecture (JP)]] - document
+- [[UnoCSS Theme Integration (JP)]] - document
 
 ## Live Query (requires Dataview plugin)
 
@@ -22,9 +23,3 @@ members: 5
 TABLE source_file, type FROM #community/Community_101
 SORT file.name ASC
 ```
-
-## Connections to other communities
-- 1 edge to [[_COMMUNITY_Community 53]]
-
-## Top bridge nodes
-- [[otherColor_2]] - degree 5, connects to 1 community

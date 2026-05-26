@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Docs Site npm Scripts"
+community: "Community 72"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Docs_Site_npm_Scripts
+  - community/Community_72
 ---
 
 # transformToKebabCase 示例代码
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[VSCode 调试指南 01 截图]] - `contains` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Docs_Site_npm_Scripts
+#graphify/concept #graphify/EXTRACTED #community/Community_72

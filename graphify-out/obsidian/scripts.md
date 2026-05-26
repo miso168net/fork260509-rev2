@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/package.json"
 type: "code"
-community: "Community 40"
+community: "Community 46"
 location: "L29"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_40
+  - community/Community_46
 ---
 
 # scripts
@@ -29,4 +29,4 @@ tags:
 - [[typecheck]] - `contains` [EXTRACTED]
 - [[updatePkg()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_40
+#graphify/code #graphify/EXTRACTED #community/Community_46

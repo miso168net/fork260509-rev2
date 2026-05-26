@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/status.ts"
 type: "code"
-community: "Chart Plugin Views"
+community: "Runtime Dependencies"
 location: "L81"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Chart_Plugin_Views
+  - community/Runtime_Dependencies
 ---
 
 # getNodeStatusTag()
@@ -15,4 +15,4 @@ tags:
 - [[nodeStatus]] - `references` [EXTRACTED]
 - [[status.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Chart_Plugin_Views
+#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies

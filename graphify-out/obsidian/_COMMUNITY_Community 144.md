@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[count-to.vue]] - code - fork260509-soybean-admin-base/src/components/custom/count-to.vue
-- [[start()]] - code - fork260509-soybean-admin-base/src/components/custom/count-to.vue
+- [[logout()]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-header/components/user-avatar.vue
+- [[user-avatar.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-header/components/user-avatar.vue
 
 ## Live Query (requires Dataview plugin)
 

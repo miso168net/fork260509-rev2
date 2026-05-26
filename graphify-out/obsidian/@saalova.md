@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/package.json"
 type: "code"
-community: "Runtime Dependencies"
+community: "Form & Table Hooks"
 location: "L52"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Runtime_Dependencies
+  - community/Form__Table_Hooks
 ---
 
 # @sa/alova
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[dependencies]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies
+#graphify/code #graphify/EXTRACTED #community/Form__Table_Hooks

@@ -1,18 +1,19 @@
 ---
 type: community
-cohesion: 0.67
-members: 3
+cohesion: 0.50
+members: 4
 ---
 
 # Community 119
 
-**Cohesion:** 0.67 - moderately connected
-**Members:** 3 nodes
+**Cohesion:** 0.50 - moderately connected
+**Members:** 4 nodes
 
 ## Members
-- [[Dynamic vs Static permission routing]] - concept - fork260509-soybean-admin-docs/src/faq/index.md
-- [[history mode SPA 404 (nginx try_files index.html fix)]] - concept - fork260509-soybean-admin-docs/src/faq/index.md
-- [[srcfaqindex.md (FAQ cache, routing, naming, CORS, SPA 404)]] - document - fork260509-soybean-admin-docs/src/faq/index.md
+- [[functionsuper-page placeholder]] - code - fork260509-soybean-admin-base/src/views/function/super-page/index.vue
+- [[multi-menufirst_child placeholder]] - code - fork260509-soybean-admin-base/src/views/multi-menu/first_child/index.vue
+- [[multi-menusecond_child_home placeholder]] - code - fork260509-soybean-admin-base/src/views/multi-menu/second_child_home/index.vue
+- [[user-detail dynamic id page]] - code - fork260509-soybean-admin-base/src/views/manage/user-detail/[id].vue
 
 ## Live Query (requires Dataview plugin)
 

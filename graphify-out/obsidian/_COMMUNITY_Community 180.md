@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[exception-base.vue]] - code - fork260509-soybean-admin-base/src/components/common/exception-base.vue
+- [[svg-close.vue]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/svg-close.vue
 
 ## Live Query (requires Dataview plugin)
 

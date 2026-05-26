@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/tsconfig.json"
 type: "code"
-community: "TypeScript Compiler Config (root)"
+community: "SVG Icon System"
 location: "L2"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/TypeScript_Compiler_Config_root
+  - community/SVG_Icon_System
 ---
 
 # compilerOptions
@@ -30,4 +30,4 @@ tags:
 - [[tsconfig.json]] - `contains` [EXTRACTED]
 - [[types]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/TypeScript_Compiler_Config_root
+#graphify/code #graphify/EXTRACTED #community/SVG_Icon_System

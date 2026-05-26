@@ -10,23 +10,23 @@ members: 17
 **Members:** 17 nodes
 
 ## Members
-- [[AllRole]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[CommonSearchParams_1]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[IconType]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[Menu_1]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[MenuButton]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[MenuList]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[MenuPropsOfRoute]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[MenuTree]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[MenuType]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[Role]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[RoleList]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[RoleSearchParams]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[User]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[UserGender]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[UserList]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[UserSearchParams]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
-- [[system-manage.d.ts]] - code - fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts
+- [[allowSyntheticDefaultImports_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[compilerOptions_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[esModuleInterop_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[exclude_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[forceConsistentCasingInFileNames_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[include_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[jsx_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[lib_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[module_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[moduleResolution_7]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[noUnusedLocals_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[resolveJsonModule_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[strict_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[strictNullChecks_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[target_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[tsconfig.json_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
+- [[types_6]] - code - fork260509-soybean-admin-base/packages/scripts/tsconfig.json
 
 ## Live Query (requires Dataview plugin)
 

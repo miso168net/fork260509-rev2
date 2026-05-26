@@ -10,9 +10,9 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[SbUiPromo.vue (SoybeanUI promotion card + mobile drawer)]] - code - fork260509-soybean-admin-docs/.vitepress/theme/SbUiPromo.vue
-- [[srcguideintro.md (project intro, stack, branches, prerequisites)]] - document - fork260509-soybean-admin-docs/src/guide/intro.md
-- [[srcindex.md (English VitePress home page with team + SbUiPromo)]] - document - fork260509-soybean-admin-docs/src/index.md
+- [[guide_theme_concept_theme_setting]] - concept
+- [[guide_theme_config_doc]] - concept
+- [[guide_theme_intro_doc]] - concept
 
 ## Live Query (requires Dataview plugin)
 

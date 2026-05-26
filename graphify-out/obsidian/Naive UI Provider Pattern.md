@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/components/common/app-provider.vue"
 type: "concept"
-community: "Auth Store & Permissions"
+community: "Community 79"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/Auth_Store__Permissions
+  - community/Community_79
 ---
 
 # Naive UI Provider Pattern
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[ContextHolder]] - `implements` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/Auth_Store__Permissions
+#graphify/concept #graphify/INFERRED #community/Community_79

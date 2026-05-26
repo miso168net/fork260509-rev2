@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "rationale"
-community: "Community 94"
+community: "Community 103"
 tags:
   - graphify/rationale
   - graphify/EXTRACTED
-  - community/Community_94
+  - community/Community_103
 ---
 
 # Pre-Mount SPA Loading Screen (design pattern)
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[loading01.png — Soybean SPA Loading Screen]] - `demonstrates` [EXTRACTED]
 
-#graphify/rationale #graphify/EXTRACTED #community/Community_94
+#graphify/rationale #graphify/EXTRACTED #community/Community_103

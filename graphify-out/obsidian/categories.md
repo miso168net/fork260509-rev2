@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/.oxlintrc.json"
 type: "code"
-community: "Community 50"
+community: "Deploy & Integration Concepts"
 location: "L2"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_50
+  - community/Deploy__Integration_Concepts
 ---
 
 # categories
@@ -16,4 +16,4 @@ tags:
 - [[correctness]] - `contains` [EXTRACTED]
 - [[suspicious]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_50
+#graphify/code #graphify/EXTRACTED #community/Deploy__Integration_Concepts

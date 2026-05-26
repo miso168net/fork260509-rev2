@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue"
 type: "code"
-community: "Layout Geometry & Scroll"
+community: "Form Validation & Bootstrap"
 location: "L69"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Layout_Geometry__Scroll
+  - community/Form_Validation__Bootstrap
 ---
 
 # isVertical
@@ -15,4 +15,4 @@ tags:
 - [[index.vue]] - `contains` [EXTRACTED]
 - [[index.vue_3]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Layout_Geometry__Scroll
+#graphify/code #graphify/EXTRACTED #community/Form_Validation__Bootstrap

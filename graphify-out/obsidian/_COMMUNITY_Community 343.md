@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[VitePress ZH Home Page]] - document
+- [[Tutorial Software Install (EN)]] - document
 
 ## Live Query (requires Dataview plugin)
 

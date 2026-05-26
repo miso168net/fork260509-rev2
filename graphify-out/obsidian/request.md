@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/service/request/index.ts"
 type: "code"
-community: "Community 39"
+community: "Community 41"
 location: "L13"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_39
+  - community/Community_41
 ---
 
 # request
@@ -30,4 +30,4 @@ tags:
 - [[route.ts_1]] - `imports` [EXTRACTED]
 - [[system-manage.ts]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_39
+#graphify/code #graphify/EXTRACTED #community/Community_41

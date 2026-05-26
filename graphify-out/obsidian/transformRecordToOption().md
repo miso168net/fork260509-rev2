@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/utils/common.ts"
 type: "code"
-community: "Theme Constants & Maps"
+community: "Community 52"
 location: "L21"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Theme_Constants__Maps
+  - community/Community_52
 ---
 
 # transformRecordToOption()
@@ -18,4 +18,4 @@ tags:
 - [[common.ts]] - `imports` [EXTRACTED]
 - [[common.ts_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Theme_Constants__Maps
+#graphify/code #graphify/EXTRACTED #community/Community_52

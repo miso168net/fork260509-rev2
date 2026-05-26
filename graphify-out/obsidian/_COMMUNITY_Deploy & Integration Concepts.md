@@ -1,27 +1,28 @@
 ---
 type: community
-cohesion: 0.21
-members: 12
+cohesion: 0.15
+members: 13
 ---
 
 # Deploy & Integration Concepts
 
-**Cohesion:** 0.21 - loosely connected
-**Members:** 12 nodes
+**Cohesion:** 0.15 - loosely connected
+**Members:** 13 nodes
 
 ## Members
-- [[guide_router_cache_doc]] - concept
-- [[guide_router_component_doc]] - concept
-- [[guide_router_concept_auth_route_mode]] - concept
-- [[guide_router_concept_elegant_router]] - concept
-- [[guide_router_concept_route_meta]] - concept
-- [[guide_router_concept_router_push_hook]] - concept
-- [[guide_router_create_doc]] - concept
-- [[guide_router_dynamic_doc]] - concept
-- [[guide_router_guard_doc]] - concept
-- [[guide_router_intro_doc]] - concept
-- [[guide_router_push_doc]] - concept
-- [[guide_router_structure_doc]] - concept
+- [[.oxlintrc.json]] - code - fork260509-soybean-admin-base/.oxlintrc.json
+- [[VS Code recommended extensions]] - document - fork260509-soybean-admin-base/.vscode/extensions.json
+- [[categories]] - code - fork260509-soybean-admin-base/.oxlintrc.json
+- [[correctness]] - code - fork260509-soybean-admin-base/.oxlintrc.json
+- [[eslint.config.js]] - code - fork260509-soybean-admin-base/eslint.config.js
+- [[importno-unassigned-import]] - code - fork260509-soybean-admin-base/.oxlintrc.json
+- [[plugins]] - code - fork260509-soybean-admin-base/.oxlintrc.json
+- [[rules]] - code - fork260509-soybean-admin-base/.oxlintrc.json
+- [[suspicious]] - code - fork260509-soybean-admin-base/.oxlintrc.json
+- [[unicornconsistent-function-scoping]] - code - fork260509-soybean-admin-base/.oxlintrc.json
+- [[unicornno-array-reverse]] - code - fork260509-soybean-admin-base/.oxlintrc.json
+- [[unicornno-array-sort]] - code - fork260509-soybean-admin-base/.oxlintrc.json
+- [[unicornrequire-module-specifiers]] - code - fork260509-soybean-admin-base/.oxlintrc.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -29,3 +30,9 @@ members: 12
 TABLE source_file, type FROM #community/Deploy__Integration_Concepts
 SORT file.name ASC
 ```
+
+## Connections to other communities
+- 1 edge to [[_COMMUNITY_Community 53]]
+
+## Top bridge nodes
+- [[VS Code recommended extensions]] - degree 2, connects to 1 community

@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/uno.config.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "Community 53"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Community_53
 ---
 
 # uno.config.ts
@@ -19,4 +19,4 @@ tags:
 - [[vars.ts]] - `imports_from` [EXTRACTED]
 - [[vite.config.ts]] - `conceptually_related_to` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Community_53

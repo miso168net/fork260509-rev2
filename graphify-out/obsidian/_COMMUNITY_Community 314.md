@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[GitHub Action release via githublogen on tag]] - code - fork260509-soybean-admin-base/.github/workflows/release.yml
+- [[GitHub Action opencode bot on issuePR comments]] - code - fork260509-soybean-admin-base/.github/workflows/opencode.yml
 
 ## Live Query (requires Dataview plugin)
 

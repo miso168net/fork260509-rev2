@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/.vscode/extensions.json"
 type: "document"
-community: "Community 50"
+community: "Deploy & Integration Concepts"
 tags:
   - graphify/document
   - graphify/INFERRED
-  - community/Community_50
+  - community/Deploy__Integration_Concepts
 ---
 
 # VS Code recommended extensions
@@ -14,4 +14,4 @@ tags:
 - [[.oxlintrc.json]] - `conceptually_related_to` [INFERRED]
 - [[uno.config.ts]] - `conceptually_related_to` [INFERRED]
 
-#graphify/document #graphify/INFERRED #community/Community_50
+#graphify/document #graphify/INFERRED #community/Deploy__Integration_Concepts

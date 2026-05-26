@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[functiontoggle-auth demo page]] - code - fork260509-soybean-admin-base/src/views/function/toggle-auth/index.vue
-- [[role-based authorization toggle]] - concept - fork260509-soybean-admin-base/src/views/function/toggle-auth/index.vue
+- [[Theme preset application pipeline]] - concept - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/preset/modules/theme-preset.vue
+- [[ThemePreset.vue (apply theme preset)]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/preset/modules/theme-preset.vue
 
 ## Live Query (requires Dataview plugin)
 

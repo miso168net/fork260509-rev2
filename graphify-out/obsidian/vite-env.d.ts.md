@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/typings/vite-env.d.ts"
 type: "code"
-community: "Community 126"
+community: "Docs Site Engines Constraint"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_126
+  - community/Docs_Site_Engines_Constraint
 ---
 
 # vite-env.d.ts
@@ -15,4 +15,4 @@ tags:
 - [[ImportMeta]] - `contains` [EXTRACTED]
 - [[RouterHistoryMode]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_126
+#graphify/code #graphify/EXTRACTED #community/Docs_Site_Engines_Constraint

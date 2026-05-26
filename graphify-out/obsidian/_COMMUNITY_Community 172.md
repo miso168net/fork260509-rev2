@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[mock.ts]] - code - fork260509-soybean-admin-base/packages/alova/src/mock.ts
+- [[fetch.ts]] - code - fork260509-soybean-admin-base/packages/alova/src/fetch.ts
 
 ## Live Query (requires Dataview plugin)
 

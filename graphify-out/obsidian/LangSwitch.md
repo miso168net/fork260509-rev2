@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/components/common/lang-switch.vue"
 type: "code"
-community: "Global Layout Components"
+community: "Global Search Module"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Global_Layout_Components
+  - community/Global_Search_Module
 ---
 
 # LangSwitch
@@ -15,4 +15,4 @@ tags:
 - [[SvgIcon]] - `references` [EXTRACTED]
 - [[ThemeSchemaSwitch]] - `semantically_similar_to` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Global_Layout_Components
+#graphify/code #graphify/EXTRACTED #community/Global_Search_Module

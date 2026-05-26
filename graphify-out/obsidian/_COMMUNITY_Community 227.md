@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[GetChildRouteKey]] - code - fork260509-soybean-admin-base/src/typings/elegant-router.d.ts
+- [[CustomFirstLevelRouteNotSingleKey]] - code - fork260509-soybean-admin-base/src/typings/elegant-router.d.ts
 
 ## Live Query (requires Dataview plugin)
 

@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/hooks/common/table.ts"
 type: "code"
-community: "Admin Layout Package"
+community: "API Service Aliases (auth/captcha)"
 location: "L322"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Admin_Layout_Package
+  - community/API_Service_Aliases_auth/captcha
 ---
 
 # getScrollX()
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[table.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Admin_Layout_Package
+#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha

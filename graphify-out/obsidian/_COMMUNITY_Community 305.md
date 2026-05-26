@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[Api.Auth.LoginToken]] - code - fork260509-soybean-admin-base/src/typings/api/auth.d.ts
+- [[StorageType.Session]] - code - fork260509-soybean-admin-base/src/typings/storage.d.ts
 
 ## Live Query (requires Dataview plugin)
 

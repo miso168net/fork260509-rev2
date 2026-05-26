@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/service/api/route.ts"
 type: "code"
-community: "Community 39"
+community: "Community 41"
 location: "L9"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_39
+  - community/Community_41
 ---
 
 # fetchGetUserRoutes()
@@ -15,4 +15,4 @@ tags:
 - [[request]] - `calls` [EXTRACTED]
 - [[route.ts_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_39
+#graphify/code #graphify/EXTRACTED #community/Community_41

@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[GitHub Action opencode bot on issuePR comments]] - code - fork260509-soybean-admin-base/.github/workflows/opencode.yml
+- [[GitHub Action super-linter on PRs to main]] - code - fork260509-soybean-admin-base/.github/workflows/linter.yml
 
 ## Live Query (requires Dataview plugin)
 

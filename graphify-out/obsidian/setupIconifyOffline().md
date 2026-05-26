@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/plugins/iconify.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "Dev Dependencies"
 location: "L4"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - community/Dev_Dependencies
 ---
 
 # setupIconifyOffline()
@@ -17,4 +17,4 @@ tags:
 - [[plugins index barrel]] - `references` [EXTRACTED]
 - [[setupApp()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/EXTRACTED #community/Dev_Dependencies

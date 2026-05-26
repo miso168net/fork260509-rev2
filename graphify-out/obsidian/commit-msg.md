@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/package.json"
 type: "code"
-community: "Community 124"
+community: "Global Layout Components"
 location: "L126"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_124
+  - community/Global_Layout_Components
 ---
 
 # commit-msg
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[simple-git-hooks]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_124
+#graphify/code #graphify/EXTRACTED #community/Global_Layout_Components

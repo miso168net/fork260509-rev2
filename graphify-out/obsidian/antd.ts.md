@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/color/src/palette/antd.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "Docs Site npm Scripts"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Docs_Site_npm_Scripts
 ---
 
 # antd.ts
@@ -27,4 +27,4 @@ tags:
 - [[isValidColor()]] - `imports` [EXTRACTED]
 - [[mixColor()]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Docs_Site_npm_Scripts

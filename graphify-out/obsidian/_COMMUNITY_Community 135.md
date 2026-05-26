@@ -10,9 +10,9 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[engines_1]] - code - fork260509-soybean-admin-docs/package.json
-- [[node_1]] - code - fork260509-soybean-admin-docs/package.json
-- [[pnpm_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[JP Icon Intro]] - concept
+- [[JP Icon Usage]] - concept
+- [[useSvgIcon (hook)]] - concept
 
 ## Live Query (requires Dataview plugin)
 
@@ -20,9 +20,3 @@ members: 3
 TABLE source_file, type FROM #community/Community_135
 SORT file.name ASC
 ```
-
-## Connections to other communities
-- 1 edge to [[_COMMUNITY_Community 48]]
-
-## Top bridge nodes
-- [[engines_1]] - degree 3, connects to 1 community

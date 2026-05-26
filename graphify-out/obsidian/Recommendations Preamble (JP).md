@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "document"
-community: "Community 92"
+community: "Docs Site Package Metadata"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_92
+  - community/Docs_Site_Package_Metadata
 ---
 
 # Recommendations Preamble (JP)
@@ -16,4 +16,4 @@ tags:
 - [[PageSpy Remote Debug (JP)]] - `decomposed_into` [EXTRACTED]
 - [[klona Deep-Clone Lib (JP)]] - `decomposed_into` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_92
+#graphify/document #graphify/EXTRACTED #community/Docs_Site_Package_Metadata

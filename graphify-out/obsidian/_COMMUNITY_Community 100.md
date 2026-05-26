@@ -1,20 +1,21 @@
 ---
 type: community
-cohesion: 0.40
-members: 5
+cohesion: 0.33
+members: 6
 ---
 
 # Community 100
 
-**Cohesion:** 0.40 - moderately connected
-**Members:** 5 nodes
+**Cohesion:** 0.33 - loosely connected
+**Members:** 6 nodes
 
 ## Members
-- [[error_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
-- [[info_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
-- [[otherColor_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
-- [[success_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
-- [[warning_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[cache_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[closeTabByMiddleClick_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[layout_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[mode_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[scrollMode_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[tab_3]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -24,7 +25,10 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 1 edge to [[_COMMUNITY_Community 42]]
+- 2 edges to [[_COMMUNITY_Community 58]]
+- 2 edges to [[_COMMUNITY_Community 82]]
+- 2 edges to [[_COMMUNITY_Community 70]]
 
 ## Top bridge nodes
-- [[otherColor_1]] - degree 5, connects to 1 community
+- [[tab_3]] - degree 7, connects to 3 communities
+- [[layout_2]] - degree 4, connects to 2 communities

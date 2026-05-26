@@ -1,21 +1,21 @@
 ---
 type: community
-cohesion: 0.33
+cohesion: 0.67
 members: 6
 ---
 
 # Community 90
 
-**Cohesion:** 0.33 - loosely connected
+**Cohesion:** 0.67 - moderately connected
 **Members:** 6 nodes
 
 ## Members
-- [[cache_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[closeTabByMiddleClick_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[layout_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[mode_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[scrollMode_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[tab_3]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[BrowserVisibilityRequest]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/modules/browser-visibility-request.vue
+- [[CaptchaVerification]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/modules/captcha-verification.vue
+- [[CrossComponentRequest]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/modules/cross-component-request.vue
+- [[NetworkToggleRequest]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/modules/network-toggle-request.vue
+- [[PollingRequest]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/modules/polling-request.vue
+- [[alova scenes index]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/index.vue
 
 ## Live Query (requires Dataview plugin)
 
@@ -23,12 +23,3 @@ members: 6
 TABLE source_file, type FROM #community/Community_90
 SORT file.name ASC
 ```
-
-## Connections to other communities
-- 2 edges to [[_COMMUNITY_Community 53]]
-- 2 edges to [[_COMMUNITY_Community 54]]
-- 2 edges to [[_COMMUNITY_Community 62]]
-
-## Top bridge nodes
-- [[tab_3]] - degree 7, connects to 3 communities
-- [[layout_2]] - degree 4, connects to 2 communities

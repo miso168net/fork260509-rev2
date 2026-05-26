@@ -1,32 +1,32 @@
 ---
 type: community
-cohesion: 0.14
+cohesion: 0.18
 members: 17
 ---
 
 # Per-Package TSConfig (sub-33)
 
-**Cohesion:** 0.14 - loosely connected
+**Cohesion:** 0.18 - loosely connected
 **Members:** 17 nodes
 
 ## Members
-- [[.vscodelaunch.json (Vue debugger on 9527 + TS debugger)]] - code - fork260509-soybean-admin-docs/.vscode/launch.json
-- [[CHANGELOG.md (soybean-admin-base)]] - document - fork260509-soybean-admin-base/CHANGELOG.md
-- [[CHANGELOG.zh_CN.md (soybean-admin-base)]] - document - fork260509-soybean-admin-base/CHANGELOG.zh_CN.md
-- [[NoticeBar.vue (reactive notice from locale via useData)]] - code - fork260509-soybean-admin-docs/.vitepress/theme/NoticeBar.vue
-- [[SoybeanAdmin v2 (v2.0.0+)]] - concept - fork260509-soybean-admin-base/CHANGELOG.md
-- [[VitePress config (locales enzhjp, sidebar, algolia)]] - code - fork260509-soybean-admin-docs/.vitepress/config.ts
-- [[eslint.config.js (@soybeanjseslint-config + markdown formatter)]] - code - fork260509-soybean-admin-docs/eslint.config.js
-- [[icon.ts (qqSvg export for socialLinks)]] - code - fork260509-soybean-admin-docs/.vitepress/icon.ts
-- [[jp.ts (Japanese VitePress locale)]] - code - fork260509-soybean-admin-docs/.vitepress/locales/jp.ts
-- [[oxlint  oxfmt]] - concept - fork260509-soybean-admin-base/CHANGELOG.md
-- [[pnpm monorepo]] - concept - fork260509-soybean-admin-base/pnpm-workspace.yaml
-- [[pnpm-workspace.yaml]] - code - fork260509-soybean-admin-base/pnpm-workspace.yaml
-- [[soybean-admin-docs package.json (VitePress 1.6.4 site)]] - code - fork260509-soybean-admin-docs/package.json
-- [[tsconfig.json (strict ESNext, includes .vitepress + src)]] - code - fork260509-soybean-admin-docs/tsconfig.json
-- [[types.d.ts (augments vitepress LocaleSpecificConfig with notice)]] - code - fork260509-soybean-admin-docs/.vitepress/types.d.ts
-- [[useTable hook]] - concept - fork260509-soybean-admin-base/CHANGELOG.md
-- [[zh.ts (Simplified Chinese VitePress locale)]] - code - fork260509-soybean-admin-docs/.vitepress/locales/zh.ts
+- [[JWT refresh token flow]] - concept - fork260509-soybean-admin-base/src/service/request/shared.ts
+- [[localStg persistence layer]] - concept - fork260509-soybean-admin-base/src/utils/storage
+- [[naive-ui theme token + dark mode + watermark]] - concept - fork260509-soybean-admin-base/src/store/modules/theme/index.ts
+- [[pinia setup store pattern]] - concept - fork260509-soybean-admin-base/src/store
+- [[service-alovarequestshared.ts]] - code - fork260509-soybean-admin-base/src/service-alova/request/shared.ts
+- [[servicerequestshared.ts]] - code - fork260509-soybean-admin-base/src/service/request/shared.ts
+- [[static vs dynamic auth route mode]] - concept - fork260509-soybean-admin-base/src/store/modules/route/index.ts
+- [[storeindex.ts]] - code - fork260509-soybean-admin-base/src/store/index.ts
+- [[storemodulesappindex.ts]] - code - fork260509-soybean-admin-base/src/store/modules/app/index.ts
+- [[storemodulesauthshared.ts]] - code - fork260509-soybean-admin-base/src/store/modules/auth/shared.ts
+- [[storemodulesrouteindex.ts]] - code - fork260509-soybean-admin-base/src/store/modules/route/index.ts
+- [[storemodulesrouteshared.ts]] - code - fork260509-soybean-admin-base/src/store/modules/route/shared.ts
+- [[storemodulestabindex.ts]] - code - fork260509-soybean-admin-base/src/store/modules/tab/index.ts
+- [[storemodulestabshared.ts]] - code - fork260509-soybean-admin-base/src/store/modules/tab/shared.ts
+- [[storemodulesthemeindex.ts]] - code - fork260509-soybean-admin-base/src/store/modules/theme/index.ts
+- [[storemodulesthemeshared.ts]] - code - fork260509-soybean-admin-base/src/store/modules/theme/shared.ts
+- [[tab lifecycle (addremovefixclearcache)]] - concept - fork260509-soybean-admin-base/src/store/modules/tab/index.ts
 
 ## Live Query (requires Dataview plugin)
 
@@ -36,7 +36,12 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 1 edge to [[_COMMUNITY_API Service Aliases (authcaptcha)]]
+- 8 edges to [[_COMMUNITY_Community 42]]
+- 1 edge to [[_COMMUNITY_Route Helpers & Tab Filters]]
 
 ## Top bridge nodes
-- [[NoticeBar.vue (reactive notice from locale via useData)]] - degree 4, connects to 1 community
+- [[storemodulesappindex.ts]] - degree 12, connects to 1 community
+- [[service-alovarequestshared.ts]] - degree 6, connects to 1 community
+- [[storemodulesthemeindex.ts]] - degree 6, connects to 1 community
+- [[servicerequestshared.ts]] - degree 5, connects to 1 community
+- [[storemodulesrouteindex.ts]] - degree 5, connects to 1 community

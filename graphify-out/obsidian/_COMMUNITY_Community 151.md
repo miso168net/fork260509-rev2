@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[antv-flow.vue]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/antv-flow.vue
-- [[{ graph }]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/antv-flow.vue
+- [[$t()]] - code - fork260509-soybean-admin-base/src/views/function/multi-tab/index.vue
+- [[index.vue_25]] - code - fork260509-soybean-admin-base/src/views/function/multi-tab/index.vue
 
 ## Live Query (requires Dataview plugin)
 

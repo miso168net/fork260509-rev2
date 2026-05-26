@@ -1,21 +1,23 @@
 ---
 type: community
-cohesion: 0.67
-members: 6
+cohesion: 0.32
+members: 8
 ---
 
 # Community 81
 
-**Cohesion:** 0.67 - moderately connected
-**Members:** 6 nodes
+**Cohesion:** 0.32 - loosely connected
+**Members:** 8 nodes
 
 ## Members
-- [[BrowserVisibilityRequest]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/modules/browser-visibility-request.vue
-- [[CaptchaVerification]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/modules/captcha-verification.vue
-- [[CrossComponentRequest]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/modules/cross-component-request.vue
-- [[NetworkToggleRequest]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/modules/network-toggle-request.vue
-- [[PollingRequest]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/modules/polling-request.vue
-- [[alova scenes index]] - code - fork260509-soybean-admin-base/src/views/alova/scenes/index.vue
+- [[getLayout()]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
+- [[getLayoutAndPage()]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
+- [[getPage()]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
+- [[getPathParamFromRoutePath()]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
+- [[getRoutePathByRouteName()]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
+- [[getRoutePathWithParam()]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
+- [[shared.ts_9]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
+- [[transformLayoutAndPageToComponent()]] - code - fork260509-soybean-admin-base/src/views/manage/menu/modules/shared.ts
 
 ## Live Query (requires Dataview plugin)
 

@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[creativity-banner.vue]] - code - fork260509-soybean-admin-base/src/views/home/modules/creativity-banner.vue
+- [[card-data.vue]] - code - fork260509-soybean-admin-base/src/views/home/modules/card-data.vue
 
 ## Live Query (requires Dataview plugin)
 

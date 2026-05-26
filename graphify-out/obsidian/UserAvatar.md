@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-header/components/user-avatar.vue"
 type: "code"
-community: "Docs Site TSConfig (NEW)"
+community: "API Service Aliases (auth/captcha)"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Docs_Site_TSConfig_NEW
+  - community/API_Service_Aliases_auth/captcha
 ---
 
 # UserAvatar
@@ -15,4 +15,4 @@ tags:
 - [[useRouterPush()]] - `shares_data_with` [INFERRED]
 - [[useSvgIcon()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Docs_Site_TSConfig_NEW
+#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha

@@ -1,43 +1,42 @@
 ---
 type: community
 cohesion: 0.07
-members: 28
+members: 27
 ---
 
 # Layout Geometry & Scroll
 
 **Cohesion:** 0.07 - loosely connected
-**Members:** 28 nodes
+**Members:** 27 nodes
 
 ## Members
-- [[fixedHeaderAndTab]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[footer-settings.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/footer-settings.vue
-- [[footerLeftGapClass]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[getSiderAndCollapsedWidth()]] - code - fork260509-soybean-admin-base/src/layouts/base-layout/index.vue
-- [[handleClickMask()]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[headerLeftGapClass]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[headerProps]] - code - fork260509-soybean-admin-base/src/layouts/base-layout/index.vue
-- [[index.vue]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[index.vue_3]] - code - fork260509-soybean-admin-base/src/layouts/base-layout/index.vue
-- [[isContentScroll]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[isHorizontal]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[isMixHorizontalMode]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/footer-settings.vue
-- [[isTopHybridHeaderFirst]] - code - fork260509-soybean-admin-base/src/layouts/base-layout/index.vue
-- [[isTopHybridSidebarFirst]] - code - fork260509-soybean-admin-base/src/layouts/base-layout/index.vue
-- [[isVertical]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[isVerticalHybridHeaderFirst]] - code - fork260509-soybean-admin-base/src/layouts/base-layout/index.vue
-- [[isWrapperScroll]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[layoutMode]] - code - fork260509-soybean-admin-base/src/layouts/base-layout/index.vue
-- [[leftGapClass]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[showFooter]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[showHeader]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[showMobileSider]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[showSider]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[showTab]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[siderCollapsedWidth]] - code - fork260509-soybean-admin-base/src/layouts/base-layout/index.vue
-- [[siderPaddingClass]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
-- [[siderVisible]] - code - fork260509-soybean-admin-base/src/layouts/base-layout/index.vue
-- [[siderWidth]] - code - fork260509-soybean-admin-base/src/layouts/base-layout/index.vue
+- [[@amapamap-jsapi-types]] - code - fork260509-soybean-admin-base/package.json
+- [[@sascripts]] - code - fork260509-soybean-admin-base/package.json
+- [[@sauno-preset]] - code - fork260509-soybean-admin-base/package.json
+- [[@typesbmapgl]] - code - fork260509-soybean-admin-base/package.json
+- [[@typesnode]] - code - fork260509-soybean-admin-base/package.json
+- [[@typesnprogress]] - code - fork260509-soybean-admin-base/package.json
+- [[@vitejsplugin-vue]] - code - fork260509-soybean-admin-base/package.json
+- [[consola]] - code - fork260509-soybean-admin-base/package.json
+- [[devDependencies]] - code - fork260509-soybean-admin-base/package.json
+- [[eslint]] - code - fork260509-soybean-admin-base/package.json
+- [[kolorist]] - code - fork260509-soybean-admin-base/package.json
+- [[oxfmt]] - code - fork260509-soybean-admin-base/package.json
+- [[oxlint]] - code - fork260509-soybean-admin-base/package.json
+- [[pro-naive-ui-resolver]] - code - fork260509-soybean-admin-base/package.json
+- [[sass]] - code - fork260509-soybean-admin-base/package.json
+- [[tsx]] - code - fork260509-soybean-admin-base/package.json
+- [[typescript]] - code - fork260509-soybean-admin-base/package.json
+- [[unocss]] - code - fork260509-soybean-admin-base/package.json
+- [[unplugin-icons]] - code - fork260509-soybean-admin-base/package.json
+- [[unplugin-vue-components]] - code - fork260509-soybean-admin-base/package.json
+- [[vite]] - code - fork260509-soybean-admin-base/package.json
+- [[vite-plugin-progress]] - code - fork260509-soybean-admin-base/package.json
+- [[vite-plugin-svg-icons]] - code - fork260509-soybean-admin-base/package.json
+- [[vite-plugin-vue-devtools]] - code - fork260509-soybean-admin-base/package.json
+- [[vite-plugin-vue-transition-root-validator]] - code - fork260509-soybean-admin-base/package.json
+- [[vue-eslint-parser]] - code - fork260509-soybean-admin-base/package.json
+- [[vue-tsc]] - code - fork260509-soybean-admin-base/package.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -47,9 +46,9 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 1 edge to [[_COMMUNITY_Form & Table Hooks]]
-- 1 edge to [[_COMMUNITY_Route Type Hierarchy]]
+- 2 edges to [[_COMMUNITY_Global Layout Components]]
+- 1 edge to [[_COMMUNITY_Dev Dependencies]]
+- 1 edge to [[_COMMUNITY_Docs Site Package Metadata]]
 
 ## Top bridge nodes
-- [[index.vue]] - degree 16, connects to 1 community
-- [[index.vue_3]] - degree 11, connects to 1 community
+- [[devDependencies]] - degree 30, connects to 3 communities

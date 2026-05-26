@@ -1,14 +1,14 @@
 ---
 source_file: "fork260509-soybean-admin-docs/eslint.config.js"
 type: "code"
-community: "Community 317"
+community: "Community 318"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_317
+  - community/Community_318
 ---
 
 # eslint.config.js
 
-#graphify/code #graphify/EXTRACTED #community/Community_317
+#graphify/code #graphify/EXTRACTED #community/Community_318

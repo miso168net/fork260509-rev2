@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/typings/naive-ui.d.ts"
 type: "code"
-community: "Community 57"
+community: "Community 60"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_57
+  - community/Community_60
 ---
 
 # naive-ui.d.ts
@@ -24,4 +24,4 @@ tags:
 - [[TableOperateType]] - `contains` [EXTRACTED]
 - [[ThemeColor_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_57
+#graphify/code #graphify/EXTRACTED #community/Community_60

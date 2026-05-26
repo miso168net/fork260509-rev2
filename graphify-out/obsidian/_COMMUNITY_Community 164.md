@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[design decision explicit COPY 列舉 取代 .dockerignore]] - concept - docs/superpowers/000-base-web-docker-bootstrap.md
-- [[design decision named volume mask node_modules (WSL2 IO)]] - concept - docs/superpowers/000-base-web-docker-bootstrap.md
+- [[PR template (en)]] - document - fork260509-soybean-admin-base/.github/PULL_REQUEST_TEMPLATE/pr_en.md
+- [[PR template (zh-CN)]] - document - fork260509-soybean-admin-base/.github/PULL_REQUEST_TEMPLATE/pr_cn.md
 
 ## Live Query (requires Dataview plugin)
 

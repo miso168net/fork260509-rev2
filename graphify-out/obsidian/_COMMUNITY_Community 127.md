@@ -10,9 +10,9 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[date]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/echarts/index.vue
-- [[index.vue_38]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/echarts/index.vue
-- [[second]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/echarts/index.vue
+- [[ElegantVueRouter customRoutes]] - concept
+- [[Router Structure Convention (JP)]] - document
+- [[routePathTransformer]] - concept
 
 ## Live Query (requires Dataview plugin)
 

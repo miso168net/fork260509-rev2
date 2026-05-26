@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/typings/app.d.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "Elegant Router DSL"
 location: "L11"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Elegant_Router_DSL
 ---
 
 # ThemeSetting
@@ -17,4 +17,4 @@ tags:
 - [[settings.ts]] - `contains` [EXTRACTED]
 - [[shared.ts_8]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Elegant_Router_DSL

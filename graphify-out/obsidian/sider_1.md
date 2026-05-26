@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/theme/preset/compact.json"
 type: "code"
-community: "Community 88"
+community: "Community 97"
 location: "L26"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_88
+  - community/Community_97
 ---
 
 # sider
@@ -19,4 +19,4 @@ tags:
 - [[mixWidth]] - `contains` [EXTRACTED]
 - [[width]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_88
+#graphify/code #graphify/EXTRACTED #community/Community_97

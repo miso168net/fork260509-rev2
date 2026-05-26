@@ -1,17 +1,18 @@
 ---
 type: community
-cohesion: 1.00
-members: 2
+cohesion: 0.67
+members: 3
 ---
 
 # Community 140
 
-**Cohesion:** 1.00 - tightly connected
-**Members:** 2 nodes
+**Cohesion:** 0.67 - moderately connected
+**Members:** 3 nodes
 
 ## Members
-- [[logout()]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-header/components/user-avatar.vue
-- [[user-avatar.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-header/components/user-avatar.vue
+- [[engines]] - code - fork260509-soybean-admin-base/package.json
+- [[node]] - code - fork260509-soybean-admin-base/package.json
+- [[pnpm]] - code - fork260509-soybean-admin-base/package.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -19,3 +20,9 @@ members: 2
 TABLE source_file, type FROM #community/Community_140
 SORT file.name ASC
 ```
+
+## Connections to other communities
+- 1 edge to [[_COMMUNITY_Global Layout Components]]
+
+## Top bridge nodes
+- [[engines]] - degree 3, connects to 1 community

@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/pro-naive/"
 type: "concept"
-community: "Admin Layout Package"
+community: "API Service Aliases (auth/captcha)"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/Admin_Layout_Package
+  - community/API_Service_Aliases_auth/captcha
 ---
 
 # pro-naive-ui example views
@@ -18,4 +18,4 @@ tags:
 - [[ProForm step example]] - `conceptually_related_to` [INFERRED]
 - [[ProSearchForm query example]] - `conceptually_related_to` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/Admin_Layout_Package
+#graphify/concept #graphify/INFERRED #community/API_Service_Aliases_auth/captcha

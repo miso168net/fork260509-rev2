@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/manage/role/modules/role-operate-drawer.vue"
 type: "code"
-community: "Docs Site Package Metadata"
+community: "Community 51"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Docs_Site_Package_Metadata
+  - community/Community_51
 ---
 
 # RoleOperateDrawer
@@ -17,4 +17,4 @@ tags:
 - [[UserOperateDrawer]] - `semantically_similar_to` [INFERRED]
 - [[managerole admin page]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Docs_Site_Package_Metadata
+#graphify/code #graphify/EXTRACTED #community/Community_51

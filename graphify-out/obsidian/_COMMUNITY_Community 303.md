@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[GlobalComponents augmentation]] - code - fork260509-soybean-admin-base/src/typings/components.d.ts
+- [[Global Window augmentation]] - code - fork260509-soybean-admin-base/src/typings/global.d.ts
 
 ## Live Query (requires Dataview plugin)
 

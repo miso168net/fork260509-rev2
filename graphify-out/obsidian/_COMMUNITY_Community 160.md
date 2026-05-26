@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[PR template (en)]] - document - fork260509-soybean-admin-base/.github/PULL_REQUEST_TEMPLATE/pr_en.md
-- [[PR template (zh-CN)]] - document - fork260509-soybean-admin-base/.github/PULL_REQUEST_TEMPLATE/pr_cn.md
+- [[JP Home Page]] - concept
+- [[SbUiPromo (jp index)]] - concept
 
 ## Live Query (requires Dataview plugin)
 

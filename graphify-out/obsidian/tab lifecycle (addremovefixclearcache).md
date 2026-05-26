@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/store/modules/tab/index.ts"
 type: "concept"
-community: "API Service Aliases (auth/captcha)"
+community: "Per-Package TSConfig (sub-33)"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/API_Service_Aliases_auth/captcha
+  - community/Per-Package_TSConfig_sub-33
 ---
 
 # tab lifecycle (add/remove/fix/clear/cache)
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[storemodulestabindex.ts]] - `conceptually_related_to` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/API_Service_Aliases_auth/captcha
+#graphify/concept #graphify/INFERRED #community/Per-Package_TSConfig_sub-33

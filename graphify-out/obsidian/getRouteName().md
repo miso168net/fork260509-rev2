@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/router/elegant/transform.ts"
 type: "code"
-community: "Community 45"
+community: "TypeScript Compiler Config (root)"
 location: "L259"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_45
+  - community/TypeScript_Compiler_Config_root
 ---
 
 # getRouteName()
@@ -18,4 +18,4 @@ tags:
 - [[route.ts]] - `imports` [EXTRACTED]
 - [[transform.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_45
+#graphify/code #graphify/EXTRACTED #community/TypeScript_Compiler_Config_root

@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/axios/src/type.ts"
 type: "code"
-community: "Alova Request Adapter (+docs)"
+community: "Build & Release Scripts"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Alova_Request_Adapter_docs
+  - community/Build__Release_Scripts
 ---
 
 # RequestOption interface (axios)
@@ -17,4 +17,4 @@ tags:
 - [[createFlatRequest public factory]] - `references` [EXTRACTED]
 - [[createRequest public factory]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Alova_Request_Adapter_docs
+#graphify/code #graphify/EXTRACTED #community/Build__Release_Scripts

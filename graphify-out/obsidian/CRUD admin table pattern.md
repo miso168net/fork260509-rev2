@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/manage/"
 type: "concept"
-community: "Docs Site Package Metadata"
+community: "Community 51"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/Docs_Site_Package_Metadata
+  - community/Community_51
 ---
 
 # CRUD admin table pattern
@@ -15,4 +15,4 @@ tags:
 - [[managerole admin page]] - `implements` [INFERRED]
 - [[manageuser admin page]] - `implements` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/Docs_Site_Package_Metadata
+#graphify/concept #graphify/INFERRED #community/Community_51

@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/typings/api/auth.d.ts"
 type: "code"
-community: "Community 118"
+community: "Community 125"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_118
+  - community/Community_125
 ---
 
 # auth.d.ts
@@ -15,4 +15,4 @@ tags:
 - [[LoginToken]] - `contains` [EXTRACTED]
 - [[UserInfo]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_118
+#graphify/code #graphify/EXTRACTED #community/Community_125

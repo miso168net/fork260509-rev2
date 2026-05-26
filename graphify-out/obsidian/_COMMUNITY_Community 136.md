@@ -10,9 +10,9 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[Local]] - code - fork260509-soybean-admin-base/src/typings/storage.d.ts
-- [[Session]] - code - fork260509-soybean-admin-base/src/typings/storage.d.ts
-- [[storage.d.ts]] - code - fork260509-soybean-admin-base/src/typings/storage.d.ts
+- [[isHybridLayoutMode]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/sider-settings.vue
+- [[isMixLayoutMode]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/sider-settings.vue
+- [[sider-settings.vue]] - code - fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/sider-settings.vue
 
 ## Live Query (requires Dataview plugin)
 

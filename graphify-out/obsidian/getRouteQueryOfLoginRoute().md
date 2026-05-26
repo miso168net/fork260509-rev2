@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/router/guard/route.ts"
 type: "code"
-community: "Community 45"
+community: "TypeScript Compiler Config (root)"
 location: "L162"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_45
+  - community/TypeScript_Compiler_Config_root
 ---
 
 # getRouteQueryOfLoginRoute()
@@ -16,4 +16,4 @@ tags:
 - [[initRoute()]] - `calls` [EXTRACTED]
 - [[route.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_45
+#graphify/code #graphify/EXTRACTED #community/TypeScript_Compiler_Config_root

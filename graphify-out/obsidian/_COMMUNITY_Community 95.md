@@ -1,20 +1,21 @@
 ---
 type: community
-cohesion: 0.40
-members: 5
+cohesion: 0.47
+members: 6
 ---
 
 # Community 95
 
-**Cohesion:** 0.40 - moderately connected
-**Members:** 5 nodes
+**Cohesion:** 0.47 - moderately connected
+**Members:** 6 nodes
 
 ## Members
-- [[BarcodePluginView]] - code - fork260509-soybean-admin-base/src/views/plugin/barcode/index.vue
-- [[IconPluginView]] - code - fork260509-soybean-admin-base/src/views/plugin/icon/index.vue
-- [[generateBarcode]] - code - fork260509-soybean-admin-base/src/views/plugin/barcode/index.vue
-- [[icons]] - code - fork260509-soybean-admin-base/src/views/plugin/icon/icons.ts
-- [[icons.ts]] - code - fork260509-soybean-admin-base/src/views/plugin/icon/icons.ts
+- [[@saaxios createFlatRequest]] - concept - fork260509-soybean-admin-base/packages/hooks/src/use-request.ts
+- [[createHookRequest factory (wraps @saaxios)]] - code - fork260509-soybean-admin-base/packages/hooks/src/use-request.ts
+- [[useBoolean composable]] - code - fork260509-soybean-admin-base/packages/hooks/src/use-boolean.ts
+- [[useContext composable (provideinject pair factory)]] - code - fork260509-soybean-admin-base/packages/hooks/src/use-context.ts
+- [[useLoading composable]] - code - fork260509-soybean-admin-base/packages/hooks/src/use-loading.ts
+- [[useTable composable (paginated table data + column checks)]] - code - fork260509-soybean-admin-base/packages/hooks/src/use-table.ts
 
 ## Live Query (requires Dataview plugin)
 

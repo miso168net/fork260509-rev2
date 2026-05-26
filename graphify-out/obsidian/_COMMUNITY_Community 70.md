@@ -1,24 +1,25 @@
 ---
 type: community
-cohesion: 0.22
-members: 9
+cohesion: 0.27
+members: 10
 ---
 
 # Community 70
 
-**Cohesion:** 0.22 - loosely connected
-**Members:** 9 nodes
+**Cohesion:** 0.27 - loosely connected
+**Members:** 10 nodes
 
 ## Members
-- [[@soybeanjseslint-config]] - code - fork260509-soybean-admin-docs/package.json
-- [[@typesnode_1]] - code - fork260509-soybean-admin-docs/package.json
-- [[devDependencies_5]] - code - fork260509-soybean-admin-docs/package.json
-- [[eslint_1]] - code - fork260509-soybean-admin-docs/package.json
-- [[eslint-plugin-vue]] - code - fork260509-soybean-admin-docs/package.json
-- [[typescript_1]] - code - fork260509-soybean-admin-docs/package.json
-- [[vitepress]] - code - fork260509-soybean-admin-docs/package.json
-- [[vue-eslint-parser_1]] - code - fork260509-soybean-admin-docs/package.json
-- [[vue-tsc_1]] - code - fork260509-soybean-admin-docs/package.json
+- [[breadcrumb_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[fixed_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[footer_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[globalSearch_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[header_3]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[height_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[multilingual_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[right_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[showIcon_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[visible_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -28,10 +29,13 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 1 edge to [[_COMMUNITY_Dev Dependencies]]
-- 1 edge to [[_COMMUNITY_Community 48]]
-- 1 edge to [[_COMMUNITY_Community 92]]
+- 2 edges to [[_COMMUNITY_Community 58]]
+- 2 edges to [[_COMMUNITY_Community 100]]
+- 1 edge to [[_COMMUNITY_Community 82]]
+- 1 edge to [[_COMMUNITY_Community 110]]
 
 ## Top bridge nodes
-- [[devDependencies_5]] - degree 10, connects to 2 communities
-- [[@soybeanjseslint-config]] - degree 2, connects to 1 community
+- [[header_3]] - degree 6, connects to 2 communities
+- [[visible_2]] - degree 6, connects to 2 communities
+- [[footer_2]] - degree 5, connects to 1 community
+- [[height_2]] - degree 3, connects to 1 community

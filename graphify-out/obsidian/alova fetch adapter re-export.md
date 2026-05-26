@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/alova/src/fetch.ts"
 type: "code"
-community: "Alova Request Adapter (+docs)"
+community: "Build & Release Scripts"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Alova_Request_Adapter_docs
+  - community/Build__Release_Scripts
 ---
 
 # alova fetch adapter re-export
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[createAlovaRequest factory]] - `conceptually_related_to` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Alova_Request_Adapter_docs
+#graphify/code #graphify/INFERRED #community/Build__Release_Scripts

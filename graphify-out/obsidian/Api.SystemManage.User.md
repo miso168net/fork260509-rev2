@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts"
 type: "code"
-community: "Theme Constants & Maps"
+community: "Community 48"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Theme_Constants__Maps
+  - community/Community_48
 ---
 
 # Api.SystemManage.User
@@ -15,4 +15,4 @@ tags:
 - [[Api.Common.CommonRecord]] - `references` [EXTRACTED]
 - [[CommonType namespace]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Theme_Constants__Maps
+#graphify/code #graphify/EXTRACTED #community/Community_48

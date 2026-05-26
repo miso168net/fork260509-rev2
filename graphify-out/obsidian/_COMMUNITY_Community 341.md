@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[Tutorial Other (placeholder)]] - document
+- [[Tutorial Section Preface]] - document
 
 ## Live Query (requires Dataview plugin)
 

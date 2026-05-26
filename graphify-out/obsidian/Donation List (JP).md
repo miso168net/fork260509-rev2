@@ -1,13 +1,13 @@
 ---
 source_file: ""
 type: "document"
-community: "Community 325"
+community: "Community 326"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Community_325
+  - community/Community_326
 ---
 
 # Donation List (JP)
 
-#graphify/document #graphify/EXTRACTED #community/Community_325
+#graphify/document #graphify/EXTRACTED #community/Community_326

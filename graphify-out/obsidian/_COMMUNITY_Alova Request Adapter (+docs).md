@@ -1,73 +1,67 @@
 ---
 type: community
 cohesion: 0.06
-members: 58
+members: 52
 ---
 
 # Alova Request Adapter (+docs)
 
 **Cohesion:** 0.06 - loosely connected
-**Members:** 58 nodes
+**Members:** 52 nodes
 
 ## Members
-- [[BACKEND_ERROR_CODE constant (alova)]] - code - fork260509-soybean-admin-base/packages/alova/src/constant.ts
-- [[BACKEND_ERROR_CODE constant (axios)]] - code - fork260509-soybean-admin-base/packages/axios/src/constant.ts
-- [[BACKEND_ERROR_CODE convention]] - concept - fork260509-soybean-admin-base/packages/alova/src/constant.ts
-- [[ContentType]] - code - fork260509-soybean-admin-base/packages/axios/src/type.ts
-- [[CustomAlovaConfig]] - code - fork260509-soybean-admin-base/packages/alova/src/type.ts
-- [[CustomAxiosRequestConfig]] - code - fork260509-soybean-admin-base/packages/axios/src/type.ts
-- [[FlatRequestInstance]] - code - fork260509-soybean-admin-base/packages/axios/src/type.ts
-- [[FlatResponseData]] - code - fork260509-soybean-admin-base/packages/axios/src/type.ts
-- [[FlatResponseFailData]] - code - fork260509-soybean-admin-base/packages/axios/src/type.ts
-- [[FlatResponseSuccessData]] - code - fork260509-soybean-admin-base/packages/axios/src/type.ts
-- [[HookRequestInstanceResponseData]] - code - fork260509-soybean-admin-base/packages/hooks/src/use-request.ts
-- [[HookRequestInstanceResponseFailData]] - code - fork260509-soybean-admin-base/packages/hooks/src/use-request.ts
-- [[HookRequestInstanceResponseSuccessData]] - code - fork260509-soybean-admin-base/packages/hooks/src/use-request.ts
-- [[MappedType]] - code - fork260509-soybean-admin-base/packages/axios/src/type.ts
-- [[REQUEST_ID_KEY constant]] - code - fork260509-soybean-admin-base/packages/axios/src/constant.ts
-- [[Request 配置与 RequestOption 接口]] - document - fork260509-soybean-admin-docs/src/zh/guide/request/intro.md
-- [[RequestInstance]] - code - fork260509-soybean-admin-base/packages/axios/src/type.ts
-- [[RequestOption]] - code - fork260509-soybean-admin-base/packages/axios/src/type.ts
-- [[RequestOption interface (axios)]] - code - fork260509-soybean-admin-base/packages/axios/src/type.ts
-- [[RequestOptions type (alova)]] - code - fork260509-soybean-admin-base/packages/alova/src/type.ts
-- [[ResponseMap]] - code - fork260509-soybean-admin-base/packages/axios/src/type.ts
-- [[ResponseTransform]] - code - fork260509-soybean-admin-base/packages/axios/src/type.ts
-- [[ResponseType]] - code - fork260509-soybean-admin-base/packages/axios/src/type.ts
-- [[Token refresh on 401 workflow]] - concept - fork260509-soybean-admin-base/packages/alova/src/index.ts
-- [[Vite 代理 proxy- 模式]] - document - fork260509-soybean-admin-docs/src/zh/guide/request/proxy.md
-- [[alova fetch adapter re-export]] - code - fork260509-soybean-admin-base/packages/alova/src/fetch.ts
-- [[constant.ts]] - code - fork260509-soybean-admin-base/packages/alova/src/constant.ts
-- [[constant.ts_1]] - code - fork260509-soybean-admin-base/packages/axios/src/constant.ts
-- [[createAlovaRequest factory]] - code - fork260509-soybean-admin-base/packages/alova/src/index.ts
-- [[createAlovaRequest()]] - code - fork260509-soybean-admin-base/packages/alova/src/index.ts
-- [[createAxiosConfig (10s timeout default)]] - code - fork260509-soybean-admin-base/packages/axios/src/options.ts
-- [[createAxiosConfig()]] - code - fork260509-soybean-admin-base/packages/axios/src/options.ts
-- [[createCommonRequest internal factory]] - code - fork260509-soybean-admin-base/packages/axios/src/index.ts
-- [[createCommonRequest()]] - code - fork260509-soybean-admin-base/packages/axios/src/index.ts
-- [[createDefaultOptions()]] - code - fork260509-soybean-admin-base/packages/axios/src/options.ts
-- [[createFlatRequest public factory]] - code - fork260509-soybean-admin-base/packages/axios/src/index.ts
-- [[createFlatRequest 实例创建实战]] - document - fork260509-soybean-admin-docs/src/zh/guide/request/usage.md
-- [[createRequest public factory]] - code - fork260509-soybean-admin-base/packages/axios/src/index.ts
-- [[createRequest()]] - code - fork260509-soybean-admin-base/packages/axios/src/index.ts
-- [[createRetryOptions()]] - code - fork260509-soybean-admin-base/packages/axios/src/options.ts
-- [[getContentType()]] - code - fork260509-soybean-admin-base/packages/axios/src/shared.ts
-- [[index.ts]] - code - fork260509-soybean-admin-base/packages/alova/src/index.ts
-- [[index.ts_1]] - code - fork260509-soybean-admin-base/packages/axios/src/index.ts
-- [[isHttpSuccess (2xx + 304)]] - code - fork260509-soybean-admin-base/packages/axios/src/shared.ts
-- [[isHttpSuccess()]] - code - fork260509-soybean-admin-base/packages/axios/src/shared.ts
-- [[isResponseJson()]] - code - fork260509-soybean-admin-base/packages/axios/src/shared.ts
-- [[options.ts]] - code - fork260509-soybean-admin-base/packages/axios/src/options.ts
-- [[shared.ts]] - code - fork260509-soybean-admin-base/packages/axios/src/shared.ts
-- [[transformArrayBufferToJson()]] - code - fork260509-soybean-admin-base/packages/axios/src/shared.ts
-- [[transformBlobToJson()]] - code - fork260509-soybean-admin-base/packages/axios/src/shared.ts
-- [[transformResponse dispatcher]] - code - fork260509-soybean-admin-base/packages/axios/src/shared.ts
-- [[transformResponse()]] - code - fork260509-soybean-admin-base/packages/axios/src/shared.ts
-- [[type.ts]] - code - fork260509-soybean-admin-base/packages/alova/src/type.ts
-- [[type.ts_1]] - code - fork260509-soybean-admin-base/packages/axios/src/type.ts
-- [[type.ts_3]] - code - fork260509-soybean-admin-base/src/service-alova/request/type.ts
-- [[use-request.ts]] - code - fork260509-soybean-admin-base/packages/hooks/src/use-request.ts
-- [[useTable  useNaiveTable  useNaivePaginatedTable Hook]] - document - fork260509-soybean-admin-docs/src/zh/guide/hooks/use-table.md
-- [[对接后端数据结构与 success code]] - document - fork260509-soybean-admin-docs/src/zh/guide/request/backend.md
+- [[ACTIVE_COLOR]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/shared.ts
+- [[AdminLayout component]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
+- [[AdminLayoutContentConfig]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[AdminLayoutFooterConfig]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[AdminLayoutProps]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[AdminLayoutSiderConfig]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[AdminLayoutTabConfig]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[ButtonTab component]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/button-tab.vue
+- [[CSS custom properties theming (--soy- vars)]] - concept - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/shared.ts
+- [[ChromeTab component]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/chrome-tab.vue
+- [[Kebab]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[KebabCase]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[LAYOUT_MAX_Z_INDEX]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/shared.ts
+- [[LAYOUT_SCROLL_EL_ID]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/shared.ts
+- [[LayoutCssVars]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[LayoutCssVars  LayoutCssVarsProps]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[LayoutMode]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[LayoutScrollMode]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[Page tab variant pattern (chromebuttonslider)]] - concept - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/index.vue
+- [[PageTab component]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/index.vue
+- [[PageTabCssVars]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[PageTabCssVars  PageTabCssVarsProps]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[PageTabCssVarsProps]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[PageTabMode]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[PageTabProps]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[Prefix]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[SimpleScrollbar component]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/simple-scrollbar/index.vue
+- [[SliderTab component]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/slider-tab.vue
+- [[SvgClose component]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/svg-close.vue
+- [[Vue admin layout pattern (headertabsidercontentfooter)]] - concept - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue
+- [[addColorAlpha()]] - code - fork260509-soybean-admin-base/packages/color/src/shared/colord.ts
+- [[admin-layoutindex module]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.ts
+- [[admin-layoutshared]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/shared.ts
+- [[createCssVars()]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/shared.ts
+- [[createLayoutCssVars()]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/shared.ts
+- [[createLayoutCssVarsByCssVarsProps()]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/shared.ts
+- [[createTabCssVars()]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/shared.ts
+- [[index.ts_8]] - code - fork260509-soybean-admin-base/packages/materials/src/index.ts
+- [[index.ts_9]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.ts
+- [[index.ts_10]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/index.ts
+- [[index.ts_11]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/simple-scrollbar/index.ts
+- [[index.ts_12]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[index.vue_1]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/index.vue
+- [[index.vue_2]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/simple-scrollbar/index.vue
+- [[materialssrcindex]] - code - fork260509-soybean-admin-base/packages/materials/src/index.ts
+- [[materialstypesindex]] - code - fork260509-soybean-admin-base/packages/materials/src/types/index.ts
+- [[page-tabindex module]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/index.ts
+- [[page-tabshared]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/shared.ts
+- [[shared.ts_1]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/shared.ts
+- [[shared.ts_2]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/shared.ts
+- [[simple-scrollbarindex module]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/simple-scrollbar/index.ts
+- [[transformColorWithOpacity()]] - code - fork260509-soybean-admin-base/packages/color/src/shared/colord.ts
 
 ## Live Query (requires Dataview plugin)
 
@@ -77,13 +71,13 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 8 edges to [[_COMMUNITY_SVG Icon System]]
-- 6 edges to [[_COMMUNITY_Admin Layout Package]]
-- 1 edge to [[_COMMUNITY_Community 79]]
+- 2 edges to [[_COMMUNITY_VS Code Workspace Settings]]
+- 2 edges to [[_COMMUNITY_Elegant Router DSL]]
+- 1 edge to [[_COMMUNITY_Community 38]]
+- 1 edge to [[_COMMUNITY_Form Validation & Bootstrap]]
 
 ## Top bridge nodes
-- [[index.ts_1]] - degree 21, connects to 2 communities
-- [[createFlatRequest 实例创建实战]] - degree 8, connects to 2 communities
-- [[use-request.ts]] - degree 12, connects to 1 community
-- [[index.ts]] - degree 6, connects to 1 community
-- [[RequestInstance]] - degree 6, connects to 1 community
+- [[addColorAlpha()]] - degree 6, connects to 2 communities
+- [[shared.ts_2]] - degree 8, connects to 1 community
+- [[transformColorWithOpacity()]] - degree 4, connects to 1 community
+- [[index.ts_9]] - degree 3, connects to 1 community

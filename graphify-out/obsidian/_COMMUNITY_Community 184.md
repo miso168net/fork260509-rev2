@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[pin-toggler.vue]] - code - fork260509-soybean-admin-base/src/components/common/pin-toggler.vue
+- [[menu-toggler.vue]] - code - fork260509-soybean-admin-base/src/components/common/menu-toggler.vue
 
 ## Live Query (requires Dataview plugin)
 

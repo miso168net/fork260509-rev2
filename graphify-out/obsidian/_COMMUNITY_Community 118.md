@@ -1,18 +1,19 @@
 ---
 type: community
-cohesion: 0.67
-members: 3
+cohesion: 0.50
+members: 4
 ---
 
 # Community 118
 
-**Cohesion:** 0.67 - moderately connected
-**Members:** 3 nodes
+**Cohesion:** 0.50 - moderately connected
+**Members:** 4 nodes
 
 ## Members
-- [[LoginToken]] - code - fork260509-soybean-admin-base/src/typings/api/auth.d.ts
-- [[UserInfo]] - code - fork260509-soybean-admin-base/src/typings/api/auth.d.ts
-- [[auth.d.ts]] - code - fork260509-soybean-admin-base/src/typings/api/auth.d.ts
+- [[MarkdownEditorView]] - code - fork260509-soybean-admin-base/src/views/plugin/editor/markdown/index.vue
+- [[QuillEditorView]] - code - fork260509-soybean-admin-base/src/views/plugin/editor/quill/index.vue
+- [[renderVditor]] - code - fork260509-soybean-admin-base/src/views/plugin/editor/markdown/index.vue
+- [[renderWangEditor]] - code - fork260509-soybean-admin-base/src/views/plugin/editor/quill/index.vue
 
 ## Live Query (requires Dataview plugin)
 

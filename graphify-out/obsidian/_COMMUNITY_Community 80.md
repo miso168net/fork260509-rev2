@@ -1,22 +1,23 @@
 ---
 type: community
-cohesion: 0.52
-members: 7
+cohesion: 0.29
+members: 8
 ---
 
 # Community 80
 
-**Cohesion:** 0.52 - moderately connected
-**Members:** 7 nodes
+**Cohesion:** 0.29 - loosely connected
+**Members:** 8 nodes
 
 ## Members
-- [[BindWechat]] - code - fork260509-soybean-admin-base/src/views/_builtin/login/modules/bind-wechat.vue
-- [[CodeLogin]] - code - fork260509-soybean-admin-base/src/views/_builtin/login/modules/code-login.vue
-- [[PwdLogin]] - code - fork260509-soybean-admin-base/src/views/_builtin/login/modules/pwd-login.vue
-- [[Register]] - code - fork260509-soybean-admin-base/src/views/_builtin/login/modules/register.vue
-- [[ResetPwd]] - code - fork260509-soybean-admin-base/src/views/_builtin/login/modules/reset-pwd.vue
-- [[alova request demo]] - code - fork260509-soybean-admin-base/src/views/alova/request/index.vue
-- [[login index]] - code - fork260509-soybean-admin-base/src/views/_builtin/login/index.vue
+- [[ECharts home dashboard]] - concept - fork260509-soybean-admin-base/src/views/home/
+- [[home dashboard page]] - code - fork260509-soybean-admin-base/src/views/home/index.vue
+- [[homeCardData module]] - code - fork260509-soybean-admin-base/src/views/home/modules/card-data.vue
+- [[homeCreativityBanner module]] - code - fork260509-soybean-admin-base/src/views/home/modules/creativity-banner.vue
+- [[homeHeaderBanner module]] - code - fork260509-soybean-admin-base/src/views/home/modules/header-banner.vue
+- [[homeLineChart module]] - code - fork260509-soybean-admin-base/src/views/home/modules/line-chart.vue
+- [[homePieChart module]] - code - fork260509-soybean-admin-base/src/views/home/modules/pie-chart.vue
+- [[homeProjectNews module]] - code - fork260509-soybean-admin-base/src/views/home/modules/project-news.vue
 
 ## Live Query (requires Dataview plugin)
 

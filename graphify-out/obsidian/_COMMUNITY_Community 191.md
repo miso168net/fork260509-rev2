@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[index.vue_5]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-breadcrumb/index.vue
+- [[map-sdk.ts]] - code - fork260509-soybean-admin-base/src/constants/map-sdk.ts
 
 ## Live Query (requires Dataview plugin)
 

@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Form Validation & Bootstrap"
+community: "Theme & Settings UI"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Form_Validation__Bootstrap
+  - community/Theme__Settings_UI
 ---
 
 # 跳转登录路由 (Jump to login route)
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[是否需要登录]] - `` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Form_Validation__Bootstrap
+#graphify/concept #graphify/EXTRACTED #community/Theme__Settings_UI

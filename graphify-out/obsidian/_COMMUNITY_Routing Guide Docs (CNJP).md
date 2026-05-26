@@ -1,23 +1,24 @@
 ---
 type: community
-cohesion: 0.25
-members: 8
+cohesion: 0.22
+members: 9
 ---
 
 # Routing Guide Docs (CN/JP)
 
-**Cohesion:** 0.25 - loosely connected
-**Members:** 8 nodes
+**Cohesion:** 0.22 - loosely connected
+**Members:** 9 nodes
 
 ## Members
-- [[Coding Standards Overview (JP)]] - document
-- [[Git Setup Tutorial (JP)]] - document
-- [[Naming Conventions (JP)]] - document
-- [[Node.js Install via nvmfnm (JP)]] - document
-- [[TS Convention (JP, stub)]] - document
-- [[Tutorial Index (JP)]] - document
-- [[VSCode Debug Tutorial (JP)]] - document
-- [[Vue SFC Convention (JP)]] - document
+- [[unnamed_2]] - code - fork260509-soybean-admin-base/packages/color/package.json
+- [[@sautils_3]] - code - fork260509-soybean-admin-base/packages/color/package.json
+- [[colord]] - code - fork260509-soybean-admin-base/packages/color/package.json
+- [[dependencies_3]] - code - fork260509-soybean-admin-base/packages/color/package.json
+- [[exports_2]] - code - fork260509-soybean-admin-base/packages/color/package.json
+- [[name_3]] - code - fork260509-soybean-admin-base/packages/color/package.json
+- [[package.json_3]] - code - fork260509-soybean-admin-base/packages/color/package.json
+- [[typesVersions_2]] - code - fork260509-soybean-admin-base/packages/color/package.json
+- [[version_4]] - code - fork260509-soybean-admin-base/packages/color/package.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -25,9 +26,3 @@ members: 8
 TABLE source_file, type FROM #community/Routing_Guide_Docs_CN/JP
 SORT file.name ASC
 ```
-
-## Connections to other communities
-- 1 edge to [[_COMMUNITY_Community 92]]
-
-## Top bridge nodes
-- [[Coding Standards Overview (JP)]] - degree 4, connects to 1 community

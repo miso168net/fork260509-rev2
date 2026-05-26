@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/utils/src/index.ts"
 type: "code"
-community: "Admin Layout Package"
+community: "Community 50"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Admin_Layout_Package
+  - community/Community_50
 ---
 
 # index.ts
@@ -21,4 +21,4 @@ tags:
 - [[storage.ts_1]] - `imports_from` [EXTRACTED]
 - [[table.ts]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Admin_Layout_Package
+#graphify/code #graphify/EXTRACTED #community/Community_50

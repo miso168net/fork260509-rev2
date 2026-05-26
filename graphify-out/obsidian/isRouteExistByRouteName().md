@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/store/modules/route/shared.ts"
 type: "code"
-community: "Community 41"
+community: "Community 45"
 location: "L173"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_41
+  - community/Community_45
 ---
 
 # isRouteExistByRouteName()
@@ -15,4 +15,4 @@ tags:
 - [[index.ts_35]] - `imports` [EXTRACTED]
 - [[shared.ts_6]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_41
+#graphify/code #graphify/EXTRACTED #community/Community_45

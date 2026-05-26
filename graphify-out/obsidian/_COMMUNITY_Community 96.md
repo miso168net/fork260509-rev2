@@ -1,20 +1,21 @@
 ---
 type: community
-cohesion: 0.40
-members: 5
+cohesion: 0.33
+members: 6
 ---
 
 # Community 96
 
-**Cohesion:** 0.40 - moderately connected
-**Members:** 5 nodes
+**Cohesion:** 0.33 - loosely connected
+**Members:** 6 nodes
 
 ## Members
-- [[darkMenu]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-sider/index.vue
-- [[index.vue_12]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-sider/index.vue
-- [[isTopHybridHeaderFirst_1]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-sider/index.vue
-- [[menuWrapperClass]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-sider/index.vue
-- [[showLogo]] - code - fork260509-soybean-admin-base/src/layouts/modules/global-sider/index.vue
+- [[Elegant Router plugin]] - concept
+- [[JP Route Creation]] - concept
+- [[JP Router Cache]] - concept
+- [[JP Router Component Doc]] - concept
+- [[JP Router Intro]] - concept
+- [[RouteKey]] - code - fork260509-soybean-admin-base/src/typings/app.d.ts
 
 ## Live Query (requires Dataview plugin)
 
@@ -22,3 +23,13 @@ members: 5
 TABLE source_file, type FROM #community/Community_96
 SORT file.name ASC
 ```
+
+## Connections to other communities
+- 1 edge to [[_COMMUNITY_Theme Constants & Maps]]
+- 1 edge to [[_COMMUNITY_Community 68]]
+- 1 edge to [[_COMMUNITY_Community 76]]
+
+## Top bridge nodes
+- [[Elegant Router plugin]] - degree 4, connects to 1 community
+- [[JP Router Intro]] - degree 4, connects to 1 community
+- [[RouteKey]] - degree 2, connects to 1 community

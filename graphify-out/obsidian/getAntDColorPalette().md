@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/color/src/palette/antd.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "Docs Site npm Scripts"
 location: "L71"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Docs_Site_npm_Scripts
 ---
 
 # getAntDColorPalette()
@@ -19,4 +19,4 @@ tags:
 - [[index.ts_4]] - `imports` [EXTRACTED]
 - [[mixColor()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Docs_Site_npm_Scripts

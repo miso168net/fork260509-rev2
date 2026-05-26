@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/plugin/charts/vchart/data.ts"
 type: "code"
-community: "Docs Site Config Files"
+community: "Community 67"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Docs_Site_Config_Files
+  - community/Community_67
 ---
 
 # data.ts
@@ -23,4 +23,4 @@ tags:
 - [[shapeWordCloudSpec]] - `contains` [EXTRACTED]
 - [[stackedDashAreaSpec]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Docs_Site_Config_Files
+#graphify/code #graphify/EXTRACTED #community/Community_67

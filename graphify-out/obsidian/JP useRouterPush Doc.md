@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "VSCode Debugging Guide (3 screenshots)"
+community: "Community 77"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/VSCode_Debugging_Guide_3_screenshots
+  - community/Community_77
 ---
 
 # JP useRouterPush Doc
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[useRouterPush Hook]] - `documents` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/VSCode_Debugging_Guide_3_screenshots
+#graphify/concept #graphify/EXTRACTED #community/Community_77

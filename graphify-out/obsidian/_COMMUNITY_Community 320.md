@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[soybean-admin-docs CHANGELOG v1.0.0 (2024-04-24)]] - document - fork260509-soybean-admin-docs/CHANGELOG.md
+- [[SbUiPromo.vue]] - code - fork260509-soybean-admin-docs/.vitepress/theme/SbUiPromo.vue
 
 ## Live Query (requires Dataview plugin)
 

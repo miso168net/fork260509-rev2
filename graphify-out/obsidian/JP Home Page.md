@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Community 157"
+community: "Community 160"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Community_157
+  - community/Community_160
 ---
 
 # JP Home Page
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[SbUiPromo (jp index)]] - `embeds` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Community_157
+#graphify/concept #graphify/EXTRACTED #community/Community_160

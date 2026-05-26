@@ -10,9 +10,9 @@ members: 3
 **Members:** 3 nodes
 
 ## Members
-- [[JP Icon Intro]] - concept
-- [[JP Icon Usage]] - concept
-- [[useSvgIcon (hook)]] - concept
+- [[extensions.json]] - code - fork260509-soybean-admin-base/.vscode/extensions.json
+- [[extensions.json_1]] - code - fork260509-soybean-admin-docs/.vscode/extensions.json
+- [[recommendations]] - code - fork260509-soybean-admin-base/.vscode/extensions.json
 
 ## Live Query (requires Dataview plugin)
 

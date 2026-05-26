@@ -1,32 +1,33 @@
 ---
 type: community
 cohesion: 0.12
-members: 17
+members: 18
 ---
 
 # Per-Package TSConfig (sub-27)
 
 **Cohesion:** 0.12 - loosely connected
-**Members:** 17 nodes
+**Members:** 18 nodes
 
 ## Members
-- [[allowSyntheticDefaultImports_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[compilerOptions_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[esModuleInterop_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[exclude_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[forceConsistentCasingInFileNames_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[include_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[jsx_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[lib_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[module_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[moduleResolution_2]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[noUnusedLocals_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[resolveJsonModule_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[strict_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[strictNullChecks_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[target_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[tsconfig.json_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
-- [[types_1]] - code - fork260509-soybean-admin-base/packages/alova/tsconfig.json
+- [[LoginModule]] - code - fork260509-soybean-admin-base/src/typings/union-key.d.ts
+- [[ThemePageAnimateMode]] - code - fork260509-soybean-admin-base/src/typings/union-key.d.ts
+- [[ThemeScheme]] - code - fork260509-soybean-admin-base/src/typings/union-key.d.ts
+- [[ThemeScrollMode]] - code - fork260509-soybean-admin-base/src/typings/union-key.d.ts
+- [[ThemeTabMode]] - code - fork260509-soybean-admin-base/src/typings/union-key.d.ts
+- [[UnoCssAnimateKey]] - code - fork260509-soybean-admin-base/src/typings/union-key.d.ts
+- [[app.ts]] - code - fork260509-soybean-admin-base/src/constants/app.ts
+- [[loginModuleRecord]] - code - fork260509-soybean-admin-base/src/constants/app.ts
+- [[themeLayoutModeOptions]] - code - fork260509-soybean-admin-base/src/constants/app.ts
+- [[themeLayoutModeRecord]] - code - fork260509-soybean-admin-base/src/constants/app.ts
+- [[themePageAnimationModeRecord]] - code - fork260509-soybean-admin-base/src/constants/app.ts
+- [[themeSchemaOptions]] - code - fork260509-soybean-admin-base/src/constants/app.ts
+- [[themeSchemaRecord]] - code - fork260509-soybean-admin-base/src/constants/app.ts
+- [[themeScrollModeRecord]] - code - fork260509-soybean-admin-base/src/constants/app.ts
+- [[themeTabModeOptions]] - code - fork260509-soybean-admin-base/src/constants/app.ts
+- [[themeTabModeRecord]] - code - fork260509-soybean-admin-base/src/constants/app.ts
+- [[union-key.d.ts]] - code - fork260509-soybean-admin-base/src/typings/union-key.d.ts
+- [[watermarkTimeFormatOptions]] - code - fork260509-soybean-admin-base/src/constants/app.ts
 
 ## Live Query (requires Dataview plugin)
 
@@ -34,3 +35,11 @@ members: 17
 TABLE source_file, type FROM #community/Per-Package_TSConfig_sub-27
 SORT file.name ASC
 ```
+
+## Connections to other communities
+- 2 edges to [[_COMMUNITY_Community 52]]
+- 1 edge to [[_COMMUNITY_Community 38]]
+- 1 edge to [[_COMMUNITY_Elegant Router DSL]]
+
+## Top bridge nodes
+- [[app.ts]] - degree 15, connects to 3 communities

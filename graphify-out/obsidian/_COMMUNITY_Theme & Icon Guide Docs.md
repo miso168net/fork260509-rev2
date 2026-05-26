@@ -1,21 +1,22 @@
 ---
 type: community
 cohesion: 0.33
-members: 6
+members: 7
 ---
 
 # Theme & Icon Guide Docs
 
 **Cohesion:** 0.33 - loosely connected
-**Members:** 6 nodes
+**Members:** 7 nodes
 
 ## Members
-- [[Git Hooks 与提交校验]] - document - fork260509-soybean-admin-docs/src/zh/guide/cli/git-hooks.md
-- [[SoybeanAdmin 介绍]] - document - fork260509-soybean-admin-docs/src/zh/guide/intro.md
-- [[sa CLI 命令清单]] - document - fork260509-soybean-admin-docs/src/zh/guide/cli/command.md
-- [[sa CLI 概述]] - document - fork260509-soybean-admin-docs/src/zh/guide/cli/intro.md
-- [[同步上游代码（cherry-pick 流程）]] - document - fork260509-soybean-admin-docs/src/zh/guide/sync.md
-- [[快速开始]] - document - fork260509-soybean-admin-docs/src/zh/guide/quick-start.md
+- [[guide_icon_concept_svg_icon_component]] - concept
+- [[guide_icon_concept_use_svg_icon_render]] - concept
+- [[guide_icon_intro_doc]] - concept
+- [[guide_icon_usage_doc]] - concept
+- [[guide_theme_concept_setup_loading]] - concept
+- [[guide_theme_loading_doc]] - concept
+- [[guide_theme_logo_doc]] - concept
 
 ## Live Query (requires Dataview plugin)
 

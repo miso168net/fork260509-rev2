@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Community 130"
+community: "Community 134"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Community_130
+  - community/Community_134
 ---
 
 # guide_theme_intro_doc
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[guide_theme_concept_theme_setting]] - `references` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Community_130
+#graphify/concept #graphify/EXTRACTED #community/Community_134

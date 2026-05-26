@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/plugin/charts/echarts/data.ts"
 type: "code"
-community: "Chart Plugin Views"
+community: "Runtime Dependencies"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Chart_Plugin_Views
+  - community/Runtime_Dependencies
 ---
 
 # EChartsOptions
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[VChartPluginView]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Chart_Plugin_Views
+#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies

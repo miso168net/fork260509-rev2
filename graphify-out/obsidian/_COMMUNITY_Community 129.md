@@ -1,18 +1,18 @@
 ---
 type: community
-cohesion: 1.00
+cohesion: 0.67
 members: 3
 ---
 
 # Community 129
 
-**Cohesion:** 1.00 - tightly connected
+**Cohesion:** 0.67 - moderately connected
 **Members:** 3 nodes
 
 ## Members
-- [[guide_theme_concept_get_antd_theme]] - concept
-- [[guide_theme_concept_get_naive_theme]] - concept
-- [[guide_theme_ui_doc]] - concept
+- [[date]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/echarts/index.vue
+- [[index.vue_38]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/echarts/index.vue
+- [[second]] - code - fork260509-soybean-admin-base/src/views/plugin/charts/echarts/index.vue
 
 ## Live Query (requires Dataview plugin)
 

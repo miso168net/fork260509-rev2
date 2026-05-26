@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/plugin/"
 type: "concept"
-community: "Community 66"
+community: "Community 73"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/Community_66
+  - community/Community_73
 ---
 
 # plugin demo views (third-party SDK showcase)
@@ -20,4 +20,4 @@ tags:
 - [[VTableGanttView]] - `conceptually_related_to` [INFERRED]
 - [[Video plugin view (xgplayer)]] - `conceptually_related_to` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/Community_66
+#graphify/concept #graphify/INFERRED #community/Community_73

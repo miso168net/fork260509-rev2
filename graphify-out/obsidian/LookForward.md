@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/components/custom/look-forward.vue"
 type: "code"
-community: "Global Layout Components"
+community: "Global Search Module"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Global_Layout_Components
+  - community/Global_Search_Module
 ---
 
 # LookForward
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[SvgIcon]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Global_Layout_Components
+#graphify/code #graphify/EXTRACTED #community/Global_Search_Module

@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/typings/union-key.d.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "Community 53"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Community_53
 ---
 
 # UnionKey namespace
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[App.Theme.ThemeSetting]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Community_53

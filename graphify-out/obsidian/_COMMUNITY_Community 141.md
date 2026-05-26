@@ -1,17 +1,18 @@
 ---
 type: community
-cohesion: 1.00
-members: 2
+cohesion: 0.67
+members: 3
 ---
 
 # Community 141
 
-**Cohesion:** 1.00 - tightly connected
-**Members:** 2 nodes
+**Cohesion:** 0.67 - moderately connected
+**Members:** 3 nodes
 
 ## Members
-- [[CopyPluginView]] - code - fork260509-soybean-admin-base/src/views/plugin/copy/index.vue
-- [[handleCopy]] - code - fork260509-soybean-admin-base/src/views/plugin/copy/index.vue
+- [[Local]] - code - fork260509-soybean-admin-base/src/typings/storage.d.ts
+- [[Session]] - code - fork260509-soybean-admin-base/src/typings/storage.d.ts
+- [[storage.d.ts]] - code - fork260509-soybean-admin-base/src/typings/storage.d.ts
 
 ## Live Query (requires Dataview plugin)
 

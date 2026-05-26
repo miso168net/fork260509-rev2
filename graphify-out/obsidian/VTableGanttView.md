@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/index.vue"
 type: "code"
-community: "Community 83"
+community: "Community 92"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_83
+  - community/Community_92
 ---
 
 # VTableGanttView
@@ -16,4 +16,4 @@ tags:
 - [[plugin demo views (third-party SDK showcase)]] - `conceptually_related_to` [INFERRED]
 - [[useThemeStore]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/INFERRED #community/Community_83
+#graphify/code #graphify/INFERRED #community/Community_92

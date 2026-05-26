@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "document"
-community: "Routing Guide Docs (CN/JP)"
+community: "Community 84"
 tags:
   - graphify/document
   - graphify/EXTRACTED
-  - community/Routing_Guide_Docs_CN/JP
+  - community/Community_84
 ---
 
 # VSCode Debug Tutorial (JP)
@@ -14,4 +14,4 @@ tags:
 - [[Tutorial Index (JP)]] - `decomposed_into` [EXTRACTED]
 - [[Vue SFC Convention (JP)]] - `complements` [EXTRACTED]
 
-#graphify/document #graphify/EXTRACTED #community/Routing_Guide_Docs_CN/JP
+#graphify/document #graphify/EXTRACTED #community/Community_84

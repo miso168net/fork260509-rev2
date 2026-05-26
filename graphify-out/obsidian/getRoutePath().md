@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/router/elegant/transform.ts"
 type: "code"
-community: "Route Helpers & Tab Filters"
+community: "Per-Package TSConfig (sub-26)"
 location: "L251"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Route_Helpers__Tab_Filters
+  - community/Per-Package_TSConfig_sub-26
 ---
 
 # getRoutePath()
@@ -19,4 +19,4 @@ tags:
 - [[shared.ts_7]] - `imports` [EXTRACTED]
 - [[transform.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Route_Helpers__Tab_Filters
+#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-26

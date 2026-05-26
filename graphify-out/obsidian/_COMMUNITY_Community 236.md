@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[index.vue_20]] - code - fork260509-soybean-admin-base/src/views/alova/request/index.vue
+- [[swiper.d.ts]] - code - fork260509-soybean-admin-base/src/typings/swiper.d.ts
 
 ## Live Query (requires Dataview plugin)
 

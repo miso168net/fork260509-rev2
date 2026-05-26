@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue"
 type: "concept"
-community: "Form & Table Hooks"
+community: "Alova Request Adapter (+docs)"
 tags:
   - graphify/concept
   - graphify/INFERRED
-  - community/Form__Table_Hooks
+  - community/Alova_Request_Adapter_docs
 ---
 
 # Vue admin layout pattern (header/tab/sider/content/footer)
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[AdminLayout component]] - `implements` [INFERRED]
 
-#graphify/concept #graphify/INFERRED #community/Form__Table_Hooks
+#graphify/concept #graphify/INFERRED #community/Alova_Request_Adapter_docs

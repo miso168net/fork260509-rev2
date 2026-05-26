@@ -1,25 +1,27 @@
 ---
 type: community
-cohesion: 0.27
-members: 10
+cohesion: 0.20
+members: 12
 ---
 
 # Community 62
 
-**Cohesion:** 0.27 - loosely connected
-**Members:** 10 nodes
+**Cohesion:** 0.20 - loosely connected
+**Members:** 12 nodes
 
 ## Members
-- [[breadcrumb_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[fixed_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[footer_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[globalSearch_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[header_3]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[height_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[multilingual_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[right_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[showIcon_1]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
-- [[visible_2]] - code - fork260509-soybean-admin-base/src/theme/preset/default.json
+- [[base-text_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[boxShadow_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[colors_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[container_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[dark_2]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[inverted_2]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[light_2]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[mixChildMenuWidth_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[mixWidth_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[sider_2]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[tokens_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
+- [[width_1]] - code - fork260509-soybean-admin-base/src/theme/preset/dark.json
 
 ## Live Query (requires Dataview plugin)
 
@@ -29,13 +31,13 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 2 edges to [[_COMMUNITY_Community 53]]
-- 2 edges to [[_COMMUNITY_Community 90]]
-- 1 edge to [[_COMMUNITY_Community 54]]
-- 1 edge to [[_COMMUNITY_SPA Loading Screen UI]]
+- 2 edges to [[_COMMUNITY_Community 44]]
+- 2 edges to [[_COMMUNITY_Community 98]]
+- 1 edge to [[_COMMUNITY_Community 43]]
+- 1 edge to [[_COMMUNITY_Community 97]]
 
 ## Top bridge nodes
-- [[header_3]] - degree 6, connects to 2 communities
-- [[visible_2]] - degree 6, connects to 2 communities
-- [[footer_2]] - degree 5, connects to 1 community
-- [[height_2]] - degree 3, connects to 1 community
+- [[sider_2]] - degree 7, connects to 2 communities
+- [[boxShadow_1]] - degree 4, connects to 2 communities
+- [[colors_1]] - degree 6, connects to 1 community
+- [[tokens_1]] - degree 3, connects to 1 community

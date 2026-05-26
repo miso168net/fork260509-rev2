@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[index.vue_32]] - code - fork260509-soybean-admin-base/src/views/manage/role/index.vue
-- [[label_1]] - code - fork260509-soybean-admin-base/src/views/manage/role/index.vue
+- [[Window]] - code - fork260509-soybean-admin-base/src/typings/global.d.ts
+- [[global.d.ts]] - code - fork260509-soybean-admin-base/src/typings/global.d.ts
 
 ## Live Query (requires Dataview plugin)
 

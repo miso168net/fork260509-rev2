@@ -1,11 +1,11 @@
 ---
 source_file: ""
 type: "concept"
-community: "Admin Layout Package"
+community: "API Service Aliases (auth/captcha)"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Admin_Layout_Package
+  - community/API_Service_Aliases_auth/captcha
 ---
 
 # useTableOperate (function)
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[JP useTable Hook Doc]] - `documents` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Admin_Layout_Package
+#graphify/concept #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha

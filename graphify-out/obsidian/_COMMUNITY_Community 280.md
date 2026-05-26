@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[pwd-login.vue]] - code - fork260509-soybean-admin-base/src/views/_builtin/login/modules/pwd-login.vue
+- [[bind-wechat.vue]] - code - fork260509-soybean-admin-base/src/views/_builtin/login/modules/bind-wechat.vue
 
 ## Live Query (requires Dataview plugin)
 

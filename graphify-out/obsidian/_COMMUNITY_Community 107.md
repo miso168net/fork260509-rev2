@@ -1,19 +1,20 @@
 ---
 type: community
-cohesion: 0.50
-members: 4
+cohesion: 0.60
+members: 5
 ---
 
 # Community 107
 
-**Cohesion:** 0.50 - moderately connected
-**Members:** 4 nodes
+**Cohesion:** 0.60 - moderately connected
+**Members:** 5 nodes
 
 ## Members
-- [[ElegantConstRoute_1]] - code - fork260509-soybean-admin-base/src/typings/api/route.d.ts
-- [[MenuRoute]] - code - fork260509-soybean-admin-base/src/typings/api/route.d.ts
-- [[UserRoute]] - code - fork260509-soybean-admin-base/src/typings/api/route.d.ts
-- [[route.d.ts]] - code - fork260509-soybean-admin-base/src/typings/api/route.d.ts
+- [[LookForward_1]] - concept - fork260509-soybean-admin-base/src/views/function/hide-child/one/index.vue
+- [[hide-child one]] - code - fork260509-soybean-admin-base/src/views/function/hide-child/one/index.vue
+- [[hide-child three]] - code - fork260509-soybean-admin-base/src/views/function/hide-child/three/index.vue
+- [[hide-child two]] - code - fork260509-soybean-admin-base/src/views/function/hide-child/two/index.vue
+- [[multi-tab]] - code - fork260509-soybean-admin-base/src/views/function/multi-tab/index.vue
 
 ## Live Query (requires Dataview plugin)
 

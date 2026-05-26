@@ -34,9 +34,9 @@ SORT file.name ASC
 ```
 
 ## Connections to other communities
-- 3 edges to [[_COMMUNITY_Community 42]]
-- 2 edges to [[_COMMUNITY_Getting Started  CLI Docs]]
-- 1 edge to [[_COMMUNITY_Community 56]]
+- 3 edges to [[_COMMUNITY_Community 44]]
+- 2 edges to [[_COMMUNITY_Community 98]]
+- 1 edge to [[_COMMUNITY_Community 62]]
 
 ## Top bridge nodes
 - [[header_2]] - degree 6, connects to 2 communities

@@ -10,8 +10,8 @@ members: 2
 **Members:** 2 nodes
 
 ## Members
-- [[Window]] - code - fork260509-soybean-admin-base/src/typings/global.d.ts
-- [[global.d.ts]] - code - fork260509-soybean-admin-base/src/typings/global.d.ts
+- [[GlobalComponents]] - code - fork260509-soybean-admin-base/src/typings/components.d.ts
+- [[components.d.ts]] - code - fork260509-soybean-admin-base/src/typings/components.d.ts
 
 ## Live Query (requires Dataview plugin)
 

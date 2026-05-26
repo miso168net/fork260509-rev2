@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/types.ts"
 type: "code"
-community: "Chart Plugin Views"
+community: "Runtime Dependencies"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Chart_Plugin_Views
+  - community/Runtime_Dependencies
 ---
 
 # types.ts
@@ -20,4 +20,4 @@ tags:
 - [[data.ts]] - `imports_from` [EXTRACTED]
 - [[status.ts]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Chart_Plugin_Views
+#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies

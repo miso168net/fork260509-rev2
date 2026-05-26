@@ -10,7 +10,7 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[chrome-tab.vue]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/chrome-tab.vue
+- [[chrome-tab-bg.vue]] - code - fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/chrome-tab-bg.vue
 
 ## Live Query (requires Dataview plugin)
 
