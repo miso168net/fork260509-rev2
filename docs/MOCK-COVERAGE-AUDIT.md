@@ -228,8 +228,10 @@ isBackendSuccess(response) {
 ### 4.4 Role / button code
 
 - super role: **`R_SUPER`**(對應 .env `VITE_STATIC_SUPER_ROLE=R_SUPER`)
+- admin role: **`R_ADMIN`**(2026-05-27 [followup §4.1](INTEGRATION-RESEARCH-FOLLOWUP.md) 實機補)
+- common user role: **`R_USER_COMMON`**(2026-05-27 [followup §4.1](INTEGRATION-RESEARCH-FOLLOWUP.md) 實機補)
 - 一般 role: `R_QMSVN_MBN`、`R_LMLJZ_CFLC` 等隨機字串
-- button code: `B_CODE1`、`B_CODE2`、`B_CODE3`(getUserInfo 內)
+- button code: `B_CODE1`、`B_CODE2`、`B_CODE3`(getUserInfo 內;**Super=全集 [1,2,3]、Admin=[2,3]、User=[3]** incremental subset,見 followup §4.3)
 
 > rev1 DESIGN-B / superpowers 028 用 `ROLE_SUPER`,**rev2 必須改用 `R_SUPER`** 對齊 base .env。
 
@@ -274,13 +276,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiI...
 
 ### 4.7 預設帳號(quick-fill button)
 
-| 按鈕文字 | userName | password |
-|---|---|---|
-| 超级管理员 | `Super` | `123456` |
-| 管理员 | `Admin`(推測) | `123456` |
-| 普通用户 | `User`(推測) | `123456` |
+| 按鈕文字 | login req userName | password | getUserInfo userName | userId | roles |
+|---|---|---|---|---|---|
+| 超级管理员 | `Super` | `123456` | `Super` | `"1"` | `["R_SUPER"]` |
+| 管理员 | `Admin` | `123456` | `Admin` | `"2"` | `["R_ADMIN"]` |
+| 普通用户 | `User` | `123456` | **`User01`**(alias!) | `"3"` | `["R_USER_COMMON"]` |
 
-**注意**:rev1 superpowers/CLAUDE.md §8.1 寫 `Soybean / Administrator / GeneralUser` — 這是 rev1 自己的 migration seed,**不是 mock 預設**。rev2 rust-api 從 0 寫時要選擇:對齊 mock(`Super`/`Admin`/`User`)還是延用 rev1 命名。建議**對齊 mock**(因為 quick-fill button 已固定)。
+> ⚠️ **2026-05-27 [followup §4.1](INTEGRATION-RESEARCH-FOLLOWUP.md) 補實機驗證**:原表「Admin / User」標「(推測)」,實機 CDP click 三按鈕 + capture login + getUserInfo 確認:Admin / User 真實值正確,但 **User login req `User` → getUserInfo response `userName=User01`** 是 mock 內部 alias 機制(audit 之前未記)。
+
+**注意**:rev1 superpowers/CLAUDE.md §8.1 寫 `Soybean / Administrator / GeneralUser` — 這是 rev1 自己的 migration seed,**不是 mock 預設**。rev2 rust-api 從 0 寫時要選擇:對齊 mock(`Super`/`Admin`/`User`)還是延用 rev1 命名。建議**對齊 mock**(因為 quick-fill button 已固定;若採 User 則 displayName 需決定 `User` vs `User01`,對齊 mock 應採後者)。
 
 ### 4.8 ApiFox 鉴权 header(rev2 切走時必拿掉)
 
@@ -468,6 +472,14 @@ pageExcludePatterns: [
 
 ### 4.11 service error codes 完整對照(2026-05-27 H4 補)
 
+> ⚠️ **2026-05-27 [followup §1.3](INTEGRATION-RESEARCH-FOLLOWUP.md) 補實機驗證**:下表「rev2 用於」原為設計建議。followup 12 個 error case CDP capture 確認 **mock 真實使用** 以下 code:
+> - `"0000"` success(每個成功響應)
+> - `"1000"` login fail(統一,不細分原因 — 錯密碼/不存在 user/空 body/缺欄 全回此 code)
+> - `"3333"` token 過期/無效(屬 expiredTokenCodes)
+> - `"8888"` refresh fail(立即 logout,屬 logoutCodes)
+> - `"7777"` modal logout(alova demo「触发」按鈕觸發點 `/auth/error?code=7777`)
+> - 業務驗證錯誤 mock **完全不檢**(`status=NOT_AN_ENUM` 照樣回 success),rev2 自訂 `5xxx` 區段即可
+
 `.env` 4 個 code list × `src/service/request/index.ts` 的 `onBackendFail` 流水線:
 
 | .env 設定 | code(s) | base-web request layer 對應行為 | rev2 rust-api 何時回 |
@@ -612,9 +624,11 @@ async function initDynamicAuthRoute() {
 }
 ```
 
-**但 mock 漏了 `home` 欄!**(audit §7.2.5 `/route/getUserRoutes` 只回 `{routes: [...]}`,沒 `home`)
-- TypeScript 型不檢查 runtime,所以 base-web 可能 silently 用 `undefined` 設 home(或畫面有 bug)
-- **rev2 rust-api 必須帶 `home` 欄!**(e.g. `home: "home"` — `.env` `VITE_ROUTE_HOME=home`)
+> ⚠️ **2026-05-27 [followup §2.3](INTEGRATION-RESEARCH-FOLLOWUP.md) 翻案**:mock **確實有** `home: "home"` 欄,完整響應結構 `{data: {routes: [...], home: "home"}, code, msg}`。原 H6 結論「mock 漏了 home 欄」是之前 capture 1800 字截斷誤判;以下 ~~strikethrough~~ 部分作廢,但「rev2 必須帶 home 欄」結論仍正確(對齊 mock)。
+
+~~**但 mock 漏了 `home` 欄!**~~(audit §7.2.5 `/route/getUserRoutes` 只回 `{routes: [...]}`,~~沒 `home`~~ — 實為 capture 截斷)
+- ~~TypeScript 型不檢查 runtime,所以 base-web 可能 silently 用 `undefined` 設 home(或畫面有 bug)~~ — 不適用,mock 有 home 欄
+- **rev2 rust-api 必須帶 `home` 欄**(e.g. `home: "home"` — `.env` `VITE_ROUTE_HOME=home`)— ✓ 結論仍正確
 
 **另一發現:`MenuRoute.id: string`**
 - typings route.d.ts 顯式 `id: string`
@@ -627,7 +641,7 @@ async function initDynamicAuthRoute() {
 |---|---|---|
 | `.env` | `VITE_AUTH_ROUTE_MODE=static` | `VITE_AUTH_ROUTE_MODE=dynamic` |
 | route 來源 | `src/router/routes/index.ts` 本地 `customRoutes` + `src/router/elegant/routes.ts` auto-gen | `/route/getConstantRoutes` + `/route/getUserRoutes` 兩個 endpoint |
-| `/route/getConstantRoutes` 觸發? | 否 | 是(init constant 階段) |
+| `/route/getConstantRoutes` 觸發? | 否 | 是(**每次 SPA full reload 都觸發**,非僅 init constant 階段 — 2026-05-27 [followup §2.4](INTEGRATION-RESEARCH-FOLLOWUP.md) 實機驗) |
 | `/route/getUserRoutes` 觸發? | 否 | 是(init auth 階段,user 登入後) |
 | `/route/isRouteExist` 觸發? | 走本地 `isRouteExistByRouteName`(用 static routes) | 走 endpoint |
 | permission filter | 本地 `filterAuthRoutesByRoles(routes, userInfo.roles)`(看 `meta.roles`) | server 端 filter,client 直接收 |
@@ -919,17 +933,20 @@ CDP grep 證實:
 }
 ```
 
-#### 7.2.13 `GET /route/getConstantRoutes`(失敗 502)
-mock 未實作或 ApiFox 內部錯誤。對 rev2 影響:**static mode 不觸發此 endpoint**,可不必實作;若 rev2 切 dynamic mode,需 rust-api 提供。
+#### 7.2.13 `GET /route/getConstantRoutes`(本次 capture 失敗 502;通常成功 200)
+
+> ⚠️ **2026-05-27 [followup §1.1 #12 + §2.2](INTEGRATION-RESEARCH-FOLLOWUP.md) 補**:後續多輪 CDP 重跑此 endpoint **成功回 200 + 完整 wire**(4 條 constant route:`login` / `403` / `404` / `500`,完整 JSON 見 followup §2.2)。502 是 ApiFox 偶發(可能 quota / rate-limit / cache invalidation),非 mock 未實作。
+
+mock ~~未實作或~~ ApiFox 偶發錯誤。對 rev2 影響:**static mode 不觸發此 endpoint**,可不必實作;若 rev2 切 dynamic mode(followup §2.5 建議),需 rust-api 提供(完整 wire 見 followup §2.2)。
 
 ### 7.3 待後續執行的延伸驗證
 
 - [x] **已完成**(2026-05-27 從 TS 型確認,非 capture)— paginated wrapper 結構:`{current: number, size: number, total: number, records: T[]}`(無 pages 欄),見 §4.9 完整
 - [x] **已完成**(2026-05-27)— grep base-web 程式碼找 `apifoxToken` 注入點:`src/service/request/index.ts:17` + `src/service-alova/request/index.ts:37`(見 §4.8 與 §6.4)
 - [x] **已完成**(2026-05-27 從 H6 store/modules/route 確認,非 CDP 重跑)— dynamic mode 流程:見 §4.13 完整對比表 + `/route/getUserRoutes` 必含 `home` 欄發現
-- [ ] 切 base-web `.env.test` `VITE_AUTH_ROUTE_MODE=dynamic` **實機 CDP 驗證**(§4.13 是程式碼推導,還沒實機驗 navigate 觸發順序)
+- [x] **已完成**(2026-05-27 [followup §2](INTEGRATION-RESEARCH-FOLLOWUP.md))— 切 `.env` `VITE_AUTH_ROUTE_MODE=dynamic` + container restart 實機驗證,確認 dynamic mode 觸發鏈 `getConstantRoutes → login → getUserInfo → getUserRoutes`(login 後自動)+ `home: "home"` 欄真實存在 + getConstantRoutes 每次 SPA reload 都觸發
 - [ ] 探 ApiFox 上 「项目配置 / REST 風格」endpoint 的具體 path 與 schema(目前只從 link text 推測,但 audit §6 第 5 條已建議 rev2 不對齊 REST 風格,優先級低)
 - [ ] 確認 `getMenuList` v1 與 v2 差異(mock 上兩個都有,base example 只用 v2,優先級低)
-- [ ] **新增(H7)**:測 base example 真實業務 error 響應(`/auth/login` 帶錯密碼時 mock 回什麼 envelope?)— 對 rev2 rust-api error response 設計 critical
+- [x] **已完成**(2026-05-27 [followup §1](INTEGRATION-RESEARCH-FOLLOWUP.md))— H7:12 個 error case CDP capture,確認 mock 用 3 組業務 code(`1000` login fail / `3333` token 過期/無效 / `8888` refresh fail)+ 真 404 走 ApiFox `apifoxError` wrapper(**非業務 envelope!**);完整矩陣與 rev2 rust-api 對應決策(envelope shape / HTTP status / 業務 code 區段)見 followup §1.2
 - [ ] **新增(M1)**:base example 完整登入流程(手動填 / 驗證碼 / 註冊 / reset 密碼 / 綁定 wechat)CDP 驗證
-- [ ] **新增(M2)**:`/manage/user-detail/:id` route 對應的 endpoint(base service/api 無 wrapper,推測 view 內 inline fetch)
+- [x] **已完成**(2026-05-27 [followup §5](INTEGRATION-RESEARCH-FOLLOWUP.md))— M2:CDP navigate `/manage/user-detail/1` 確認 base example 是純前端 placeholder「敬请期待」,**無任何 inline fetch endpoint**;route 由 `/route/getUserRoutes` 註冊(`hideInMenu:true, activeMenu:"manage_user"`)— rev2 不必為此設計 endpoint

@@ -222,9 +222,10 @@ rev1 累積 30 份 feature 持久記憶,rev2 繼承分類:
 ### 3.2 feature 紀要(P1 基礎設施 — F001~F004)
 
 #### 001 — response-shape-alignment `[CARRY]`
-- **描述**:rust admin endpoint 全 response shape(code / data / msg / success)+ camelCase 序列化(`refresh_token` → `refreshToken`)對齊 base 期望
+- **描述**:rust admin endpoint 全 response shape(code / data / msg / ~~success~~)+ camelCase 序列化(`refresh_token` → `refreshToken`)對齊 base 期望
 - **教訓**:① DTO 層級 `rename_all = "camelCase"` 優於 per-field rename;② F4 envelope 是後續所有 API 層的基礎;③ nested struct 各自需 rename_all(**不遞迴**);④ collection 欄位用 `Vec<T>` 不用 `Option<Vec<T>>`(統一空 `[]`)
 - **對 rev2**:回應形狀設計直接沿用、無 nestjs layer 故不需 bridge 相容
+  - ⚠️ **2026-05-27 修正(audit §4.1 + [followup §1.2](INTEGRATION-RESEARCH-FOLLOWUP.md))**:rev1 envelope 含 `success` bool,但 mock 實機 capture 確認 **無 `success`**,envelope = `{data, code, msg}`;`code` 是 string `"0000"`(非 number)。rev2 對齊 mock,**拿掉 `success`** + `code` 用 string。
 - **踩雷**:「rename_all 不遞迴」是常見誤解,多個 nested struct 需逐層檢查
 
 #### 002 — soft-delete-infrastructure `[CARRY]`
@@ -856,7 +857,12 @@ rust-api (workspace root)
 - `workspace.dependencies` 集中版本管理(rev1 已驗證的做法)
 - migration crate 需獨立運行(`sea-orm-migration` 模式)
 - `application.yaml` 路徑與 envvar 注入機制(F1.1 已驗證的 `_FILE` pattern)
-- **rev1 自製的 sub-crate**(`axum-casbin`、`sea-orm-adapter`、`xdb`):rev2 可選擇拷貝、重寫、或用上游版本(`axum-casbin` 與 `sea-orm-adapter` 已有上游 crate,但 rev1 自製版可能有 patch)
+- **rev1 自製的 sub-crate**(`axum-casbin`、`sea-orm-adapter`、`xdb`):
+  - ✅ **2026-05-27 [followup §7](INTEGRATION-RESEARCH-FOLLOWUP.md) 拍板**:
+    - `sea-orm-adapter`(758 LoC):**拷貝**(0 人日)— rev1 自寫、上游可能落後、實作通用無 rev1-specific patch
+    - `xdb`(272 LoC):**拷貝**(0.5 人日)— 純 IP2Region 算法綁定、commit 穩定、只需調 default 路徑 detect
+    - `axum-casbin`(234 LoC):**重寫**(3-5 人日)— 高度客製化(rev1 自家 metrics 埋點 + domain-aware enforce),趁機統一 rev2 error / metrics 策略
+  - **總估工 ~4.5 人日**(rev2 P1 setup 階段可完成);上游升級風險可控(Casbin 2.10 / SeaORM 1.1 穩定)
 
 **rev2 不繼承 rev1 程式碼的好處**:
 - 沒有歷史包袱、可以一開始就採用所有 rev1 已驗證的紀律(三重防護、原子交付、wire DTO 三端對齊)
@@ -1234,7 +1240,7 @@ services:
 | | W-F7 port-mapping(2XXXX) | W-F1/W-F2/W-F6 | 011 |
 | **P1 基礎設施** | F1.1 jwt-secrets(strict + `_FILE`) | 無 | 004 |
 | | F3 soft-delete-infrastructure(7 entity + facade + CI lint) | 無 | 002 |
-| | F4 response-shape-alignment(envelope + camelCase) | 無 | 001 |
+| | F4 response-shape-alignment(envelope `{data, code, msg}` 無 success + camelCase,對齊 audit §4.1 + [followup §1.2](INTEGRATION-RESEARCH-FOLLOWUP.md) mock 真實 shape) | 無 | 001 |
 | | F2 audit-log-infrastructure(schema + AuditEvent) | F3 | 003 |
 | **P2 認證 + 動態 menu** | F5.1 auth-login + getUserInfo + getUserRoutes + Casbin enforce | F1.1+F2+F3+F4 | 005 |
 | | F6 route-guard(`/route/isRouteExist`) | F5.1 | 013 |
@@ -1258,7 +1264,10 @@ rev1 在 F29 cutover 前做了盤點,捉到 R3(code namespace)+ R4(secret exampl
 - [ ] `.env.example` 與 `deploy/secrets/*.txt.example` 是否齊備(11 個 secret 範本檔)
 - [ ] Casbin policy seed 是否完整覆蓋預期 role × endpoint 矩陣(3 role × 主流 endpoint)
 - [ ] migration files 順序正確(`m20241024_*` 等 timestamp 連續、無 jump)
-- [ ] `sys_user` 預設 3 帳號(Soybean / Administrator / GeneralUser)hash 正確(plaintext = `123456`,argon2id)
+- [ ] `sys_user` 預設帳號命名待 rev2 spec phase 0 brainstorm 拍板(plaintext = `123456`,argon2id)
+  - **選項 (a)** 延用 rev1 命名:`Soybean / Administrator / GeneralUser`(rev1 自家 migration seed)
+  - **選項 (b)** 對齊 base mock([followup §4.1](INTEGRATION-RESEARCH-FOLLOWUP.md)):`Super / Admin / User`(login req userName);但注意 `User` 在 getUserInfo response 顯示為 `User01`(mock 內部 alias),rev2 需決定 displayName 是 `User` 還是 `User01`
+  - role 命名 mock 完整三組為 `R_SUPER / R_ADMIN / R_USER_COMMON`(audit §4.4 後補,見 followup §4.1)
 - [ ] graphify-out/ 是否落地(rev2 CLAUDE.md §2 中 ⏳ 標示)
 
 ### 7.3 rev2 與 rev1 已知 follow-up 對應
@@ -1352,11 +1361,25 @@ rev1 的部署設計(15 service + dual network + 11 個 secret + profile gating 
 
 **rev2 可以考慮**:P5 觀察性 stack(W-F12/13/14)真的要早早建嗎?還是等 P3 業務跑起來、有實際量產壓力或調試需求再建?這是值得親自拍板的取捨,不該照搬。
 
+> ✅ **2026-05-27 [followup §8](INTEGRATION-RESEARCH-FOLLOWUP.md) 拍板三段式啟動**:
+> - **P0-P3(setup + 業務跑通)**:**完全不啟 obs**,rev2 docker-compose 只含 5 service(postgres / redis / rust-api / base-web / front-nginx)
+> - **P3 後半 / P4 中段(業務驗收 + 抽離項補位)**:啟 promtail + loki + grafana 三件套(純 log,0.5-1 人日)— 拆出 `docker-compose.obs-min.yml`
+> - **P5 或 P6(production-ready)**:加 prometheus + 3 exporter + pushgateway + grafana alerting(完整 stack,2-3 人日)— `docker-compose.obs-full.yml`
+>
+> 對應 rev1 all-or-nothing 的 `docker-compose.observability.yml` 改為 rev2 拆檔的 min/full 雙軌策略。
+
 ### 9.6 graphify 的盲點要慎重
 
 11 條已知限制裡,Rust macro 展開(`merge_router!` 漏 12 個 call)+ trait dispatch 漏邊,代表「graphify 給的 call graph」對 Rust 中下層其實是 partial truth。
 
 **對 rev2**:別把 graphify 結論當決策依據,當啟發即可,微觀細節一律直接讀 source。
+
+> ✅ **2026-05-27 [followup §9](INTEGRATION-RESEARCH-FOLLOWUP.md) 拍板 rev2 graphify 應用策略**:
+> - **首次跑時機**:**P3 完**(manage CRUD 全跑通)— 業務骨架成型、cohesion 問題可發現;P1 太早(結構未成型)、P5 後增量 `update` 即可
+> - **範圍精控**:`.graphifyignore` 排除 alova / function / plugin / pro-naive / multi-menu 等 demo 目錄 + `_*/` elegant-router ignore convention + `node_modules` / `target` / `migration/migrations`
+> - **不信任清單**:Rust macro 展開的 route 註冊 / Vue component 引用 / trait dispatch — 全靠 grep 真實 source 驗證
+> - **rev2 自動消失的盲點**:NestJS DI 破碎 + 22 module 孤立(因 rev2 無 nestjs)
+> - **紀律**:每 feature 落地後跑增量 `graphify update`,brainstorm 階段才用 graphify query,實作時直讀 source
 
 ### 9.7 結語
 
@@ -1601,5 +1624,5 @@ rev1 的 W-FW1~W-FW9 改了 `src/views/manage/` 把 mock 換成真 endpoint,才�
 > **下一步建議(2026-05-26 更新)**:
 > 1. **執行 §10.5 CDP 驗證任務**(user 等等下令)→ 產出 mock-coverage-audit
 > 2. 落地 `docs/INTEGRATION-CHECKLIST.md`(進度單一真相,rev2 CLAUDE.md §6 已預留)
-> 3. 撰寫 `.specify/memory/constitution.md` v1.0.0(含 Principle I upstream pull-ability + W-BASE-WEB-ADAPT/WRAPPER 兩軌道 + 「新增不改 inline」+ 「源碼隔離」紀律;**等 §10.5 涵蓋率審計完後再定 WRAPPER 軌道授權範圍**)
+> 3. 撰寫 `.specify/memory/constitution.md` v1.0.0(含 Principle I upstream pull-ability + W-BASE-WEB-ADAPT/WRAPPER 兩軌道 + 「新增不改 inline」+ 「源碼隔離」紀律;~~**等 §10.5 涵蓋率審計完後再定 WRAPPER 軌道授權範圍**~~ — ✅ **2026-05-27 已完成**:audit 確認 12 個 read 全覆蓋、alova 7 個 endpoint 在 ApiFox 全 404 純依賴 local mock;**WRAPPER 軌道授權範圍** = (a) 補 rev2 自家 rust-api 新增業務 endpoint 的 wrapper、(b) alova 7 個 endpoint 若 rev2 想對齊則新增,詳見 [`MOCK-COVERAGE-AUDIT.md` §6](MOCK-COVERAGE-AUDIT.md) 與 [`INTEGRATION-RESEARCH-FOLLOWUP.md` §6.4](INTEGRATION-RESEARCH-FOLLOWUP.md))
 > 4. 進入 P0 部署基建第一個 feature(W-F1 dockerfile-rust-api)的 brainstorm — 注意 rev2 從 0 寫、不繼承 rev1 程式碼

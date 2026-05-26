@@ -436,7 +436,9 @@ rust-api/migration/migrations/*.rs    # migration 是 stateful,圖譜化意義�
 
 ## §10 audit / research / 本檔三方衝突點同步回填清單
 
-> 本檔已收新事實,但 audit / research 兩份檔案的舊結論仍保留。若 user 要做下一輪整理,以下是建議回填項。
+> ✅ **2026-05-27 已完成回填**:audit 9 點 + research 7 點全部 mechanical edit 進對應檔案(audit `> ⚠️ ... 翻案` / `~~strikethrough~~` 保留歷史誤判脈絡;research 用 `> ✅ ... 拍板` / cross-ref 風格)。本節保留為「回填路徑紀錄 / cross-ref index」用途。
+>
+> 風格:翻案類保留原文 strikethrough、補充類直接加新發現、待辦完成類勾 `[x]` + cross-ref;各檔修改處皆連回本檔對應 §。
 
 ### 10.1 audit 需修正
 
@@ -463,6 +465,13 @@ rust-api/migration/migrations/*.rs    # migration 是 stateful,圖譜化意義�
 | §9.5 觀察性 stack 啟動時機 | 「值得親自拍板的取捨」 | **完成**:P0-P3 不啟、P4 中段啟最小 obs、P5+ 完整(本檔 §8) |
 | §9.6 graphify 在 rev2 | 「別當決策依據」 | **完成**:含時機 + 範圍 + 規避盲點(本檔 §9) |
 | §10.5 (待辦)| 「待 §10.5 涵蓋率審計後再定 WRAPPER 軌道授權範圍」 | audit 已給定 12 個 read + 7 個 alova-only 範圍;**WRAPPER 軌道授權範圍 = 補對齊 base example real wire 必須的新增 endpoint**(本檔 §6.4 補) |
+
+### 10.2.1 回填路徑速查(commit-time reference)
+
+| 檔案 | 回填處數 | 風格 |
+|---|---|---|
+| `MOCK-COVERAGE-AUDIT.md` | 9 處(§4.4 / §4.7 / §4.11 / §4.13 H6 / §4.13 表 / §7.2.13 / §7.3 第 4 / §7.3 H7 / §7.3 M2) | 4 處 marker banner、2 處 strikethrough 翻案、3 處待辦改 `[x]` 勾選 |
+| `INTEGRATION-RESEARCH.md` | 7 處(§3.2 F001 / §7.1 F4 表格 / §7.2 對稱盤點第 5 / §5.5 sub-crate / §9.5 obs / §9.6 graphify / §10.5 結尾建議第 3) | 全部用 `> ✅ ... 拍板` 或 `~~strikethrough~~ + ✅ 已完成` 風格 |
 
 ### 10.3 本檔自身的新待辦(下一輪)
 
