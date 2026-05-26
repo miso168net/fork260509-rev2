@@ -25,7 +25,7 @@
 
 | 紀律 | 落實方式 |
 |---|---|
-| 不改 base-web/ 任何檔 | Dockerfile 放外層 `deploy/`、用 explicit COPY 列舉(取代 `.dockerignore`) |
+| 不改 base-web/ 任何檔 | Dockerfile 放外層 `deploy/`、用 explicit COPY 列舉(取代 `.dockerignore`);pnpm store 重定向避免 fallback 寫 worktree(§2.7) |
 | 預設無需 rust-api | base-web 的 `.env.prod` 已指向 ApiFox Mock(`https://mock.apifox.cn/m1/3109515-0-default`),前端可獨立跑 |
 | dev/prod 分離 | 單一 compose file 用 docker compose profile 切換 |
 | 命名慣例 | Dockerfile 用 `Dockerfile.<target>.txt`(user 指定;`.txt` 副檔名 docker 不 care,由 compose `dockerfile:` 欄明確指定) |
@@ -41,7 +41,7 @@
 | `docker-compose.base-web.yml` | workspace root | 獨立 compose,跟未來 §8.2 整套 stack 解耦;單檔 2 service |
 | `deploy/Dockerfile.base-web.txt` | `deploy/`(本次新建目錄) | 對齊 CLAUDE.md §2 規劃位置;prod multi-stage |
 | `README.md` | workspace root | quick reference(`docker compose ... up` 命令備忘);footnote 指 CLAUDE.md |
-| `docs/000-base-web-docker-bootstrap.md` | `docs/` | 本檔(設計理由 + debug 紀錄 + follow-up) |
+| `docs/superpowers/000-base-web-docker-bootstrap.md` | `docs/superpowers/` | 本檔(設計理由 + debug 紀錄 + follow-up)— 對齊 CLAUDE.md §3 階段 0 位置 |
 
 ### 2.2 dev / prod 雙 profile
 
@@ -136,6 +136,52 @@ npm install -g pnpm@10 && pnpm install && pnpm dev --host 0.0.0.0 --port 9527
 
 每次容器啟動跑 `npm install -g pnpm@10` 約 +5 秒(image 已有 npm,只是 install 一個 binary 到 `/usr/local/bin`)。可接受。
 
+### 2.7 pnpm store 路徑重定向 + CI=true(避免 cross-fs fallback 污染 worktree)
+
+pnpm 10 預設用 content-addressable global store(`$HOME/.local/share/pnpm/store`),
+用 **hardlink** 從 store 連到 node_modules — hardlink **必須在同一 filesystem 內**。
+
+容器內:`$HOME=/root`(image layer fs)≠ `/app`(host bind mount fs)→ 跨 fs →
+hardlink 不可用 → pnpm fallback 把 store 放到 `<project-root>/.pnpm-store/` 確保同 fs。
+但 `/app` 是 bind mount → store 寫回 host `base-web/.pnpm-store/`(踩到 **1.3 GB 污染**,
+違反「不改 worktree」紀律)。
+
+named volume `bw_node_modules` 只 mask `/app/node_modules`,沒 mask `/app/.pnpm-store`,
+所以 store 透過 bind mount 漏到 host。
+
+**修法**:env 重定向 + 第三個 named volume,把 store 完全放在 docker volume:
+
+```yaml
+environment:
+  - npm_config_store_dir=/pnpm-store    # pnpm 認 npm-style env (lowercase)
+volumes:
+  - ./base-web:/app
+  - bw_node_modules:/app/node_modules
+  - bw_pnpm_store:/pnpm-store           # 新加 named volume,store 完全留 docker volume
+
+volumes:
+  bw_pnpm_store:
+    name: rev2_bw_pnpm_store
+```
+
+**附加 — `CI=true` 預防 pnpm 跳 confirm prompt 卡 stdin**:
+
+若 named volume `bw_node_modules` 跟 `bw_pnpm_store` 不一致(例如只清一邊),
+pnpm install 偵測會跳:
+
+```
+The modules directories will be removed and reinstalled from scratch. Proceed? (Y/n) ‣ true
+```
+
+`‣ true` 是預設答案 display,但 pnpm 仍等 Enter。容器非互動 TTY → 永遠等不到 → 卡死。
+env `CI=true` 讓 pnpm 進 non-interactive mode,自動採用預設答案 proceed。
+
+**驗證**(A 方案成功的指標):
+- `pnpm config get store-dir` 在容器內回 `/pnpm-store` ✓
+- host `git -C base-web status` 空輸出(無 `.pnpm-store/` 漏出)✓
+- 容器內 `/pnpm-store/v10/files` 累積到 ~1.3 GB(內容全在 docker volume)✓
+- vite ready 行為不變 ✓
+
 ---
 
 ## 3. 落地檔案內容
@@ -153,10 +199,13 @@ services:
     working_dir: /app
     environment:
       - NODE_ENV=development
-      - COREPACK_ENABLE_DOWNLOAD_PROMPT=0    # 保留作 corepack fallback safety
+      - COREPACK_ENABLE_DOWNLOAD_PROMPT=0    # corepack 不彈 download prompt(保留作 fallback safety)
+      - npm_config_store_dir=/pnpm-store     # §2.7 store 重定向到 named volume
+      - CI=true                              # §2.7 non-interactive,pnpm 不跳 confirm prompt
     volumes:
       - ./base-web:/app
       - bw_node_modules:/app/node_modules
+      - bw_pnpm_store:/pnpm-store            # §2.7 store 完全留 docker volume
     ports:
       - "9527:9527"
     command:
@@ -180,13 +229,15 @@ services:
 volumes:
   bw_node_modules:
     name: rev2_bw_node_modules
+  bw_pnpm_store:                            # §2.7 新加
+    name: rev2_bw_pnpm_store
 ```
 
 注意:
 - `command:` **必須用 array form**(不能用 YAML `>` 折疊 scalar) — 詳見第 4 節第 1 輪 debug
 - `tty: true` + `stdin_open: true` + `init: true` 給 dev mode,讓 Ctrl-C 能正確終止 vite dev server
 - `container_name` 加 `rev2-` 前綴對齊 §8.2 規劃的 `rev2-admin` compose project name(便於未來整合辨識)
-- volume name 用 `rev2_bw_node_modules`(顯式 name 避免 compose 自動加 project name 前綴)
+- volume name 用 `rev2_bw_node_modules` / `rev2_bw_pnpm_store`(顯式 name 避免 compose 自動加 project name 前綴)
 
 ### 3.2 deploy/Dockerfile.base-web.txt
 
@@ -237,7 +288,7 @@ workspace root 新建,內容只放 quick reference + 一行 footnote 指向 CLAU
 
 ---
 
-## 4. dev 試跑 debug 紀錄(4 輪)
+## 4. dev 試跑 debug 紀錄(6 輪)
 
 ### 第 1 輪 · YAML `>` folded scalar → sh syntax error
 
@@ -351,6 +402,87 @@ awk 看到 match 就 `exit 0/1`,Bash run_in_background 給單次完成通知 —
 
 ---
 
+### 第 5 輪 · pnpm 10 cross-fs fallback 污染 worktree(`.pnpm-store` 1.3 GB 漏到 host)
+
+**症狀**:dev 跑起來、登入測通 → outer `git status` 出現:
+```
+modified:   base-web (untracked content)
+```
+進去看:`git -C base-web status --short` 顯示 `?? .pnpm-store/`,大小 **1.3 GB**。
+違反「不改 worktree」紀律(若不察覺被 commit/push 到 fork remote 就糟了)。
+
+**根因**(完整鏈條):
+1. pnpm 預設 `$HOME/.local/share/pnpm/store` 是 global store,用 hardlink 從 store 連 node_modules(省磁碟)
+2. hardlink **必須同 filesystem** — 容器內 `$HOME=/root`(image layer)≠ `/app`(host bind mount)
+3. pnpm fallback 把 store 放到 `<project-root>/.pnpm-store/` 確保同 fs(這對 native dev 是正解)
+4. 但 `/app` 是 bind mount → 寫回 host `base-web/.pnpm-store/`
+5. named volume `bw_node_modules` 只 mask `/app/node_modules`,沒 mask `/app/.pnpm-store`,所以漏出去
+
+**驗證**:
+- 容器內 `pnpm store path` 回 `/app/.pnpm-store/v10`(在 bind mount 內 = host base-web/.pnpm-store/v10)
+- 結構 `files/` + `index/` + `projects/` = pnpm 10 content-addressable layout(`v10` schema version)
+
+**修法**:詳見 §2.7。env `npm_config_store_dir=/pnpm-store` + 第三個 named volume `bw_pnpm_store:/pnpm-store` 把 store 完全留在 docker volume。
+
+清現有污染:
+```bash
+docker compose -f docker-compose.base-web.yml --profile dev down
+rm -rf base-web/.pnpm-store/      # 1.3 GB
+docker compose -f docker-compose.base-web.yml --profile dev up -d
+```
+
+**驗證 A 方案成功**(全 6 項通過):
+| 指標 | 結果 |
+|---|---|
+| vite ready | `VITE v8.0.12 test ready in 3331 ms` ✓ |
+| host `base-web/` worktree | `git status` 空輸出 ✓ |
+| host `base-web/.pnpm-store` | 不存在 ✓ |
+| `/pnpm-store/v10/files` in named volume | **1.3 GB**(內容全進 docker volume) |
+| `/app/node_modules/.pnpm` in bw_node_modules | 1.4 GB |
+| `curl http://127.0.0.1:9527` | HTTP 200 / 622 bytes / 10 ms ✓ |
+
+**教訓**:bind mount source + named volume 蓋 node_modules 是常見 dev 容器化 pattern,
+但 pnpm / yarn / npm 各自 cache/store 目錄都可能 fallback 到 project root。
+**容器化前要 grep 所有工具的 default cache/store 路徑,確認都不會落在 bind mount 內**。
+
+---
+
+### 第 6 輪 · pnpm 卡 confirm prompt(node_modules / store volume 不一致)
+
+**症狀**:加完第 5 輪修法後 down + up,容器跑 23 分鐘卡 prompt,log 停在:
+```
+Scope: all 9 workspace projects
+? The modules directories will be removed and reinstalled from scratch. Proceed? (Y/n) ‣ true
+```
+`/pnpm-store/v10` 只 2 MB(metadata),但 `/app/node_modules/.pnpm` 已 1.4 GB(上次 install 殘留)。
+容器 status 看是 Up,看 logs 才知卡哪。
+
+**根因**:
+- down 後 `bw_node_modules` named volume 保留(沒 down -v 也沒 docker volume rm)
+- 新加 `bw_pnpm_store` 從零開始(空)
+- pnpm install 偵測 node_modules 跟 store **inconsistent**(node_modules 內 packages 對應的 store metadata 在新 volume 內找不到)→ 預設行為跳 confirm prompt
+- `‣ true` 是 pnpm 預設答案 display,但仍等 Enter → 容器非互動 TTY → 永遠卡
+
+**修法 ①(立即 unstuck)**:全清相關 volume:
+```bash
+docker compose -f docker-compose.base-web.yml --profile dev down
+docker volume rm rev2_bw_node_modules rev2_bw_pnpm_store
+docker compose -f docker-compose.base-web.yml --profile dev up -d
+```
+
+**修法 ②(預防)**:env `CI=true` 讓 pnpm 進 non-interactive mode,自動採用預設答案(proceed):
+```yaml
+environment:
+  - CI=true
+```
+
+**教訓**:
+- 改 volume 結構(加/刪 named volume)時,**所有相關 volume 一起清**或 `down -v`,避免不一致觸發 confirm prompt
+- 容器啟動命令包含 install 時,`CI=true` 是基本防護(很多前端工具認這 env 進 non-interactive)
+- 卡 stdin 的 prompt **不會主動 error**,容器 status 看是 Up — 必須看 logs 才知卡哪;background polling 加 `Proceed?` 訊號當 error signature 抓得到
+
+---
+
 ## 5. CDP 9229 登入驗證
 
 ### 5.1 工具選擇
@@ -376,10 +508,10 @@ function on(method, cb) { /* ... event listener for CDP events */ }
 | step | 命令 / 動作 |
 |---|---|
 | 1 | `curl http://127.0.0.1:9229/json` — 列現有 tabs |
-| 2 | 找到一個 rev1 :11080 的閒置 tab(id `825A60DA...`),不開新 tab(避免 noise) |
-| 3 | WebSocket 連 `ws://127.0.0.1:9229/devtools/page/<id>` |
+| 2 | 找到一個 :9527 tab(若無,讓 user 開新 tab 並 navigate;見 §5.7 §5.8) |
+| 3 | WebSocket 連 `ws://127.0.0.1:9229/devtools/page/<完整 32 字元 id>`(見 §5.6) |
 | 4 | `Page.enable` + `Runtime.enable` |
-| 5 | `Page.navigate {url: "http://localhost:9527/"}` — vue-router auto-redirect 到 `/login` |
+| 5 | `Page.navigate {url: "http://localhost:9527/"}` — vue-router auto-redirect 到 `/login`(若未登入) |
 | 6 | 等 `Page.loadEventFired` + 3 秒讓 vue SPA mount + naive-ui 渲染 |
 | 7 | `Runtime.evaluate` dump form elements:看到 2 inputs(naive-ui NInput)+ 9 buttons(含 quick-login「超级管理员/管理员/普通用户」) |
 | 8 | `Runtime.evaluate` 找 button by `textContent === '超级管理员'` + `.click()` |
@@ -397,12 +529,16 @@ function on(method, cb) { /* ... event listener for CDP events */ }
 | `.n-menu` / `[class*="menu"]` 存在 | true(NMenu 已渲染) |
 | 總 DOM elements | 1824(full SPA mount) |
 
-### 5.4 為何用既有 tab 而非開新 tab
+A 方案後重做 fresh re-login 結果:**1824 elements 完全相同** — fresh stack 行為 deterministic ✓
+
+### 5.4 為何用既有 tab 而非開新 tab(本次最初)
 
 CDP `/json` 列出已有一個 rev1 `:11080` 「用戶管理」tab 閒置。選擇 navigate 它而非開新 tab:
 - `Page.navigate` 對既有 tab 即時生效、保留 page id 後續操作方便
 - 開新 tab 用 `curl -X PUT /json/new?<url>` 也可,但會留下舊 rev1 tab 形成 noise
 - user 既然開了 9229,意圖明顯就是讓我用這 Edge instance 操作
+
+⚠️ **但這個策略也踩坑** — 見 §5.8:操作的 tab 不一定是 user 親眼看的 tab。
 
 ### 5.5 為何用 quick-login 而非 form submit
 
@@ -412,6 +548,66 @@ base-web 是 soybean-admin starter,登入頁有「超级管理员」/「管理�
 - 一個 `.click()` 取代「找 username input → set value → dispatch input event → 找 password input → set value → dispatch event → 找 submit button → click」一連串操作
 - 對 naive-ui NInput,直接 `el.value = 'x'` 不會觸發 vue v-model 更新,要 dispatch `new Event('input', {bubbles: true})` — 複雜
 - quick-login 走的是 starter 本身已驗證過的 mock login path,driver 不用模擬 user input event
+
+### 5.6 ⚠️ CDP page id 必須完整 32 字元(8 字元截短被 reject)
+
+`/json` 的 `id` field 是 **32 字元 hex**(例:`9D470061FD35AB266E4E85A38E39FCCF`)。
+若 WS URL 用截短的 8 字元(`9D470061`),Chromium reject:
+- WebSocket close code **1006**(abnormal,no close frame)
+- `error event` 訊息空字串,難以直接看出原因
+
+**踩坑**:命令列 fetch `/json` 為了 print 簡潔用 `id[:8]` 截短顯示,然後**直接拿截短 id 餵 cdp-*.mjs script**。
+所有後續 attach 全 fail,我**誤推**為「DevTools 占用」或「internal page 限制」— 都是錯的歸因。
+
+**正解**:從 `/json` 拿完整 id,**永遠不要截短**;或直接讀 `webSocketDebuggerUrl` field 內既有的完整 URL。
+
+```bash
+# Wrong:截短 + 手構 URL
+ID=$(curl -sS http://127.0.0.1:9229/json | python3 -c "import json,sys;print(json.load(sys.stdin)[0]['id'][:8])")
+node script.mjs "$ID"   # ❌ close 1006
+
+# Right:完整 32 字元 id
+ID=$(curl -sS http://127.0.0.1:9229/json | python3 -c "import json,sys;print(json.load(sys.stdin)[0]['id'])")
+node script.mjs "$ID"   # ✓ work
+```
+
+**教訓**:用截短 id 顯示時要 explicit 標明,避免後續誤當完整 id 用。CDP page id 任何 mismatch / 截短 = WS reject;close code 1006 + 空 error message 是常見表徵。
+
+### 5.7 ⚠️ edge:// / chrome:// internal pages 不可 CDP attach
+
+新 tab 預設是 `edge://newtab/` 或 `chrome://newtab/`(Edge/Chrome internal page),
+CDP attach 會 reject(security:internal pages 不允許 remote control)。
+這個限制即使用完整 32 字元 id 也存在。
+
+**解法**:在新 tab address bar 手動輸入任何 `http(s)://` URL,等 page navigate 出 internal 範圍,
+**page id 通常會變**(Chromium 在內部頁 ↔ 外部頁切換時 swap target id)。然後對新 page id 跑 CDP script。
+
+```bash
+# 例:user 開新 tab + 輸入 http://localhost:9527/login,然後:
+NEW_ID=$(curl -sS http://127.0.0.1:9229/json | python3 -c "
+import json, sys
+for p in json.load(sys.stdin):
+    if p['type']=='page' and 'localhost:9527' in p['url']:
+        print(p['id']); sys.exit(0)
+")
+```
+
+### 5.8 ⚠️ CDP 操作的 page 不一定是 user 親眼看的 tab
+
+CDP `/json` 列出 Edge **所有** inspectable targets — 包括 background tabs / minimized windows / 別的 instances。
+若直接「拿第一個 page」當操作目標,可能是 user 沒 focus 的 background tab,
+**user 不會親眼看到** navigate / click / URL 變化,雖然 script 印的 log 顯示 success。
+
+**踩坑**:本次第一次 CDP 操作的 page id `825A60DA...` 是某個 rev1 :11080 閒置 tab;
+但 user 親眼看的是另一個 rev1 tab(`1EB0A290`)。從 user 視角:「我怎麼沒看到登入成功?」
+
+**對策**:
+- 讓 user **明確開一個新 tab** 給 CDP 操作專用(避開 user 既有 tabs 的混淆)
+- 該新 tab 先 navigate 到任何 http URL(讓它變 inspectable,§5.7)
+- 記下該 tab 完整 32 字元 id,後續所有 CDP 命令對該 id 跑
+- User 親眼看那 tab 操作 = 即時驗收
+
+或:讓 user 在他親眼看的 tab 內按 F12 開 DevTools,通常會 attach 該 tab — 但 **DevTools 占用後 CDP script 第二 attach 會 fail**(單一 page 只能一個 client attach,除非用 browser-level WS + `Target.attachToTarget` + `flatten:true`)。
 
 ---
 
@@ -454,22 +650,27 @@ port 也要對齊:21080/21443(front-nginx 對外)vs 9527/9528(本 standalone)。
 ### 6.5 CLAUDE.md §2 落地清單更新建議
 
 §2「目錄結構」與「外層 git 追蹤」清單應該補幾項(若 user 同意):
-- `deploy/` ⏳ 拔(目前只有 `Dockerfile.base-web.txt`,但 deploy/ 已落地)
+- `deploy/` ⏳ 拔(目前有 `Dockerfile.base-web.txt`,deploy/ 已落地)
 - `docker-compose.base-web.yml`(§2 內預期的是 `docker-compose.yml`;本檔名是 service-specific 變體,跟 §8.2 規劃的不一致,§2 文字可能要補說明)
 - `README.md`(新增,§2 完全沒列)
-- `docs/` 與 `docs/000-base-web-docker-bootstrap.md`(本檔)
+- `docs/` 與 `docs/superpowers/000-base-web-docker-bootstrap.md`(本檔)
 
 ### 6.6 CLAUDE.md §7 整合設計文件索引加本 doc
 
 §7 加一條:
 ```
-- **000 · base-web docker bootstrap** — docs/000-base-web-docker-bootstrap.md
+- **000 · base-web docker bootstrap** — docs/superpowers/000-base-web-docker-bootstrap.md
 ```
 
 ### 6.7 CDP scripts 是否要 git-track
 
-本次用的 `/tmp/cdp-nav.mjs` + `/tmp/cdp-login.mjs` 在 /tmp,session 結束會被清。考量:
-- 若**只是 one-shot 驗證**,不必 track(內容已附在本 doc Appendix)
+本次用的 CDP scripts(都在 /tmp,session 結束會被清):
+- `/tmp/cdp-nav.mjs` — navigate + dump form elements + screenshot
+- `/tmp/cdp-login.mjs` — click quick-login + wait URL change + screenshot
+- `/tmp/cdp-clear-and-relogin.mjs` — clear origin storage(localhost:9527)+ navigate /login + quick-login + verify /home(force fresh login,給 re-verify 用)
+
+考量:
+- 若**只是 one-shot 驗證**,不必 track(內容已附在 Appendix A)
 - 若**未來 smoke test 會反覆跑**,考慮搬到 `deploy/cdp-smoke/` 或 `scripts/` git-track
 - 等 §8.2 落地 + 整套 stack smoke test 規劃時再決定;本次先保留在 doc Appendix
 
@@ -482,28 +683,37 @@ port 也要對齊:21080/21443(front-nginx 對外)vs 9527/9528(本 standalone)。
 ```bash
 # 0. 假設 base-web/ worktree 已存在(若無走 CLAUDE.md §4.4 重建)
 
-# 1. 啟動 dev(第一次約 ~5-8 分鐘:image pull + npm install -g pnpm + pnpm install 1077 packages)
+# 1. 啟動 dev(第一次約 ~3-5 分鐘:image pull + npm install -g pnpm + pnpm install 1077 packages)
 docker compose -f docker-compose.base-web.yml --profile dev up -d
 
 # 2. 等 vite ready(背景單次 exit polling,避免 noise)
 docker compose -f docker-compose.base-web.yml --profile dev logs -f --no-log-prefix base-web-dev 2>&1 | awk '
   /ready in.*ms|VITE v.*ready/ { print "VITE_READY: " $0; exit 0 }
-  /ERR_|fatal|FATAL|panic|exit code|exited/ { print "ERROR: " $0; exit 1 }
+  /ERR_|fatal|FATAL|panic|exit code|exited|Proceed\?/ { print "ERROR: " $0; exit 1 }
 '
 
 # 3. host 驗證
 curl -sS -o /dev/null -w "HTTP %{http_code}\n" http://127.0.0.1:9527/
 
 # 4. CDP 登入驗證(需要 Edge/Chrome 在 127.0.0.1:9229 listen)
-PAGE_ID=$(curl -s http://127.0.0.1:9229/json | python3 -c "import json,sys; print(json.load(sys.stdin)[0]['id'])")
-node /tmp/cdp-nav.mjs "$PAGE_ID" http://localhost:9527/ /tmp/login.png       # 看 login 頁
-node /tmp/cdp-login.mjs "$PAGE_ID" 超级管理员 /tmp/postlogin.png             # 點 quick-login 走完整 flow
+#    ⚠️ PAGE_ID 必須完整 32 字元,不要 id[:8] 截短(Chromium reject;見 §5.6)
+#    ⚠️ 篩 type=page + url 含 localhost:9527,避開 DevTools 跟 edge://newtab/ 等 internal pages(§5.7)
+PAGE_ID=$(curl -s http://127.0.0.1:9229/json | python3 -c "
+import json, sys
+pages = [p for p in json.load(sys.stdin) if p['type']=='page' and 'localhost:9527' in p['url']]
+print(pages[0]['id']) if pages else sys.exit(1)
+")
+echo "PAGE_ID=$PAGE_ID (長度應為 32: ${#PAGE_ID})"
+node /tmp/cdp-nav.mjs   "$PAGE_ID" http://localhost:9527/  /tmp/login.png        # 看 login 頁
+node /tmp/cdp-login.mjs "$PAGE_ID" 超级管理员              /tmp/postlogin.png    # 點 quick-login 走完整 flow
+# 或:fresh from-zero 重驗(清 session 後重跑完整 flow)
+# node /tmp/cdp-clear-and-relogin.mjs "$PAGE_ID" 超级管理员 /tmp
 
-# 5. 停掉
+# 5. 停掉(volume 保留 → 下次 up 跳過 pnpm install)
 docker compose -f docker-compose.base-web.yml --profile dev down
 
-# 6. (極端)清掉 dev mode 的 pnpm install cache
-docker volume rm rev2_bw_node_modules
+# 6. (極端)清掉所有 dev mode named volume(下次重 pnpm install 從零)
+docker volume rm rev2_bw_node_modules rev2_bw_pnpm_store
 ```
 
 CDP script 內容見 Appendix A。
@@ -516,6 +726,7 @@ CDP script 內容見 Appendix A。
 
 ```javascript
 // usage: node cdp-nav.mjs <pageId> <url> [screenshotPath]
+// pageId 必須完整 32 字元(見 §5.6)
 
 const [pageId, url, screenshotPath = '/tmp/cdp-page.png'] = process.argv.slice(2);
 if (!pageId || !url) {
@@ -604,6 +815,7 @@ process.exit(0);
 
 ```javascript
 // usage: node cdp-login.mjs <pageId> [quickLoginText] [screenshotPath]
+// pageId 必須完整 32 字元(見 §5.6)
 
 const [pageId, quickText = '超级管理员', screenshotPath = '/tmp/rev2-postlogin.png'] = process.argv.slice(2);
 if (!pageId) {
@@ -687,6 +899,139 @@ const shot = await send('Page.captureScreenshot', { format: 'png' });
 const fs = await import('node:fs');
 fs.writeFileSync(screenshotPath, Buffer.from(shot.data, 'base64'));
 console.log('Screenshot:', screenshotPath);
+
+ws.close();
+process.exit(0);
+```
+
+### A.3 cdp-clear-and-relogin.mjs — force fresh login(clear origin storage + /login + quick-login)
+
+用途:不依賴 session 既有狀態,強制清掉 localhost:9527 的 localStorage / sessionStorage / cookies,
+從 `/login` 頁開始走完整 quick-login flow,verify `/home` dashboard。給 re-verify / smoke test 用。
+
+**重要**:用 `Storage.clearDataForOrigin {origin: 'http://localhost:9527'}` 是 **origin-scoped**,
+**不會**清其他 origin(例如 :11080)的 cookies。**避免用** `Network.clearBrowserCookies`(browser-level,會清整個 browser 所有 cookies,影響別的 tab session)。
+
+```javascript
+// usage: node cdp-clear-and-relogin.mjs <pageId> [quickLoginText] [screenshotDir]
+// pageId 必須完整 32 字元(見 §5.6)
+
+const [pageId, quickText = '超级管理员', shotDir = '/tmp'] = process.argv.slice(2);
+if (!pageId) { console.error('usage: node cdp-clear-and-relogin.mjs <pageId> [quickLoginText] [shotDir]'); process.exit(2); }
+
+const ws = new WebSocket(`ws://127.0.0.1:9229/devtools/page/${pageId}`);
+let nextId = 1;
+const pending = new Map();
+const eventListeners = new Map();
+
+ws.addEventListener('message', (ev) => {
+  const msg = JSON.parse(ev.data);
+  if (msg.id) {
+    const cb = pending.get(msg.id);
+    if (!cb) return;
+    pending.delete(msg.id);
+    msg.error ? cb.reject(new Error(JSON.stringify(msg.error))) : cb.resolve(msg.result);
+  } else {
+    (eventListeners.get(msg.method) || []).forEach((cb) => cb(msg.params));
+  }
+});
+ws.addEventListener('error', (e) => { console.error('WS err:', e.message || e); process.exit(1); });
+
+function send(method, params = {}) {
+  const id = nextId++;
+  return new Promise((resolve, reject) => {
+    pending.set(id, { resolve, reject });
+    ws.send(JSON.stringify({ id, method, params }));
+  });
+}
+function on(method, cb) {
+  if (!eventListeners.has(method)) eventListeners.set(method, []);
+  eventListeners.get(method).push(cb);
+}
+function waitFor(method, timeoutMs = 15000) {
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error(`timeout waiting for ${method}`)), timeoutMs);
+    on(method, (p) => { clearTimeout(t); resolve(p); });
+  });
+}
+
+await new Promise((r) => ws.addEventListener('open', r, { once: true }));
+await send('Page.enable');
+await send('Runtime.enable');
+
+console.log('--- clearing storage for localhost:9527 only (origin-scoped, 不影響其他 tab) ---');
+await send('Storage.clearDataForOrigin', { origin: 'http://localhost:9527', storageTypes: 'all' });
+// Also clear via Runtime (defensive,page 內 navigated 後再清一次)
+await send('Runtime.evaluate', {
+  expression: 'try { localStorage.clear(); sessionStorage.clear(); } catch(e) {}; document.cookie.split(";").forEach(c => { const eq = c.indexOf("="); document.cookie = (eq > -1 ? c.substr(0, eq) : c) + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/"; });',
+});
+console.log('storage cleared');
+
+console.log('--- navigate /login ---');
+const loadPromise = waitFor('Page.loadEventFired', 15000);
+await send('Page.navigate', { url: 'http://localhost:9527/login' });
+await loadPromise;
+await new Promise((r) => setTimeout(r, 3000));   // SPA mount
+
+const beforeState = await send('Runtime.evaluate', {
+  expression: '({ title: document.title, url: location.href, inputCount: document.querySelectorAll("input").length, hasQuickLogin: !!Array.from(document.querySelectorAll("button")).find(b => b.textContent.trim() === ' + JSON.stringify(quickText) + ') })',
+  returnByValue: true,
+});
+console.log('Pre-login state:', JSON.stringify(beforeState.result.value));
+
+if (!beforeState.result.value.url.includes('/login')) {
+  console.error('ERROR: not on /login after clear+navigate;router 沒 reset');
+  process.exit(1);
+}
+
+const fs = await import('node:fs');
+const shotLogin = await send('Page.captureScreenshot', { format: 'png' });
+fs.writeFileSync(`${shotDir}/rev2-fresh-login.png`, Buffer.from(shotLogin.data, 'base64'));
+console.log('Login screenshot:', `${shotDir}/rev2-fresh-login.png`);
+
+console.log('--- click quick-login button ---');
+const clickResult = await send('Runtime.evaluate', {
+  expression: `(function() {
+    const btn = Array.from(document.querySelectorAll('button')).find(b => b.textContent.trim() === ${JSON.stringify(quickText)});
+    if (!btn) return { ok: false, error: 'button not found' };
+    btn.click();
+    return { ok: true, text: btn.textContent.trim() };
+  })()`,
+  returnByValue: true,
+});
+console.log('Click:', JSON.stringify(clickResult.result.value));
+
+const startTs = Date.now();
+let lastUrl = '/login';
+while (Date.now() - startTs < 15000) {
+  await new Promise((r) => setTimeout(r, 500));
+  const cur = await send('Runtime.evaluate', { expression: 'location.href', returnByValue: true });
+  if (cur.result.value !== lastUrl && !cur.result.value.endsWith('/login')) {
+    console.log(`URL: ${lastUrl} -> ${cur.result.value}`);
+    lastUrl = cur.result.value;
+    if (!lastUrl.includes('/login')) break;
+  } else {
+    lastUrl = cur.result.value;
+  }
+}
+console.log('Final URL:', lastUrl);
+
+await new Promise((r) => setTimeout(r, 2000));
+const postState = await send('Runtime.evaluate', {
+  expression: `({
+    title: document.title,
+    url: location.href,
+    hasMenu: document.querySelectorAll('.n-menu, [class*="layout-sider"], [class*="menu"]').length > 0,
+    hasSuper: !!document.body.textContent.match(/Super/),
+    elementCount: document.querySelectorAll('*').length,
+  })`,
+  returnByValue: true,
+});
+console.log('Post-login state:', JSON.stringify(postState.result.value, null, 2));
+
+const shotDash = await send('Page.captureScreenshot', { format: 'png' });
+fs.writeFileSync(`${shotDir}/rev2-fresh-postlogin.png`, Buffer.from(shotDash.data, 'base64'));
+console.log('Dashboard screenshot:', `${shotDir}/rev2-fresh-postlogin.png`);
 
 ws.close();
 process.exit(0);
