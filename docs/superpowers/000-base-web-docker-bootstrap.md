@@ -720,6 +720,103 @@ CDP script 內容見 Appendix A。
 
 ---
 
+## 8. 持久記憶(Persistent Memory)— cross-session 教訓收容(暫定)
+
+> 這是「跨 session 持久記憶」的**暫定存放位置**,CLAUDE.md §7 整合設計文件索引已標註指向本節。
+> 內容**不限於 base-web bootstrap 範圍**,凡踩坑後值得避免下次重踩的 cross-cutting 教訓都暫收這。
+> 未來若有更合適位置(例:獨立 `docs/MEMORY.md` 或 CLAUDE.md 內 dedicated section)再搬。
+>
+> 每條 entry 結構對齊全域 LLM memory convention:**type / Rule / Why / How to apply**。
+> type 用語:`feedback`(教訓 — 用戶糾正 / 採納)、`user-preference`(風格 / 工具偏好)、
+> `project`(專案 fact)、`reference`(指引外部資源)。
+
+### 8.1 feedback · 「不改 base-web/ worktree」紀律涵蓋工具 cache/store fallback
+
+**Rule**:「不改 worktree」紀律(CLAUDE.md §5)必須包含**容器內工具的 cache/store fallback 寫入路徑**,
+不只是手動 edit。
+
+**Why**:本檔第 5 輪 debug 踩坑 — pnpm 10 在 `$HOME` 跟 `<project-root>` 跨 filesystem 時 fallback 把 **1.3 GB store** 寫到 `<project-root>/.pnpm-store/`;在 bind mount 場景下漏回 host worktree,違反紀律但 LLM 跑 dev / login 流程過程中不自覺。
+
+**How to apply**:容器化前端工具鏈前,**先 grep 所有工具的 default cache/store 路徑**(及 fallback 行為):
+- pnpm:`~/.local/share/pnpm/store` + cross-fs fallback `<project>/.pnpm-store/`
+- yarn:`~/.yarn/cache` / `<project>/.yarn/cache`(berry)
+- npm:`~/.npm`(cache)
+- cargo / rust:`~/.cargo` / `<project>/target/`
+- vite / webpack:`<project>/node_modules/.cache/`
+
+每個都評估「容器內這路徑會不會落在 bind mount 內」,落在的話用 **env 重定向 + named volume mask** 把寫入留在 docker volume 內(範本見 §2.7)。
+
+---
+
+### 8.2 feedback · CDP page id 必須完整 32 字元(截短 = WS reject close 1006)
+
+**Rule**:CDP `/json` 的 `id` field 是 **32 字元 hex**,WS URL 必須用完整 id。**永遠不要截短**。
+
+**Why**:本檔 §5.6 踩坑 — `id[:8]` 為了顯示簡潔截短,然後直接拿截短 id 當完整 id 餵 cdp-*.mjs script。
+Chromium WS reject(**close 1006** abnormal、error event 空訊息),我**誤推**為「DevTools 占用」/「internal page 限制」,浪費迭代釐清根因。
+
+**How to apply**:
+- print page id 簡顯示時 explicit 標 `id[:8]...`(加省略號 + 不存 `PAGE_ID` 變數)
+- 或直接讀 `/json` 內的 `webSocketDebuggerUrl` field(裡頭 URL 已含完整 id)
+- 看到 **close code 1006 + 空 error message** 第一直覺要懷疑 **id 截短 / mismatch**,不要跳到複雜歸因(DevTools / internal page / 權限 等)
+
+---
+
+### 8.3 feedback · CLAUDE.md 章節 scope 是 boundary,紀律不外推到別章節
+
+**Rule**:CLAUDE.md 內紀律 / 規則限定在所在 `## section` scope,**不要外推**到別章節。
+
+**Why**:本 session 早期我推斷「§3 feature 工作流」內新增的「push/merge 凍結到 finishing 階段」紀律會跟「§4.1 兩段式 commit(日常通則,即時 push)」衝突,user 釐清這兩者不同 scope:
+- §3 紀律僅在 feature 工作流期間生效(spec-kit specify ~ finishing 階段)
+- §4.1 是非 feature 期間的日常通則,完全不受限
+
+實際上沒衝突,我多此一舉的「修法提案」是錯的。
+
+**How to apply**:讀 / 寫 CLAUDE.md 紀律時,**先看該段所屬 `##` section heading**,作為紀律的 scope boundary;不要把 §X 內的規則自動套到 §Y 上。若有跨 section 適用的 universal 規則,user 會明確寫成 cross-cutting 紀律(例:§5「不要做的事」)。
+
+---
+
+### 8.4 feedback · 共用 checked-in 檔不引用個人全域 `~/.claude/CLAUDE.md`
+
+**Rule**:專案 git-tracked 檔(`CLAUDE.md` / `docs/*` 等)**不指名**個人全域 `~/.claude/CLAUDE.md`。
+
+**Why**:`~/.claude/CLAUDE.md` 是個人 LLM 全域指引,內容因人而異(不同 collaborator 全域檔不同),
+專案檔引用「全域 §5 規範」對其他 collaborator 無意義且 misleading。
+本 session 把 4 處引用全刪了(commit `4f8cd22`),含開頭 disclaimer / §3 補注 / §3 TDD 段 / §4.1 push 註解。
+
+**How to apply**:
+- 寫 priority 概念(「專案規則 vs 全域規則」)時,用「全域 Claude Code 設定」這類 **generic** 描述
+- 保留 priority 概念但不指名具體個人路徑(例:行 3 的改寫範本)
+- 若需要把某個 universal 規則寫進專案,**直接把規則 inline 到專案 CLAUDE.md 內**,不要靠引用個人全域檔
+
+---
+
+### 8.5 user-preference · Dockerfile 命名 `Dockerfile.<target>.txt`
+
+**Rule**:新增 Dockerfile 檔名用 `Dockerfile.<target>.txt` 格式(例:`Dockerfile.base-web.txt`)。
+
+**Why**:user 個人慣例。`.txt` 副檔名 docker / docker compose 不 care(只看 compose `dockerfile:` 欄明確指定);用 `.txt` 結尾的好處是 Windows / VS Code 等預設用純文字 viewer 開,不會被某些工具誤認為 binary 或自動套用 Dockerfile-specific 行為(如某些 IDE 的自動格式化 / lint)。
+
+**How to apply**:本專案任何新增 Dockerfile 都用此命名,放 `deploy/` 目錄下。compose `dockerfile:` 欄寫相對 build context 的路徑(例:`dockerfile: ../deploy/Dockerfile.base-web.txt`)。
+
+---
+
+### 8.6 user-preference · 不本機 build nodejs,偏好 docker 容器化
+
+**Rule**:前端工具鏈(node / pnpm / npm / yarn 等)**不安裝在 host**,一律走 docker 容器。
+
+**Why**:
+- 避免污染 host toolchain
+- 避開 nvm 切版本麻煩(不同專案 node 版需求不同)
+- 不同專案(rev1 / rev2 / 別的)各自容器化、互不衝突
+- host 留乾淨(host 上的 node v24 僅給少數 admin script 用,如本 session CDP client)
+
+**How to apply**:任何 dev / build / test 流程需要 node ecosystem 工具時,**第一直覺是 docker compose** 方案,不是 `npm install -g <pkg>`。
+
+例外:admin script 用 host 內建 node 跑 single-file `.mjs`(不裝 npm package、不 build)是 OK 的,例如本 session 的 CDP client(用 node v24 內建 `globalThis.WebSocket`,免 npm install)。
+
+---
+
 ## Appendix A · CDP node scripts(免 npm install,用 node v24 內建 WebSocket)
 
 ### A.1 cdp-nav.mjs — navigate 既有 tab + dump form + screenshot

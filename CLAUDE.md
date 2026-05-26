@@ -345,12 +345,13 @@ git commit -m "bump base-web: rebase on upstream <短 SHA>"
 
 ## 7. 整合設計文件索引
 
-⏳ rev2 整合的研究與設計文件尚未落地。預計位置：
+⏳ rev2 整合的研究與設計文件位置：
 
 - **原則** — [`.specify/memory/constitution.md`](.specify/memory/constitution.md)（spec-kit init 已建空殼，內容待寫）
 - **研究** — `docs/INTEGRATION-RESEARCH.md` ⏳
 - **設計** — `docs/INTEGRATION-DESIGN-*.md` ⏳（待 rev2 重新立 design 編號）
 - **進度** — `docs/INTEGRATION-CHECKLIST.md` ⏳（見 §6）
+- **持久記憶** — `docs/superpowers/000-base-web-docker-bootstrap.md` （暫定存放位置）
 - **brainstorm 決策** — `docs/superpowers/<NNN>-<feature-name>.md` ⏳（見 §3 階段 0）
 
 ## 8. 操作參考與工具
