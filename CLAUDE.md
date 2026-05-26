@@ -1,6 +1,6 @@
 # CLAUDE.md — workspace 指引
 
-> 此檔覆寫並補充全域 `~/.claude/CLAUDE.md`。專案特定規則優先；通用規則沿用全域。
+> 此檔覆寫並補充全域 Claude Code 設定。專案特定規則優先；通用規則沿用全域。
 > 本工作區是 `fork260509-rev1` 的 **rev2 重建**：相同設計骨幹、不同命名（短名 base-web/rust-api、長名 rev2-）。
 > 帶有 ⏳ 符號的說明，是檔案或內容尚未落地；user 問及此檔狀態時請列出 ⏳ 項目提醒。
 
@@ -79,10 +79,11 @@ fork260509-rev2/                            ← workspace root（傘狀 repo rev
 
 ## 3. feature 開發工作流（SDD 設計鏈 → TDD 實作）
 
-> 每個 feature 走「**TDD + SDD 混合工作流**」：階段 0 brainstorm 定調後，
-> **SDD（Spec-Driven Development＝github spec-kit）** 設計鏈產出 spec/plan/tasks，
-> 交棒給 **TDD（Test-Driven Development＝superpowers）** 讀 tasks 實作。
+> 每個 feature 走「**TDD + SDD 混合工作流**」：階段 0 brainstorm 定調後（產出 spec-design，見下方階段 0），
+> 交棒給 **SDD（Spec-Driven Development＝github spec-kit）** 設計鏈產出 spec.md / plan.md / tasks.md（plan 步還會附 research.md / data-model.md / contracts/ 等），
+> 交棒給 **TDD（Test-Driven Development＝superpowers）** 讀 tasks 實作，review 時對照 spec.md 驗收。
 > **★ 核心紀律：實作一律用 `superpowers:executing-plans` 起手，從不使用 `/speckit-implement`。**
+> **★ 核心紀律：任何 `git push` 與 `git merge` 都不得出現於 `superpowers:finishing-a-development-branch` 階段之前 — 不在實作中執行，也不得排進 tasks.md。**
 
 **階段 0 · 前置 brainstorm**（不屬 SDD/TDD 任一階段）
 `superpowers:brainstorming` 探索需求與設計、產出初步規格「spec-design」，存 `docs/superpowers/<NNN>-<feature-name>.md`。
@@ -113,7 +114,7 @@ fork260509-rev2/                            ← workspace root（傘狀 repo rev
 
 - `executing-plans` 讀 `specs/<NNN>-<feature-name>/tasks.md`；偵測 subagent 可用 → 轉 `superpowers:subagent-driven-development`，把 task 編成執行單元。
 - **每單元派 fresh implementer subagent** 實作；完成後**兩階段 review**：① **spec compliance**（對照 `specs/<NNN>-<feature-name>/spec.md` 逐項驗、抓缺漏／overbuild）→ ② **code quality**。有 issue → 同一 subagent 修 → 再 review，通過才換下一單元；全單元完成後跑整體 final review。
-- 每個 implementer subagent 走 **TDD**：有可獨立測的純函式邏輯 → test-first（red → green）；wiring／形狀對映類 feature 無新純函式測試時 → 由 acceptance 覆蓋（`specs/<NNN>-<feature-name>/contracts/` 的 C-V contract：CDP browser smoke + curl + psql），且須在 `tasks.md`／`plan.md` **明示「無單元測試」及理由**（對齊全域 `~/.claude/CLAUDE.md` §4）。
+- 每個 implementer subagent 走 **TDD**：有可獨立測的純函式邏輯 → test-first（red → green）；wiring／形狀對映類 feature 無新純函式測試時 → 由 acceptance 覆蓋（`specs/<NNN>-<feature-name>/contracts/` 的 C-V contract：CDP browser smoke + curl + psql），且須在 `tasks.md`／`plan.md` **明示「無單元測試」及理由**。
 - 收尾：`superpowers:finishing-a-development-branch` → 多段式 commit（§4.1）→ `git merge --no-ff` 回 `rev2-admin-root`，**但不清理 `<NNN>-<feature-name>` branch** 保留 spec-kit feature branch 供日後 audit / 追溯。
 
 **branch 紀律**：`/speckit-specify` 起 pre-hook 自動建 `<NNN>-<feature-name>` feature branch、outer 即切於此；spec docs + submodule SHA pin 落此 branch，feature 完成 `merge --no-ff` 回 `rev2-admin-root`（workspace 層級檔如 CLAUDE.md 才直接落 default）。
@@ -131,7 +132,7 @@ fork260509-rev2/                            ← workspace root（傘狀 repo rev
 cd base-web
 git status                                    # 確認在 rev2-admin-base-web 分支
 git add <files> && git commit -m "..."
-git push origin rev2-admin-base-web           # 推到 miso168net/fork260509-soybean-admin-base（push 前須 user 同意 — 全域 ~/.claude/CLAUDE.md §5）
+git push origin rev2-admin-base-web           # 推到 miso168net/fork260509-soybean-admin-base（push 前須 user 同意）
 
 # === 第二段：回外層更新 SHA pin ===
 cd ..
@@ -358,7 +359,7 @@ git commit -m "bump base-web: rebase on upstream <短 SHA>"
 
 ### 8.1 預設帳號（dev 用）
 
-依 `rust-api/migration/src/datas/m20241024_033005_insert_sys_user.rs` ⏳（worktree 未建、路徑暫無效）：
+依 `rust-api/migration/src/datas/m20241024_033005_insert_sys_user.rs`：
 
 | 帳號 | 角色 | 密碼 |
 |---|---|---|
