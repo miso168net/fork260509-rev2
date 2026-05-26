@@ -1,0 +1,54 @@
+# base-web 容器化 (Vue 3 starter,worktree + submodule)
+#
+# 用法:
+#   dev 模式(熱重載,http://localhost:9527):
+#     docker compose -f docker-compose.base-web.yml --profile dev up
+#   prod 模式(build + nginx serve,http://localhost:9528):
+#     docker compose -f docker-compose.base-web.yml --profile prod up --build
+#   停止 + 移除容器:
+#     docker compose -f docker-compose.base-web.yml --profile dev down
+#     docker compose -f docker-compose.base-web.yml --profile prod down
+#   清掉 named volume(強制下次重 pnpm install):
+#     docker volume rm rev2_bw_node_modules
+#
+# 設計:
+#   - 完全不需 host 裝 node/pnpm
+#   - dev mode 用 named volume mask /app/node_modules,避免 WSL2 bind mount 拖慢 IO
+#   - prod mode multi-stage build,Dockerfile 在 deploy/Dockerfile.base-web.txt
+#   - 預設 .env.prod 指向 ApiFox Mock API(無需 rust-api),要連 local rust-api 自行改 base-web/.env.*
+
+services:
+  base-web-dev:
+    profiles: ["dev"]
+    image: node:20.19-alpine
+    container_name: rev2-base-web-dev
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+      - COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+    volumes:
+      - ./base-web:/app
+      - bw_node_modules:/app/node_modules
+    ports:
+      - "9527:9527"
+    command:
+      - sh
+      - -c
+      - "npm install -g pnpm@10 && pnpm install && pnpm dev --host 0.0.0.0 --port 9527"
+    init: true
+    tty: true
+    stdin_open: true
+
+  base-web-prod:
+    profiles: ["prod"]
+    build:
+      context: ./base-web
+      dockerfile: ../deploy/Dockerfile.base-web.txt
+    container_name: rev2-base-web-prod
+    ports:
+      - "9528:80"
+    restart: unless-stopped
+
+volumes:
+  bw_node_modules:
+    name: rev2_bw_node_modules
