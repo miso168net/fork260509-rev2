@@ -51,7 +51,8 @@ deploy/.env
 # ============================================================
 # Docker / dev container 個人 override
 # ============================================================
-docker-compose.override.yml
+deploy/*
+docker-compose.*.yml
 .devcontainer/devcontainer.local.json
 
 # ============================================================
