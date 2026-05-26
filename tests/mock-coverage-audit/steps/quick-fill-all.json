@@ -1,0 +1,70 @@
+[
+  {"kind": "log", "msg": "=== ROUND 1: 超級管理員 ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "eval", "note": "clear localStorage",
+   "expr": "(() => { localStorage.clear(); sessionStorage.clear(); return JSON.stringify({cleared: true}); })()"
+  },
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 4000},
+  {"kind": "eval", "note": "list all quick-fill buttons",
+   "expr": "JSON.stringify(Array.from(document.querySelectorAll('button')).map(b => b.innerText.trim()).filter(t => t.length > 0 && t.length < 20))"
+  },
+  {"kind": "eval", "note": "click 超級管理員",
+   "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const target = btns.find(b => { const t = b.innerText.trim(); return t.includes('超級管理員') || t.includes('超级管理员'); }); if (!target) return JSON.stringify({err: 'btn not found'}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
+  },
+  {"kind": "sleep", "ms": 1200},
+  {"kind": "eval", "note": "R1 input values (superadmin)",
+   "expr": "JSON.stringify({role: 'super-admin', inputs: Array.from(document.querySelectorAll('input')).map(i => ({type: i.type, val: i.value}))})"
+  },
+  {"kind": "eval", "note": "click 確認 R1",
+   "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const target = btns.find(b => { const t = b.innerText.trim(); return t === '確認' || t === '确认'; }); if (target) target.click(); return JSON.stringify({ok: !!target}); })()"
+  },
+  {"kind": "sleep", "ms": 6000},
+  {"kind": "screenshot", "file": "./screenshots/shot-50-super-after.png"},
+  {"kind": "eval", "note": "R1 post-login state",
+   "expr": "JSON.stringify({role: 'super-admin', url: location.href, token: !!localStorage.getItem('SOY_token')})"
+  },
+
+  {"kind": "log", "msg": "=== ROUND 2: 管理員 ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "eval", "note": "clear localStorage",
+   "expr": "(() => { localStorage.clear(); sessionStorage.clear(); return JSON.stringify({cleared: true}); })()"
+  },
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 4000},
+  {"kind": "eval", "note": "click 管理員",
+   "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const candidates = btns.filter(b => { const t = b.innerText.trim(); return (t === '管理員' || t === '管理员') && !t.includes('超'); }); if (candidates.length === 0) return JSON.stringify({err: 'btn not found', all: btns.map(b => b.innerText.trim())}); candidates[0].click(); return JSON.stringify({ok: true, clicked: candidates[0].innerText.trim()}); })()"
+  },
+  {"kind": "sleep", "ms": 1200},
+  {"kind": "eval", "note": "R2 input values (admin)",
+   "expr": "JSON.stringify({role: 'admin', inputs: Array.from(document.querySelectorAll('input')).map(i => ({type: i.type, val: i.value}))})"
+  },
+  {"kind": "eval", "note": "click 確認 R2",
+   "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const target = btns.find(b => { const t = b.innerText.trim(); return t === '確認' || t === '确认'; }); if (target) target.click(); return JSON.stringify({ok: !!target}); })()"
+  },
+  {"kind": "sleep", "ms": 6000},
+  {"kind": "screenshot", "file": "./screenshots/shot-51-admin-after.png"},
+  {"kind": "eval", "note": "R2 post-login state",
+   "expr": "JSON.stringify({role: 'admin', url: location.href, token: !!localStorage.getItem('SOY_token')})"
+  },
+
+  {"kind": "log", "msg": "=== ROUND 3: 普通用户 ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "eval", "note": "clear localStorage",
+   "expr": "(() => { localStorage.clear(); sessionStorage.clear(); return JSON.stringify({cleared: true}); })()"
+  },
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 4000},
+  {"kind": "eval", "note": "click 普通用户",
+   "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const target = btns.find(b => { const t = b.innerText.trim(); return t.includes('普通用户') || t.includes('普通用戶'); }); if (!target) return JSON.stringify({err: 'btn not found', all: btns.map(b => b.innerText.trim())}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
+  },
+  {"kind": "sleep", "ms": 1200},
+  {"kind": "eval", "note": "R3 input values (user)",
+   "expr": "JSON.stringify({role: 'user', inputs: Array.from(document.querySelectorAll('input')).map(i => ({type: i.type, val: i.value}))})"
+  },
+  {"kind": "eval", "note": "click 確認 R3",
+   "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const target = btns.find(b => { const t = b.innerText.trim(); return t === '確認' || t === '确认'; }); if (target) target.click(); return JSON.stringify({ok: !!target}); })()"
+  },
+  {"kind": "sleep", "ms": 6000},
+  {"kind": "screenshot", "file": "./screenshots/shot-52-user-after.png"},
+  {"kind": "eval", "note": "R3 post-login state",
+   "expr": "JSON.stringify({role: 'user', url: location.href, token: !!localStorage.getItem('SOY_token')})"
+  }
+]

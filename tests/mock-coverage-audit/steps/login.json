@@ -1,0 +1,29 @@
+[
+  {"kind": "log", "msg": "=== phase 0: ensure at /login ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "screenshot", "file": "./screenshots/shot-01-login.png"},
+
+  {"kind": "log", "msg": "=== phase 1: click 超級管理員 quick-fill ==="},
+  {"kind": "eval", "note": "click 超級管理員 button to auto-fill Soybean/123456",
+   "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const target = btns.find(b => b.innerText.trim().includes('超級管理員') || b.innerText.trim().includes('超级管理员')); if (!target) return JSON.stringify({err: 'btn not found', titles: btns.map(b => b.innerText.trim())}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "screenshot", "file": "./screenshots/shot-02-filled.png"},
+
+  {"kind": "log", "msg": "=== phase 2: inspect inputs to confirm filled ==="},
+  {"kind": "eval", "note": "read input values",
+   "expr": "JSON.stringify(Array.from(document.querySelectorAll('input')).map(i => ({type: i.type, val: i.value})))"
+  },
+
+  {"kind": "log", "msg": "=== phase 3: click 確認 to submit login ==="},
+  {"kind": "eval", "note": "click 確認 button",
+   "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const target = btns.find(b => { const t = b.innerText.trim(); return t === '確認' || t === '确认'; }); if (!target) return JSON.stringify({err: 'btn not found', titles: btns.map(b => b.innerText.trim())}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
+  },
+  {"kind": "sleep", "ms": 6000},
+  {"kind": "screenshot", "file": "./screenshots/shot-03-after-login.png"},
+
+  {"kind": "log", "msg": "=== phase 4: confirm post-login state ==="},
+  {"kind": "eval", "note": "url + title + token presence",
+   "expr": "JSON.stringify({url: location.href, title: document.title, lsKeys: Object.keys(localStorage), token: localStorage.getItem('SOY_token') || localStorage.getItem('SOY_TOKEN') || localStorage.getItem('token')})"
+  }
+]

@@ -1,0 +1,41 @@
+[
+  {"kind": "log", "msg": "=== Phase 0: ensure logged in ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/home", "waitMs": 3000},
+  {"kind": "eval", "note": "token check",
+   "expr": "JSON.stringify({hasToken: !!localStorage.getItem('SOY_token'), url: location.href})"
+  },
+
+  {"kind": "log", "msg": "=== Phase 1: navigate /alova/request demo ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/alova/request", "waitMs": 4500},
+  {"kind": "screenshot", "file": "./screenshots/shot-60-alova-request.png"},
+  {"kind": "eval", "note": "list all buttons on /alova/request",
+   "expr": "JSON.stringify(Array.from(document.querySelectorAll('button')).map(b => b.innerText.trim()).filter(t => t.length > 0 && t.length < 30))"
+  },
+
+  {"kind": "log", "msg": "=== Phase 2: try clicking first action button on alova request ==="},
+  {"kind": "eval", "note": "click first non-nav button",
+   "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')).filter(b => { const t = b.innerText.trim(); return t.length > 1 && t.length < 30 && !t.includes('登出') && !t.includes('logo'); }); const target = btns[2] || btns[1] || btns[0]; if (!target) return JSON.stringify({err: 'no btn'}); target.click(); return JSON.stringify({clicked: target.innerText.trim()}); })()"
+  },
+  {"kind": "sleep", "ms": 3000},
+
+  {"kind": "log", "msg": "=== Phase 3: navigate /alova/scenes ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/alova/scenes", "waitMs": 4500},
+  {"kind": "screenshot", "file": "./screenshots/shot-61-alova-scenes.png"},
+
+  {"kind": "log", "msg": "=== Phase 4: raw fetch alova endpoints to see real wire ==="},
+  {"kind": "eval", "note": "extract clean token",
+   "expr": "(() => { const raw = localStorage.getItem('SOY_token') || ''; let t = raw; try { t = JSON.parse(raw); } catch {} window.__cleanToken = t; return JSON.stringify({tokenLen: t.length}); })()"
+  },
+  {"kind": "eval", "note": "POST /systemManage/addUser (alova mock vs ApiFox)",
+   "expr": "fetch('/proxy-default/systemManage/addUser', {method: 'POST', headers: {'Content-Type': 'application/json', Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2'}, body: JSON.stringify({userName: 'test', password: 'x'})}).then(r => r.text()).then(t => 'ADD-USER len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "eval", "note": "POST /auth/sendCaptcha (alova-only endpoint)",
+   "expr": "fetch('/proxy-default/auth/sendCaptcha', {method: 'POST', headers: {'Content-Type': 'application/json', Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2'}, body: JSON.stringify({phone: '13800138000'})}).then(r => r.text()).then(t => 'SEND-CAPTCHA len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "eval", "note": "GET /mock/getLastTime (alova-only endpoint)",
+   "expr": "fetch('/proxy-default/mock/getLastTime', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2'}}).then(r => r.text()).then(t => 'GET-LAST-TIME len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1500}
+]

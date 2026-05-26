@@ -1,0 +1,104 @@
+[
+  {"kind": "log", "msg": "=== Phase 0: ensure logged in (need token for some tests) ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/home", "waitMs": 4000},
+  {"kind": "eval", "note": "extract clean token + refreshToken",
+   "expr": "(() => { const raw = localStorage.getItem('SOY_token') || ''; let t = raw; try { t = JSON.parse(raw); } catch {} window.__cleanToken = t; window.__refresh = (() => { try { return JSON.parse(localStorage.getItem('SOY_refreshToken')); } catch { return localStorage.getItem('SOY_refreshToken'); } })(); return JSON.stringify({tokenLen: t.length, refreshLen: window.__refresh?.length || 0}); })()"
+  },
+
+  {"kind": "log", "msg": "=== Tier 1-A.1: POST /auth/login with WRONG password ==="},
+  {"kind": "eval", "note": "login Super / wrong-password",
+   "expr": "fetch('/proxy-default/auth/login', {method: 'POST', headers: {'Content-Type': 'application/json', apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}, body: JSON.stringify({userName: 'Super', password: 'wrong-password-123'})}).then(r => r.text()).then(t => 'LOGIN-WRONG-PWD len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1800},
+
+  {"kind": "log", "msg": "=== Tier 1-A.2: POST /auth/login with NON-EXISTENT user ==="},
+  {"kind": "eval", "note": "login NoSuchUser / any-password",
+   "expr": "fetch('/proxy-default/auth/login', {method: 'POST', headers: {'Content-Type': 'application/json', apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}, body: JSON.stringify({userName: 'NoSuchUser_xyz', password: '123456'})}).then(r => r.text()).then(t => 'LOGIN-NO-USER len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1800},
+
+  {"kind": "log", "msg": "=== Tier 1-A.3: POST /auth/login with EMPTY body ==="},
+  {"kind": "eval", "note": "login empty body",
+   "expr": "fetch('/proxy-default/auth/login', {method: 'POST', headers: {'Content-Type': 'application/json', apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}, body: '{}'}).then(r => r.text()).then(t => 'LOGIN-EMPTY-BODY len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1800},
+
+  {"kind": "log", "msg": "=== Tier 1-A.4: POST /auth/login with MISSING password field ==="},
+  {"kind": "eval", "note": "login missing password",
+   "expr": "fetch('/proxy-default/auth/login', {method: 'POST', headers: {'Content-Type': 'application/json', apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}, body: JSON.stringify({userName: 'Super'})}).then(r => r.text()).then(t => 'LOGIN-NO-PWD len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1800},
+
+  {"kind": "log", "msg": "=== Tier 1-A.5: GET /auth/getUserInfo with NO Bearer header ==="},
+  {"kind": "eval", "note": "getUserInfo no auth",
+   "expr": "fetch('/proxy-default/auth/getUserInfo', {headers: {apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'GUI-NO-AUTH len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1800},
+
+  {"kind": "log", "msg": "=== Tier 1-A.6: GET /auth/getUserInfo with GARBLED Bearer ==="},
+  {"kind": "eval", "note": "getUserInfo bad jwt",
+   "expr": "fetch('/proxy-default/auth/getUserInfo', {headers: {Authorization: 'Bearer not.a.real.jwt', apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'GUI-BAD-BEARER len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1800},
+
+  {"kind": "log", "msg": "=== Tier 1-A.7: GET /systemManage/getRoleList with NO Bearer header ==="},
+  {"kind": "eval", "note": "getRoleList no auth",
+   "expr": "fetch('/proxy-default/systemManage/getRoleList?current=1&size=10', {headers: {apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'RL-NO-AUTH len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1800},
+
+  {"kind": "log", "msg": "=== Tier 1-A.8: POST /auth/refreshToken with GARBLED refreshToken ==="},
+  {"kind": "eval", "note": "refresh bad token",
+   "expr": "fetch('/proxy-default/auth/refreshToken', {method: 'POST', headers: {'Content-Type': 'application/json', Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}, body: JSON.stringify({refreshToken: 'totally-garbled-not-a-jwt'})}).then(r => r.text()).then(t => 'RT-BAD len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1800},
+
+  {"kind": "log", "msg": "=== Tier 1-A.9: POST /auth/refreshToken with EMPTY body ==="},
+  {"kind": "eval", "note": "refresh empty",
+   "expr": "fetch('/proxy-default/auth/refreshToken', {method: 'POST', headers: {'Content-Type': 'application/json', Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}, body: '{}'}).then(r => r.text()).then(t => 'RT-EMPTY len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1800},
+
+  {"kind": "log", "msg": "=== Tier 1-A.10: GET /systemManage/getUserList with current=99999 (out of range) ==="},
+  {"kind": "eval", "note": "userList out of range",
+   "expr": "fetch('/proxy-default/systemManage/getUserList?current=99999&size=10', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'UL-OOR len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1800},
+
+  {"kind": "log", "msg": "=== Tier 1-A.11: GET /systemManage/getRoleList with INVALID status enum ==="},
+  {"kind": "eval", "note": "roleList bad enum",
+   "expr": "fetch('/proxy-default/systemManage/getRoleList?current=1&size=10&status=NOT_AN_ENUM', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'RL-BAD-ENUM len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1800},
+
+  {"kind": "log", "msg": "=== Tier 1-A.12: GET to NON-EXISTENT endpoint /systemManage/doesNotExist ==="},
+  {"kind": "eval", "note": "404 path",
+   "expr": "fetch('/proxy-default/systemManage/doesNotExist', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => '404-PATH len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1800},
+
+  {"kind": "log", "msg": "=== Tier 1-C.1: GET /route/getConstantRoutes (full wire for dynamic mode) ==="},
+  {"kind": "eval", "note": "constantRoutes full",
+   "expr": "fetch('/proxy-default/route/getConstantRoutes', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'CONST-ROUTES len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1800},
+
+  {"kind": "log", "msg": "=== Tier 1-C.2: GET /route/getUserRoutes (full wire — check home field) ==="},
+  {"kind": "eval", "note": "userRoutes full",
+   "expr": "fetch('/proxy-default/route/getUserRoutes', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'USER-ROUTES len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 1800},
+
+  {"kind": "log", "msg": "=== Tier 2-D.1: navigate /manage/user-detail/1 — observe what endpoint triggers ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/manage/user-detail/1", "waitMs": 5000},
+  {"kind": "screenshot", "file": "./screenshots/shot-30-user-detail.png"},
+  {"kind": "eval", "note": "inspect what UI rendered for user-detail",
+   "expr": "JSON.stringify({url: location.href, title: document.title, hasContent: document.querySelector('.layout-main, .layout-content, main')?.textContent?.slice(0, 200) || 'none'})"
+  },
+  {"kind": "sleep", "ms": 1500},
+
+  {"kind": "log", "msg": "=== Tier 2-D.2: navigate /manage/user — click row to see if detail/inline fetch fires ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/manage/user", "waitMs": 5000},
+  {"kind": "screenshot", "file": "./screenshots/shot-31-user-list.png"},
+  {"kind": "sleep", "ms": 1500}
+]

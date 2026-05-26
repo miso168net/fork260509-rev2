@@ -1,0 +1,57 @@
+[
+  {"kind": "log", "msg": "=== ensure logged in (token + apifoxToken known) ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/home", "waitMs": 3500},
+  {"kind": "eval", "note": "extract clean token (strip outer quotes from JSON-stringified)",
+   "expr": "(() => { const raw = localStorage.getItem('SOY_token') || ''; let t = raw; try { t = JSON.parse(raw); } catch {} window.__cleanToken = t; window.__refresh = (() => { try { return JSON.parse(localStorage.getItem('SOY_refreshToken')); } catch { return localStorage.getItem('SOY_refreshToken'); } })(); return JSON.stringify({tokenLen: t.length, refreshLen: window.__refresh?.length || 0}); })()"
+  },
+
+  {"kind": "log", "msg": "=== raw fetch with apifoxToken header ==="},
+  {"kind": "eval", "note": "GET /route/getConstantRoutes",
+   "expr": "fetch('/proxy-default/route/getConstantRoutes', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'CONST-ROUTES status=' + 'ok')"
+  },
+  {"kind": "sleep", "ms": 2000},
+  {"kind": "eval", "note": "GET /route/getUserRoutes",
+   "expr": "fetch('/proxy-default/route/getUserRoutes', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'USER-ROUTES ok')"
+  },
+  {"kind": "sleep", "ms": 2000},
+  {"kind": "eval", "note": "GET /route/isRouteExist?routeName=home",
+   "expr": "fetch('/proxy-default/route/isRouteExist?routeName=home', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'IS-ROUTE ok')"
+  },
+  {"kind": "sleep", "ms": 2000},
+  {"kind": "eval", "note": "GET /systemManage/getRoleList (no params)",
+   "expr": "fetch('/proxy-default/systemManage/getRoleList', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'ROLE-LIST ok')"
+  },
+  {"kind": "sleep", "ms": 2000},
+  {"kind": "eval", "note": "GET /systemManage/getRoleList?current=1&size=10",
+   "expr": "fetch('/proxy-default/systemManage/getRoleList?current=1&size=10&roleName=&roleCode=&status=', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'ROLE-LIST-paginated ok')"
+  },
+  {"kind": "sleep", "ms": 2000},
+  {"kind": "eval", "note": "GET /systemManage/getAllRoles",
+   "expr": "fetch('/proxy-default/systemManage/getAllRoles', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'ALL-ROLES ok')"
+  },
+  {"kind": "sleep", "ms": 2000},
+  {"kind": "eval", "note": "GET /systemManage/getUserList?current=1&size=10",
+   "expr": "fetch('/proxy-default/systemManage/getUserList?current=1&size=10', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'USER-LIST ok')"
+  },
+  {"kind": "sleep", "ms": 2000},
+  {"kind": "eval", "note": "GET /systemManage/getMenuList/v2",
+   "expr": "fetch('/proxy-default/systemManage/getMenuList/v2', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'MENU-LIST ok')"
+  },
+  {"kind": "sleep", "ms": 2000},
+  {"kind": "eval", "note": "GET /systemManage/getMenuTree",
+   "expr": "fetch('/proxy-default/systemManage/getMenuTree', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'MENU-TREE ok')"
+  },
+  {"kind": "sleep", "ms": 2000},
+  {"kind": "eval", "note": "GET /systemManage/getAllPages",
+   "expr": "fetch('/proxy-default/systemManage/getAllPages', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'ALL-PAGES ok')"
+  },
+  {"kind": "sleep", "ms": 2000},
+  {"kind": "eval", "note": "GET /auth/error?code=8888&msg=test",
+   "expr": "fetch('/proxy-default/auth/error?code=8888&msg=test', {headers: {Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}}).then(r => r.text()).then(t => 'AUTH-ERR ok')"
+  },
+  {"kind": "sleep", "ms": 2000},
+  {"kind": "eval", "note": "POST /auth/refreshToken",
+   "expr": "fetch('/proxy-default/auth/refreshToken', {method: 'POST', headers: {'Content-Type': 'application/json', Authorization: 'Bearer ' + window.__cleanToken, apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2', Accept: 'application/json'}, body: JSON.stringify({refreshToken: window.__refresh})}).then(r => r.text()).then(t => 'REFRESH ok')"
+  },
+  {"kind": "sleep", "ms": 2500}
+]

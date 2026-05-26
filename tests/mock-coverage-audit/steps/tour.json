@@ -1,0 +1,121 @@
+[
+  {"kind": "log", "msg": "=== T1: navigate /manage/user — user list ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/manage/user", "waitMs": 3000},
+  {"kind": "screenshot", "file": "./screenshots/shot-10-user-list.png"},
+  {"kind": "sleep", "ms": 2000},
+
+  {"kind": "log", "msg": "=== T2: click 新增 to open user drawer ==="},
+  {"kind": "eval", "note": "find and click 新增 button on user page",
+   "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const target = btns.find(b => { const t = b.innerText.trim(); return t === '新增' || t === '新增用户' || t.includes('新增'); }); if (!target) return JSON.stringify({err: 'btn not found', titles: btns.map(b => b.innerText.trim()).filter(t => t).slice(0, 30)}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
+  },
+  {"kind": "sleep", "ms": 3000},
+  {"kind": "screenshot", "file": "./screenshots/shot-11-user-drawer.png"},
+  {"kind": "eval", "note": "check drawer state",
+   "expr": "JSON.stringify({drawer: document.querySelector('.n-drawer') ? 'open' : 'none', modal: document.querySelector('.n-modal') ? 'open' : 'none'})"
+  },
+
+  {"kind": "log", "msg": "=== T3: close drawer (ESC) ==="},
+  {"kind": "eval", "note": "press ESC to close any modal/drawer",
+   "expr": "document.body.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', keyCode: 27, bubbles: true})); 'esc-sent'"
+  },
+  {"kind": "sleep", "ms": 1500},
+
+  {"kind": "log", "msg": "=== T4: navigate /manage/role — role list ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/manage/role", "waitMs": 3000},
+  {"kind": "screenshot", "file": "./screenshots/shot-12-role-list.png"},
+  {"kind": "sleep", "ms": 2000},
+
+  {"kind": "log", "msg": "=== T5: try open 菜單授權 modal (table row action button) ==="},
+  {"kind": "eval", "note": "find first row's 菜單授權/menu-auth button",
+   "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const target = btns.find(b => { const t = b.innerText.trim(); return t.includes('菜单授权') || t.includes('菜單授權') || t.includes('菜单'); }); if (!target) return JSON.stringify({err: 'btn not found', sample: btns.map(b => b.innerText.trim()).filter(t => t).slice(0, 40)}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
+  },
+  {"kind": "sleep", "ms": 3500},
+  {"kind": "screenshot", "file": "./screenshots/shot-13-menu-auth-modal.png"},
+
+  {"kind": "log", "msg": "=== T6: close modal ==="},
+  {"kind": "eval", "expr": "document.body.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', keyCode: 27, bubbles: true})); 'esc-sent'"},
+  {"kind": "sleep", "ms": 1500},
+
+  {"kind": "log", "msg": "=== T7: try open 按钮授权 modal ==="},
+  {"kind": "eval", "note": "find first row's 按钮授权 button",
+   "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const target = btns.find(b => { const t = b.innerText.trim(); return t.includes('按钮授权') || t.includes('按鈕授權'); }); if (!target) return JSON.stringify({err: 'btn not found', sample: btns.map(b => b.innerText.trim()).filter(t => t).slice(0, 40)}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
+  },
+  {"kind": "sleep", "ms": 3500},
+  {"kind": "screenshot", "file": "./screenshots/shot-14-button-auth-modal.png"},
+  {"kind": "eval", "expr": "document.body.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', keyCode: 27, bubbles: true})); 'esc-sent'"},
+  {"kind": "sleep", "ms": 1500},
+
+  {"kind": "log", "msg": "=== T8: navigate /manage/menu — menu management ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/manage/menu", "waitMs": 3000},
+  {"kind": "screenshot", "file": "./screenshots/shot-15-menu-list.png"},
+  {"kind": "sleep", "ms": 2000},
+
+  {"kind": "log", "msg": "=== T9: click 新增 to open menu modal ==="},
+  {"kind": "eval", "note": "click 新增 on menu page",
+   "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const target = btns.find(b => { const t = b.innerText.trim(); return t === '新增' || t.includes('新增'); }); if (!target) return JSON.stringify({err: 'btn not found', titles: btns.map(b => b.innerText.trim()).filter(t => t).slice(0, 30)}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
+  },
+  {"kind": "sleep", "ms": 3000},
+  {"kind": "screenshot", "file": "./screenshots/shot-16-menu-modal.png"},
+  {"kind": "eval", "expr": "document.body.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', keyCode: 27, bubbles: true})); 'esc-sent'"},
+  {"kind": "sleep", "ms": 1500},
+
+  {"kind": "log", "msg": "=== T10: navigate /user-center ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/user-center", "waitMs": 3000},
+  {"kind": "screenshot", "file": "./screenshots/shot-17-user-center.png"},
+  {"kind": "sleep", "ms": 2000},
+
+  {"kind": "log", "msg": "=== T11: navigate /home ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/home", "waitMs": 3000},
+  {"kind": "screenshot", "file": "./screenshots/shot-18-home.png"},
+  {"kind": "sleep", "ms": 2000},
+
+  {"kind": "log", "msg": "=== T12: directly fetch endpoints that static mode skips ==="},
+  {"kind": "eval", "note": "raw fetch /route/getConstantRoutes",
+   "expr": "fetch('/proxy-default/route/getConstantRoutes', {headers: {Authorization: 'Bearer ' + (localStorage.getItem('SOY_token') || '')}}).then(r => r.text()).then(t => 'CONSTANT-ROUTES:' + t.slice(0, 1500))"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "eval", "note": "raw fetch /route/getUserRoutes",
+   "expr": "fetch('/proxy-default/route/getUserRoutes', {headers: {Authorization: 'Bearer ' + (localStorage.getItem('SOY_token') || '')}}).then(r => r.text()).then(t => 'USER-ROUTES:' + t.slice(0, 1500))"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "eval", "note": "raw fetch /route/isRouteExist",
+   "expr": "fetch('/proxy-default/route/isRouteExist?routeName=home', {headers: {Authorization: 'Bearer ' + (localStorage.getItem('SOY_token') || '')}}).then(r => r.text()).then(t => 'IS-ROUTE-EXIST:' + t.slice(0, 1500))"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "eval", "note": "raw fetch /systemManage/getRoleList",
+   "expr": "fetch('/proxy-default/systemManage/getRoleList', {headers: {Authorization: 'Bearer ' + (localStorage.getItem('SOY_token') || '')}}).then(r => r.text()).then(t => 'ROLE-LIST:' + t.slice(0, 1500))"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "eval", "note": "raw fetch /systemManage/getAllRoles",
+   "expr": "fetch('/proxy-default/systemManage/getAllRoles', {headers: {Authorization: 'Bearer ' + (localStorage.getItem('SOY_token') || '')}}).then(r => r.text()).then(t => 'ALL-ROLES:' + t.slice(0, 1500))"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "eval", "note": "raw fetch /systemManage/getUserList",
+   "expr": "fetch('/proxy-default/systemManage/getUserList', {headers: {Authorization: 'Bearer ' + (localStorage.getItem('SOY_token') || '')}}).then(r => r.text()).then(t => 'USER-LIST:' + t.slice(0, 1500))"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "eval", "note": "raw fetch /systemManage/getMenuList/v2",
+   "expr": "fetch('/proxy-default/systemManage/getMenuList/v2', {headers: {Authorization: 'Bearer ' + (localStorage.getItem('SOY_token') || '')}}).then(r => r.text()).then(t => 'MENU-LIST-V2:' + t.slice(0, 1500))"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "eval", "note": "raw fetch /systemManage/getMenuTree",
+   "expr": "fetch('/proxy-default/systemManage/getMenuTree', {headers: {Authorization: 'Bearer ' + (localStorage.getItem('SOY_token') || '')}}).then(r => r.text()).then(t => 'MENU-TREE:' + t.slice(0, 1500))"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "eval", "note": "raw fetch /systemManage/getAllPages",
+   "expr": "fetch('/proxy-default/systemManage/getAllPages', {headers: {Authorization: 'Bearer ' + (localStorage.getItem('SOY_token') || '')}}).then(r => r.text()).then(t => 'ALL-PAGES:' + t.slice(0, 1500))"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "eval", "note": "raw fetch /auth/error (expect custom code)",
+   "expr": "fetch('/proxy-default/auth/error?code=8888&msg=test', {headers: {Authorization: 'Bearer ' + (localStorage.getItem('SOY_token') || '')}}).then(r => r.text()).then(t => 'AUTH-ERROR:' + t.slice(0, 1500))"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "eval", "note": "raw fetch /auth/refreshToken (POST)",
+   "expr": "fetch('/proxy-default/auth/refreshToken', {method: 'POST', headers: {'Content-Type': 'application/json', Authorization: 'Bearer ' + (localStorage.getItem('SOY_token') || '')}, body: JSON.stringify({refreshToken: localStorage.getItem('SOY_refreshToken') || ''})}).then(r => r.text()).then(t => 'REFRESH-TOKEN:' + t.slice(0, 1500))"
+  },
+  {"kind": "sleep", "ms": 2000},
+  {"kind": "log", "msg": "=== T13: list all SOY_ localStorage keys ==="},
+  {"kind": "eval", "note": "list local storage SOY_ keys",
+   "expr": "JSON.stringify(Object.keys(localStorage).filter(k => k.startsWith('SOY_')).map(k => ({k, v: (localStorage.getItem(k) || '').slice(0, 80)})))"
+  }
+]
