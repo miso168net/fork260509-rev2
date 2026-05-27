@@ -657,34 +657,40 @@ login route path = "/login/:module(pwd-login|code-login|register|reset-pwd|bind-
 
 ### 13.3 #3 alova 重複請求兩按鈕
 
-**驗證方式**:CDP click `/alova/request` 頁的「重複請求錯誤(Message)」與「重複請求錯誤(Modal)」按鈕。
+> ⚠️ **2026-05-27 [§13.6](#136-ab-階段-alova-五按鈕全集--bind-wechat-頁面) 修正**:原描述把「Message」與「Modal」兩按鈕對應到的 code 完全搞錯了。實際 source `src/views/alova/request/index.vue` 顯示:
+> - **Message 按鈕** 一次發 **3×2222 + 3×3333**(6 個 fetch 並行)
+> - **Modal 按鈕** 一次發 **3×7777**(3 個 fetch 並行)
+>
+> 之前 §6.3 描述的「第一個『触发』按鈕觸發 7777」實為 CDP `btns[2]` index 抓到第二個 NButton(logoutWithModal=7777)。完整 5 按鈕對應見 §13.6.1。
+>
+> 以下 ~~strikethrough~~ 描述作廢,保留歷史記錄。
 
-**重大發現:兩按鈕觸發不同 code、行為對比**:
+~~**驗證方式**:CDP click `/alova/request` 頁的「重複請求錯誤(Message)」與「重複請求錯誤(Modal)」按鈕。~~
 
-| 按鈕 | endpoint | mock 響應 code | 觸發次數 | base-web 行為 |
+~~**重大發現:兩按鈕觸發不同 code、行為對比**:~~
+
+| ~~按鈕~~ | ~~endpoint~~ | ~~mock 響應 code~~ | ~~觸發次數~~ | ~~base-web 行為~~ |
 |---|---|---|---|---|
-| 重複請求錯誤(Message) | `GET /auth/error?code=2222&msg=自定义请求错误 1` | `"2222"` | **3 次連發** | `2222` 不在 .env 任何 code list,走 **fallback `showErrorMsg`**(toast 顯示) |
-| 重複請求錯誤(Modal) | `GET /auth/error?code=3333&msg=自定义请求错误 2` | `"3333"` | **3 次連發** | `3333` 在 `VITE_SERVICE_EXPIRED_TOKEN_CODES`,**觸發 refreshToken flow** |
+| ~~重複請求錯誤(Message)~~ | ~~`GET /auth/error?code=2222&msg=自定义请求错误 1`~~ | ~~`"2222"`~~ | ~~**3 次連發**~~ | ~~`2222` 不在 .env 任何 code list,走 **fallback `showErrorMsg`**(toast 顯示)~~ |
+| ~~重複請求錯誤(Modal)~~ | ~~`GET /auth/error?code=3333&msg=自定义请求错误 2`~~ | ~~`"3333"`~~ | ~~**3 次連發**~~ | ~~`3333` 在 `VITE_SERVICE_EXPIRED_TOKEN_CODES`,**觸發 refreshToken flow**~~ |
 
-**Modal 按鈕的 chain reaction**(實機觀察):
+~~實機 chain reaction 描述見以下,但因按鈕對應錯誤,整段需依 §13.6.1 重讀。~~
+
+**正確 chain reaction**(基於 source code 重建):
 ```
-1. /auth/error?code=3333 → return code=3333
-2. base-web onBackendFail 看到 3333 → handleExpiredRequest → fetchRefreshToken
-3. POST /auth/refreshToken → 成功(body=564,新 token pair)
-4. 又一個 /auth/error?code=3333(重試?或下一輪 click)→ 又觸發 refreshToken
-5. POST /auth/refreshToken × 3 次 → 失敗(body=48,response=`{code:"8888"}`)
-6. 8888 在 logoutCodes → 自動 logout → 跳 /login
+click Message 按鈕 (handleRepeatedMessageError) → Promise.all 6 個:
+  3× /auth/error?code=2222 → code=2222 → 不在 .env list、走 fallback toast(3 次去重後可能只顯 1 個)
+  3× /auth/error?code=3333 → code=3333 → 觸發 refreshToken flow
+                             → refreshToken success 1 次後可能 lock + 後續 retry
+                             → cascade 失敗 → 8888 logout
 ```
 
-**結論**:
-1. **alova 「Modal」按鈕的命名誤導性** — 名稱叫 "Modal",但實際觸發 refresh flow,**沒有 modal 出現**;真實 modal-logout 需 `code:"7777"`(audit §4.11 + §6.3 「触发」按鈕才是)
-2. **`code:"2222"` 是新發現** — alova demo 用的「自訂業務 error code」,不在 .env 任何 list,走 fallback toast
-3. **alova demo 集合的完整 code 觸發點**:
-   - 「触发」按鈕 → `code:"7777"` modal logout
-   - 「重複請求錯誤(Message)」→ `code:"2222"` toast
-   - 「重複請求錯誤(Modal)」→ `code:"3333"` refresh chain(實質測試 expired token 流程)
+**正確結論**:
+1. **`code:"2222"` 是新發現** — alova demo 用的「自訂業務 error code」,不在 .env 任何 list,走 fallback toast(僅此項仍正確)
+2. **Message 按鈕內含 6 個並行 fetch**(3×2222 + 3×3333),非「3 次連發 2222」;refresh chain 即從這個按鈕的 3×3333 觸發
+3. **Modal 按鈕內含 3×7777**(modal logout),不是 3333(改正前誤判)
 
-**對 rev2 rust-api 含義**:
+**對 rev2 rust-api 含義**(原本結論基本仍對,只是來源歸屬修正):
 - `code:"2222"` 可作為 rev2 自訂業務 code 範本(不在 .env 任何 list 即走 fallback toast)
 - alova demo 是 rev2 驗證 base-web request layer 完整邏輯的 testbed(各種 code 與 flow 都有對應按鈕)
 
@@ -717,6 +723,83 @@ login route path = "/login/:module(pwd-login|code-login|register|reset-pwd|bind-
 
 從本輪 capture 衍生:
 - [ ] 真實 click `/login/reset-pwd` / `/login/code-login` / `/login/register` 頁的「獲取驗證碼」按鈕(走 alova sendCaptcha,DEV 走 local mock — 但若改 .env `DEV=false` 或停用 alova mock,可看真實打到 vite proxy 的 wire)
-- [ ] `/login/bind-wechat` 頁面與流程(§13.2 補,本次漏驗)
+- [x] **已完成**(2026-05-27 [§13.6.2](#1362-b-loginbind-wechat-頁面))— `/login/bind-wechat` 頁面與流程:確認可 navigate 但**頁面為空 placeholder**(inputs/buttons 都空),無 endpoint 觸發
 - [ ] SoybeanAdmin header 圖標按鈕的精確 selector(若 rev2 要做 UI 自動化測試或巡檢)
-- [ ] alova 「触发」x 3 個按鈕(§6.3 只驗第 1 個,後 2 個未驗)— 從本次 capture 看 button label 三個都叫「触发」,可能分別觸發不同 code,需個別 click 驗
+- [x] **已完成**(2026-05-27 [§13.6.1](#1361-a-alova-5-按鈕對應-code-完整對照表-從-source-code))— alova 「触发」x 3 個按鈕 + Message + Modal 兩個重複按鈕:**從 source 直接解出 5 按鈕完整 code 矩陣**(不需逐個 click 驗,避免 logout cascade);結果見 §13.6.1
+
+### 13.6 A+B 階段(alova 5 按鈕全集 + bind-wechat 頁面)
+
+> 2026-05-27 追加 — 跑完 §13.5 backlog 2 項(A + B)。**A 不靠 CDP click,改從 source code grep**(`base-web/src/views/alova/request/index.vue`)直接解出 5 按鈕完整對應、避免 logout cascade 干擾;raw fetch 補驗 mock 的 `/auth/error` echo 行為。**B 走 CDP navigate**。
+> 新增 step file:`tests/mock-coverage-audit/steps/ab-followup.json`(git tracked,只含 B + A 補驗 raw fetch 2 條)。
+> 新增 capture:`captures/cap-ab.json`(4 records,gitignored)。
+
+#### 13.6.1 A — alova 5 按鈕對應 code 完整對照表(從 source code)
+
+從 `base-web/src/views/alova/request/index.vue:1-60`(行號標示)直接解析:
+
+| # | 按鈕 (NCard title) | 按鈕 label | handler | 觸發 fetch 集合 | base-web 行為 |
+|---|---|---|---|---|---|
+| 1 | `request.logout`(退出登錄)| 触发 | `logout` | `1× /auth/error?code=8888` | **立即 logout**(logoutCodes) |
+| 2 | `request.logoutWithModal`(彈窗提示退出登錄)| 触发 | `logoutWithModal` | `1× /auth/error?code=7777` | **modal logout**(modalLogoutCodes;§6.3 之前驗到的就是這個) |
+| 3 | `request.refreshToken`(刷新 token)| 触发 | `refreshToken` | `1× /auth/error?code=9999` | **觸發 refresh flow**(expiredTokenCodes,9999 也是) |
+| 4 | `page.function.request.repeatedErrorOccurOnce`(重複請求只報一次錯)| 重複請求錯誤(Message)| `handleRepeatedMessageError` | `Promise.all` 6 個:**3× `code=2222` + 3× `code=3333`** | 2222 走 fallback toast(3 次去重)+ 3333 觸發 refresh chain |
+| 5 | (同 #4 同一張 NCard)| 重複請求錯誤(Modal)| `handleRepeatedModalError` | `Promise.all` 3 個:**3× `code=7777`** | 3 次 7777 觸發 modal logout(去重後只顯 1 modal) |
+
+**重大更正**:
+- 之前 §6.3 描述「第一個『触发』触發 7777」**抓錯按鈕** — CDP `btns[2]`(buttons 包含 `[User01, 触发1, 触发2, 触发3, ...]`)實際 index=2 是 `触发2`(logoutWithModal=7777),不是 `触发1`(logout=8888)
+- 之前 §13.3 描述「Message 三次連發 2222、Modal 三次連發 3333」**完全錯誤**;實際 Message **同時發 6 個**(2222 + 3333),Modal 發 3 個 7777
+
+**raw fetch 補驗 `/auth/error` echo 行為**(本輪實機 capture):
+
+| Method | URL | Response |
+|---|---|---|
+| GET | `/auth/error?code=9999&msg=test-9999` | `{"data":null,"code":"9999","msg":"test-9999"}` |
+| GET | `/auth/error?code=8888&msg=test-8888` | `{"data":null,"code":"8888","msg":"test-8888"}` |
+
+**確認**:`/auth/error` 是**純 echo endpoint**(query string 內的 `code` + `msg` 全部 echo 進 envelope return),mock 沒有 per-code 分支邏輯。
+
+**對 rev2 rust-api 含義**:
+- rev2 對應 endpoint **實作極簡**:讀 query `code` + `msg`,echo 回 `{data:null, code:<str>, msg:<str>}`,即可完整支援 base-web 各種 code list 行為測試
+- 這個 endpoint 是 rev2 整合驗證階段的**極好 testbed**:測 base-web request layer 對任意 code 的反應
+- 與 audit §7.2.4 與 audit §3.1 #4 描述一致(audit 稱為「工具 endpoint」)
+
+**rev2 業務 code 矩陣補完**(綜合所有 follow-up 發現):
+
+| code | 觸發 by | 場景 | base-web 行為 | rev2 用途 |
+|---|---|---|---|---|
+| `"0000"` | success | 每個成功響應 | unwrap data | success |
+| `"1000"` | login fail | 錯密碼/不存在 user(audit §1) | toast | login 失敗統一 |
+| `"2222"` | alova Message 按鈕 | 自訂業務 error | fallback toast(不在 .env list)| rev2 自訂業務 error 範本 |
+| `"3333"` | getUserInfo 無 Bearer / token 過期 + alova Message 按鈕內 | expired token | 觸發 refresh | token 過期 |
+| `"7777"` | logoutWithModal + Modal 按鈕 | modal logout | modal + logout | 他處登入 / 需 user 看訊息 |
+| `"8888"` | refresh fail / logout 按鈕 | 立即 logout | clear LS + 跳 login | refresh fail / user 被禁 |
+| `"9998"` | (.env list,mock 未實機觸發) | expired token | 觸發 refresh | rev2 可用 |
+| `"9999"` | refreshToken 按鈕 | expired token | 觸發 refresh | rev2 可用 |
+
+#### 13.6.2 B — `/login/bind-wechat` 頁面
+
+**驗證方式**:CDP navigate `/login/bind-wechat`(無需 logged in,login sub-route)。
+
+**結果**:
+- URL: 可達 `http://127.0.0.1:9527/login/bind-wechat`
+- title: 「登錄」
+- 頁面 h: 「Soybean 管理系統」(login layout 共用 header)
+- **inputs: [] 空**
+- **buttons: [] 空**
+- 無 endpoint 觸發
+
+**結論**:`/login/bind-wechat` route **存在但 view 是空 placeholder**(類似 `/manage/user-detail/:id` 的 stub 模式)。base example 為 wechat 綁定流程預留 route 但沒實作 UI。
+
+**對 rev2 含義**:
+- rev2 不必為 wechat 綁定設計任何 endpoint(base example 本來就沒接)
+- 若 rev2 業務需要 wechat 整合,需:(a) 升 L4 改 `src/views/_builtin/login/modules/bind-wechat.vue`(假設該 component 存在但為空)、(b) 升 L3 新增 wechat 相關 alova api wrapper
+
+**login 5 sub-route 完整覆蓋表**(§13.2 + §13.6.2 合):
+
+| sub-route | path | UI 狀態 | 觸發 endpoint | 業務 |
+|---|---|---|---|---|
+| pwd-login | `/login`(預設)| 完整(手機 / 密碼 + 三 quick-fill)| POST /auth/login | login(主流程)|
+| reset-pwd | `/login/reset-pwd` | 完整(form:手機 + 驗證碼 + 新密碼)| 走 alova sendCaptcha/verifyCaptcha + 後端 reset(若有)| 重設密碼 |
+| code-login | `/login/code-login` | 完整(form:手機 + 驗證碼)| 走 alova sendCaptcha + login 變體 | 驗證碼登入 |
+| register | `/login/register` | 完整(form:手機 + 驗證碼 + 密碼)| 走 alova sendCaptcha + register | 註冊 |
+| **bind-wechat** | `/login/bind-wechat` | **空 placeholder** | 無 | wechat 綁定(stub)|
