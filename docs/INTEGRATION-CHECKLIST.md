@@ -64,6 +64,17 @@ baseline 規格回填於 [DESIGN §4.6](INTEGRATION-DESIGN.md);6 項實作驗收
 - [ ] `specs/001-dockerfile-rust-api/contracts/compose-profiles.md` L22 寫 refresh 預設字串長度 38、實際 39(typo,字串字面為 `dev_refresh_secret_for_local_only_x32xx` = 39 chars)
 - [ ] `specs/001-dockerfile-rust-api/data-model.md` 未明確命名 merged runtime 的 `JwtConfig` struct(實作選此名、對齊 `JwtYaml` 命名邏輯;data-model 可補回填)
 
+### 2.5 feature 002-dockerfile-base-web spec doc follow-up ⏳ (2026-05-28)
+
+實作驗收期間發現的 spec doc 小修(只動文件、不動 code、不影響 acceptance 結果):
+- [ ] `specs/002-dockerfile-base-web/tasks.md` T001 typo:寫「`git -C base-web branch --show-current` 必須 = `rev2-admin-rust-api`」,應為 `rev2-admin-base-web`(base-web worktree 自己的長期分支,見 CLAUDE.md §1)
+- [ ] `specs/002-dockerfile-base-web/contracts/verification-commands.md` §1 字串比對 bug:`if [ "$resp" = "ok" ]` 字面比對失敗(`health.html` 含 2 行 HTML 註解 + ok body),應改 `if curl ... | grep -q "ok"`(對齊 HEALTHCHECK probe + §2 / §3 已用 grep)
+
+### 2.6 000-base-web-docker-bootstrap.md §3.2 corepack 範例不同步 ⏳ (2026-05-28)
+
+feature 002 實作期碰到 §4 第 3 輪同款 corepack ESM bug,builder stage 已改 `RUN npm install -g pnpm@10`;但 §3.2 inline Dockerfile 範例 code(L249)仍顯示 `RUN corepack enable`(plan FR-022 凍結「不動 §3」,故未動)。
+- [ ] 決定:(i) 保留 §3.2 不動(歷史 bootstrap 紀錄一致性,讀者靠 §6.1 / 檔尾 footnote 找實際版本) / (ii) §3.2 旁加一行指路註解 / (iii) update §3.2 範例 code(違反 plan FR-022,可能 amend)— 預設 (i),follow-up 純粹是「要不要補一行指路註解」
+
 ---
 
 ## 3. 已完成里程碑
