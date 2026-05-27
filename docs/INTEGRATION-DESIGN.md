@@ -448,6 +448,108 @@ router 設計**直接符合 §3 base-web 期望 API 全集**,不引入 alias / r
 
 **整體** ~4.5 人日,屬 Phase 2 後端基礎設施內可完成。
 
+### §4.6 Phase 0 對稱盤點(rev2 啟動前 baseline)
+
+> **目的**:rev1 在 F29 cutover 前才做盤點、結果發現 R3(code namespace)+ R4(secret example)兩項漏項。rev2 應在**第一個 spec-kit feature 啟動前**就把以下 6 項 baseline 固化,供後續 `/speckit-plan` 階段 Compliance Check 對齊。權威源:[RESEARCH §7.2](INTEGRATION-RESEARCH.md)。
+>
+> **本節為設計基線、非實作清單** — 各 feature spec 內補實際 placeholder/seed 值與 timestamp。
+
+#### §4.6.1 application.yaml placeholder 規劃
+
+- **基線結構**:採 rev1 F1.1 已驗證的 `_FILE` pattern + boot-time strict validation 模式([RESEARCH §3.2.004](INTEGRATION-RESEARCH.md))
+- **必要 section**(待 Phase 1/2 feature spec 內具體化):
+  - `[server]` — host / port(對應 §8.2 dev 21081 / prod internal `:80`)
+  - `[database]` — url placeholder(走 `APP_DATABASE_URL_FILE`、實值 `_FILE` 注入)
+  - `[redis]` — url placeholder(同上,走 `_FILE`)
+  - `[jwt]` — `secret` + `refresh_secret` placeholder(過 §6.1 strict validation:非空 + 不在黑名單 + 長度 ≥ 32)+ TTL 欄
+  - `[casbin]` — model 路徑 + redis pub-sub channel `casbin:policy:invalidate`(§6.3)
+  - `[logging]` — level + format
+- **placeholder 黑名單**(boot panic 條件):沿用 rev1 6 個值(`change-me` / `secret` / `xxx` / ...,§6.1)
+- **驗收**:`grep -r "<TO_BE_SET>" rust-api/server/` 應為空(無殘留 placeholder)
+
+#### §4.6.2 .env.example + 11 個 secret 範本檔
+
+**11 個 secret = 必須 7 + 可選 4**(權威源:§8.4 secret 清單):
+
+| 類 | Secret | 用途 | Service |
+|---|---|---|---|
+| 必 | `jwt_secret` | JWT HS256 金鑰 | rust-api |
+| 必 | `refresh_token_secret` | refresh JWT 金鑰(獨立 §6.1) | rust-api |
+| 必 | `database_url` | DB 連線 URL(含密碼) | migration, rust-api |
+| 必 | `redis_url` | Redis 連線 URL(含密碼) | rust-api |
+| 必 | `postgres_password` | DB 純密碼 | postgres |
+| 必 | `redis_password` | Redis 純密碼 | redis |
+| 必 | `cleanup_database_url` | cleanup-job 最小權限 DB URL | cleanup |
+| 選 | `acme_email` | acme.sh 註冊 email | front-nginx(prod) |
+| 選 | `grafana_admin_password` | grafana admin | grafana(obs) |
+| 選 | `postgres_exporter_dsn` | postgres metrics DSN | postgres_exporter(obs) |
+| 選 | `redis_exporter_password` | redis metrics(JSON 格式) | redis_exporter(obs) |
+
+- **dual-write 紀律**(§8.4 強調):`database_url.txt` 內 password 段 ≡ `postgres_password.txt` 純值;`redis_url.txt` 同理(不一致 → 連線認證失敗 → `/health` unhealthy)
+- **.env.example 內容**(§8.4):`COMPOSE_PROJECT_NAME=rev2-admin` + `IMAGE_TAG=rev2-admin-rust-api` + `BASE_WEB_TAG=rev2-admin-base-web` + TZ / POSTGRES_USER / POSTGRES_DB 等非 secret 變數
+- **驗收**:7 個必須範本檔在 `deploy/secrets/*.txt.example` 齊備;4 個可選範本檔在 obs 啟用前可缺
+
+#### §4.6.3 Casbin policy seed 矩陣(3 role × 主流 endpoint)
+
+**role 命名**(對齊 mock,[MOCK-AUDIT §4.4](MOCK-COVERAGE-AUDIT.md)):
+
+| Role 常量 | 對應預設帳號(§11.1) | 範圍 |
+|---|---|---|
+| `R_SUPER` | `Super` | 全通(wildcard) |
+| `R_ADMIN` | `Admin` | 部分(逐個列) |
+| `R_USER_COMMON` | `User`(displayName `User01`) | 僅自身相關 |
+
+**seed 矩陣**(§5.1 endpoint × 3 role,Phase 3 F5.1 落地時固化):
+
+| Endpoint | R_SUPER | R_ADMIN | R_USER_COMMON | 備註 |
+|---|---|---|---|---|
+| `POST /auth/login` | (public) | (public) | (public) | 無 Casbin |
+| `POST /auth/refreshToken` | (public) | (public) | (public) | 無 Casbin |
+| `GET /auth/getUserInfo` | enforce-only | enforce-only | enforce-only | token-only(§5.1) |
+| `GET /route/getUserRoutes` | enforce-only | enforce-only | enforce-only | token-only |
+| `GET /systemManage/getRoleList` | ✓ | ✓ | ✗ | admin 級 |
+| `GET /systemManage/getAllRoles` | ✓ | ✓ | ✓ | user/menu modal 共用,seed 用 `p, *, ..., GET` |
+| `GET /systemManage/getUserList` | ✓ | ✓ | ✗ | admin 級 |
+| `GET /systemManage/getMenuList/v2` | ✓ | ✓ | ✗ | admin 級 |
+| `GET /systemManage/getAllPages` | ✓ | ✓ | ✗ | admin 級 |
+| `GET /systemManage/getMenuTree` | ✓ | ✓ | ✗ | role-menu modal 用 |
+| `POST /systemManage/{add,update}User` | ✓ | ✗ | ✗ | 寫操作、only super |
+| `DELETE /systemManage/{delete,batchDelete}User` | ✓ | ✗ | ✗ | 寫操作、only super |
+
+- **seed 寫法**(§6.3):`R_SUPER` 用 wildcard `p, R_SUPER, *, *`;`R_ADMIN` / `R_USER_COMMON` 逐 endpoint 列;三 role 共通的 endpoint 用 `*` 主體(如 `getAllRoles`)
+- **redis pub-sub 啟用**:v1 即啟,即使單 instance(§6.3「一致性優先、不靠環境分支」)
+- **驗收**:migration 完跑後 `SELECT COUNT(*) FROM casbin_rule WHERE v0 IN ('R_SUPER','R_ADMIN','R_USER_COMMON','*')` ≥ 上表「✓」總數;三帳號 login 後 `/auth/getUserInfo` 都能進
+
+#### §4.6.4 migration files 規劃(Phase 2 entity 清單 + timestamp 規則)
+
+**timestamp 規則**:`m<YYYYMMDD_HHMMSS>_<name>` 格式;**連續、無 jump**;一個 migration 一張 table 或一組相關 schema 改動。
+
+**Phase 2 entity 清單**(分 3 組):
+
+1. **7 個業務 entity**(soft-delete 三重防護,§6.5):
+   - `sys_user` / `sys_role` / `sys_menu` / `sys_role_user` / `sys_role_menu` / `sys_role_endpoint` / `sys_menu_button`
+   - 每張表加 `deleted_at TIMESTAMPTZ`(nullable)+ partial unique index `WHERE deleted_at IS NULL`
+2. **認證/安全**:
+   - `sys_tokens`(refresh chain,schema 見 §6.2)
+   - `casbin_rule`(sea-orm-adapter 預設 schema)
+3. **觀察性**:
+   - `sys_operation_log`(統一 audit,schema 見 §6.4)
+
+**seed migration**(獨立 migration、跑在 schema migration 後):
+
+- `sys_user` 3 帳號 seed(§11.1 拍板 `Super / Admin / User`,argon2id `123456`)
+- Casbin policy seed(§4.6.3 矩陣)
+
+**驗收**:`ls migration/src/m*.rs | sort` timestamp 嚴格遞增、無 jump;`sea-orm-cli migrate up` 從零 DB 一次跑完。
+
+#### §4.6.5 sys_user 預設帳號命名 ✅
+
+依 **§11.1 拍板**:**(b) `Super / Admin / User` 對齊 mock**,模仿 `User → User01` alias(§11.10 連動)。三帳號共用 argon2id hash(plaintext `123456`)。Phase 2 F1.1 migration seed 落地。
+
+#### §4.6.6 graphify-out/ 落地時機 ✅
+
+依 [CLAUDE.md §8.3 graphify 守則](../CLAUDE.md) + CHECKLIST §2.2 註記:**Phase 4 業務跑通後執行**(rev2 rust-api source 與 base-web wrapper 都到位後跑首版 graphify;`graphify-out/{graph.json, GRAPH_REPORT.md, graph.html, obsidian/}` 在外層 git 追蹤,見 CLAUDE.md §2)。Phase 1-3 期間不跑(source 太少、圖譜訊號弱)。
+
 ---
 
 ## §5 router 詳細設計(本檔重點)

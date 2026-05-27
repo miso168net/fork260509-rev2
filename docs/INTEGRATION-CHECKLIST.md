@@ -11,13 +11,12 @@
 **階段**:rev2 重建中、骨幹搭建完成、設計拍板進行中(spec-kit 第一個 feature **尚未啟動**)。
 
 **最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
-- 2026-05-28 CLAUDE.md ⏳ 整理 + GRAPHIFY-NOTES.md 落地(commit `788fae1` + `b351820`)
-- **2026-05-28 constitution v1.0.0 + Phase 0 歸檔 + MILESTONES.md 落地**(本次 commit)— 設計拍板鏈完整、CHECKLIST 結構整理
+- 2026-05-28 constitution v1.0.0 + Phase 0 歸檔 + CHECKLIST §2.1 拍板項歸檔(commit `b0ec406` + `35b8861`)
+- **2026-05-28 DESIGN §4.6 Phase 0 對稱盤點 baseline 固化**(本次 commit)— 6 項規格(application.yaml / 11 secret / Casbin seed / migration / sys_user / graphify)回填、CHECKLIST §2.2 歸檔
 
 **下一步**(優先序):
 1. **啟動 P0 第一個 spec-kit feature**(dockerfile-rust-api,對應 rev1 W-F1)— 走 CLAUDE.md §3 階段 0 brainstorm(`docs/superpowers/001-dockerfile-rust-api.md`)→ 階段 1 `/speckit-specify`(自動建 `001-dockerfile-rust-api` feature branch)
-2. spec phase 0 對稱盤點(§2.2 6 項)在第一個 feature spec 前跑過一遍
-3. `/speckit-plan` 步將自動對照 [constitution v1.0.0](../.specify/memory/constitution.md) 跑 Compliance Check(§IV 7 項 yes/no)
+2. `/speckit-plan` 步將自動對照 [constitution v1.0.0](../.specify/memory/constitution.md) 跑 Compliance Check(§IV 7 項 yes/no)+ 引用 [DESIGN §4.6](INTEGRATION-DESIGN.md) baseline
 
 ---
 
@@ -31,14 +30,16 @@
 
 完整 12 拍板項與軌道授權細節見 [DESIGN §11](INTEGRATION-DESIGN.md);spec-kit `/speckit-plan` 將自動對照 constitution v1.0.0 跑 Compliance Check。
 
-### 2.2 spec phase 0 對稱盤點(權威源:`INTEGRATION-RESEARCH.md` §7.2 L1263-1271)
+### 2.2 spec phase 0 對稱盤點 ✅ baseline 已固化 (2026-05-28)
 
-- [ ] `application.yaml` placeholder 完整性(無 `<TO_BE_SET>` 殘留)
-- [ ] `.env.example` + 11 個 secret 範本檔齊備(database_url / redis_url / jwt_secret / refresh_token_secret / cleanup_database_url 等)
-- [ ] Casbin policy seed:3 role × 主流 endpoint 完整覆蓋
-- [ ] migration files timestamp 連續、無 jump 或亂序
-- [ ] `sys_user` 預設帳號命名(依 §11.1 拍板結果)
-- [ ] `graphify-out/` 落地(依 §11.X 拍板時機,建議 Phase 4 完後)
+baseline 規格回填於 [DESIGN §4.6](INTEGRATION-DESIGN.md);6 項實作驗收(grep `<TO_BE_SET>` 殘留 / 範本檔齊備 / `SELECT casbin_rule` / `ls migration/src/m*.rs` 等)由對應 Phase 1-4 feature spec 跑。
+
+- §4.6.1 application.yaml placeholder 規劃 ✅
+- §4.6.2 11 個 secret 清單(必 7 + 選 4)✅
+- §4.6.3 Casbin policy seed 矩陣(3 role × 12 endpoint)✅
+- §4.6.4 migration entity 清單(7 業務 + sys_tokens + casbin_rule + sys_operation_log)+ timestamp 規則 ✅
+- §4.6.5 sys_user 預設帳號(§11.1 拍板 `Super/Admin/User`)✅
+- §4.6.6 `graphify-out/` 落地時機(Phase 4 後)✅
 
 ### 2.3 workspace-level ⏳ 落地
 
