@@ -57,10 +57,9 @@ fork260509-rev2/                            ← workspace root（傘狀 repo rev
 │   ├── INTEGRATION-DESIGN.md              ← ★ 設計權威 / 核心事實（rev2 架構與執行順序 §7.2）
 │   ├── INTEGRATION-CHECKLIST.md           ← 動態 todo（SOP 注入、不無限膨脹 §7.3）
 │   └── superpowers/                       ← 持久記憶 + brainstorm 決策（§7.4）
-│       ├── 000-base-web-docker-bootstrap.md   ← base-web docker-compose 落地過程
-│       └── <NNN>-<feature-name>.md        ← ⏳ 每個 feature 的 Phase 0 brainstorm
-├── specs/                                 ← ⏳ spec-kit feature 規格目錄（每 feature 一個 <NNN>-<feature-name>/；工作流見 §3）
-├── graphify-out/                          ← ⏳ 知識圖譜輸出（外層 git 追蹤 GRAPH_REPORT.md + graph.json + graph.html + obsidian/ 內 notes；只排除個人化/可重產項目）
+│       └── <NNN>-<feature-name>.md        ← 每個 feature 的 Phase 0 brainstorm
+├── specs/                                 ← spec-kit feature 規格目錄（每 feature 一個 <NNN>-<feature-name>/；工作流見 §3）
+├── graphify-out/                          ← 知識圖譜輸出（外層 git 追蹤 GRAPH_REPORT.md + graph.json + graph.html + obsidian/ 內 notes；只排除個人化/可重產項目）
 │   ├── GRAPH_REPORT.md                    ← 含 god nodes / surprises / suggested questions
 │   ├── graph.json                         ← 結構化圖譜資料（可被 graphify query 查）
 │   ├── graph.html                         ← 互動視覺化（3MB+ 內嵌 JS，刻意 git-tracked）
@@ -82,8 +81,8 @@ fork260509-rev2/                            ← workspace root（傘狀 repo rev
 - `base-web/` `rust-api/` 是 worktree + submodule 雙重身分（見 §1 與 §4 操作手冊）— 外層 commit 只記 SHA pin、不記檔案 diff；別人 clone 用 `--recurse-submodules`。
 - `fork260509-*` 源倉 gitignored，但**本機必須留著**（worktree 源倉）；別台機器若用 submodule clone 重來則不需要這些源倉。rev2 目前有 3 個源倉（`fork260509-soybean-admin-base`、`fork260509-soybean-admin-docs`、`fork260509-rev2-anew-rust-api`），不含 nestjs。
 - Vue 源倉 GitHub repo 名稱 = `fork260509-soybean-admin-base`（從原 `fork260509-soybean-admin` rename 而來，舊 URL 仍 redirect）。
-- 知識圖譜輸出 `GRAPH_REPORT.md` / `graph.json` / `graph.html` 都只存在 `graphify-out/`；要看就直接開 `graphify-out/GRAPH_REPORT.md`，或瀏覽器開 `graphify-out/graph.html` 看互動圖。⏳ rev2 尚未跑 graphify。
-- 外層 git 追蹤：`CLAUDE.md`、`.gitignore`、`.gitmodules`、`.gitattributes`、`.graphifyignore`、`.specify/`（spec-kit 結構）、`.claude/{settings.json, hook-git-submodule-SOP.sh, skills/}`，以及 `base-web` `rust-api` 兩個 gitlink SHA。⏳ 未來落地後新增：`docker-compose*.yml`、`docs/`、`specs/`、`deploy/`、`graphify-out/{graph.json, GRAPH_REPORT.md, graph.html, obsidian/}`。
+- 知識圖譜輸出 `GRAPH_REPORT.md` / `graph.json` / `graph.html` 都只存在 `graphify-out/`；要看就直接開 `graphify-out/GRAPH_REPORT.md`，或瀏覽器開 `graphify-out/graph.html` 看互動圖。
+- 外層 git 追蹤：`CLAUDE.md`、`.gitignore`、`.gitmodules`、`.gitattributes`、`.graphifyignore`、`.specify/`（spec-kit 結構）、`.claude/{settings.json, hook-git-submodule-SOP.sh, skills/}`，以及 `base-web` `rust-api` 兩個 gitlink SHA、`docker-compose*.yml`、`docs/`、`specs/`、`deploy/`、`graphify-out/{graph.json, GRAPH_REPORT.md, graph.html, obsidian/}`。
 
 ## 3. feature 開發工作流（SDD 設計鏈 → TDD 實作）
 
@@ -291,7 +290,7 @@ git submodule update --init --recursive
 
 ### 4.6 升級 fork branch（拉 upstream rebase 後）
 
-> ⚠️ **前置設定**：fork 源倉需要設定 upstream remote 指向 soybeanjs 官方。⏳ **rev2 尚未為 fork 源倉設 upstream remote**；補設步驟（每個源倉跑一次）：
+> ⚠️ **前置設定**：fork 源倉需要設定 upstream remote 指向 soybeanjs 官方。補設步驟（每個源倉跑一次）：
 > ```bash
 > cd fork260509-soybean-admin-base
 > git remote add upstream https://github.com/soybeanjs/soybean-admin.git
@@ -357,8 +356,8 @@ rev2 整合的核心 docs 階層,內容由「研究歷史」→「設計權威�
 
 ### 7.1 研究歷史(大致已完結、不再擴張)
 
-- **`docs/INTEGRATION-RESEARCH.md`** — 最早期設計研究,以 rev1 為來源、重構 rev2 方向(可派 subagent 檢查)
-- **`docs/INTEGRATION-RESEARCH-FOLLOWUP.md`** — `INTEGRATION-RESEARCH.md` 深入深研要追的事項(可派 subagent 檢查)
+- **`docs/INTEGRATION-RESEARCH.md`** — 最早期設計研究,以 rev1 為來源、重構 rev2 方向
+- **`docs/INTEGRATION-RESEARCH-FOLLOWUP.md`** — `INTEGRATION-RESEARCH.md` 深入深研要追的事項
 - **`docs/MOCK-COVERAGE-AUDIT.md`** — 本地把 base-web 用 docker-compose 跑起來後,查驗 fork example 分支用到的 mock api(rev2 wire ground truth)
 
 ### 7.2 設計權威 ★ — `docs/INTEGRATION-DESIGN.md`
@@ -378,9 +377,9 @@ rev2 整合的核心 docs 階層,內容由「研究歷史」→「設計權威�
 
 ### 7.4 其他相關文件
 
-- **`.specify/memory/constitution.md`** ⏳(spec-kit init 已建空殼,內容待寫)— v1.0.0 將從 DESIGN §11 拍板 + §7 軌道清單提取凍結為**不可違反的權威**(更高層、需 amendment 流程才能改)
+- **`.specify/memory/constitution.md`** — v1.0.0 將從 DESIGN §11 拍板 + §7 軌道清單提取凍結為**不可違反的權威**(更高層、需 amendment 流程才能改)
 - **`docs/superpowers/000-base-web-docker-bootstrap.md`** — base-web docker-compose 落地過程的持久記憶(暫定存放位置)
-- **`docs/superpowers/<NNN>-<feature-name>.md`** ⏳ — 每個 spec-kit feature 的 Phase 0 brainstorm 決策(見 §3 階段 0、DESIGN §11.12 拍板)
+- **`docs/superpowers/<NNN>-<feature-name>.md`** — 每個 spec-kit feature 的 Phase 0 brainstorm 決策(見 §3 階段 0、DESIGN §11.12 拍板)
 
 ### 7.5 內容流向
 
@@ -388,8 +387,8 @@ rev2 整合的核心 docs 階層,內容由「研究歷史」→「設計權威�
 新發現 todo / 問題                         處理完、設計決策固化
    ↓ 列入                                       ↓ 回填
 CHECKLIST(動態,SOP 注入)  ────────────→  DESIGN(權威,核心事實 ★)
-                                              ↓ v1.0.0 提取凍結
-                                              ↓
+                                                ↓ v1.0.0 提取凍結
+                                                ↓
                                           constitution(凍結權威)
 
 feature 啟動  →  docs/superpowers/<NNN>-<feature-name>.md(brainstorm)
@@ -415,7 +414,7 @@ feature 啟動  →  docs/superpowers/<NNN>-<feature-name>.md(brainstorm)
 
 ### 8.2 容器 endpoint 與 port 配置
 
-> ⏳ 以下為 rev2 **規劃** port 配置（刻意用 2XXXX 前綴避開 fork260509-rev1 既有 port，方便兩個 workspace 並存）；尚未落地 `deploy/` 與 docker-compose、dev stack 尚未實機運行。
+> 以下為 rev2 **規劃** port 配置（刻意用 2XXXX 前綴避開 fork260509-rev1 既有 port，方便兩個 workspace 並存）；⏳ 尚未落地 `deploy/` 與 docker-compose、dev stack 尚未實機運行。
 
 | 角色 | fork260509-rev1（舊有） | fork260509-rev2（規劃） | 備註 |
 |---|---|---|---|
@@ -473,17 +472,15 @@ docker compose exec acme acme.sh --version    # sanity check
 
 ### 8.3 知識圖譜（graphify）
 
-> ⏳ rev2 尚未跑 graphify；待 `graphify-out/` 落地後本節指令才能用。
-
 **使用方式**：
 - 查問題：在 workspace root 執行 `graphify query "你的問題"` — 走 BFS 預設、`--dfs` 改 DFS、`--budget N` 限 token
 - 解釋節點：`graphify explain "節點名"`
 - 找路徑：`graphify path "節點A" "節點B"`
 - 增量更新：`graphify update`（會用 `manifest.json` 比對變更）
 
-> 📖 **圖譜現況統計** 與 **已知抽取限制** 等細節 — **推論前必讀** [`docs/GRAPHIFY-NOTES.md` ⏳](docs/GRAPHIFY-NOTES.md)。
+> 📖 **圖譜現況統計** 與 **已知抽取限制** 等細節 — **推論前必讀** [`docs/GRAPHIFY-NOTES.md`](docs/GRAPHIFY-NOTES.md)。
 
 **graphify 守則**：
 - 重跑前先讀 `graphify-out/cost.json` 看是否真有需要 —— 多數時候 `graphify update`（增量）即可。
 - 不要改 `graphify-out/cache/` —— graphify 內部 LLM 擷取快取，手改破壞下次 update 的 diff。
-- 新功能設計問題先用 `graphify query "..."` 試 —— 但 NestJS / Vue component 部分警覺圖譜盲點（見 `docs/GRAPHIFY-NOTES.md` ⏳），且 base-web 來源是 example 分支、與圖譜抓取點不一致。
+- 新功能設計問題先用 `graphify query "..."` 試 —— 但 NestJS / Vue component 部分警覺圖譜盲點（見 `docs/GRAPHIFY-NOTES.md`），且 base-web 來源是 example 分支、與圖譜抓取點不一致。
