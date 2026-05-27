@@ -82,7 +82,7 @@ description: "Task list for 002-dockerfile-base-web implementation"
 
 > 本 phase 無新 implementation tasks(實作全在 Foundational T002-T008 完成);本 phase 只跑 acceptance verification。
 
-- [ ] T009 [US1] Acceptance:`docker compose -f docker-compose.base-web.yml --profile dev up -d` + 等 30-60s(pnpm install + vite ready) + `curl -fsS http://127.0.0.1:21079/health.html` 回 `ok` + `curl -fsS http://127.0.0.1:21079/` 回 SPA index(對應 spec User Story 1 Acceptance 1;[verification-commands.md](./contracts/verification-commands.md) §1)。完成後 `docker compose -f docker-compose.base-web.yml --profile dev down`
+- [ ] T009 [US1] Acceptance:`docker compose -f docker-compose.base-web.yml --profile dev up -d` + 等 ≤ 60s(SC-001 上限;非首次 cached 場景 30s 內就應該到位)+ `curl -fsS http://127.0.0.1:21079/health.html` 回 `ok` + `curl -fsS http://127.0.0.1:21079/` 回 SPA index(對應 spec User Story 1 Acceptance 1 + SC-001;[verification-commands.md](./contracts/verification-commands.md) §1)。完成後 `docker compose -f docker-compose.base-web.yml --profile dev down`
 
 - [ ] T010 [US1] Acceptance:`DOCKER_BUILDKIT=1 docker compose -f docker-compose.base-web.yml --profile prod up -d --build --wait` + `curl -fsS http://127.0.0.1:21079/health.html` 回 `ok` + `curl -fsS http://127.0.0.1:21079/some/random/route` 回 SPA index(對應 spec User Story 1 Acceptance 2;[verification-commands.md](./contracts/verification-commands.md) §2.a)
 
@@ -148,7 +148,7 @@ description: "Task list for 002-dockerfile-base-web implementation"
     * (b)`git -C base-web diff --name-only HEAD` 只含 `public/health.html`(本 feature 不改 base-web inline、I.1 + BASE-WEB-ADAPT 軌道)
     * (c)本 plan Constitution Check 7 項對照 [plan.md](./plan.md) Constitution Check 段、Re-check 仍全 PASS
 
-- [ ] T020 [P] End-to-end smoke:跑 [quickstart.md](./quickstart.md) Path A(dev profile + curl)+ Path B(prod profile + 3 驗收)+ Path C(build-arg override)+ Path D(image tag 獨立 run)完整流程,記錄任何 friction 進 `docs/superpowers/002-dockerfile-base-web.md` §10 Open Questions(若需)
+- [ ] T020 [P] End-to-end smoke:跑 [quickstart.md](./quickstart.md) Path A(dev profile + curl)+ Path B(prod profile + 3 驗收)+ Path C(build-arg override)+ Path D(image tag 獨立 run)完整流程,記錄任何 friction 進 `docs/superpowers/002-dockerfile-base-web.md` §10 Open Questions(若需)。**[P] 註**:本 task 依 stack 運轉狀態(承 T010-T015)、但與 T017-T019 doc patch / Constitution self-check 不同檔不互鎖、可平行跑(controller 跑 quickstart 期間,implementer 同步進 doc patch)
 
 **Checkpoint**: feature 完整、可進 `superpowers:finishing-a-development-branch` 階段(rev2 base-web SHA pin 更新 + outer commit + merge 回 `rev2-admin-root` + 更新 CHECKLIST §4 Phase 1 #2 ✅ + MILESTONES append)
 

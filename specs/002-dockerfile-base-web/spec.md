@@ -69,7 +69,7 @@ operator 跑 prod profile 後,docker 自動健康檢查 30 秒內把 container �
 - **dev profile 跑 prod 命令**(或反之):profile filter 強制 — 沒指定 profile 預設 0 service up;指定錯 profile container 名 / port collision 提示
 - **同時 dev + prod up**:port 都 21079,後者 fail bind error。設計接受(用戶要明示一次跑一個 profile)
 - **upstream rebase 帶來 `public/health.html` conflict**:soybean-admin upstream `public/` 內無 `health.html`、不衝突;若未來 upstream 真新增同名檔,git rebase 提示手動解(極低風險)
-- **vite 不 honor process env override `.env.prod`**:若 vite 只認 `.env.*` 不認 process env,build-arg → ENV 機制無效。已列入 spec/clarify research 風險,fallback 改成 builder stage 寫 `.env.production.local`
+- **vite 不 honor process env override `.env.prod`**:vite `loadEnv` 只讀 `.env.*` 系列檔(不讀 `process.env`),plan/research §1 已驗證、實作走 builder stage 寫 `.env.prod.local`(base-web build mode = `prod`、`.env.prod.local` precedence 高於 `.env.prod`、`*.local` 已在 base-web `.gitignore` 內)
 
 ---
 
@@ -104,9 +104,9 @@ operator 跑 prod profile 後,docker 自動健康檢查 30 秒內把 container �
 
 **build-arg VITE_SERVICE_BASE_URL**
 
-- **FR-014**:Dockerfile builder stage MUST 在 `RUN pnpm build` 前加 `ARG VITE_SERVICE_BASE_URL=<default>` + `ENV VITE_SERVICE_BASE_URL=$VITE_SERVICE_BASE_URL`(default 為 ApiFox Mock URL `https://mock.apifox.cn/m1/3109515-0-default`、對齊現 `base-web/.env.prod`)
+- **FR-014**:Dockerfile builder stage MUST 在 `RUN pnpm build` 前加 `ARG VITE_SERVICE_BASE_URL=<default>`(default 為 ApiFox Mock URL `https://mock.apifox.cn/m1/3109515-0-default`、對齊現 `base-web/.env.prod`),**不**用 `ENV VITE_SERVICE_BASE_URL=$ARG`(vite `loadEnv` 不讀 process.env、無效;見 plan/research §1)
 - **FR-015**:compose prod profile MUST 含 `build.args.VITE_SERVICE_BASE_URL` 引 host envvar `${VITE_SERVICE_BASE_URL:-<default>}`,允許 shell envvar override
-- **FR-016**:vite build MUST 把 `process.env.VITE_SERVICE_BASE_URL` 寫進 client bundle(VITE_ prefix 規約;若 vite 不 honor process env、需 fallback 改寫 `.env.production.local`,見 Edge Cases)
+- **FR-016**:builder stage MUST 在 `RUN pnpm build` 前 `RUN echo "VITE_SERVICE_BASE_URL=$VITE_SERVICE_BASE_URL" > .env.prod.local`,讓 vite mode-aware env file 機制(`.env.prod.local` precedence 高於 `.env.prod`、`*.local` 已在 base-web `.gitignore`)把 build-arg 值 inline 進 client bundle(對應 [contracts/build-arg-vite-service-base-url.md](./contracts/build-arg-vite-service-base-url.md))
 - **FR-017**:override 後驗證 `grep -c '<override URL substring>' /usr/share/nginx/html/assets/*.js` MUST > 0(URL 確實 inline 進 bundle)
 
 **000-bootstrap.md surgical patches**

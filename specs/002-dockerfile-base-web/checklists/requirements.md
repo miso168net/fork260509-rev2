@@ -40,4 +40,4 @@
 
 - Items marked incomplete require spec updates before `/speckit-clarify` or `/speckit-plan`
 - 本 spec 設計上對齊 Phase 0 brainstorm `docs/superpowers/002-dockerfile-base-web.md`,scope 已透過 5 題 user 親決鎖死(scope choice / healthcheck endpoint / dev pattern / build-arg / 000 cleanup),進 `/speckit-clarify` 預期無 critical clarification 需求,可直接走 `/speckit-plan`
-- 唯一可能在 `/speckit-clarify` 提的:vite 是否真在 build-time 讀 process.env.VITE_SERVICE_BASE_URL override .env.prod(若不,fallback 改寫 `.env.production.local`)— 但這屬 research 範疇、不是 spec ambiguity,可留 plan.md 階段 research.md grep 驗
+- ~~唯一可能在 `/speckit-clarify` 提的:vite 是否真在 build-time 讀 process.env.VITE_SERVICE_BASE_URL override .env.prod~~ — research.md §1 已驗證:vite `loadEnv` 不讀 process.env,實作走 builder stage 寫 `.env.prod.local`(base-web build mode = `prod`、`*.local` 已在 base-web `.gitignore`)
