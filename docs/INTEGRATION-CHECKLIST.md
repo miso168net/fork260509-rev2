@@ -10,16 +10,14 @@
 
 **階段**:rev2 重建中、骨幹搭建完成、設計拍板進行中(spec-kit 第一個 feature **尚未啟動**)。
 
-**最新進展**(2026-05-27):
-- rev1 編號標示與 rev2 軌道命名統一(commit `79d4725`,4 檔 258+/258-)。
-- INTEGRATION-DESIGN.md 初版落地(12 段含 31 feature + 12 待拍板,commit `a9921eb`)。
-- INTEGRATION-CHECKLIST.md 本檔落地(commit `8250629`)。
-- **§11 12 待拍板全部完成**(本次 commit)— 4 輪 user 決策,鎖定「base-web 為權威 + menu Casbin enforce」兩條鐵紀律;軌道授權清單見 §6。
+**最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
+- 2026-05-28 CLAUDE.md ⏳ 整理 + GRAPHIFY-NOTES.md 落地(commit `788fae1` + `b351820`)
+- **2026-05-28 constitution v1.0.0 + Phase 0 歸檔 + MILESTONES.md 落地**(本次 commit)— 設計拍板鏈完整、CHECKLIST 結構整理
 
 **下一步**(優先序):
-1. **`.specify/memory/constitution.md` v1.0.0 撰寫**(目前 50 行空殼)— 凍結 §11 12 拍板項 + 5 軌道授權清單(§6)+ 兩條鐵紀律。
-2. **啟動 P0 第一個 spec-kit feature**(dockerfile-rust-api,對應 rev1 W-F1)— 走 CLAUDE.md §3 階段 0 brainstorm(`docs/superpowers/001-dockerfile-rust-api.md`)→ 階段 1 `/speckit-specify`。
-3. spec phase 0 對稱盤點(§2.2 6 項)在第一個 feature spec 前跑過一遍。
+1. **啟動 P0 第一個 spec-kit feature**(dockerfile-rust-api,對應 rev1 W-F1)— 走 CLAUDE.md §3 階段 0 brainstorm(`docs/superpowers/001-dockerfile-rust-api.md`)→ 階段 1 `/speckit-specify`(自動建 `001-dockerfile-rust-api` feature branch)
+2. spec phase 0 對稱盤點(§2.2 6 項)在第一個 feature spec 前跑過一遍
+3. `/speckit-plan` 步將自動對照 [constitution v1.0.0](../.specify/memory/constitution.md) 跑 Compliance Check(§IV 7 項 yes/no)
 
 ---
 
@@ -60,7 +58,7 @@
 
 ### 2.3 workspace-level ⏳ 落地
 
-- [ ] `.specify/memory/constitution.md` v1.0.0(目前 50 行空殼;凍結 §11 拍板項)
+- [x] ✅ `.specify/memory/constitution.md` v1.0.0(2026-05-28 凍結,155 行;5 sections + Compliance Check + Governance)
 - [ ] `docker-compose.yml` + `docker-compose.{dev,prod}.yml` + `deploy/`(CLAUDE.md §8.2)
 - [ ] `deploy/generate-dev-cert.sh`(self-signed TLS for dev)
 - [ ] `deploy/secrets/`(env-file pattern,本機 dev 用)
@@ -72,79 +70,66 @@
 
 ## 3. 已完成里程碑
 
-按 commit 倒序。
+完整 commit 里程碑歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)(append-only、不在 SOP 注入,避免本檔膨脹)。
 
-| commit | 日期 | 主題 |
-|---|---|---|
-| `79d4725` | 2026-05-27 | docs: 統一 rev1 編號標示與 rev2 軌道命名(4 檔 258+/258-) |
-| `fbd8e3e` | 2026-05-27 | docs: INTEGRATION-DESIGN.md 補 followup §13.6 新事實 |
-| `727cdd8` | 2026-05-27 | docs+test: A+B follow-up — alova 5 按鈕 code 矩陣 + bind-wechat 頁面驗證 |
-| `8dad8ae` | 2026-05-27 | docs+test: followup §10.3 四項(logout / login / alova / framework) |
-| `a9921eb` | 2026-05-27 | docs: INTEGRATION-DESIGN.md 初版(12 段 + 31 feature + 12 待拍板) |
-| `522011e` | 2026-05-27 | docs: 同步 audit / research / followup 三檔 cross-ref(§10 列 16 處) |
-| `855df4f` | 2026-05-26 | docs: INTEGRATION-RESEARCH-FOLLOWUP.md(Tier 1/2/3 八項深入研究) |
-| `9d94bdb` | 2026-05-26 | docs: MOCK-COVERAGE-AUDIT.md(CDP 三段 capture + wire ground truth) |
-| `4920323` | 2026-05-26 | test: tests/mock-coverage-audit/ CDP 工具與 step 規格 |
-| `b983017` | 2026-05-26 | docs: INTEGRATION-RESEARCH.md(rev1 設計鏈萃取 + 30 superpowers 教訓) |
-| `773d29f` | 2026-05-26 | docs: 000-base-web-docker-bootstrap(設計理由 + 4 輪 debug + CDP 登入驗證) |
-| `24ed26d` | 2026-05-26 | feat(deploy): base-web docker-compose dev/prod profile + multi-stage Dockerfile |
-| `d810aee` | 2026-05-25 | chore(submodule): 註冊 base-web + rust-api gitlink(首次 add) |
-| `fee9f29` | 2026-05-25 | chore(submodule): .gitmodules 定義 base-web / rust-api |
-| `428100f` | 2026-05-25 | chore(hook): SessionStart hook + SOP 腳本 |
-| `8cb5d6b` | 2026-05-25 | docs: workspace 指引 CLAUDE.md(rev1 重建至 rev2) |
-| `681df32` | 2026-05-25 | Add Spec-Kit presets / extensions / skills |
+§1「最新進展」滾動最近 5 條;歷史在 MILESTONES.md 永久保留。歸檔流程見 [CLAUDE.md §7.5](../CLAUDE.md)。
 
 ---
 
 ## 4. Roadmap & Phase 狀態
 
-對齊 CLAUDE.md §3 SDD-TDD 工作流 + `INTEGRATION-DESIGN.md` §7.1 P0-P4 17 feature。
+對齊 CLAUDE.md §3 SDD-TDD 工作流 + [`INTEGRATION-DESIGN.md` §10 各 Phase](INTEGRATION-DESIGN.md)。本節為動態 status 追蹤;feature 詳細描述見 DESIGN §10。
 
-### Phase 0 — 設計拍板(進行中,blocker:§11 12 項待 user 決策)
+### Phase 0 — 設計拍板 ✅ 全完成+已歸檔 (2026-05-28)
 
-- [x] INTEGRATION-RESEARCH.md(rev1 設計鏈萃取)
-- [x] INTEGRATION-RESEARCH-FOLLOWUP.md(Tier 1/2/3 深入)
-- [x] MOCK-COVERAGE-AUDIT.md(CDP wire ground truth)
-- [x] INTEGRATION-DESIGN.md(12 段 + 31 feature + 12 待拍板)
-- [x] INTEGRATION-CHECKLIST.md(本檔)
-- [ ] §11 12 待拍板 user 決策(blocker)
-- [ ] `.specify/memory/constitution.md` v1.0.0
+### Phase 1 — P0 部署基建(對齊 [DESIGN §10 Phase 1](INTEGRATION-DESIGN.md);尚未啟動)
 
-### Phase 1 — P0 部署基建(尚未啟動)
+- [ ] rust-api Dockerfile feature
+- [ ] base-web Dockerfile feature
+- [ ] TLS 憑證 skeleton feature
+- [ ] 容器 port 與編排 feature(2XXXX port)
+- [ ] secret 注入機制 feature(`_FILE` pattern)
 
-- [ ] **W-F1** dockerfile-rust-api(Rust 1.86 multi-stage builder + cargo cache + libssl3 runtime + non-root uid 10001)
-- [ ] **W-F2** dockerfile-base-web(Node 22 builder + nginx runtime + pnpm corepack + Vite BUILD_ARG + SPA fallback)
-- [ ] **W-F6** TLS dev/prod cert skeleton(`generate-dev-cert.sh` + self-signed SAN + acme.sh daemon mode 預留)
-- [ ] **W-F7** port-mapping 改 2XXXX(21080/21443/21081/25432/26379/23000/23090/29091,綁 127.0.0.1)
+### Phase 2 — P1 基礎設施(對齊 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md);尚未啟動)
 
-### Phase 2 — P1 基礎設施(尚未啟動)
+- [ ] JWT 機密管理 feature
+- [ ] soft-delete 基礎設施 feature(7 entity + 三重防護)
+- [ ] envelope 對齊 feature(`{data, code, msg}` + camelCase)
+- [ ] audit log 基礎設施 feature
+- [ ] sub-crate setup feature(`axum-casbin` 重寫 / `sea-orm-adapter` + `xdb` 拷貝)
 
-- [ ] **F1.1** jwt-secrets(boot-time strict validation + `_FILE` 讀檔 + 6 placeholder 黑名單)
-- [ ] **F2** audit-log-infrastructure(4 新欄 + operation enum + JSONB before/after + redaction + `DEFAULT 'LEGACY'`)
-- [ ] **F3** soft-delete-infrastructure(7 entity + `deleted_at` + partial unique index + facade module + CI grep lint)
-- [ ] **F4** response-shape-alignment(`{data, code, msg}` + `code` string `"0000"` + camelCase rename_all)
+### Phase 3 — P2 認證 + 動態 menu(對齊 [DESIGN §10 Phase 3](INTEGRATION-DESIGN.md);尚未啟動)
 
-### Phase 3 — P2 認證 + 動態 menu(尚未啟動)
+- [ ] 登入 + getUserInfo feature(Casbin enforce 首次啟用)
+- [ ] dynamic mode 路由 feature(3 route endpoint:`getConstantRoutes` / `getUserRoutes` / `isRouteExist`)
+- [ ] Casbin redis pub-sub 啟用 feature(v1 即啟用)
+- [ ] policy seed feature(三 role × 主流 endpoint)
 
-- [ ] **F5.1** auth-login + getUserInfo + getUserRoutes(含 Casbin enforce + TreeBuilder)
-- [ ] **F6** route-guard(`/route/isRouteExist` 全域存在性檢查,無 role 依賴)
-- [ ] **W-F11** Casbin redis pub-sub channel(`casbin:policy:invalidate`,v1 即啟用)
+### Phase 4 — P3 主流業務(對齊 [DESIGN §10 Phase 4](INTEGRATION-DESIGN.md);尚未啟動)
 
-### Phase 4 — P3 主流業務(尚未啟動)
+- [ ] manage list endpoints feature(6 read endpoint,對齊 mock)
+- [ ] wire shape mapping feature(Output DTO + `From<Entity>` + pagination wrapper)
+- [ ] alova-only endpoint 處理 feature(依 §11.2 拍板)
+- [ ] 菜單樹建構 feature(parent_id → nested children)
 
-- [ ] **F7** manage-crud-alignment(5 讀 endpoint + Output DTO + camelCase + ROLE_ADMIN policy seed)
-- [ ] **F8** assign-users(`/authorization/assign-users`,join table 為權威源 + set-semantics + soft-delete restore)
-- [ ] **F9** systemManage-alias-router(10 alias + batchDeleteUser + 20 row policy seed)
+### Phase 5 — P4 補位 + 抽離項(對齊 [DESIGN §10 Phase 5](INTEGRATION-DESIGN.md);尚未啟動)
 
-### Phase 5 — P4 補位 + 抽離項(尚未啟動)
+- [ ] refresh token 完整實作 feature(`sys_tokens` rotation_chain)
+- [ ] 抽離項 stub feature(`/auth/error` / `/auth/sendCaptcha` / `/auth/verifyCaptcha`)
+- [ ] cleanup-job feature(dry-run 預設 + cron + 最小權 credential)
 
-- [ ] **F11** extracted-stubs(`sendCaptcha` / `verifyCaptcha` / `error` / `getLastTime` 4 stub + 8 row policy seed)
-- [ ] **F12** cleanup-job(dry-run 預設 + cron 觸發 + 最小權 credential + migration 文件化 psql role)
-- [ ] **F13** rust-refresh-token-impl(`/auth/refreshToken` + JWT 驗 + rotation_chain + 舊 token 標 `used`)
+### Phase 6 — 觀察性(對齊 [DESIGN §10 Phase 6](INTEGRATION-DESIGN.md);可選,生產 ready)
 
-### Phase 6 — graphify 圖譜建立(P4 完才跑)
+- [ ] obs-min feature(promtail + loki + grafana,純 log)
+- [ ] obs-full feature(+ prometheus + 3 exporter + pushgateway + grafana alerting)
+- [ ] dashboard provisioning feature(master overview / rust-api / postgres / redis / audit pipeline)
 
-- [ ] `graphify-out/` 首次落地(GRAPH_REPORT.md + graph.json + graph.html + obsidian/ vault + `docs/GRAPHIFY-NOTES.md`)
+### Phase 7 — 維護(對齊 [DESIGN §10 Phase 7](INTEGRATION-DESIGN.md);持續性)
+
+- [ ] wire 細節對齊 feature(status / gender 等,走 CDP 全功能巡檢)
+- [ ] upstream rebase feature(定期 `git rebase upstream/example`(base-web)+ `upstream/main`(rust-api))
+- [ ] graphify 圖譜更新 feature(P4 完跑 `graphify update`,refresh manifest + GRAPH_REPORT)
+- [ ] 依需求啟用觀察性 alert / 升 acme.sh 真實 cert / 等
 
 ---
 

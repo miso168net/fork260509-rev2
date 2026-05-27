@@ -939,6 +939,22 @@ BASE_WEB_TAG=rev2-admin-base-web
 
 > 不用 rev1 編號,改用語意 phase + feature 名稱。每個 phase 內順序可調整,跨 phase 順序為硬依賴。
 
+### Phase 0 — 設計拍板(prerequisite,2026-05-28 ✅ 完成)
+
+> 整個 rev2 整合的設計基礎、所有後續 Phase 的硬依賴。**不寫 code**,只產出研究 / 設計 / 凍結文件。
+
+deliverables(全部完成):
+
+1. **`docs/INTEGRATION-RESEARCH.md`** — 早期設計研究,rev1 設計鏈萃取 + 30 superpowers 教訓
+2. **`docs/INTEGRATION-RESEARCH-FOLLOWUP.md`** — RESEARCH 深入深研(Tier 1/2/3 八項)
+3. **`docs/MOCK-COVERAGE-AUDIT.md`** — 本地 base-web docker-compose 跑後查驗 fork example 用到的 mock api(CDP 三段 capture + wire ground truth)
+4. **`docs/INTEGRATION-DESIGN.md`**(本檔)— rev2 整合架構與執行順序設計(12 段 + 31 feature + 12 拍板已回填)
+5. **`docs/INTEGRATION-CHECKLIST.md`** — 動態 todo + SOP hook 每次 session 注入錨(完整職責分工見 CLAUDE.md §7)
+6. **§11 12 拍板 user 親決**(2026-05-27)— 鎖定兩鐵紀律(base-web 為權威 + menu Casbin enforce)與 5 軌道(2 ★ 需 constitution 顯式授權)
+7. **`.specify/memory/constitution.md` v1.0.0**(2026-05-28 凍結)— 設計權威從 DESIGN §11 + §7 提取為不可違反的凍結權威
+
+紀律:Phase 1-7 任何 feature 啟動前,需要 Phase 0 設計鏈完整、拍板凍結。spec-kit `/speckit-plan` 步將自動對照 constitution v1.0.0 跑 Compliance Check(§IV 7 項 yes/no)。
+
 ### Phase 1 — 部署基建(無 app 相依,可平行)
 
 1. **rust-api Dockerfile feature** — multi-stage build,non-root user,/health endpoint
@@ -985,12 +1001,15 @@ BASE_WEB_TAG=rev2-admin-base-web
 
 1. **status / gender / 其他 wire 細節對齊 feature** — 走 CDP 全功能巡檢
 2. **upstream rebase feature** — 定期 `git rebase upstream/example`(base-web fork)+ `git rebase upstream/main`(rust-api fork)
-3. **graphify 圖譜建立 feature**(P4 完才跑)
+3. **graphify 圖譜更新 feature**(P4 完跑 `graphify update`,refresh manifest + GRAPH_REPORT)
 4. **依需求啟用觀察性 alert / 升級 acme.sh 真實 cert / 等**
 
 ### 跨 phase 硬依賴 DAG
 
 ```
+Phase 0 (設計拍板) ✅
+   │
+   ▼
 Phase 1 (部署基建) ─┐
                    ├─→ Phase 3 (認證 + menu) ──→ Phase 4 (主流業務) ──→ Phase 5 (補位 + 抽離項)
 Phase 2 (後端基建) ─┘                                                                      │
@@ -1001,7 +1020,7 @@ Phase 2 (後端基建) ─┘                                                   
                                                                                     Phase 7 (維護持續)
 ```
 
-Phase 1 + Phase 2 可平行;Phase 3 起依 Phase 2 完成。
+Phase 0 為所有後續 Phase 的 prerequisite;Phase 1 + Phase 2 可平行;Phase 3 起依 Phase 2 完成。
 
 ---
 
