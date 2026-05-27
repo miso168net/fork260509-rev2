@@ -11,11 +11,11 @@
 **階段**:rev2 重建中、骨幹搭建完成、設計拍板進行中(spec-kit 第一個 feature **尚未啟動**)。
 
 **最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
-- 2026-05-28 constitution v1.0.0 + Phase 0 歸檔 + CHECKLIST §2.1 拍板項歸檔(commit `b0ec406` + `35b8861`)
-- **2026-05-28 DESIGN §4.6 Phase 0 對稱盤點 baseline 固化**(本次 commit)— 6 項規格(application.yaml / 11 secret / Casbin seed / migration / sys_user / graphify)回填、CHECKLIST §2.2 歸檔
+- 2026-05-28 DESIGN §4.6 Phase 0 對稱盤點 baseline 固化(commit `7d044a7`)
+- **2026-05-28 001-dockerfile-rust-api Phase 0 brainstorm spec-design**(本次 commit)— 3 crate workspace 骨架 + 完整 `_FILE` secret loader + multi-stage Dockerfile + standalone compose;Phase 1 #5 scope 變動標
 
 **下一步**(優先序):
-1. **啟動 P0 第一個 spec-kit feature**(dockerfile-rust-api,對應 rev1 W-F1)— 走 CLAUDE.md §3 階段 0 brainstorm(`docs/superpowers/001-dockerfile-rust-api.md`)→ 階段 1 `/speckit-specify`(自動建 `001-dockerfile-rust-api` feature branch)
+1. **執行 `/speckit-specify`**(階段 1)— input 為 [`docs/superpowers/001-dockerfile-rust-api.md`](superpowers/001-dockerfile-rust-api.md);`before_specify` pre-hook 會自動建 `001-dockerfile-rust-api` feature branch + 產出 `specs/001-dockerfile-rust-api/spec.md`
 2. `/speckit-plan` 步將自動對照 [constitution v1.0.0](../.specify/memory/constitution.md) 跑 Compliance Check(§IV 7 項 yes/no)+ 引用 [DESIGN §4.6](INTEGRATION-DESIGN.md) baseline
 
 ---
