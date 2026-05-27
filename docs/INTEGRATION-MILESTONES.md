@@ -59,4 +59,7 @@
 | `942d4e7a` | 2026-05-28 | feat(base-web): 新增 public/health.html(階段 2,inner — BASE-WEB-ADAPT 軌道) |
 | `c0b17ef` | 2026-05-28 | feat(deploy): 002-dockerfile-base-web 完整實作 + SHA pin 942d4e7a(階段 2,outer) |
 | `a70fa5f` | 2026-05-28 | Merge feature 002-dockerfile-base-web 回 rev2-admin-root(--no-ff,feature branch 保留) |
+| `cd1b655` | 2026-05-28 | docs: 002-dockerfile-base-web merge 收尾(CHECKLIST §1+§4 / MILESTONES / SPECKIT marker) |
+| `bc2a004` | 2026-05-28 | docs(checklist): 對齊 §7.5 歸檔規則 — 拔 §4 Phase 1 標題與 §1 階段行的子項 ✅ 標示 |
+| `1651d8b` | 2026-05-28 | docs(checklist): 新增 §2.5 / §2.6 follow-up — 002 spec doc 小修 + 000 §3.2 corepack 範例不同步 |
 | `2a34c64` | 2026-05-28 | docs+test: 000-bootstrap §3.2 corepack 同步(option iii)+ mock-coverage-audit 9 step files port 9527→21079 同步(33 處)+ CHECKLIST §2.6 歸檔;9 step files 全跑通(100 records / 334 steps) |

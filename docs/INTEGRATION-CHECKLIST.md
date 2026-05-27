@@ -70,10 +70,7 @@ baseline 規格回填於 [DESIGN §4.6](INTEGRATION-DESIGN.md);6 項實作驗收
 - [ ] `specs/002-dockerfile-base-web/tasks.md` T001 typo:寫「`git -C base-web branch --show-current` 必須 = `rev2-admin-rust-api`」,應為 `rev2-admin-base-web`(base-web worktree 自己的長期分支,見 CLAUDE.md §1)
 - [ ] `specs/002-dockerfile-base-web/contracts/verification-commands.md` §1 字串比對 bug:`if [ "$resp" = "ok" ]` 字面比對失敗(`health.html` 含 2 行 HTML 註解 + ok body),應改 `if curl ... | grep -q "ok"`(對齊 HEALTHCHECK probe + §2 / §3 已用 grep)
 
-### 2.6 ✅ 000-base-web-docker-bootstrap.md §3.2 corepack 範例同步 (2026-05-28b)
-
-- §3.2 builder Dockerfile 範例 code 採 option (iii):`RUN corepack enable` → `RUN npm install -g pnpm@10`,行尾註解改指 §4 第 3 輪 / §6.1 / 檔尾 Footnote(歷史 Footnote 不刪、仍正確)
-- Bonus:跑 `tests/mock-coverage-audit/` 9 個 step files 時發現全寫舊 vite port `127.0.0.1:9527`(base-web 在 feature 002 已對齊 21079),sed 批次同步 33 處到 21079;9 個 step files 全跑通(100 records / 334 steps / 全 orchestrator ok=true,200/500/404 status 分布符合 step 註解預期)
+### 2.6 superpowers 000-base-web-docker-bootstrap.md §3.2 corepack 範例同步 ✅ 全完成+已歸檔 (2026-05-28)
 
 ---
 
