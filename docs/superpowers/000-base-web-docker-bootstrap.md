@@ -70,13 +70,13 @@ docker compose -f docker-compose.base-web.yml --profile prod up --build  # prod
 
 | profile | host port | container port | 理由 |
 |---|---|---|---|
-| dev | `21079` | `21079` | base-web/package.json 內 vite 預設 |
-| prod | `21079` | `80` | 避開 dev 21079、單調 +1 易記 |
+| dev | `21079` | `21079` | 對齊 §8.2 規劃(原 vite 預設 9527,本 compose 顯式 `--port 21079`) |
+| prod | `21079` | `21079` | 對齊 §8.2 規劃(nginx config 改 `listen 21079`、`EXPOSE 21079`) |
 
 ⚠️ **未來與 §8.2 整合考量**:
-- §8.2 規劃 rev2 整套 stack 對外用 `21080`(HTTP)/ `21443`(HTTPS),由 front-nginx reverse proxy 到 base-web internal:80
-- 本 standalone 用 21079/21079 是 quick bootstrap、跟 §8.2 規劃 port 集合刻意不對齊(避免兩套並存撞 port)
-- 整合進 main stack 時 base-web service 應改成不對外 expose、僅 internal:80,由 front-nginx 統一對外
+- §8.2 規劃 rev2 整套 stack 對外用 `21080`(HTTP)/ `21443`(HTTPS),由 front-nginx reverse proxy 到 base-web internal:21079
+- 本 standalone 用 21079/21079 對齊 §8.2 規劃(feature 002 拍板:dev / prod 共用單 port 21079、profile 擇一 up;見 `specs/002-dockerfile-base-web/`)
+- 整合進 main stack 時 base-web service 應改成不對外 expose、僅 internal:21079,由 front-nginx 統一對外
 
 ### 2.4 node_modules 策略(dev mode)
 
@@ -280,7 +280,7 @@ COPY --from=builder /tmp/nginx/default.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 ```
 
-⚠️ prod profile **本次沒實機驗** — 第 6 節 follow-up #1 列待補。
+✅ prod profile **實機驗收已通過**(2026-05-28 feature 002 完成) — 詳見 `specs/002-dockerfile-base-web/contracts/verification-commands.md` 與本檔 §6.1。
 
 ### 3.3 README.md
 
@@ -613,13 +613,13 @@ CDP `/json` 列出 Edge **所有** inspectable targets — 包括 background tab
 
 ## 6. Follow-up backlog
 
-### 6.1 prod profile 沒實機跑(必補)
+### 6.1 prod profile 實機驗收 ✅(feature 002 完成)
 
-`docker compose -f docker-compose.base-web.yml --profile prod up --build` 只 paper-checked,沒實際 build/run。重點驗:
-- `pnpm install --frozen-lockfile` 是否能過(若 pnpm-lock.yaml 跟 packages 不一致會 fail)
-- `pnpm build` 是否能過(vite/elegant-router/uno codegen step 是否觸發)
-- nginx SPA fallback 行為:`curl http://localhost:21079/some/random/route` 應回 `index.html` (200,不是 nginx 預設 404)
-- builder image 內 `cat > /tmp/nginx/default.conf << 'NGINX_EOF'` heredoc 寫入是否真的生效(heredoc 在 RUN 內的 shell 行為依 docker buildkit 版本)
+`docker compose -f docker-compose.base-web.yml --profile prod up --build` **已實機驗證通過**(2026-05-28 feature `002-dockerfile-base-web` 完成),驗收紀錄詳見 [`specs/002-dockerfile-base-web/contracts/verification-commands.md`](../../specs/002-dockerfile-base-web/contracts/verification-commands.md)。實機觀察結論:
+- `pnpm install --frozen-lockfile` 通過 — 但 builder stage 原 `RUN corepack enable` **碰到 §4 第 3 輪同款 ESM bug**(`ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`),已對齊 dev profile 改 `RUN npm install -g pnpm@10`
+- `pnpm build` 通過,vite mode=prod 把 `.env.prod` + `.env.prod.local`(builder 內 build-arg 寫入)合併、URL inline 進 bundle
+- nginx SPA fallback 行為驗證通過 — `curl /some/random/route` 回 SPA index(200);`curl /health.html` 回 `ok`(nginx try_files 第一段命中、不走 fallback)
+- builder heredoc `cat > /tmp/nginx/default.conf << 'NGINX_EOF'` 行為穩定 — Docker 29.4.0 / Compose v5.1.1 + BuildKit default 下 heredoc + COPY --from=builder 結構生效
 
 ### 6.2 dev mode 每次啟動 install 開銷
 
@@ -637,7 +637,7 @@ CLAUDE.md §8.2 規劃 `docker-compose.yml` + `docker-compose.{dev,prod}.yml` ov
 - **廢棄 standalone**:整套 stack 落地後,base-web 完全由 §8.2 描述,本檔刪
 - **演化**:本檔作為 §8.2 base-web service 部分的雛形,合 §8.2 落地時拆 service 定義回 base 檔
 
-port 也要對齊:21080/21443(front-nginx 對外)vs 21079/21079(本 standalone)。決定點:§8.2 落地時再評。
+port 已對齊:standalone 用 21079/21079(feature 002 拍板對齊 §8.2 規劃);未來整套 stack 落地後 base-web service 改成不對外 expose、僅 internal:21079,由 front-nginx 21080/21443 reverse proxy 至 internal:21079。Phase 1 #4 整套 stack feature 啟動時本 standalone compose 退場(service 移到 master `docker-compose.yml`)。
 
 ### 6.4 pnpm 版本 pinning 長期 trade-off
 
@@ -1150,3 +1150,17 @@ process.exit(0);
 | vite(base-web) | 8.0.12 |
 | Edge(host 上跑,9229 CDP) | 148.0.3967.83 |
 | CLAUDE.md §8.1 測試帳號 | Soybean / 123456(super) |
+
+---
+
+## Footnote — feature 002 (2026-05-28) 後續變動條列
+
+本 doc 為 base-web docker bootstrap 持久記憶,以下 4 項為 spec-kit feature [`002-dockerfile-base-web`](../../specs/002-dockerfile-base-web/) 完成後對「實際 deploy 內容」的變動(本 doc §3 / §4 / §5 / §7 / §8 / Appendix 為 bootstrap 期 debug / CDP / scripts 永久紀錄、不刪):
+
+1. **port 對齊**:dev / prod 都改 `21079:21079`(原 dev 9527、prod 9528:80;§2.3 表 + §6.3 已 update)
+2. **build-arg `VITE_SERVICE_BASE_URL`**:Dockerfile builder stage 加 `ARG VITE_SERVICE_BASE_URL=<ApiFox default>` + `RUN echo "VITE_SERVICE_BASE_URL=$VITE_SERVICE_BASE_URL" > .env.prod.local`(走 vite mode-aware env file precedence,因 vite `loadEnv` 不讀 process.env;detail 見 `specs/002-dockerfile-base-web/research.md` §1)
+3. **HEALTHCHECK**:Dockerfile runtime stage 加 `HEALTHCHECK wget /health.html | grep -q "ok"`,timing `10s / 3s / 5s / 3` 對齊 001 rust-api
+4. **`base-web/public/health.html`**:BASE-WEB-ADAPT 軌道新增 4 行 static HTML(2 註解 + `ok` body),vite 自動 copy 到 dist/、nginx try_files 直接 serve、HEALTHCHECK probe 對象
+
+**Bonus 修正**:builder stage 從 `RUN corepack enable` 改 `RUN npm install -g pnpm@10`(實機驗碰到 §4 第 3 輪同款 corepack ESM bug、§6.1 已 update)。
+

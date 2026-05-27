@@ -374,6 +374,14 @@ base-web feature 不對應 §4.6 baseline 任何子節(rust-api 專屬)。
 | BASE-WEB-ADAPT 軌道擴用至 `public/` 被 challenge 為 amendment 必要 | 本 brainstorm + spec/plan 都明確 acknowledge + reasoning;若用戶 / future reviewer 認為仍需 amendment,在 spec 階段升級為正式 amendment(spec 暫不 amend、留 fallback) |
 | `/health.html` 在 SPA upstream rebase 衝突 | 極低風險 — soybean-admin upstream `public/` 內無此檔;rebase 時 git 不 conflict |
 
+### 10.4 Implementation friction notes(2026-05-28 實作階段補)
+
+實作階段(`superpowers:executing-plans` 走完 T001-T020)碰到 3 點 friction,記下供後續 feature 或 doc patch 參考:
+
+1. **`docker images` size 顯示虛胖**:`docker images` table 顯示 `rev2-admin-base-web:latest` 大小為 ~112 MB,但 `docker image inspect --format='{{.Size}}'` 回 ~29 MB(實際 runtime image)。差異來自 BuildKit default 啟用 attestation manifest + 多平台 manifest list。**SC-004 判讀採用 `docker image inspect .Size`**(plan/data-model.md 寫法一致)。
+2. **verification-commands.md §1 字串比對 bug**:`if [ "$resp" = "ok" ]` 字面比對失敗 — 因 `health.html` 含 2 行 HTML 註解 + `ok` body,response 不會等於字面 `ok`。**正確改用 `curl ... | grep -q "ok"`**(對齊 HEALTHCHECK probe 寫法)。建議 verification-commands.md §1 後續 patch 修。
+3. **builder stage `RUN corepack enable` 同款 ESM bug**:000-bootstrap.md §3.2 line 249 註解假設「builder 用 `pnpm install --frozen-lockfile` 不走 latest、corepack 沒問題」未經實機驗。實際跑碰到 `ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`(000 §4 第 3 輪同款 bug)。**修法**:對齊 dev profile 改 `RUN npm install -g pnpm@10`(已 update 000 §3.2 / §6.1 + 檔尾 footnote bonus 項)。
+
 ---
 
 ## 11. 交棒給 `/speckit-specify`(階段 1)
