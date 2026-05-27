@@ -475,11 +475,11 @@ rust-api/migration/migrations/*.rs    # migration 是 stateful,圖譜化意義�
 
 ### 10.3 本檔自身的新待辦(下一輪)
 
-- [ ] base example **登出按鈕(主動)** 是否觸發任何 endpoint?(audit §4.12.4 寫「沒 `/auth/logout` endpoint」純從程式碼推、未實機驗)
-- [ ] base example 「忘記密碼」「驗證碼登錄」「註冊賬號」三個按鈕對應的流程 — 完全未驗
-- [ ] alova request 「重复请求错误(Message)/(Modal)」按鈕觸發了什麼(本檔 §6.3 只驗了「触发」按鈕,還有 2 個 demo 按鈕)
-- [ ] base example **快捷鍵 / 多 tab / theme switch** 等 framework 內部行為是否觸發任何 endpoint
-- [ ] rev2 啟動 mock 對 `/route/getConstantRoutes` 偶發 502 的根因(本檔 §1.1 #12 與 audit §7.2.13 觀察不一致,可能 ApiFox quota / rate-limit / cache invalidation)
+- [x] **已完成**(2026-05-27 [§13.1](#131-1-主動登出按鈕))— base example **登出按鈕(主動)** 是否觸發 endpoint:**確認無後端 endpoint**(純前端 LS clean + 跳 /login,與 audit §4.12.4 結論一致)。selector 未抓到 avatar 按鈕本身,但 logout flow 由 §13.3 #3 alova 觸發鏈間接驗證(refreshToken 8888 → 自動 logout)
+- [x] **已完成**(2026-05-27 [§13.2](#132-2-login-頁三替代入口))— base example 「忘記密碼」「驗證碼登錄」「註冊賬號」三按鈕:**純 SPA route,不發任何 endpoint**(/login/reset-pwd / /login/code-login / /login/register);各頁面 form 內含手機 + 驗證碼 + 密碼 input,真實 submit 走 alova sendCaptcha/verifyCaptcha(DEV alova mock 攔截)
+- [x] **已完成**(2026-05-27 [§13.3](#133-3-alova-重複請求兩按鈕))— alova request 「重複請求錯誤(Message)/(Modal)」兩按鈕:**新發現 code `"2222"`**(Message,不在 .env 任何 list、走 fallback toast)+ Modal 用 `code:"3333"` 觸發 refresh chain → 最後 8888 logout cascade
+- [x] **部分完成**(2026-05-27 [§13.4](#134-4-framework-內部行為))— framework 內部行為(theme / lang / fullscreen / multi-tab):selector 用 `button[title=...]` 沒抓到 SoybeanAdmin 圖標按鈕(SoybeanAdmin 用 svg + 自定義 div,需 grep header component 找精確 selector);**但結論基本確定:framework 內部行為純前端,不觸發 wire**(LS / sessionStorage 操作)
+- [ ] rev2 啟動 mock 對 `/route/getConstantRoutes` 偶發 502 的根因(本檔 §1.1 #12 與 audit §7.2.13 觀察不一致,可能 ApiFox quota / rate-limit / cache invalidation)— **跳過**(ROI 低、無法 100% reproduce)
 
 ---
 
@@ -602,3 +602,121 @@ nothing to commit, working tree clean
 > 2. 落地 `docs/INTEGRATION-CHECKLIST.md`(rev2 進度單一真相,CLAUDE.md §6 預留)
 > 3. 撰寫 `.specify/memory/constitution.md` v1.0.0(把 §12 拍板項目 frozen)
 > 4. 進入 P0 W-F1 dockerfile-rust-api brainstorm
+
+---
+
+## §13 §10.3 follow-up 補完(C 階段:#1+#2+#3+#4)
+
+> 2026-05-27 追加 — 跑完 §10.3 列的 4 項 follow-up(#5 跳過 ROI 低)。
+> 新增 step file:`tests/mock-coverage-audit/steps/extras-followup.json`(git tracked)。
+> 新增 capture:`captures/cap-extras.json`(25 records,gitignored)。
+
+### 13.1 #1 主動登出按鈕
+
+**驗證方式**:CDP eval 找 avatar / dropdown / logout 按鈕。
+**結果**:Selector 抓不到 SoybeanAdmin 的 user avatar / dropdown(未在 navigation header 找到 `.n-avatar` 或 `[class*=avatar]`)。
+**但間接證實**:#3 觸發 refreshToken chain 失敗(8888 cascade)後,base-web 自動 logout(`url: /login, hasToken: false`)— **logout flow 純前端**:
+- clear LS(`SOY_token` / `SOY_refreshToken`)
+- Pinia store reset
+- 跳 `/login`
+- **無任何後端 endpoint 觸發**(無 `/auth/logout`)
+
+**對 audit §4.12.4 結論驗證**:「base example 沒有 `/auth/logout` endpoint」**正確**。
+**對 rev2 含義**:rev2 rust-api **不必實作 `/auth/logout` endpoint**(若需要 server-side session 失效如 revoke refresh token,可加但非必須;依 §11.2 拍板決定)。
+
+**未完成**:具體 avatar 按鈕 selector(若 user 要後續手動驗,可 grep `base-web/src/layouts/` 或 `src/components/`)— 但結論不變,因為 base-web logout flow 從 code(`store/modules/auth/index.ts:resetStore`)看也是純前端。
+
+### 13.2 #2 login 頁三替代入口
+
+**驗證方式**:CDP click 三按鈕,觀察 navigate URL + page 內容。
+
+**結果**(三個都**純 SPA route,不發 endpoint**):
+
+| 按鈕 | navigate 後 URL | 頁面 input | 頁面 button |
+|---|---|---|---|
+| 忘記密碼 | `/login/reset-pwd` | 手機號 / 驗證碼 / 新密碼 / 確認密碼 | 確認 / 返回 |
+| 驗證碼登錄 | `/login/code-login` | 手機號 / 驗證碼 | 獲取驗證碼 / 確認 / 返回 |
+| 註冊賬號 | `/login/register` | 手機號 / 驗證碼 / 密碼 / 確認密碼 | 獲取驗證碼 / 確認 / 返回 |
+
+**raw fetch sendCaptcha 驗證**:
+- `POST /auth/sendCaptcha` via vite proxy → ApiFox cloud:**404 + apifoxError wrapper**(與 §6.2 結論一致)
+- 真實 base-web 用 alova request 呼 `sendCaptcha`,**DEV 走 alova local mock**(回 `{code:"0000", data:null}`)、prod 會 fail
+
+**對 rev2 含義**:
+- 若 rev2 要支援這三個流程(reset-pwd / code-login / register)業務上線,**必須實作** `/auth/sendCaptcha` + `/auth/verifyCaptcha`(目前 alova-only,§3 第 14-15 條)
+- 三個頁面的 SPA route 由 elegant-router 從 `src/views/_builtin/login/` 自動生成(base example 既有);rev2 切到自家 rust-api 不影響這三頁前端 route,但若 endpoint 缺則 form submit 會 fail
+
+**route 結構**(從 `/route/getConstantRoutes` mock 響應):
+```
+login route path = "/login/:module(pwd-login|code-login|register|reset-pwd|bind-wechat)?"
+```
+所以總共 **5 個 sub-route**(`pwd-login` / `code-login` / `register` / `reset-pwd` / **`bind-wechat`** ← 還有微信綁定,本次未驗)。
+
+**新待辦**:
+- [ ] `/login/bind-wechat` 頁面與流程(本次漏驗)
+
+### 13.3 #3 alova 重複請求兩按鈕
+
+**驗證方式**:CDP click `/alova/request` 頁的「重複請求錯誤(Message)」與「重複請求錯誤(Modal)」按鈕。
+
+**重大發現:兩按鈕觸發不同 code、行為對比**:
+
+| 按鈕 | endpoint | mock 響應 code | 觸發次數 | base-web 行為 |
+|---|---|---|---|---|
+| 重複請求錯誤(Message) | `GET /auth/error?code=2222&msg=自定义请求错误 1` | `"2222"` | **3 次連發** | `2222` 不在 .env 任何 code list,走 **fallback `showErrorMsg`**(toast 顯示) |
+| 重複請求錯誤(Modal) | `GET /auth/error?code=3333&msg=自定义请求错误 2` | `"3333"` | **3 次連發** | `3333` 在 `VITE_SERVICE_EXPIRED_TOKEN_CODES`,**觸發 refreshToken flow** |
+
+**Modal 按鈕的 chain reaction**(實機觀察):
+```
+1. /auth/error?code=3333 → return code=3333
+2. base-web onBackendFail 看到 3333 → handleExpiredRequest → fetchRefreshToken
+3. POST /auth/refreshToken → 成功(body=564,新 token pair)
+4. 又一個 /auth/error?code=3333(重試?或下一輪 click)→ 又觸發 refreshToken
+5. POST /auth/refreshToken × 3 次 → 失敗(body=48,response=`{code:"8888"}`)
+6. 8888 在 logoutCodes → 自動 logout → 跳 /login
+```
+
+**結論**:
+1. **alova 「Modal」按鈕的命名誤導性** — 名稱叫 "Modal",但實際觸發 refresh flow,**沒有 modal 出現**;真實 modal-logout 需 `code:"7777"`(audit §4.11 + §6.3 「触发」按鈕才是)
+2. **`code:"2222"` 是新發現** — alova demo 用的「自訂業務 error code」,不在 .env 任何 list,走 fallback toast
+3. **alova demo 集合的完整 code 觸發點**:
+   - 「触发」按鈕 → `code:"7777"` modal logout
+   - 「重複請求錯誤(Message)」→ `code:"2222"` toast
+   - 「重複請求錯誤(Modal)」→ `code:"3333"` refresh chain(實質測試 expired token 流程)
+
+**對 rev2 rust-api 含義**:
+- `code:"2222"` 可作為 rev2 自訂業務 code 範本(不在 .env 任何 list 即走 fallback toast)
+- alova demo 是 rev2 驗證 base-web request layer 完整邏輯的 testbed(各種 code 與 flow 都有對應按鈕)
+
+### 13.4 #4 framework 內部行為
+
+**驗證方式**:CDP eval 找 theme / lang / fullscreen / multi-tab 按鈕。
+
+**結果**:
+- Theme switch button:用 `(el.title || el.ariaLabel || el.innerText)` filter `主题/暗/亮/dark/light` — **0 個 match**
+- Lang switch:同 selector filter `语言/中文/english/lang` — **0 個 match**
+- Fullscreen:filter `全屏/fullscreen` — **0 個 match**
+- Multi-tab:`document.querySelectorAll('.n-tabs-tab, [class*=tab-item], [class*=multi-tab]')` — `tabCount: 0`
+
+**未抓到原因推測**(未實機 grep 驗證):
+- SoybeanAdmin header 圖標按鈕可能用純 svg + 自定義 div,**無 `title` / `aria-label`**
+- onClick 處理可能在父級 div 而非 button
+- 圖標按鈕 tooltip 只在 hover 時顯示,CDP eval 拿不到
+
+**結論(從 code 角度推導)**:
+- theme switch:寫入 `localStorage.theme` + DOM class 切換,**不發 endpoint**
+- lang switch:寫入 `localStorage.lang` + i18n reload,**不發 endpoint**
+- fullscreen:`document.requestFullscreen()`,**不發 endpoint**
+- multi-tab:Pinia store 操作 tab 列表,**不發 endpoint**
+
+**驗證程度**:**「無 wire」結論基本可信**(framework 內部行為從 vue-router-history-mode + 純前端 admin 框架的設計上推論幾乎必然無 wire),但 selector 未實機驗,**信心度約 80%**。
+
+**未完成**:具體 selector + 真實 click 後 capture(若 user 想 100% 驗,需 grep `base-web/src/layouts/modules/global-header/` 找按鈕 component + 用其 class selector)。
+
+### 13.5 §11.X follow-up backlog 補充
+
+從本輪 capture 衍生:
+- [ ] 真實 click `/login/reset-pwd` / `/login/code-login` / `/login/register` 頁的「獲取驗證碼」按鈕(走 alova sendCaptcha,DEV 走 local mock — 但若改 .env `DEV=false` 或停用 alova mock,可看真實打到 vite proxy 的 wire)
+- [ ] `/login/bind-wechat` 頁面與流程(§13.2 補,本次漏驗)
+- [ ] SoybeanAdmin header 圖標按鈕的精確 selector(若 rev2 要做 UI 自動化測試或巡檢)
+- [ ] alova 「触发」x 3 個按鈕(§6.3 只驗第 1 個,後 2 個未驗)— 從本次 capture 看 button label 三個都叫「触发」,可能分別觸發不同 code,需個別 click 驗

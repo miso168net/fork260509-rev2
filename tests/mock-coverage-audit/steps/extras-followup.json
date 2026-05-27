@@ -1,0 +1,142 @@
+[
+  {"kind": "log", "msg": "=== Phase 0: ensure at /login (logged out) ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "eval", "note": "clear LS for fresh start",
+   "expr": "(() => { localStorage.clear(); sessionStorage.clear(); return JSON.stringify({cleared: true}); })()"
+  },
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3500},
+  {"kind": "screenshot", "file": "./screenshots/shot-70-login-fresh.png"},
+
+  {"kind": "log", "msg": "=== #2-a: click 忘记密码 ==="},
+  {"kind": "eval", "note": "list all clickable links/buttons on login page",
+   "expr": "JSON.stringify({buttons: Array.from(document.querySelectorAll('button')).map(b => b.innerText.trim()).filter(t => t.length>0 && t.length<20), links: Array.from(document.querySelectorAll('a')).map(a => ({text: a.innerText.trim(), href: a.getAttribute('href')})).filter(l => l.text.length>0 && l.text.length<20)})"
+  },
+  {"kind": "eval", "note": "click 忘记密码",
+   "expr": "(() => { const all = [...document.querySelectorAll('button, a')]; const target = all.find(el => el.innerText.trim().includes('忘记密码') || el.innerText.trim().includes('忘記密碼')); if (!target) return JSON.stringify({err: 'not found'}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim(), tag: target.tagName}); })()"
+  },
+  {"kind": "sleep", "ms": 3000},
+  {"kind": "screenshot", "file": "./screenshots/shot-71-reset-pwd.png"},
+  {"kind": "eval", "note": "check page after 忘记密码",
+   "expr": "JSON.stringify({url: location.href, title: document.title, h1: document.querySelector('h1, h2, h3, .login-form-title')?.innerText?.trim() || 'none', inputs: Array.from(document.querySelectorAll('input')).map(i => ({type: i.type, placeholder: i.placeholder}))})"
+  },
+
+  {"kind": "log", "msg": "=== #2-b: navigate back + click 验证码登录 ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "eval", "note": "click 验证码登录",
+   "expr": "(() => { const all = [...document.querySelectorAll('button, a')]; const target = all.find(el => el.innerText.trim().includes('验证码登录') || el.innerText.trim().includes('驗證碼登錄')); if (!target) return JSON.stringify({err: 'not found'}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
+  },
+  {"kind": "sleep", "ms": 3000},
+  {"kind": "screenshot", "file": "./screenshots/shot-72-code-login.png"},
+  {"kind": "eval", "note": "check page after 验证码登录",
+   "expr": "JSON.stringify({url: location.href, title: document.title, inputs: Array.from(document.querySelectorAll('input')).map(i => ({type: i.type, placeholder: i.placeholder})), buttons: Array.from(document.querySelectorAll('button')).map(b => b.innerText.trim()).filter(t => t.length>0 && t.length<20)})"
+  },
+
+  {"kind": "log", "msg": "=== #2-c: try send captcha (raw fetch) to verify mock behavior ==="},
+  {"kind": "eval", "note": "POST /auth/sendCaptcha via raw fetch",
+   "expr": "fetch('/proxy-default/auth/sendCaptcha', {method: 'POST', headers: {'Content-Type': 'application/json', apifoxToken: 'XL299LiMEDZ0H5h3A29PxwQXdMJqWyY2'}, body: JSON.stringify({phone: '13800138000'})}).then(r => r.text()).then(t => 'SEND-CAPTCHA-RAW len=' + t.length)"
+  },
+  {"kind": "sleep", "ms": 2000},
+
+  {"kind": "log", "msg": "=== #2-d: navigate back + click 注册账号 ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "eval", "note": "click 注册账号",
+   "expr": "(() => { const all = [...document.querySelectorAll('button, a')]; const target = all.find(el => el.innerText.trim().includes('注册账号') || el.innerText.trim().includes('註冊賬號') || el.innerText.trim().includes('注册') || el.innerText.trim().includes('註冊')); if (!target) return JSON.stringify({err: 'not found'}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
+  },
+  {"kind": "sleep", "ms": 3000},
+  {"kind": "screenshot", "file": "./screenshots/shot-73-register.png"},
+  {"kind": "eval", "note": "check page after 注册账号",
+   "expr": "JSON.stringify({url: location.href, title: document.title, inputs: Array.from(document.querySelectorAll('input')).map(i => ({type: i.type, placeholder: i.placeholder})), buttons: Array.from(document.querySelectorAll('button')).map(b => b.innerText.trim()).filter(t => t.length>0 && t.length<20)})"
+  },
+
+  {"kind": "log", "msg": "=== Phase A: login Super for #1 + #3 + #4 testing ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "eval", "note": "click 超级管理员",
+   "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const target = btns.find(b => b.innerText.trim().includes('超级管理员') || b.innerText.trim().includes('超級管理員')); if (target) target.click(); return JSON.stringify({ok: !!target}); })()"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "eval", "note": "click 確認",
+   "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const target = btns.find(b => { const t = b.innerText.trim(); return t === '確認' || t === '确认'; }); if (target) target.click(); return JSON.stringify({ok: !!target}); })()"
+  },
+  {"kind": "sleep", "ms": 6000},
+  {"kind": "eval", "note": "post-login check",
+   "expr": "JSON.stringify({url: location.href, hasToken: !!localStorage.getItem('SOY_token')})"
+  },
+
+  {"kind": "log", "msg": "=== #4-a: theme switch (尋找暗色 / 亮色按鈕) ==="},
+  {"kind": "screenshot", "file": "./screenshots/shot-80-home-baseline.png"},
+  {"kind": "eval", "note": "find theme toggle button",
+   "expr": "(() => { const els = [...document.querySelectorAll('button, [role=button], svg')]; const matched = els.filter(el => { const t = (el.title || el.ariaLabel || el.innerText || '').toLowerCase(); return t.includes('theme') || t.includes('dark') || t.includes('light') || t.includes('暗') || t.includes('亮') || t.includes('主题') || t.includes('主題'); }); return JSON.stringify({count: matched.length, samples: matched.slice(0,5).map(el => ({tag: el.tagName, title: el.title || el.ariaLabel, text: el.innerText?.slice(0,30)}))}); })()"
+  },
+  {"kind": "eval", "note": "click first theme-related button",
+   "expr": "(() => { const els = [...document.querySelectorAll('button, [role=button]')]; const t1 = els.find(el => { const t = (el.title || el.ariaLabel || el.innerText || '').toLowerCase(); return t.includes('暗') || t.includes('亮') || t.includes('dark') || t.includes('light') || t.includes('主题') || t.includes('主題'); }); if (t1) { t1.click(); return JSON.stringify({clicked: t1.title || t1.ariaLabel || t1.innerText?.slice(0,30)}); } return JSON.stringify({err: 'no theme btn'}); })()"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "screenshot", "file": "./screenshots/shot-81-after-theme.png"},
+
+  {"kind": "log", "msg": "=== #4-b: 語言切換 ==="},
+  {"kind": "eval", "note": "find lang switch",
+   "expr": "(() => { const els = [...document.querySelectorAll('button, [role=button]')]; const matched = els.filter(el => { const t = (el.title || el.ariaLabel || el.innerText || '').toLowerCase(); return t.includes('lang') || t.includes('语言') || t.includes('語言') || t.includes('中文') || t.includes('english') || t === 'en' || t === 'zh'; }); return JSON.stringify({count: matched.length, samples: matched.slice(0,5).map(el => ({tag: el.tagName, title: el.title || el.ariaLabel, text: el.innerText?.slice(0,30)}))}); })()"
+  },
+  {"kind": "eval", "note": "click lang switch",
+   "expr": "(() => { const els = [...document.querySelectorAll('button, [role=button]')]; const t1 = els.find(el => { const t = (el.title || el.ariaLabel || el.innerText || '').toLowerCase(); return t.includes('语言') || t.includes('語言') || t.includes('lang') || t.includes('中文') || t.includes('english'); }); if (t1) { t1.click(); return JSON.stringify({clicked: t1.title || t1.ariaLabel || t1.innerText?.slice(0,30)}); } return JSON.stringify({err: 'no lang btn'}); })()"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "screenshot", "file": "./screenshots/shot-82-after-lang.png"},
+
+  {"kind": "log", "msg": "=== #4-c: 全屏切換 ==="},
+  {"kind": "eval", "note": "find fullscreen btn + click",
+   "expr": "(() => { const els = [...document.querySelectorAll('button, [role=button]')]; const t1 = els.find(el => { const t = (el.title || el.ariaLabel || '').toLowerCase(); return t.includes('全屏') || t.includes('fullscreen') || t.includes('full-screen'); }); if (t1) { t1.click(); return JSON.stringify({clicked: t1.title || t1.ariaLabel}); } return JSON.stringify({err: 'no fullscreen btn'}); })()"
+  },
+  {"kind": "sleep", "ms": 1500},
+
+  {"kind": "log", "msg": "=== #4-d: multi-tab via right-click simulation (open user-detail in new tab) ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/manage/user", "waitMs": 4000},
+  {"kind": "screenshot", "file": "./screenshots/shot-83-multi-tab-before.png"},
+  {"kind": "eval", "note": "click tab close / multi-tab area to test triggers",
+   "expr": "(() => { const tabs = document.querySelectorAll('.n-tabs-tab, [class*=tab-item], [class*=multi-tab]'); return JSON.stringify({tabCount: tabs.length, classes: Array.from(tabs).slice(0,3).map(t => t.className)}); })()"
+  },
+
+  {"kind": "log", "msg": "=== #3: alova /alova/request 兩個重複請求按鈕 ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/alova/request", "waitMs": 4500},
+  {"kind": "screenshot", "file": "./screenshots/shot-90-alova-request.png"},
+  {"kind": "eval", "note": "list all buttons on alova request",
+   "expr": "JSON.stringify(Array.from(document.querySelectorAll('button')).map(b => b.innerText.trim()).filter(t => t.length>0 && t.length<40))"
+  },
+  {"kind": "eval", "note": "click 重复请求错误(Message)",
+   "expr": "(() => { const btns = [...document.querySelectorAll('button')]; const target = btns.find(b => { const t = b.innerText.trim(); return t.includes('重复请求') && t.includes('Message'); }); if (!target) return JSON.stringify({err: 'not found', all: btns.map(b => b.innerText.trim()).slice(0,15)}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
+  },
+  {"kind": "sleep", "ms": 3000},
+  {"kind": "screenshot", "file": "./screenshots/shot-91-after-msg.png"},
+  {"kind": "eval", "note": "click 重复请求错误(Modal)",
+   "expr": "(() => { const btns = [...document.querySelectorAll('button')]; const target = btns.find(b => { const t = b.innerText.trim(); return t.includes('重复请求') && t.includes('Modal'); }); if (!target) return JSON.stringify({err: 'not found'}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
+  },
+  {"kind": "sleep", "ms": 3000},
+  {"kind": "screenshot", "file": "./screenshots/shot-92-after-modal.png"},
+
+  {"kind": "log", "msg": "=== #1: 主動登出按鈕(放最後,因為會 logout) ==="},
+  {"kind": "navigate", "url": "http://127.0.0.1:9527/home", "waitMs": 4000},
+  {"kind": "eval", "note": "find user avatar / dropdown / logout button",
+   "expr": "(() => { const els = [...document.querySelectorAll('button, [role=button], .n-avatar, [class*=avatar], [class*=user-menu], [class*=logout]')]; const candidates = els.filter(el => { const t = (el.innerText || el.title || el.ariaLabel || '').trim(); return t.length > 0 && t.length < 30; }).slice(0, 20); return JSON.stringify({candidates: candidates.map(el => ({tag: el.tagName, cls: el.className?.slice(0,40), text: (el.innerText || el.title || el.ariaLabel)?.slice(0,30)}))}); })()"
+  },
+  {"kind": "eval", "note": "try open avatar dropdown by hover/click",
+   "expr": "(() => { const avatar = document.querySelector('.n-avatar, [class*=avatar]'); if (avatar) { avatar.click(); return JSON.stringify({clicked: 'avatar'}); } return JSON.stringify({err: 'no avatar'}); })()"
+  },
+  {"kind": "sleep", "ms": 1500},
+  {"kind": "screenshot", "file": "./screenshots/shot-100-avatar-dropdown.png"},
+  {"kind": "eval", "note": "find logout button after dropdown opens",
+   "expr": "(() => { const els = [...document.querySelectorAll('*')]; const matched = els.filter(el => { const t = (el.innerText || '').trim(); return (t === '退出登录' || t === '退出登錄' || t === 'Logout' || t === '登出' || t.includes('退出')) && t.length < 20; }); return JSON.stringify({count: matched.length, samples: matched.slice(0,5).map(el => ({tag: el.tagName, text: el.innerText?.trim()?.slice(0,30)}))}); })()"
+  },
+  {"kind": "eval", "note": "click logout if found",
+   "expr": "(() => { const els = [...document.querySelectorAll('*')]; const target = els.find(el => { const t = (el.innerText || '').trim(); return (t === '退出登录' || t === '退出登錄' || t === 'Logout' || t === '登出') && el.children.length === 0; }); if (!target) return JSON.stringify({err: 'no logout btn'}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
+  },
+  {"kind": "sleep", "ms": 3000},
+  {"kind": "screenshot", "file": "./screenshots/shot-101-after-logout-click.png"},
+  {"kind": "eval", "note": "check if modal/confirm appeared",
+   "expr": "(() => { const dialog = document.querySelector('.n-dialog, [class*=dialog], [class*=modal-mask]'); if (dialog) { const okBtn = [...dialog.querySelectorAll('button')].find(b => b.innerText.trim().includes('确') || b.innerText.trim().includes('確') || b.innerText.trim().includes('OK')); if (okBtn) { okBtn.click(); return JSON.stringify({modalConfirmed: true, btnText: okBtn.innerText.trim()}); } } return JSON.stringify({modalFound: !!dialog}); })()"
+  },
+  {"kind": "sleep", "ms": 4000},
+  {"kind": "screenshot", "file": "./screenshots/shot-102-after-logout-final.png"},
+  {"kind": "eval", "note": "final state",
+   "expr": "JSON.stringify({url: location.href, hasToken: !!localStorage.getItem('SOY_token')})"
+  }
+]
