@@ -171,7 +171,7 @@ front-nginx 內部 location:
 | 1 | auth | POST | `/auth/login` | `{userName: string, password: string}` | `LoginToken{token, refreshToken}` | login 頁 |
 | 2 | auth | GET | `/auth/getUserInfo` | `Bearer <token>` header | `UserInfo{userId, userName, roles[], buttons[]}` | login 後 + 每次 navigate |
 | 3 | auth | POST | `/auth/refreshToken` | `{refreshToken: string}` | `LoginToken{token, refreshToken}` | token 過期自動觸發 |
-| 4 | auth | GET | `/auth/error?code=&msg=` | query params | echo `{code, msg}`(工具 endpoint) | function/request demo 頁 |
+| 4 | auth | GET | `/auth/error?code=&msg=` | query params | echo `{code, msg}`(工具 endpoint,**純 echo,無 per-code 分支**;followup §13.6.1 raw fetch 驗證) | function/request demo 頁 |
 | 5 | route | GET | `/route/getConstantRoutes` | - | `MenuRoute[]`(login/403/404/500 4 條) | dynamic mode SPA init |
 | 6 | route | GET | `/route/getUserRoutes` | `Bearer` header | `UserRoute{routes: MenuRoute[], home: string}` | dynamic mode login 後 |
 | 7 | route | GET | `/route/isRouteExist?routeName=` | query param | `boolean` | dynamic mode menu auth modal |
@@ -238,11 +238,12 @@ front-nginx 內部 location:
 |---|---|---|---|
 | `"0000"` | success | unwrap data | 每個成功響應 |
 | `"1000"` | login 失敗(統一,不細分原因) | toast | 錯密碼 / 不存在 user / 缺欄 / 空 body 全回 |
-| `"3333"` | token 過期 / 無效 | 觸發 refresh flow | 過期 / 無效 token(在 .env `VITE_SERVICE_EXPIRED_TOKEN_CODES=9999,9998,3333` 內) |
-| `"7777"` | modal logout | 顯 modal,user 確認後 logout | 「他處登入」等需 user 看訊息再被踢出(`VITE_SERVICE_MODAL_LOGOUT_CODES=7777,7778`) |
-| `"8888"` | 即時 logout | clear LS + Pinia reset + 跳 /login | refresh 失敗 / user 被禁(`VITE_SERVICE_LOGOUT_CODES=8888,8889`) |
+| `"2222"` | 自訂業務 error 範本(alova demo 用) | fallback toast | rev2 自訂業務 error 範本 — `2222` 不在 .env 任何 list,任何非 success/expired/logout/modal-logout 的 code 都會走此 fallback toast(followup §13.6.1) |
+| `"3333"` / `"9998"` / `"9999"` | token 過期 / 無效 | 觸發 refresh flow | 過期 / 無效 token(完整三選一,皆在 .env `VITE_SERVICE_EXPIRED_TOKEN_CODES=9999,9998,3333` 內;mock 實機觀察 3333 用於 getUserInfo expired、9999 用於 alova refreshToken demo 按鈕) |
+| `"7777"` / `"7778"` | modal logout | 顯 modal,user 確認後 logout | 「他處登入」等需 user 看訊息再被踢出(`VITE_SERVICE_MODAL_LOGOUT_CODES=7777,7778`) |
+| `"8888"` / `"8889"` | 即時 logout | clear LS + Pinia reset + 跳 /login | refresh 失敗 / user 被禁(`VITE_SERVICE_LOGOUT_CODES=8888,8889`) |
 | `"4040"` | path 不存在 | toast(fallback) | rev2 rust-api 對 404 path 的業務 envelope |
-| `"5xxx"`(自訂) | 業務驗證 / 資源不存在 / 規則衝突 | toast | rev2 自訂(建議 5001-5999 區段) |
+| `"5xxx"`(自訂) | 業務驗證 / 資源不存在 / 規則衝突 | toast | rev2 自訂(建議 5001-5999 區段);與 `"2222"` 同走 fallback toast,差別僅是業務語義分區 |
 
 **critical 紀律**:rev2 `/auth/refreshToken` **絕對不能回 expiredTokenCodes**(`3333/9999/9998`),否則 base-web `handleExpiredRequest` 進入 dead loop。refresh 失敗應回 `"8888"` 或 `"7777"`。
 
@@ -462,7 +463,7 @@ router 設計**直接符合 §3 base-web 期望 API 全集**,不引入 alias / r
 |---|---|---|---|---|
 | POST | `/auth/login` | `auth::login(LoginInput)` | - | 驗 user/password,簽 token + refreshToken |
 | POST | `/auth/refreshToken` | `auth::refresh(RefreshInput)` | - | 驗 refresh JWT + DB 查詢 sys_tokens,輪替 |
-| GET | `/auth/error` | `auth::echo_error(query)` | - | 工具 endpoint,echo `{code, msg}` |
+| GET | `/auth/error` | `auth::echo_error(query)` | - | 工具 endpoint;**實作極簡**(讀 query `code`+`msg` → echo 進 envelope,無 per-code 分支);base-web request layer 各 code list 行為的 testbed(followup §13.6.1 raw fetch 驗證) |
 | GET | `/route/getConstantRoutes` | `route_admin::constant_routes()` | - | 回 4 條 constant route(login/403/404/500) |
 
 **Protected token-only(需 Bearer 但不查 Casbin policy):**
@@ -1095,6 +1096,35 @@ rev2 spec-kit feature 工作流前置 brainstorm 文件存哪?
 | (a) `docs/superpowers/<NNN>-<feature-name>.md`(rev1 慣例) | 統一管理但需編號 |
 | (b) `specs/<NNN>-<feature-name>/brainstorm.md`(與 spec 同目錄) | 內聚但 spec-kit 不自動讀 |
 | (c) 不寫獨立檔,brainstorm 階段直接寫進 spec.md 開頭 | 最簡單 |
+
+### §11.13 login 替代入口的後端 endpoint 是否實作
+
+**新發現的 endpoint 缺口**(followup §13.2 + §13.6.2):
+- base example login 5 sub-route:`pwd-login`(主)+ `reset-pwd` / `code-login` / `register`(三個有完整 form UI)+ `bind-wechat`(空 placeholder)
+- 三個有 form 的替代入口,form submit 流程推測:**alova `sendCaptcha` + `verifyCaptcha` + 某個「終局 endpoint」**(form submit 終局 endpoint 名 base example 未實機驗,以下為設計推測)
+- **目前 §3 列的 alova-only 7 endpoint 只有 `sendCaptcha` + `verifyCaptcha`,完全沒有 `register` / `resetPwd` / `codeLogin` / `bindWechat` 終局 endpoint**
+- 這代表:rev2 若要支援這四個流程,**還需新增 4 個後端 endpoint**(超出 §3 完整表)
+
+候選 endpoint 規格(rev2 設計時可參考,具體 path 待確認 base-web 真實 wire):
+
+| 流程 | Method | path 候選 | 輸入 | 輸出 |
+|---|---|---|---|---|
+| reset-pwd | POST | `/auth/resetPwd` | `{phone, captcha, newPassword}` | `null` 或新 token pair |
+| code-login | POST | `/auth/codeLogin`(或 `/auth/login` 加 mode 欄) | `{phone, captcha}` | `LoginToken{token, refreshToken}` |
+| register | POST | `/auth/register` | `{phone, captcha, password, ...}` | `null` 或自動 login 回 token |
+| bind-wechat | POST | `/auth/bindWechat` | `{wechatCode}`(OAuth2 grant)| `null` |
+
+選項:
+
+| 選項 | 動作 | 工作量 | 含義 |
+|---|---|---|---|
+| (a) rev2 v1 不實作 | 只支援 pwd-login 主流程;reset-pwd / code-login / register / bind-wechat 四頁 UI 仍可進但 submit 會 fail | 0 | 簡化 v1 範圍 |
+| (b) 部分實作(register + reset-pwd 兩個無外部依賴的) + sendCaptcha / verifyCaptcha 業務化(可選真實 SMS 或 stub mode) | + 2 個 endpoint + SMS 整合(或不真實發送的 stub mode) | 中(~3-4 人日) | 對齊一般 admin 後台常見功能 |
+| (c) 全實作(4 個 + SMS + wechat OAuth) | + 4 個 endpoint + 第三方 SMS API + wechat OAuth | 大(~5-8 人日 + 第三方 API 整合) | 完整支援所有 login 入口 |
+
+**Claude 中性建議**:rev2 v1 採 (a) 不實作(focus pwd-login 主流程 + manage 業務);若 rev2 後期業務需要(對外開放註冊 / 忘記密碼自助 / 微信登入),再升 (b)/(c)。
+
+**相關 §11.5 alova 處理策略連動**:若 §11.13 選 (a) 不實作,**建議**配合 §11.5 走 `(b'-narrow)` 用 `pageExcludePatterns` 隱藏 alova menu(避免 user 點進 reset-pwd / code-login / register 頁 form submit 報錯);或保留 sidebar 但接受點進去 form submit 走 toast error(`code:"1000"` 或自訂)。
 
 ---
 
