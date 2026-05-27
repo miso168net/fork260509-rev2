@@ -501,7 +501,7 @@ node flow.mjs $BASE_TAB captures/cap-errors-dynamic.json steps/errors-and-dynami
 # 3. Tier 1-C dynamic mode 切換(需動 .env + restart)
 # 改 base-web/.env: VITE_AUTH_ROUTE_MODE=static → dynamic
 docker restart rev2-base-web-dev
-node flow.mjs $BASE_TAB captures/cap-dynamic-mode.json steps/dynamic-mode-login.json "proxy-default|9527/(login|home|manage)"
+node flow.mjs $BASE_TAB captures/cap-dynamic-mode.json steps/dynamic-mode-login.json "proxy-default|21079/(login|home|manage)"
 # 完成後 revert
 # 改 base-web/.env: dynamic → static
 docker restart rev2-base-web-dev
@@ -510,14 +510,14 @@ docker restart rev2-base-web-dev
 node flow.mjs $BASE_TAB captures/cap-quickfill.json steps/quick-fill-all.json "proxy-default"
 
 # 5. Tier 2-E alova runtime
-node flow.mjs $BASE_TAB captures/cap-alova.json steps/alova-runtime.json "proxy-default|9527/alova"
+node flow.mjs $BASE_TAB captures/cap-alova.json steps/alova-runtime.json "proxy-default|21079/alova"
 ```
 
 ### 11.2 dump 結果的 oneliner
 
 ```bash
 # 列出某次 capture 內所有 endpoint
-node -e "const c=JSON.parse(require('fs').readFileSync('captures/<file>.json'));for(const r of c.records){console.log((r.response?.status||'?').toString().padStart(3), r.method.padEnd(6), r.url.replace('http://127.0.0.1:9527/proxy-default','').padEnd(60), 'body='+(r.responseBody?.body?.length||0))}"
+node -e "const c=JSON.parse(require('fs').readFileSync('captures/<file>.json'));for(const r of c.records){console.log((r.response?.status||'?').toString().padStart(3), r.method.padEnd(6), r.url.replace('http://127.0.0.1:21079/proxy-default','').padEnd(60), 'body='+(r.responseBody?.body?.length||0))}"
 
 # dump 完整 body
 node -e "const c=JSON.parse(require('fs').readFileSync('captures/<file>.json'));for(const r of c.records){if(r.url.includes('<pattern>')){console.log(r.responseBody?.body)}}"
@@ -781,7 +781,7 @@ click Message 按鈕 (handleRepeatedMessageError) → Promise.all 6 個:
 **驗證方式**:CDP navigate `/login/bind-wechat`(無需 logged in,login sub-route)。
 
 **結果**:
-- URL: 可達 `http://127.0.0.1:9527/login/bind-wechat`
+- URL: 可達 `http://127.0.0.1:21079/login/bind-wechat`
 - title: 「登錄」
 - 頁面 h: 「Soybean 管理系統」(login layout 共用 header)
 - **inputs: [] 空**

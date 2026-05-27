@@ -35,7 +35,7 @@ mock-coverage-audit/
 - **Edge / Chrome / Chromium** 啟動時加 `--remote-debugging-port=9229`(或對應 user data dir 跑 dev session)
 - **base-web dev container** 跑著(`docker compose -f docker-compose.base-web.yml --profile dev up -d`)
 - Browser 內有兩個 tab:
-  1. `http://127.0.0.1:9527/` — base-web dev SPA
+  1. `http://127.0.0.1:21079/` — base-web dev SPA
   2. `https://s.apifox.cn/35c8727a-d3ab-47e9-8863-ef8e37df6887` — ApiFox `soybean-admin-mock` doc
 
 ## 3. 怎麼跑
@@ -50,7 +50,7 @@ node cdp.mjs tabs
 輸出範例:
 ```json
 [
-  { "id": "1EB0A290B8759A34237ADB6CAA4A5806", "title": "首页", "url": "http://127.0.0.1:9527/home" },
+  { "id": "1EB0A290B8759A34237ADB6CAA4A5806", "title": "首页", "url": "http://127.0.0.1:21079/home" },
   { "id": "BC1D15D21828E3F2BD55F6FA6437E67F", "title": "...soybean-admin-mock", "url": "https://s.apifox.cn/..." }
 ]
 ```
@@ -62,7 +62,7 @@ node cdp.mjs tabs
 ```bash
 BASE_TAB=<從 tabs 取得>
 # Phase 1 — 登入
-node flow.mjs $BASE_TAB captures/cap-login.json steps/login.json "proxy-default|apifox|127\\.0\\.0\\.1:9527/api"
+node flow.mjs $BASE_TAB captures/cap-login.json steps/login.json "proxy-default|apifox|127\\.0\\.0\\.1:21079/api"
 
 # Phase 2 — Menu 遍歷 + raw fetch(未帶 apifoxToken,raw fetch 會 500)
 node flow.mjs $BASE_TAB captures/cap-tour.json steps/tour.json "proxy-default"

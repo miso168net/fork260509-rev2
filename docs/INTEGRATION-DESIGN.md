@@ -151,8 +151,8 @@ front-nginx 內部 location:
 
 | 階段 | base-web 來源 | rust-api 來源 | path 前綴(base-web 看) | 真實 endpoint host |
 |---|---|---|---|---|
-| **base-web dev(對 mock)** | vite dev server `:9527` | ApiFox cloud mock | `/proxy-default/*`(vite proxy 重寫) | `https://mock.apifox.cn/m1/3109515-0-default/*` |
-| **rev2 整合 dev** | vite dev server `:9527`(改 .env) | 自家 rust-api(container `:21081` 或 internal) | `/proxy-default/*` 或 `/api/*` | `http://rust-api:21081/*`(internal) |
+| **base-web dev(對 mock)** | vite dev server `:21079` | ApiFox cloud mock | `/proxy-default/*`(vite proxy 重寫) | `https://mock.apifox.cn/m1/3109515-0-default/*` |
+| **rev2 整合 dev** | vite dev server `:21079`(改 .env) | 自家 rust-api(container `:21081` 或 internal) | `/proxy-default/*` 或 `/api/*` | `http://rust-api:21081/*`(internal) |
 | **rev2 整合 prod** | nginx serve build artifact | 自家 rust-api(internal) | `/api/*`(SPA build 時 inject) | `http://rust-api:21081/*`(internal,front-nginx proxy) |
 
 ---

@@ -15,7 +15,7 @@
 - 2026-05-28 001-dockerfile-rust-api Phase 0 brainstorm + 階段 1 spec/plan/tasks 文件落地
 
 **下一步**(優先序):
-1. **Phase 1 #2 base-web Dockerfile feature** — port 對齊 [§8.2](../CLAUDE.md)(現 standalone `docker-compose.base-web.yml` 用 9527/9528 host 直連 → 改 internal:80,由 front-nginx 對外 21080/21443 reverse proxy)+ spec 階段同步修正 [`docs/superpowers/000-base-web-docker-bootstrap.md`](superpowers/000-base-web-docker-bootstrap.md) §2.3 / §6.3 因 port 改動而過時的段落;走完整 SDD-TDD(`superpowers:brainstorming` → `/speckit-specify` → … → `superpowers:executing-plans`)
+1. **Phase 1 #2 base-web Dockerfile feature** — port 改為 [§8.2](../CLAUDE.md) 規劃 `host 映射 21079:21079`(避免 internal `:80` 在單 compose 啟動時撞 port;dev host 直連 / prod 由 front-nginx reverse proxy 至 internal `:21079`)+ spec 階段同步修正 [`docs/superpowers/000-base-web-docker-bootstrap.md`](superpowers/000-base-web-docker-bootstrap.md) §2.3 / §6.3 因 port 改動而過時的段落;走完整 SDD-TDD(`superpowers:brainstorming` → `/speckit-specify` → … → `superpowers:executing-plans`)
 2. **Phase 1 #5 secret 注入機制(scope 縮小)** — 本 feature 已交 secret loader logic + 2 個 JWT 範本檔;#5 變為「9 個其他 secret 範本檔 + `deploy/generate-secrets.sh` 統一生成腳本 + dual-write docs」
 3. 或先補本 feature spec doc 小修(見 [§2.4](#24-feature-001-dockerfile-rust-api-spec-doc-follow-up--2026-05-28))
 

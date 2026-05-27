@@ -70,12 +70,12 @@ docker compose -f docker-compose.base-web.yml --profile prod up --build  # prod
 
 | profile | host port | container port | 理由 |
 |---|---|---|---|
-| dev | `9527` | `9527` | base-web/package.json 內 vite 預設 |
-| prod | `9528` | `80` | 避開 dev 9527、單調 +1 易記 |
+| dev | `21079` | `21079` | base-web/package.json 內 vite 預設 |
+| prod | `21079` | `80` | 避開 dev 21079、單調 +1 易記 |
 
 ⚠️ **未來與 §8.2 整合考量**:
 - §8.2 規劃 rev2 整套 stack 對外用 `21080`(HTTP)/ `21443`(HTTPS),由 front-nginx reverse proxy 到 base-web internal:80
-- 本 standalone 用 9527/9528 是 quick bootstrap、跟 §8.2 規劃 port 集合刻意不對齊(避免兩套並存撞 port)
+- 本 standalone 用 21079/21079 是 quick bootstrap、跟 §8.2 規劃 port 集合刻意不對齊(避免兩套並存撞 port)
 - 整合進 main stack 時 base-web service 應改成不對外 expose、僅 internal:80,由 front-nginx 統一對外
 
 ### 2.4 node_modules 策略(dev mode)
@@ -125,7 +125,7 @@ COPY index.html vite.config.ts tsconfig.json uno.config.ts ./
 starter 預期工作流是 `corepack enable && pnpm install`(node 20+ 內建 corepack),但本次踩到 node 20.19 + corepack + pnpm 11.3.0 的 ESM bug(詳見第 4 節第 3 輪 debug)。改用:
 
 ```bash
-npm install -g pnpm@10 && pnpm install && pnpm dev --host 0.0.0.0 --port 9527
+npm install -g pnpm@10 && pnpm install && pnpm dev --host 0.0.0.0 --port 21079
 ```
 
 選 pnpm 10 而非 11 的理由:
@@ -207,11 +207,11 @@ services:
       - bw_node_modules:/app/node_modules
       - bw_pnpm_store:/pnpm-store            # §2.7 store 完全留 docker volume
     ports:
-      - "9527:9527"
+      - "21079:21079"
     command:
       - sh
       - -c
-      - "npm install -g pnpm@10 && pnpm install && pnpm dev --host 0.0.0.0 --port 9527"
+      - "npm install -g pnpm@10 && pnpm install && pnpm dev --host 0.0.0.0 --port 21079"
     init: true
     tty: true
     stdin_open: true
@@ -223,7 +223,7 @@ services:
       dockerfile: ../deploy/Dockerfile.base-web.txt
     container_name: rev2-base-web-prod
     ports:
-      - "9528:80"
+      - "21079:80"
     restart: unless-stopped
 
 volumes:
@@ -302,7 +302,7 @@ sh: syntax error: unexpected "&&"
 command: >
   sh -c "corepack enable
          && pnpm install
-         && pnpm dev --host 0.0.0.0 --port 9527"
+         && pnpm dev --host 0.0.0.0 --port 21079"
 ```
 
 直覺以為 `>` (folded scalar) 把多行 fold 成單行(換行→空格),但 `docker compose config` 解析後變成:
@@ -313,7 +313,7 @@ command:
   - |-                              # ← compose 把 `>` normalize 成 `|-` literal block!
     corepack enable
            && pnpm install
-           && pnpm dev --host 0.0.0.0 --port 9527
+           && pnpm dev --host 0.0.0.0 --port 21079
 ```
 
 `|-` literal block 保留換行,sh -c 收到多行字串。sh 看到第 2 行開頭 `&&` 就 syntax error(`&&` 必須接在前一個命令尾巴、不能在獨立行開頭)。
@@ -323,7 +323,7 @@ command:
 command:
   - sh
   - -c
-  - "npm install -g pnpm@10 && pnpm install && pnpm dev --host 0.0.0.0 --port 9527"
+  - "npm install -g pnpm@10 && pnpm install && pnpm dev --host 0.0.0.0 --port 21079"
 ```
 
 **教訓**:compose `command:` 含 multi-line shell 串接時,**永遠用 array form**(`["sh", "-c", "..."]` 或 list 寫法),不要信 YAML scalar 折疊行為。
@@ -391,7 +391,7 @@ Monitor stopped — your script produced too much output
 **修法**:改用 `Bash run_in_background` + `awk` 單次 exit(只在 vite ready 或 fatal error 觸發一次完成通知):
 ```bash
 docker compose -f docker-compose.base-web.yml --profile dev logs -f --no-log-prefix base-web-dev 2>&1 | awk '
-  /ready in.*ms|VITE v.*ready|http:\/\/0\.0\.0\.0:9527/ { print "VITE_READY: " $0; exit 0 }
+  /ready in.*ms|VITE v.*ready|http:\/\/0\.0\.0\.0:21079/ { print "VITE_READY: " $0; exit 0 }
   /ERR_|ELIFECYCLE|fatal|FATAL|panic|exit code|exited with code|syntax error|command not found|ECONNREFUSED|Cannot find module/ { print "ERROR_DETECTED: " $0; exit 1 }
 '
 ```
@@ -439,7 +439,7 @@ docker compose -f docker-compose.base-web.yml --profile dev up -d
 | host `base-web/.pnpm-store` | 不存在 ✓ |
 | `/pnpm-store/v10/files` in named volume | **1.3 GB**(內容全進 docker volume) |
 | `/app/node_modules/.pnpm` in bw_node_modules | 1.4 GB |
-| `curl http://127.0.0.1:9527` | HTTP 200 / 622 bytes / 10 ms ✓ |
+| `curl http://127.0.0.1:21079` | HTTP 200 / 622 bytes / 10 ms ✓ |
 
 **教訓**:bind mount source + named volume 蓋 node_modules 是常見 dev 容器化 pattern,
 但 pnpm / yarn / npm 各自 cache/store 目錄都可能 fallback 到 project root。
@@ -508,10 +508,10 @@ function on(method, cb) { /* ... event listener for CDP events */ }
 | step | 命令 / 動作 |
 |---|---|
 | 1 | `curl http://127.0.0.1:9229/json` — 列現有 tabs |
-| 2 | 找到一個 :9527 tab(若無,讓 user 開新 tab 並 navigate;見 §5.7 §5.8) |
+| 2 | 找到一個 :21079 tab(若無,讓 user 開新 tab 並 navigate;見 §5.7 §5.8) |
 | 3 | WebSocket 連 `ws://127.0.0.1:9229/devtools/page/<完整 32 字元 id>`(見 §5.6) |
 | 4 | `Page.enable` + `Runtime.enable` |
-| 5 | `Page.navigate {url: "http://localhost:9527/"}` — vue-router auto-redirect 到 `/login`(若未登入) |
+| 5 | `Page.navigate {url: "http://localhost:21079/"}` — vue-router auto-redirect 到 `/login`(若未登入) |
 | 6 | 等 `Page.loadEventFired` + 3 秒讓 vue SPA mount + naive-ui 渲染 |
 | 7 | `Runtime.evaluate` dump form elements:看到 2 inputs(naive-ui NInput)+ 9 buttons(含 quick-login「超级管理员/管理员/普通用户」) |
 | 8 | `Runtime.evaluate` 找 button by `textContent === '超级管理员'` + `.click()` |
@@ -583,11 +583,11 @@ CDP attach 會 reject(security:internal pages 不允許 remote control)。
 **page id 通常會變**(Chromium 在內部頁 ↔ 外部頁切換時 swap target id)。然後對新 page id 跑 CDP script。
 
 ```bash
-# 例:user 開新 tab + 輸入 http://localhost:9527/login,然後:
+# 例:user 開新 tab + 輸入 http://localhost:21079/login,然後:
 NEW_ID=$(curl -sS http://127.0.0.1:9229/json | python3 -c "
 import json, sys
 for p in json.load(sys.stdin):
-    if p['type']=='page' and 'localhost:9527' in p['url']:
+    if p['type']=='page' and 'localhost:21079' in p['url']:
         print(p['id']); sys.exit(0)
 ")
 ```
@@ -618,7 +618,7 @@ CDP `/json` 列出 Edge **所有** inspectable targets — 包括 background tab
 `docker compose -f docker-compose.base-web.yml --profile prod up --build` 只 paper-checked,沒實際 build/run。重點驗:
 - `pnpm install --frozen-lockfile` 是否能過(若 pnpm-lock.yaml 跟 packages 不一致會 fail)
 - `pnpm build` 是否能過(vite/elegant-router/uno codegen step 是否觸發)
-- nginx SPA fallback 行為:`curl http://localhost:9528/some/random/route` 應回 `index.html` (200,不是 nginx 預設 404)
+- nginx SPA fallback 行為:`curl http://localhost:21079/some/random/route` 應回 `index.html` (200,不是 nginx 預設 404)
 - builder image 內 `cat > /tmp/nginx/default.conf << 'NGINX_EOF'` heredoc 寫入是否真的生效(heredoc 在 RUN 內的 shell 行為依 docker buildkit 版本)
 
 ### 6.2 dev mode 每次啟動 install 開銷
@@ -637,7 +637,7 @@ CLAUDE.md §8.2 規劃 `docker-compose.yml` + `docker-compose.{dev,prod}.yml` ov
 - **廢棄 standalone**:整套 stack 落地後,base-web 完全由 §8.2 描述,本檔刪
 - **演化**:本檔作為 §8.2 base-web service 部分的雛形,合 §8.2 落地時拆 service 定義回 base 檔
 
-port 也要對齊:21080/21443(front-nginx 對外)vs 9527/9528(本 standalone)。決定點:§8.2 落地時再評。
+port 也要對齊:21080/21443(front-nginx 對外)vs 21079/21079(本 standalone)。決定點:§8.2 落地時再評。
 
 ### 6.4 pnpm 版本 pinning 長期 trade-off
 
@@ -667,7 +667,7 @@ port 也要對齊:21080/21443(front-nginx 對外)vs 9527/9528(本 standalone)。
 本次用的 CDP scripts(都在 /tmp,session 結束會被清):
 - `/tmp/cdp-nav.mjs` — navigate + dump form elements + screenshot
 - `/tmp/cdp-login.mjs` — click quick-login + wait URL change + screenshot
-- `/tmp/cdp-clear-and-relogin.mjs` — clear origin storage(localhost:9527)+ navigate /login + quick-login + verify /home(force fresh login,給 re-verify 用)
+- `/tmp/cdp-clear-and-relogin.mjs` — clear origin storage(localhost:21079)+ navigate /login + quick-login + verify /home(force fresh login,給 re-verify 用)
 
 考量:
 - 若**只是 one-shot 驗證**,不必 track(內容已附在 Appendix A)
@@ -693,18 +693,18 @@ docker compose -f docker-compose.base-web.yml --profile dev logs -f --no-log-pre
 '
 
 # 3. host 驗證
-curl -sS -o /dev/null -w "HTTP %{http_code}\n" http://127.0.0.1:9527/
+curl -sS -o /dev/null -w "HTTP %{http_code}\n" http://127.0.0.1:21079/
 
 # 4. CDP 登入驗證(需要 Edge/Chrome 在 127.0.0.1:9229 listen)
 #    ⚠️ PAGE_ID 必須完整 32 字元,不要 id[:8] 截短(Chromium reject;見 §5.6)
-#    ⚠️ 篩 type=page + url 含 localhost:9527,避開 DevTools 跟 edge://newtab/ 等 internal pages(§5.7)
+#    ⚠️ 篩 type=page + url 含 localhost:21079,避開 DevTools 跟 edge://newtab/ 等 internal pages(§5.7)
 PAGE_ID=$(curl -s http://127.0.0.1:9229/json | python3 -c "
 import json, sys
-pages = [p for p in json.load(sys.stdin) if p['type']=='page' and 'localhost:9527' in p['url']]
+pages = [p for p in json.load(sys.stdin) if p['type']=='page' and 'localhost:21079' in p['url']]
 print(pages[0]['id']) if pages else sys.exit(1)
 ")
 echo "PAGE_ID=$PAGE_ID (長度應為 32: ${#PAGE_ID})"
-node /tmp/cdp-nav.mjs   "$PAGE_ID" http://localhost:9527/  /tmp/login.png        # 看 login 頁
+node /tmp/cdp-nav.mjs   "$PAGE_ID" http://localhost:21079/  /tmp/login.png        # 看 login 頁
 node /tmp/cdp-login.mjs "$PAGE_ID" 超级管理员              /tmp/postlogin.png    # 點 quick-login 走完整 flow
 # 或:fresh from-zero 重驗(清 session 後重跑完整 flow)
 # node /tmp/cdp-clear-and-relogin.mjs "$PAGE_ID" 超级管理员 /tmp
@@ -1003,10 +1003,10 @@ process.exit(0);
 
 ### A.3 cdp-clear-and-relogin.mjs — force fresh login(clear origin storage + /login + quick-login)
 
-用途:不依賴 session 既有狀態,強制清掉 localhost:9527 的 localStorage / sessionStorage / cookies,
+用途:不依賴 session 既有狀態,強制清掉 localhost:21079 的 localStorage / sessionStorage / cookies,
 從 `/login` 頁開始走完整 quick-login flow,verify `/home` dashboard。給 re-verify / smoke test 用。
 
-**重要**:用 `Storage.clearDataForOrigin {origin: 'http://localhost:9527'}` 是 **origin-scoped**,
+**重要**:用 `Storage.clearDataForOrigin {origin: 'http://localhost:21079'}` 是 **origin-scoped**,
 **不會**清其他 origin(例如 :11080)的 cookies。**避免用** `Network.clearBrowserCookies`(browser-level,會清整個 browser 所有 cookies,影響別的 tab session)。
 
 ```javascript
@@ -1056,8 +1056,8 @@ await new Promise((r) => ws.addEventListener('open', r, { once: true }));
 await send('Page.enable');
 await send('Runtime.enable');
 
-console.log('--- clearing storage for localhost:9527 only (origin-scoped, 不影響其他 tab) ---');
-await send('Storage.clearDataForOrigin', { origin: 'http://localhost:9527', storageTypes: 'all' });
+console.log('--- clearing storage for localhost:21079 only (origin-scoped, 不影響其他 tab) ---');
+await send('Storage.clearDataForOrigin', { origin: 'http://localhost:21079', storageTypes: 'all' });
 // Also clear via Runtime (defensive,page 內 navigated 後再清一次)
 await send('Runtime.evaluate', {
   expression: 'try { localStorage.clear(); sessionStorage.clear(); } catch(e) {}; document.cookie.split(";").forEach(c => { const eq = c.indexOf("="); document.cookie = (eq > -1 ? c.substr(0, eq) : c) + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/"; });',
@@ -1066,7 +1066,7 @@ console.log('storage cleared');
 
 console.log('--- navigate /login ---');
 const loadPromise = waitFor('Page.loadEventFired', 15000);
-await send('Page.navigate', { url: 'http://localhost:9527/login' });
+await send('Page.navigate', { url: 'http://localhost:21079/login' });
 await loadPromise;
 await new Promise((r) => setTimeout(r, 3000));   // SPA mount
 

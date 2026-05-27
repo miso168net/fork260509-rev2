@@ -3,11 +3,11 @@
 ## base-web 容器化 quick reference
 
 ```bash
-# Dev 熱重載 (http://localhost:9527)
+# Dev 熱重載 (http://localhost:21079)
 docker compose -f docker-compose.base-web.yml --profile dev up
 # 改 base-web/ 內檔即時 reload;Ctrl-C 終止
 
-# Prod build + serve (http://localhost:9528)
+# Prod build + serve (http://localhost:21079)
 docker compose -f docker-compose.base-web.yml --profile prod up --build
 # 改 code 要 --build 重 build image
 

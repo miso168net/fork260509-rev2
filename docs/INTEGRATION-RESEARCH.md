@@ -310,7 +310,7 @@ rev1 累積 30 份 feature 持久記憶,rev2 繼承分類:
 - **描述**:補 `POST /api/auth/refreshToken` nginx 反代到 nestjs upstream,用 inline `TRANSITIONAL` marker block + variable proxy_pass + resolver 讓 rev1 DESIGN-B 退場時可機械整段刪
 - **教訓**:Q2 拍板「variable proxy_pass + lazy DNS」而非「upstream block + profile-aware volume」大幅簡化 operator UX;marker convention `>>>>> TRANSITIONAL BEGIN/END` 直接服務 rev1 F14 cutover 的 `sed` 刪除
 - **對 rev2**:無用
-- **踩雷**:DESIGN-W §4.3 草稿漏 `/v1` prefix 與錯誤 port 3000,實作對齊現實(port 9528 + `/v1/auth/refreshToken`)
+- **踩雷**:DESIGN-W §4.3 草稿漏 `/v1` prefix 與錯誤 port 3000,實作對齊現實(port 11081 + `/v1/auth/refreshToken`)
 
 #### 016 — cicd-nestjs-build-job `[REV1-ONLY]`
 - **描述**:抽象 rev1 W-FA1 nestjs image build cmd 成 local shell script,內建 `NODE_VERSION` build-arg + image size feedback
@@ -1562,9 +1562,9 @@ rev1 的 W-FW1~W-FW9 改了 `src/views/manage/` 把 mock 換成真 endpoint,才�
 
 **5. 部署設計微調**:
 - rev2 CLAUDE.md §8.2 的 port 規劃(2XXXX)維持
-- 但 `docker-compose.base-web.yml`(user 剛貼出,已存在於 workspace 根)的 dev 9527 / prod 9528 是 **standalone base-web 容器化**,與整合 stack 共存:
-  - **dev 9527**:user 直接看 base example UI(連 ApiFox Mock 或本地 mock,**§10.5 CDP 驗證用此 port**)
-  - **prod 9528**:build + nginx serve 驗證
+- 但 `docker-compose.base-web.yml`(user 剛貼出,已存在於 workspace 根)的 dev 21079 / prod 21079 是 **standalone base-web 容器化**,與整合 stack 共存:
+  - **dev 21079**:user 直接看 base example UI(連 ApiFox Mock 或本地 mock,**§10.5 CDP 驗證用此 port**)
+  - **prod 21079**:build + nginx serve 驗證
   - **整合 stack 21080/21443**:front-nginx 當 reverse proxy 統整入口
   - 三者無 port 衝突
 - 注意:預設 `base-web/.env.prod` 指向 **ApiFox Mock API**(cloud-hosted),不是 base-web 自帶的 `mock/` 目錄 — §10.5 驗證時需確認真實 mock 來源
@@ -1585,17 +1585,17 @@ rev1 的 W-FW1~W-FW9 改了 `src/views/manage/` 把 mock 換成真 endpoint,才�
 
 **環境**:
 - container:`rev2-base-web-dev`(由 `docker compose -f docker-compose.base-web.yml --profile dev up -d` 啟動)
-- 應用 URL:`http://127.0.0.1:9527/`
+- 應用 URL:`http://127.0.0.1:21079/`
 - CDP endpoint:`127.0.0.1:9229`(node debug port;實際 web request 看 chrome devtools network)
 
 **前置作業**:
 1. grep `base-web/.env*` 找 mock API base URL(預設應為 ApiFox cloud URL)
 2. 檢查 `base-web/mock/` 目錄是否有本機 mock(若有為 fallback / dev mode 真實來源)
-3. 啟動 dev container,確認 `http://127.0.0.1:9527/` 可訪問
+3. 啟動 dev container,確認 `http://127.0.0.1:21079/` 可訪問
 
 **驗證步驟**:
 1. CDP 連 `127.0.0.1:9229` + chrome devtools network 全程記錄
-2. 開 `http://127.0.0.1:9527/`,**把左側所有功能逐一點開**:
+2. 開 `http://127.0.0.1:21079/`,**把左側所有功能逐一點開**:
    - 首頁 / dashboard
    - 系統管理:用戶 / 角色 / 菜單 / 端點 / etc.
    - 授權:菜單授權 modal / 按鈕授權 modal / endpoint 授權 modal

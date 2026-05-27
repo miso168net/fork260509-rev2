@@ -429,7 +429,7 @@ feature 啟動  →  docs/superpowers/<NNN>-<feature-name>.md(brainstorm)
 | 角色 | fork260509-rev1（舊有） | fork260509-rev2（規劃） | 備註 |
 |---|---|---|---|
 | front-nginx | HTTP `11080:80` / HTTPS `11443:443` | HTTP `21080:80` / HTTPS `21443:443` | prod 環境時 host 直用 `:80` / `:443` |
-| base-web | internal `:80` | internal `:80` | 由 `front-nginx` reverse proxy |
+| base-web | internal `:80` | host 映射 `21079:21079` | dev 期間 host 直連用(避免 internal `:80` 在單 compose 啟動時撞 port);prod 由 `front-nginx` reverse proxy 至 internal `:21079` |
 | rust-api | host 映射 `11081:11081` | host 映射 `21081:21081` | 僅 dev 期間 host 直連用 |
 | postgres | host 映射 `15432:5432` | host 映射 `25432:5432` | 容器內仍 `:5432`（不改） |
 | redis-stack | host 映射 `16379:6379` | host 映射 `26379:6379` | 容器內仍 `:6379`（不改） |
