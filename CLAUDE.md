@@ -332,7 +332,7 @@ git commit -m "bump base-web: rebase on upstream <短 SHA>"
 
 ## 6. 進度追蹤
 
-⏳ 整合進度的單一真相將在 [`docs/INTEGRATION-CHECKLIST.md`](docs/INTEGRATION-CHECKLIST.md)（rev2 尚未落地）—— Current Focus（現狀）/ Follow-up Backlog（衍生工作）/ 已完成里程碑 / Roadmap & Phase 狀態 / 跨 feature 待驗證項。落地後由 session SOP hook（`.claude/hook-git-submodule-SOP.sh`，已落地、目前該行 cat 被刻意註解）自動 cat 全檔注入（見 §4.3）。
+整合進度的單一真相在 [`docs/INTEGRATION-CHECKLIST.md`](docs/INTEGRATION-CHECKLIST.md) —— Current Focus（現狀）/ Follow-up Backlog（衍生工作）/ 已完成里程碑 / Roadmap & Phase 狀態 / 跨 feature 待驗證項。由 session SOP hook（`.claude/hook-git-submodule-SOP.sh`）每次 session 開頭 cat 全檔注入（見 §4.3）。
 
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
@@ -340,18 +340,18 @@ git commit -m "bump base-web: rebase on upstream <短 SHA>"
 **Active Spec**: （尚無 active feature）
 **Active Plan**: （尚無 active plan）
 **Phase**: （未啟動 spec-kit feature 流程）
-**下一步**: 先落地 `docs/INTEGRATION-CHECKLIST.md` 與第一個 feature
+**下一步**: §11 12 待拍板 user 親決 → constitution.md v1.0.0 → 啟動 P0 第一個 feature（dockerfile-rust-api）
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件索引
 
-⏳ rev2 整合的研究與設計文件位置：
+rev2 整合的研究與設計文件位置：
 
-- **原則** — [`.specify/memory/constitution.md`](.specify/memory/constitution.md)（spec-kit init 已建空殼，內容待寫）
-- **研究** — `docs/INTEGRATION-RESEARCH.md` ⏳
-- **設計** — `docs/INTEGRATION-DESIGN-*.md` ⏳（待 rev2 重新立 design 編號）
-- **進度** — `docs/INTEGRATION-CHECKLIST.md` ⏳（見 §6）
-- **持久記憶** — `docs/superpowers/000-base-web-docker-bootstrap.md` （暫定存放位置）
+- **原則** — [`.specify/memory/constitution.md`](.specify/memory/constitution.md)（spec-kit init 已建空殼，內容待寫 ⏳）
+- **研究** — `docs/INTEGRATION-RESEARCH.md` + `docs/INTEGRATION-RESEARCH-FOLLOWUP.md` + `docs/MOCK-COVERAGE-AUDIT.md`
+- **設計** — `docs/INTEGRATION-DESIGN.md`（12 段 + 31 feature + 12 待拍板）
+- **進度** — `docs/INTEGRATION-CHECKLIST.md`（見 §6，SOP hook 注入）
+- **持久記憶** — `docs/superpowers/000-base-web-docker-bootstrap.md`（暫定存放位置）
 - **brainstorm 決策** — `docs/superpowers/<NNN>-<feature-name>.md` ⏳（見 §3 階段 0）
 
 ## 8. 操作參考與工具
