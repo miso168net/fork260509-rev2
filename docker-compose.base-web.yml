@@ -1,9 +1,9 @@
 # base-web 容器化 (Vue 3 starter,worktree + submodule)
 #
 # 用法:
-#   dev 模式(熱重載,http://localhost:9527):
+#   dev 模式(熱重載,http://127.0.0.1:21079):
 #     docker compose -f docker-compose.base-web.yml --profile dev up
-#   prod 模式(build + nginx serve,http://localhost:9528):
+#   prod 模式(build + nginx serve,http://127.0.0.1:21079):
 #     docker compose -f docker-compose.base-web.yml --profile prod up --build
 #   停止 + 移除容器:
 #     docker compose -f docker-compose.base-web.yml --profile dev down
@@ -21,7 +21,7 @@ services:
   base-web-dev:
     profiles: ["dev"]
     image: node:20.19-alpine
-    container_name: rev2-base-web-dev
+    container_name: rev2-admin-base-web-dev
     working_dir: /app
     environment:
       - NODE_ENV=development
@@ -33,11 +33,11 @@ services:
       - bw_node_modules:/app/node_modules
       - bw_pnpm_store:/pnpm-store
     ports:
-      - "9527:9527"
+      - "21079:21079"
     command:
       - sh
       - -c
-      - "npm install -g pnpm@10 && pnpm install && pnpm dev --host 0.0.0.0 --port 9527"
+      - "npm install -g pnpm@10 && pnpm install && pnpm dev --host 0.0.0.0 --port 21079"
     init: true
     tty: true
     stdin_open: true
@@ -47,9 +47,12 @@ services:
     build:
       context: ./base-web
       dockerfile: ../deploy/Dockerfile.base-web.txt
-    container_name: rev2-base-web-prod
+      args:
+        VITE_SERVICE_BASE_URL: "${VITE_SERVICE_BASE_URL:-https://mock.apifox.cn/m1/3109515-0-default}"
+    image: rev2-admin-base-web:latest
+    container_name: rev2-admin-base-web
     ports:
-      - "9528:80"
+      - "21079:21079"
     restart: unless-stopped
 
 volumes:
