@@ -1,0 +1,37 @@
+# Workspace-root .dockerignore
+# Compose build context = ./ (workspace root). 沒這檔 Docker 會把整個 workspace
+# (含 fork 源倉 / base-web worktree / graphify-out / .git) 串進 build daemon, 數 GB 等級慢。
+# 只留 Dockerfile 真正需要的: rust-api/ + deploy/
+
+# fork 源倉 (worktree 源頭, 本機留著但 image 不需要)
+fork260509-soybean-admin-base/
+fork260509-soybean-admin-docs/
+fork260509-rev2-anew-rust-api/
+
+# 另一個 worktree (rust-api build 不需要 base-web)
+base-web/
+
+# graphify 輸出 (數 MB / 5000+ markdown)
+graphify-out/
+
+# Git internals
+.git/
+**/.git
+**/node_modules/
+
+# Rust artifacts (任何 worktree 的 target/)
+**/target/
+
+# Docs / specs (不會 COPY 進 image, 加速 tar)
+docs/
+specs/
+
+# Claude / IDE state
+.claude/
+.vscode/
+.idea/
+
+# Logs / caches
+**/*.log
+**/.cache/
+**/__pycache__/

@@ -1,0 +1,105 @@
+# syntax=docker/dockerfile:1.7
+# rust-api 容器映像(multi-stage: builder / dev / runtime)
+#
+# context = ./(workspace root,由 docker-compose.rust-api.yml 指定)
+# 對齊 specs/001-dockerfile-rust-api/contracts/entrypoint-dispatcher.md
+#       + contracts/health-endpoint.md
+#       + plan.md research §2
+#
+# 注意:Cargo.lock 在 Unit A 階段尚未產生,builder 內 `cargo build` 會
+# 即時生成、留在 cache mount 內;若日後 commit lockfile 進 rust-api/,
+# 在「Manifest 段」加 `COPY rust-api/Cargo.lock ./` 一行即可。
+
+# =====================================================================
+# Stage 1: builder — 產出 3 個 release binary 到 /out/
+# =====================================================================
+FROM rust:1.86-slim-bookworm AS builder
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        pkg-config \
+        libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# --- Manifest 段(先 COPY 利於 cargo deps layer cache hit)---
+COPY rust-api/Cargo.toml rust-api/rust-toolchain.toml ./
+COPY rust-api/server/Cargo.toml ./server/
+COPY rust-api/migration/Cargo.toml ./migration/
+COPY rust-api/cleanup-job/Cargo.toml ./cleanup-job/
+
+# --- Source 段 ---
+COPY rust-api/server/src ./server/src
+COPY rust-api/migration/src ./migration/src
+COPY rust-api/cleanup-job/src ./cleanup-job/src
+COPY rust-api/application.yaml ./
+
+# BuildKit cache mount: registry + git + target 三份持久化、跨 build 增量
+# 注意:target/ 在 cache mount 內、對後續 COPY 不可見,必須 cp 到 /out/
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/usr/local/cargo/git \
+    --mount=type=cache,target=/app/target \
+    cargo build --release --bins && \
+    mkdir -p /out && \
+    cp target/release/server \
+       target/release/migration \
+       target/release/cleanup-job \
+       /out/
+
+# =====================================================================
+# Stage 2: dev — cargo-watch 熱重載(source 由 compose bind mount)
+# =====================================================================
+FROM rust:1.86-slim-bookworm AS dev
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        pkg-config \
+        libssl-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN cargo install cargo-watch --locked
+
+WORKDIR /app
+EXPOSE 21081
+
+# source 不 COPY、由 compose bind-mount;cargo watch 自動觸發初次 build
+# --poll: WSL2 9P bind-mount 上 inotify 不可靠,改用輪詢偵測檔案變動
+# (brainstorm §9.1 Open Question 已預警,T025 acceptance 實測 WSL2 9P inotify 不觸發後落實此 fallback)
+ENTRYPOINT ["cargo", "watch", "--poll", "-x", "run --bin server"]
+
+# =====================================================================
+# Stage 3: runtime — 精簡 debian-slim + 非 root user rustapi(uid 10001)
+# =====================================================================
+FROM debian:bookworm-slim AS runtime
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libssl3 \
+        ca-certificates \
+        curl \
+        tzdata \
+    && rm -rf /var/lib/apt/lists/*
+
+# 非 root user(uid/gid 固定 10001 便於 host 端 volume 權限對齊)
+RUN groupadd -r -g 10001 rustapi && \
+    useradd -r -g rustapi -u 10001 -d /app -s /usr/sbin/nologin rustapi
+
+WORKDIR /app
+
+# 從 builder 取 3 個 binary
+COPY --from=builder /out/server /out/migration /out/cleanup-job /usr/local/bin/
+
+# Entrypoint dispatcher(對齊 contracts/entrypoint-dispatcher.md)
+COPY deploy/entrypoint.rust-api.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# 非機密 config(secret 走 docker secret / env、不 bake 進 image)
+COPY --chown=rustapi:rustapi rust-api/application.yaml ./application.yaml
+
+USER rustapi
+EXPOSE 21081
+
+# 對齊 contracts/health-endpoint.md(數值不可變)
+HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -fsS http://127.0.0.1:21081/health || exit 1
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["server"]
