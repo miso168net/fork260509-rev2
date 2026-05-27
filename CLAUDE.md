@@ -343,16 +343,51 @@ git commit -m "bump base-web: rebase on upstream <短 SHA>"
 **下一步**: §11 12 待拍板 user 親決 → constitution.md v1.0.0 → 啟動 P0 第一個 feature（dockerfile-rust-api）
 <!-- SPECKIT END -->
 
-## 7. 整合設計文件索引
+## 7. 整合設計文件職責分工
 
-rev2 整合的研究與設計文件位置：
+rev2 整合的核心 docs 階層,內容由「研究歷史」→「設計權威」→「動態 todo」流動;**`INTEGRATION-DESIGN.md` 是核心事實**(2026-05-27 user 確認)。
 
-- **原則** — [`.specify/memory/constitution.md`](.specify/memory/constitution.md)（spec-kit init 已建空殼，內容待寫 ⏳）
-- **研究** — `docs/INTEGRATION-RESEARCH.md` + `docs/INTEGRATION-RESEARCH-FOLLOWUP.md` + `docs/MOCK-COVERAGE-AUDIT.md`
-- **設計** — `docs/INTEGRATION-DESIGN.md`（12 段 + 31 feature + 12 待拍板）
-- **進度** — `docs/INTEGRATION-CHECKLIST.md`（見 §6，SOP hook 注入）
-- **持久記憶** — `docs/superpowers/000-base-web-docker-bootstrap.md`（暫定存放位置）
-- **brainstorm 決策** — `docs/superpowers/<NNN>-<feature-name>.md` ⏳（見 §3 階段 0）
+### 7.1 研究歷史(大致已完結、不再擴張)
+
+- **`docs/INTEGRATION-RESEARCH.md`** — 最早期設計研究,以 rev1 為來源、重構 rev2 方向(可派 subagent 檢查)
+- **`docs/INTEGRATION-RESEARCH-FOLLOWUP.md`** — `INTEGRATION-RESEARCH.md` 深入深研要追的事項(可派 subagent 檢查)
+- **`docs/MOCK-COVERAGE-AUDIT.md`** — 本地把 base-web 用 docker-compose 跑起來後,查驗 fork example 分支用到的 mock api(rev2 wire ground truth)
+
+### 7.2 設計權威 ★ — `docs/INTEGRATION-DESIGN.md`
+
+**此檔為核心事實**。參考 §7.1 三份檔重新設計 rev2 的架構與執行順序、Phase / feature 編排、§11 拍板項、§7 軌道定義、wire 不變式。
+
+**回填紀律**:**所有完成的設計決策、拍板結果、軌道定義、wire 不變式、設計理由都要回填到此檔對應段落**;內容增厚、不刪減。
+
+### 7.3 動態 todo — `docs/INTEGRATION-CHECKLIST.md`
+
+由 `INTEGRATION-DESIGN.md` 與其它文件未完成事項、或 feature 實作階段發現新問題列到此檔。`.claude/hook-git-submodule-SOP.sh` SessionStart hook **每次 session 開頭 cat 全檔注入**(見 §4.3、§6),作為 Claude 跨 session 進度延續錨。
+
+**清理紀律**:
+- **檔案不能無限膨脹**,要簡寫摘要或定期清理
+- 只記:Current Focus / 待處理 todo / 已完成里程碑摘要 / Roadmap 狀態 / 跨 feature 待驗證項
+- **不寫詳細設計理由 / 拍板理由 / 軌道定義**(那是 §7.2 DESIGN 的職責);如需引用、用 markdown link 指向 DESIGN 對應 anchor
+
+### 7.4 其他相關文件
+
+- **`.specify/memory/constitution.md`** ⏳(spec-kit init 已建空殼,內容待寫)— v1.0.0 將從 DESIGN §11 拍板 + §7 軌道清單提取凍結為**不可違反的權威**(更高層、需 amendment 流程才能改)
+- **`docs/superpowers/000-base-web-docker-bootstrap.md`** — base-web docker-compose 落地過程的持久記憶(暫定存放位置)
+- **`docs/superpowers/<NNN>-<feature-name>.md`** ⏳ — 每個 spec-kit feature 的 Phase 0 brainstorm 決策(見 §3 階段 0、DESIGN §11.12 拍板)
+
+### 7.5 內容流向
+
+```
+新發現 todo / 問題                         處理完、設計決策固化
+   ↓ 列入                                       ↓ 回填
+CHECKLIST(動態,SOP 注入)  ────────────→  DESIGN(權威,核心事實 ★)
+                                              ↓ v1.0.0 提取凍結
+                                              ↓
+                                          constitution(凍結權威)
+
+feature 啟動  →  docs/superpowers/<NNN>-<feature-name>.md(brainstorm)
+              →  specs/<NNN>-<feature-name>/spec.md(spec-kit)
+              →  實作完成 → 回填 DESIGN + CHECKLIST 勾掉
+```
 
 ## 8. 操作參考與工具
 
