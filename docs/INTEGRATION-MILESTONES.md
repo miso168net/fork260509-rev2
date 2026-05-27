@@ -47,3 +47,15 @@
 | `44d20fb` | 2026-05-28 | feat(rust-api): 3 crate workspace + axum /health + _FILE secret loader(階段 2,inner) |
 | `f64392a` | 2026-05-28 | chore(submodule): bump rust-api 到 44d20fb(階段 2 兩段式 commit 第二段) |
 | `a21e932` | 2026-05-28 | Merge feature 001-dockerfile-rust-api 回 rev2-admin-root(--no-ff,feature branch 保留) |
+| `d20c2ae` | 2026-05-28 | docs: 001-dockerfile-rust-api merge 收尾(CHECKLIST §1+§4 / MILESTONES / SPECKIT marker) |
+| `34a5df0` | 2026-05-28 | docs(checklist): §2.4 feature 001-dockerfile-rust-api spec doc follow-up |
+| `9c5edf4` | 2026-05-28 | docs(checklist): §1 對齊 base-web Dockerfile feature scope + push 完成事實 |
+| `eb1daf4` | 2026-05-28 | docs(port): base-web port 9527/9528 → 21079 跨檔對齊(Phase 1 #2 前置) |
+| `e45a2e5` | 2026-05-28 | docs(superpowers): 002-dockerfile-base-web Phase 0 brainstorm spec-design |
+| `b3cbf3e` | 2026-05-28 | docs(spec): 002-dockerfile-base-web spec.md + checklist(階段 1 /speckit-specify) |
+| `beb8cd1` | 2026-05-28 | docs(plan): 002-dockerfile-base-web Phase 0/1 design artifacts(階段 1 /speckit-plan) |
+| `c2d5cd8` | 2026-05-28 | docs(tasks): 002-dockerfile-base-web tasks.md(階段 1 /speckit-tasks) |
+| `5648a6d` | 2026-05-28 | docs(spec): 對齊 /speckit-analyze 4 LOW + 1 leftover 修(spec/tasks/checklist) |
+| `942d4e7a` | 2026-05-28 | feat(base-web): 新增 public/health.html(階段 2,inner — BASE-WEB-ADAPT 軌道) |
+| `c0b17ef` | 2026-05-28 | feat(deploy): 002-dockerfile-base-web 完整實作 + SHA pin 942d4e7a(階段 2,outer) |
+| `a70fa5f` | 2026-05-28 | Merge feature 002-dockerfile-base-web 回 rev2-admin-root(--no-ff,feature branch 保留) |

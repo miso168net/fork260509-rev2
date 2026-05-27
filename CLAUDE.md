@@ -345,9 +345,10 @@ git commit -m "bump base-web: rebase on upstream <短 SHA>"
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/002-dockerfile-base-web/spec.md`](specs/002-dockerfile-base-web/spec.md)
-**Active Plan**: [`specs/002-dockerfile-base-web/plan.md`](specs/002-dockerfile-base-web/plan.md)
-**Phase**: 階段 1 SDD 設計鏈進行中 — `/speckit-specify` ✅ + `/speckit-clarify` ✅(no critical ambiguity)+ `/speckit-plan` ✅(Constitution Check 7 項全 PASS;research §1 vite env-loading critical 發現已落 plan)
+**Active Spec**: (none — 002-dockerfile-base-web 已 merge 回 rev2-admin-root 2026-05-28,feature branch 保留 audit)
+**Active Plan**: (none)
+**Phase**: 無 active feature;待啟動 Phase 1 #3 TLS 憑證 skeleton feature(見 [CHECKLIST §1 下一步](docs/INTEGRATION-CHECKLIST.md))
+**下一步**: 選定下一 feature → `superpowers:brainstorming`(階段 0)→ `/speckit-specify`(階段 1)
 **下一步**: `/speckit-tasks` → `/speckit-analyze` → `superpowers:executing-plans`(階段 2 TDD 實作)
 <!-- SPECKIT END -->
 
