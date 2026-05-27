@@ -25,23 +25,29 @@
 
 ## 2. Follow-up Backlog
 
-### 2.1 §11 12 待拍板(user 親決;權威源:`INTEGRATION-DESIGN.md` §11 L980-1127)
+### 2.1 §11 設計拍板項索引(2026-05-27 完成、權威源:[DESIGN §11](INTEGRATION-DESIGN.md))
 
-> **拍板紀律(2026-05-27 user 確認)**:rev2 兩條鐵紀律 — (1) **base-web 為權威**:base-web example 有的功能,rust-api 都要提供對應 endpoint(設計範圍);(2) **menu 權限 Casbin enforce**:rev2 新功能,即使動 base-web 也要做、在 constitution 授權。「v1 從簡」只能是 phase 實作排程,不能簡化設計範圍。
+> **兩條鐵紀律**(constitution v1.0.0 將凍結):
+> 1. **base-web 為權威** — base-web 有的功能、rust-api 都要實作(設計範圍嚴格)
+> 2. **menu 權限 Casbin enforce** — rev2 核心突破,即使動 base-web 也要做
 
-- [x] **§11.1** ✅ 拍板 **(b) `Super/Admin/User` 對齊 mock** + (§11.10b) 模仿 User → User01 alias — base-web quick-fill 與 mock UI 行為一致
-- [x] **§11.2** ✅ 拍板 **(a) 全實作 7 endpoint** — base-web 用到 7 個 endpoint(addUser/updateUser/deleteUser/batchDeleteUser/getLastTime/sendCaptcha/verifyCaptcha)rust-api 都要提供;**個別 endpoint 可加 disabled / stub flag** 給 v1 啟用控制
-- [x] **§11.3** ✅ 拍板 **(B) 升 L4 改 modal placeholder** — 6-10 modal/drawer 接 wrapper(MODAL-WIRING 軌道啟用,見 §6)
-- [x] **§11.4** ✅ 拍板 **(c) rust-api 忽略 unknown header** — base-web 不動,最 upstream-safe
-- [x] **§11.5** ✅ 拍板 **(b'-narrow) `pageExcludePatterns` 隱藏 demo** — 對齊「menu 都要 Casbin enforce」紀律(demo 不在 enforce 範圍、不該對 prod user 顯示);BASE-WEB-BUILD-CONFIG 軌道啟用
-- [x] **§11.6** ✅ 拍板 **`axum-casbin` 重寫(3-5 人日)** + sea-orm-adapter / xdb 拷貝 rev1 — 統一 rev2 metrics / error 策略
-- [x] **§11.7** ✅ 拍板 **(b) dynamic** — 後端控 menu(server 端 Casbin enforce 是 rev2 核心突破)
-- [x] **§11.8** ✅ 拍板 **(a) 漸進** — Phase 1-4 不啟、Phase 5 obs-min(loki+promtail+grafana)、Phase 6 obs-full(+prometheus+pushgateway)
-- [x] **§11.9** ✅ 拍板 **5 軌道全啟用** — BASE-WEB-ADAPT / BASE-WEB-WRAPPER / MODAL-WIRING / BASE-WEB-BUILD-CONFIG / RUSTAPI-SOURCE-ISOLATION(完整授權清單見 §6)
-- [x] **§11.10** ✅ 拍板 wire 細節:`Role.id` = **string**(對齊 mock wire,BASE-WEB-ADAPT 補正 TS typing)/ User alias **模仿**(getUserInfo 回 `User01`)/ 業務驗證 error code = **`5xxx`** / `MenuRoute.id` = **string**
-- [x] **§11.11** ✅ 拍板 **(a) `/api/*` 主流** — `VITE_SERVICE_BASE_URL=/api` + nginx `location /api/` proxy
-- [x] **§11.12** ✅ 拍板 **(a) `docs/superpowers/<NNN>-<feature-name>.md`** — 對齊 CLAUDE.md §3 階段 0 已寫定的 rev1 慣例;統一管理、跨 feature 在同一目錄可掃
-- [x] **§11.13** ✅ 拍板 **(c) 全實作雙模** — base-web 5 login sub-route(pwd-login / reset-pwd / code-login / register / bind-wechat)rust-api 都要對應 endpoint,但實作為 **stub mode + 真實 mode 雙模**;v1 啟 stub mode(不依賴 SMS / wechat OAuth)、v2/v3 業務成熟切真實 mode
+| § | 主題 | 拍板 |
+|---|---|---|
+| §11.1 | 預設帳號命名 | (b) `Super/Admin/User` 對齊 mock + 模仿 User→User01 alias |
+| §11.2 | alova 7 endpoint | (a) 全實作 + 個別可 disabled flag |
+| §11.3 ★ | modal CRUD 衝突 | (B) 升 L4 改 modal placeholder(MODAL-WIRING 啟用) |
+| §11.4 | apifoxToken | (c) rust-api 寬容 unknown header |
+| §11.5 ★ | alova menu | (b'-narrow) `pageExcludePatterns` 隱藏 demo(BASE-WEB-BUILD-CONFIG 啟用) |
+| §11.6 | sub-crate | axum-casbin 重寫 + sea-orm-adapter / xdb 拷貝 |
+| §11.7 | auth route mode | (b) dynamic(後端控 menu) |
+| §11.8 | obs stack | (a) Phase 5 obs-min + Phase 6 obs-full |
+| §11.9 | 軌道清單 | 5 軌道全啟用(BASE-WEB-ADAPT / WRAPPER / BUILD-CONFIG ★ / MODAL-WIRING ★ / RUSTAPI-SOURCE-ISOLATION) |
+| §11.10 | wire 細節 | Role.id / MenuRoute.id = **string**、User alias 模仿、business error `5xxx` |
+| §11.11 | prod path | (a) `/api/*` 主流 |
+| §11.12 | brainstorm 位置 | (a) `docs/superpowers/<NNN>-<feature-name>.md` |
+| §11.13 | login 替代入口 | (c) 全實作雙模 + v1 啟 stub mode |
+
+★ = 違反「不動 inline / build 配置」直覺紀律、需 constitution v1.0.0 顯式授權。詳細理由 + 影響軌道見 DESIGN §11.X 對應 callout。
 
 ### 2.2 spec phase 0 對稱盤點(權威源:`INTEGRATION-RESEARCH.md` §7.2 L1263-1271)
 
@@ -204,25 +210,12 @@
 
 ---
 
-## 6. 軌道授權清單(待 constitution.md v1.0.0 固化)
+## 6. 軌道授權快查(SOP 注入用)
 
-依 §11.9 拍板,rev2 啟用 5 條軌道。**MODAL-WIRING ★** 與 **BASE-WEB-BUILD-CONFIG ★** 違反「base-web 為核心、不動 inline」直覺紀律,必須在 constitution v1.0.0 顯式授權,並寫明授權邊界與理由。
+> **完整 5 軌道定義**:[DESIGN §7 軌道](INTEGRATION-DESIGN.md#§7-base-web-受管例外軌道) + [§11.9 拍板表](INTEGRATION-DESIGN.md#§119-軌道清單最終確認)
+> **本節只列關鍵警示**,SOP hook 每次 session 注入時 Claude / user 快查用:
 
-| 軌道 | 動的位置 | 改動量 | 為何需要 | 來源拍板 |
-|---|---|---|---|---|
-| **BASE-WEB-ADAPT** | `src/typings/api/rev2-extra.d.ts` 等新檔 | 新增為主、0 inline | typing 對齊 rust serialization 差異 | §11.10(待) |
-| **BASE-WEB-WRAPPER** | `src/service/api/rev2-system-manage.ts` 等新檔 | 新增為主、0 inline | 補 axios wrapper(write endpoint) | §11.3 (B) |
-| **MODAL-WIRING** ★ | 6-10 個 modal/drawer 的 `// request` 一行 | 每檔 1-3 行 inline | 接 wrapper(完整 CRUD,Q3 達成 100%) | §11.3 (B) |
-| **BASE-WEB-BUILD-CONFIG** ★ | `build/plugins/router.ts` 加 `pageExcludePatterns` | 純 build config | 隱藏 demo menu(對齊「menu 都要 Casbin enforce」紀律) | §11.5 (b'-narrow) |
-| **RUSTAPI-SOURCE-ISOLATION** | rust-api 整棵樹 | 全新寫 | 不繼承 rev1 包袱、統一 rev2 metrics / error / soft-delete / audit-log 策略 | §11.6 |
+- **BASE-WEB-BUILD-CONFIG ★**(DESIGN §7.3):允許動 `build/plugins/router.ts` 加 `pageExcludePatterns`,僅限「隱藏 demo menu」邊界
+- **MODAL-WIRING ★**(DESIGN §7.4):允許動 `views/manage/*/modules/*-operate-{modal,drawer}.vue` 內 `// request` 一行,僅限「接 wrapper call」邊界
 
-★ = 違反直覺紀律、需 constitution 顯式授權的軌道。
-
-### 6.1 Casbin 動態 menu 對 base-web 的設計影響
-
-> **rev2 核心突破**:menu 權限由 Casbin RBAC enforce、有權才顯示(rev1 未實現)。
-
-實作分布:
-- **業務 menu**(system manage CRUD 等):走 `/route/getUserRoutes` → 後端 Casbin enforce 過濾 → 前端顯示;**rust-api 核心工作**(F5.1 + F7 + W-F11)
-- **demo menu**(8 個 customRoutes:`document` / `exception` / `multi-menu` / `iframe` 等):base-web 內建、不在 Casbin enforce 範圍 → 由 BASE-WEB-BUILD-CONFIG 軌道用 `pageExcludePatterns` 隱藏(§11.5)
-- **constantRoutes**(login / 404 / 403):前端寫死、與 menu 無關 → 不動
+★ 兩條軌道**必須在 constitution v1.0.0 顯式授權**並寫明邊界、理由。其他 3 條軌道(BASE-WEB-ADAPT / BASE-WEB-WRAPPER / RUSTAPI-SOURCE-ISOLATION)為新增或全新寫、不違反直覺紀律。

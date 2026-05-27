@@ -688,6 +688,18 @@ CREATE TABLE sys_operation_log (
 
 ## §7 base-web 受管例外軌道
 
+> **5 軌道一覽**(§11.9 拍板,2026-05-27):
+
+| # | 軌道 | 等級 | 來源拍板 |
+|---|---|---|---|
+| §7.1 | BASE-WEB-ADAPT | L1+L2 預設可動 | §11.7 / §11.10 |
+| §7.2 | BASE-WEB-WRAPPER | L3 需授權 | §11.3 (B) |
+| §7.3 | **BASE-WEB-BUILD-CONFIG ★** | L4 build infra,**需 constitution v1.0.0 顯式授權** | §11.5 (b'-narrow) |
+| §7.4 | **MODAL-WIRING ★** | L4 view inline,**需 constitution v1.0.0 顯式授權** | §11.3 (B) |
+| §7.6 | RUSTAPI-SOURCE-ISOLATION | rust-api 全新寫 | §11.6 |
+
+★ = 違反「base-web 為核心、不動 inline / build 配置」直覺紀律。`.specify/memory/constitution.md` v1.0.0 將凍結授權邊界與理由。
+
 ### §7.1 BASE-WEB-ADAPT 軌道(L1 + L2,預設可動)
 
 **範圍**:
@@ -745,6 +757,22 @@ CREATE TABLE sys_operation_log (
 
 - **新增不改 inline**:所有 base-web 改動優先「新增獨立檔 / 新增 export」,改既有 inline 需 amendment 授權
 - **源碼隔離**:rev2 spec phase 0 research **只准 grep rust-api(rev2 自己) + base-web**,**不准 grep rev1 / nestjs source**(避免「答案污染」— 動機二)
+
+### §7.6 RUSTAPI-SOURCE-ISOLATION 軌道
+
+**範圍**:rust-api 整棵樹(`rust-api/server/`、`rust-api/migration/`、`rust-api/server/sub-crate/`)
+
+**典型動作**:
+- 全新寫 rust-api、不從 rev1 source 拷貝 code(模組 / handler / service / DTO / migration)
+- 例外:工具性 sub-crate 可拷貝 rev1 — `sea-orm-adapter`(0 人日)、`xdb`(0.5 人日)(§11.6 拍板)
+- `axum-casbin` 必須重寫(§11.6 拍板)— 統一 rev2 metrics / error / observability 策略
+
+**紀律**:
+- 設計上**繼承 rev1 設計沉澱**(從 RESEARCH.md / FOLLOWUP.md 萃取 30 個 superpowers 教訓)
+- **不繼承 rev1 code**(避免 rev1 metrics 客製、error mapping 不統一、soft-delete / audit-log 重複實作)
+- spec phase 0 research **不准 grep rev1 source**(§7.5 源碼隔離 process 紀律配合)
+
+**對應拍板**:§11.6 sub-crate / §11.9 軌道清單
 
 ---
 
@@ -977,11 +1005,20 @@ Phase 1 + Phase 2 可平行;Phase 3 起依 Phase 2 完成。
 
 ---
 
-## §11 待拍板項清單
+## §11 設計拍板項(rev2 不變式)
 
-> 本檔不做拍板。以下選項收集供 user 決策(對應 spec-kit feature 啟動的 brainstorm 階段)。
+> **✅ 2026-05-27 user 親決完成**,12 項拍板鎖定 rev2 整合的不變式;`.specify/memory/constitution.md` v1.0.0 將凍結為不可違反的設計權威。原「選項清單」與「Claude 建議」段落保留作為決策歷史紀錄。
+
+### §11.0 兩條鐵紀律
+
+1. **base-web 為權威** — base-web example 有的功能,rust-api 都要提供對應 endpoint(設計範圍嚴格)。「v1 從簡」只能是 phase 實作排程、不能簡化設計範圍。
+2. **menu 權限 Casbin enforce** — rev2 核心突破:menu 由 Casbin RBAC enforce、有權才顯示(rev1 未實現)。即使動 base-web 也要做、必在 constitution 顯式授權。
 
 ### §11.1 預設帳號命名(rev1 命名 vs mock 對齊)
+
+> **✅ 拍板:(b) `Super/Admin/User` 對齊 mock** + 模仿 User → User01 alias(§11.10b 連動)
+> **理由**:base-web login 頁 quick-fill button click 後填入 `Super/Admin/User`、對齊「base-web 為權威」紀律 + user 體驗一致。
+> **影響**:Phase 2 F1.1 migration seed;Phase 3 F5.1 auth-login 需含 alias 邏輯(`display_name` 欄或 trigger)
 
 | 選項 | 命名 | 利 | 弊 |
 |---|---|---|---|
@@ -991,6 +1028,10 @@ Phase 1 + Phase 2 可平行;Phase 3 起依 Phase 2 完成。
 **Claude 中性建議**:(b) 對齊 mock 更貼「base-web 為核心」原則;User → User01 alias 機制可選擇實作或不實作(mock 內部行為,rev2 自由)
 
 ### §11.2 alova 7 endpoint 是否實作(§5.4 詳對比)
+
+> **✅ 拍板:(a) 全實作 7 endpoint** + 個別 endpoint 可加 disabled / stub flag 給 v1 啟用控制(operational 層面)
+> **理由**:對齊「base-web 為權威」紀律 — base-web 用到的 7 endpoint(`addUser` / `updateUser` / `deleteUser` / `batchDeleteUser` / `getLastTime` / `sendCaptcha` / `verifyCaptcha`)都要提供。「個別 disabled / stub」是 operational flag、不是設計範圍縮減。
+> **影響**:Phase 4 F9 systemManage-alias-router(4 manage CRUD);Phase 5 F11 extracted-stubs(captcha + getLastTime)
 
 | 選項 | 動作 | 工作量 |
 |---|---|---|
@@ -1002,6 +1043,10 @@ Phase 1 + Phase 2 可平行;Phase 3 起依 Phase 2 完成。
 依賴 §11.3 拍板。
 
 ### §11.3 Q1+Q3 衝突解(audit §5.4 列的 5 條路徑)
+
+> **✅ 拍板:(B) 升 L4 改 modal placeholder** — 6-10 個 modal/drawer 的 `// request` 一行改 `await fetchCreateXxx(formData)`
+> **理由**:Q3「完整 CRUD UI」需 wire 連通、純 read-only 不夠。(B) L4 衝擊範圍可控(每檔 1-3 行)、upstream rebase 衝突小、Q3 體驗最好。違反「不動 inline」直覺紀律、需 constitution v1.0.0 顯式授權。
+> **影響**:Phase 4 F7 manage-crud-alignment;**啟用 MODAL-WIRING 軌道 ★**(§7.4)+ BASE-WEB-WRAPPER 軌道(§7.2 補 axios wrapper)
 
 base-web modal/drawer/delete button 全是 `// request` placeholder,Q3 (a)「完整 CRUD UI」≠ 純 A 路徑可達。
 
@@ -1017,6 +1062,10 @@ base-web modal/drawer/delete button 全是 `// request` placeholder,Q3 (a)「完
 
 ### §11.4 apifoxToken 移除策略(audit §4.8)
 
+> **✅ 拍板:(c) rust-api 寬容 unknown header** — base-web 兩處硬編碼**不動**、rust-api middleware 收到 `apifoxToken` 直接忽略不報錯
+> **理由**:L0 最低工、最 upstream-safe。base-web 不動符合「不動 inline」紀律。
+> **影響**:無新軌道;rust-api middleware 寬容 unknown header
+
 axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index.ts:37` 兩處硬編碼 `apifoxToken`。
 
 | 選項 | 動作 | L 等級 |
@@ -1029,6 +1078,10 @@ axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index
 
 ### §11.5 alova menu 處理策略(audit §4.10.2 + 4.10.4)
 
+> **✅ 拍板:(b'-narrow) `pageExcludePatterns` 隱藏 demo** — `build/plugins/router.ts` 加 pattern 排 `views/demo` 目錄;`document` / `exception` customRoutes 不動
+> **理由**:對齊「menu 都要 Casbin enforce」紀律 — demo menu 不在 Casbin enforce 範圍、不該對 prod user 顯示。違反「不動 build 配置」直覺紀律、需 constitution v1.0.0 顯式授權。
+> **影響**:Phase 4-5;**啟用 BASE-WEB-BUILD-CONFIG 軌道 ★**(§7.3)
+
 | 選項 | 動作 | sidebar 顯示 | upstream rebase 風險 |
 |---|---|---|---|
 | (b) 完全保留不動 | 0 改動 | 8 demo + 2 業務 menu | 永遠 clean |
@@ -1039,6 +1092,14 @@ axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index
 
 ### §11.6 sub-crate 拍板(followup §7 已建議,需 user 同意)
 
+> **✅ 拍板**:
+> - `axum-casbin`:**重寫**(~3-5 人日)— 統一 rev2 metrics / error / observability 策略
+> - `sea-orm-adapter`:**拷貝 rev1**(0 人日)
+> - `xdb`:**拷貝 rev1**(0.5 人日)
+>
+> **理由**:axum-casbin 是 Casbin enforce 中介層、rev2 觀察性都過此層;重寫可不繼承 rev1 metrics 客製包袱。sea-orm-adapter 與 xdb 是工具性 crate、拷貝即可。
+> **影響**:Phase 2 F1.1 + Phase 3 F5.1 / F6 / W-F11;**RUSTAPI-SOURCE-ISOLATION 軌道**(§7.6)
+
 | Sub-crate | followup 建議 | 替代選項 |
 |---|---|---|
 | `axum-casbin` | 重寫(3-5 人日) | 用上游 crate(放棄 rev1 metrics 客製)、拷貝 rev1(帶 rev1 設計包袱) |
@@ -1046,6 +1107,10 @@ axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index
 | `xdb` | 拷貝(0.5 人日) | 重寫(無價值)、用上游(無對應 crate) |
 
 ### §11.7 auth route mode(static vs dynamic)
+
+> **✅ 拍板:(b) dynamic** — `.env VITE_AUTH_ROUTE_MODE=dynamic`,後端 `/route/getUserRoutes` 控 menu
+> **理由**:後端控 menu 是 admin 後台核心價值、也是 §11.0 鐵紀律②「menu 權限 Casbin enforce」的實作前提。.env 改動屬 L1 BASE-WEB-ADAPT 軌道、不違反「不動 inline」紀律。
+> **影響**:Phase 3 F5.1 auth-login + F6 route-guard(3 routes endpoint 全實作);BASE-WEB-ADAPT 軌道(§7.1)
 
 | 選項 | 對 rev2 含義 |
 |---|---|
@@ -1056,21 +1121,44 @@ axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index
 
 ### §11.8 觀察性 stack 啟動時機(followup §8 已建議,需 user 同意)
 
+> **✅ 拍板:(a) 漸進**:
+> - **Phase 1-4**:不啟
+> - **Phase 5**:obs-min(loki + promtail + grafana,log-only)
+> - **Phase 6**:obs-full(+ prometheus + pushgateway)
+>
+> **理由**:跟隨 followup §8 建議。Phase 1-4 焦點在核心 feature、不被 obs 設定干擾;Phase 5+ 業務 traffic 增加、需 log 觀察與 metric 追蹤。
+> **影響**:Phase 5 + Phase 6 docker-compose 配置;無新軌道
+
 | 階段 | followup 建議 | 替代選項 |
 |---|---|---|
 | Phase 1-4 | 不啟 | 早啟避免 P5 才裝設定花時間 |
 | Phase 5 | 啟 obs-min(loki + promtail + grafana) | 直接 obs-full |
 | Phase 6 | 啟 obs-full | 永遠 min(個人 workspace 無 alert 需求) |
 
-### §11.9 Constitution 軌道清單最終確認
+### §11.9 軌道清單最終確認
 
-§7 列了四條軌道(BASE-WEB-ADAPT / WRAPPER / BUILD-CONFIG / MODAL-WIRING)。需 user 拍板:
+> **✅ 拍板:5 軌道全啟用**(constitution v1.0.0 凍結):
 
-- MODAL-WIRING 軌道是否設立(取決 §11.3 是否走 (B))
-- BASE-WEB-BUILD-CONFIG 軌道是否設立(取決 §11.5 是否走 (b'-narrow))
-- 是否加新軌道(例:「RUSTAPI-SOURCE-ISOLATION」紀律專門管 §1.3 + §7.5 源碼隔離)
+| # | 軌道 | 動的位置 | 等級 | 來源拍板 |
+|---|---|---|---|---|
+| 1 | BASE-WEB-ADAPT | `.env` + `src/typings/api/rev2-extra.d.ts` 等新檔 | L1+L2 預設可動 | §7.1、§11.7 / §11.10 |
+| 2 | BASE-WEB-WRAPPER | `src/service/api/rev2-*.ts` 新檔 | L3 需授權 | §7.2、§11.3 (B) |
+| 3 | **BASE-WEB-BUILD-CONFIG ★** | `build/plugins/router.ts` `pageExcludePatterns` | L4 build infra,**需 constitution 顯式授權** | §7.3、§11.5 (b'-narrow) |
+| 4 | **MODAL-WIRING ★** | 6-10 modal/drawer 的 `// request` 一行 | L4 view inline,**需 constitution 顯式授權** | §7.4、§11.3 (B) |
+| 5 | RUSTAPI-SOURCE-ISOLATION | rust-api 整棵樹 | rust-api 全新寫、不繼承 rev1 code | §7.6(新增)、§11.6 |
+
+★ = 違反「base-web 為核心、不動 inline / build 配置」直覺紀律,必須在 constitution v1.0.0 顯式授權,並寫明授權邊界與理由。
 
 ### §11.10 wire 細節決策
+
+> **✅ 拍板**(全對齊 mock wire ground truth):
+> - `Role.id` 型:**string**(對齊 mock `getAllRoles`);BASE-WEB-ADAPT 軌道補正 base-web TS typing(rev2-extra.d.ts)
+> - User → User01 alias 機制:**模仿**(getUserInfo 回 `User01` alias)— 對應 §11.1 連動
+> - 業務驗證錯誤 code 區段:**`5xxx`**(對齊 mock 慣例)
+> - `MenuRoute.id` 型:**string**(對齊 TS 顯式宣告 + mock 行為)
+>
+> **理由**:全對齊 mock = wire ground truth、避免 audit §4.X 抓出的 base-web 內部不一致(typing vs mock)在 rev2 重演。
+> **影響**:Phase 2 F4 response-shape-alignment + DTO 設計;Phase 3 F5.1 alias 邏輯;BASE-WEB-ADAPT 軌道(§7.1)
 
 | 決策項 | 選項 | 來源 |
 |---|---|---|
@@ -1081,6 +1169,10 @@ axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index
 
 ### §11.11 prod 模式 base-web 接 rust-api 的路徑前綴
 
+> **✅ 拍板:(a) `/api/*` 主流** — base-web build-arg `VITE_SERVICE_BASE_URL=/api`;nginx `location /api/` proxy 到 rust-api
+> **理由**:主流方案、SPA 路由與 API 路由清楚分離、path 衝突風險最低。
+> **影響**:Phase 1 W-F2 dockerfile-base-web build-arg 配置;Phase 1 W-F1 nginx location 配置
+
 | 選項 | 動作 | 含義 |
 |---|---|---|
 | (a) `/api/*`(主流) | base-web build-arg `VITE_SERVICE_BASE_URL=/api`,nginx `location /api/` proxy 到 rust-api | 清楚分離 SPA 路由與 API 路由 |
@@ -1088,6 +1180,10 @@ axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index
 | (c) 同源(`/*`) | 全部走 rust-api,base-web 用 nginx try_files fallback | 簡單但 path 衝突需小心 |
 
 ### §11.12 Phase 0 brainstorm 文件位置
+
+> **✅ 拍板:(a) `docs/superpowers/<NNN>-<feature-name>.md`** — 對齊 CLAUDE.md §3 階段 0 已寫定的 rev1 慣例
+> **理由**:統一管理、跨 feature 在同一目錄可掃;與 spec-kit 指令無耦合、Claude 手動同步。
+> **影響**:每個新 feature 啟動前先寫 `docs/superpowers/<NNN>-<feature-name>.md` brainstorm md → 然後 `/speckit-specify` 引用
 
 rev2 spec-kit feature 工作流前置 brainstorm 文件存哪?
 
@@ -1098,6 +1194,13 @@ rev2 spec-kit feature 工作流前置 brainstorm 文件存哪?
 | (c) 不寫獨立檔,brainstorm 階段直接寫進 spec.md 開頭 | 最簡單 |
 
 ### §11.13 login 替代入口的後端 endpoint 是否實作
+
+> **✅ 拍板:(c) 全實作 + 雙模設計** — base-web 5 login sub-route(`pwd-login` / `reset-pwd` / `code-login` / `register` / `bind-wechat`)rust-api 都實作對應 endpoint,但**雙模**:
+> - **stub mode**(v1 啟用):不依賴外部服務、回 stub response 給 form submit 不報錯
+> - **真實 mode**(v2/v3 切):接 SMS provider / wechat OAuth 真實流程
+>
+> **理由**:對齊「base-web 為權威」鐵紀律 — base-web 有的 form UI、rust-api 都要對應 endpoint。雙模設計讓 v1 不依賴外部服務(SMS / wechat OAuth)就能 onboard、v2/v3 業務成熟切真實 mode。
+> **影響**:Phase 5 F11 extracted-stubs 範圍擴大(+ 4 endpoint);RUSTAPI-SOURCE-ISOLATION 軌道涵蓋雙模設計
 
 **新發現的 endpoint 缺口**(followup §13.2 + §13.6.2):
 - base example login 5 sub-route:`pwd-login`(主)+ `reset-pwd` / `code-login` / `register`(三個有完整 form UI)+ `bind-wechat`(空 placeholder)
