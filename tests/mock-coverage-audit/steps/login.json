@@ -1,6 +1,6 @@
 [
   {"kind": "log", "msg": "=== phase 0: ensure at /login ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login", "waitMs": 3000},
   {"kind": "screenshot", "file": "./screenshots/shot-01-login.png"},
 
   {"kind": "log", "msg": "=== phase 1: click 超級管理員 quick-fill ==="},

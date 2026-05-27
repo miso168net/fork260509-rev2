@@ -1,6 +1,6 @@
 [
   {"kind": "log", "msg": "=== Phase 0: ensure logged in (need token for some tests) ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/home", "waitMs": 4000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/home", "waitMs": 4000},
   {"kind": "eval", "note": "extract clean token + refreshToken",
    "expr": "(() => { const raw = localStorage.getItem('SOY_token') || ''; let t = raw; try { t = JSON.parse(raw); } catch {} window.__cleanToken = t; window.__refresh = (() => { try { return JSON.parse(localStorage.getItem('SOY_refreshToken')); } catch { return localStorage.getItem('SOY_refreshToken'); } })(); return JSON.stringify({tokenLen: t.length, refreshLen: window.__refresh?.length || 0}); })()"
   },
@@ -90,7 +90,7 @@
   {"kind": "sleep", "ms": 1800},
 
   {"kind": "log", "msg": "=== Tier 2-D.1: navigate /manage/user-detail/1 — observe what endpoint triggers ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/manage/user-detail/1", "waitMs": 5000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/manage/user-detail/1", "waitMs": 5000},
   {"kind": "screenshot", "file": "./screenshots/shot-30-user-detail.png"},
   {"kind": "eval", "note": "inspect what UI rendered for user-detail",
    "expr": "JSON.stringify({url: location.href, title: document.title, hasContent: document.querySelector('.layout-main, .layout-content, main')?.textContent?.slice(0, 200) || 'none'})"
@@ -98,7 +98,7 @@
   {"kind": "sleep", "ms": 1500},
 
   {"kind": "log", "msg": "=== Tier 2-D.2: navigate /manage/user — click row to see if detail/inline fetch fires ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/manage/user", "waitMs": 5000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/manage/user", "waitMs": 5000},
   {"kind": "screenshot", "file": "./screenshots/shot-31-user-list.png"},
   {"kind": "sleep", "ms": 1500}
 ]

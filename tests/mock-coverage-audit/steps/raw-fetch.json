@@ -1,6 +1,6 @@
 [
   {"kind": "log", "msg": "=== ensure logged in (token + apifoxToken known) ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/home", "waitMs": 3500},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/home", "waitMs": 3500},
   {"kind": "eval", "note": "extract clean token (strip outer quotes from JSON-stringified)",
    "expr": "(() => { const raw = localStorage.getItem('SOY_token') || ''; let t = raw; try { t = JSON.parse(raw); } catch {} window.__cleanToken = t; window.__refresh = (() => { try { return JSON.parse(localStorage.getItem('SOY_refreshToken')); } catch { return localStorage.getItem('SOY_refreshToken'); } })(); return JSON.stringify({tokenLen: t.length, refreshLen: window.__refresh?.length || 0}); })()"
   },

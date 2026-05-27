@@ -246,7 +246,7 @@ multi-stage:
 ```dockerfile
 # === Stage 1: builder ===
 FROM node:20.19-alpine AS builder
-RUN corepack enable                           # builder 用 corepack 沒問題(下面用 pnpm install --frozen-lockfile,不走 latest)
+RUN npm install -g pnpm@10                    # builder 同樣踩 corepack ESM bug,對齊 dev profile(見 §4 第 3 輪 / §6.1 / 檔尾 Footnote)
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./

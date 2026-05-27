@@ -1,10 +1,10 @@
 [
   {"kind": "log", "msg": "=== Phase 0: ensure at /login (logged out) ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login", "waitMs": 3000},
   {"kind": "eval", "note": "clear LS for fresh start",
    "expr": "(() => { localStorage.clear(); sessionStorage.clear(); return JSON.stringify({cleared: true}); })()"
   },
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3500},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login", "waitMs": 3500},
   {"kind": "screenshot", "file": "./screenshots/shot-70-login-fresh.png"},
 
   {"kind": "log", "msg": "=== #2-a: click 忘记密码 ==="},
@@ -21,7 +21,7 @@
   },
 
   {"kind": "log", "msg": "=== #2-b: navigate back + click 验证码登录 ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login", "waitMs": 3000},
   {"kind": "eval", "note": "click 验证码登录",
    "expr": "(() => { const all = [...document.querySelectorAll('button, a')]; const target = all.find(el => el.innerText.trim().includes('验证码登录') || el.innerText.trim().includes('驗證碼登錄')); if (!target) return JSON.stringify({err: 'not found'}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
   },
@@ -38,7 +38,7 @@
   {"kind": "sleep", "ms": 2000},
 
   {"kind": "log", "msg": "=== #2-d: navigate back + click 注册账号 ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login", "waitMs": 3000},
   {"kind": "eval", "note": "click 注册账号",
    "expr": "(() => { const all = [...document.querySelectorAll('button, a')]; const target = all.find(el => el.innerText.trim().includes('注册账号') || el.innerText.trim().includes('註冊賬號') || el.innerText.trim().includes('注册') || el.innerText.trim().includes('註冊')); if (!target) return JSON.stringify({err: 'not found'}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
   },
@@ -49,7 +49,7 @@
   },
 
   {"kind": "log", "msg": "=== Phase A: login Super for #1 + #3 + #4 testing ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login", "waitMs": 3000},
   {"kind": "eval", "note": "click 超级管理员",
    "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const target = btns.find(b => b.innerText.trim().includes('超级管理员') || b.innerText.trim().includes('超級管理員')); if (target) target.click(); return JSON.stringify({ok: !!target}); })()"
   },
@@ -90,14 +90,14 @@
   {"kind": "sleep", "ms": 1500},
 
   {"kind": "log", "msg": "=== #4-d: multi-tab via right-click simulation (open user-detail in new tab) ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/manage/user", "waitMs": 4000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/manage/user", "waitMs": 4000},
   {"kind": "screenshot", "file": "./screenshots/shot-83-multi-tab-before.png"},
   {"kind": "eval", "note": "click tab close / multi-tab area to test triggers",
    "expr": "(() => { const tabs = document.querySelectorAll('.n-tabs-tab, [class*=tab-item], [class*=multi-tab]'); return JSON.stringify({tabCount: tabs.length, classes: Array.from(tabs).slice(0,3).map(t => t.className)}); })()"
   },
 
   {"kind": "log", "msg": "=== #3: alova /alova/request 兩個重複請求按鈕 ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/alova/request", "waitMs": 4500},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/alova/request", "waitMs": 4500},
   {"kind": "screenshot", "file": "./screenshots/shot-90-alova-request.png"},
   {"kind": "eval", "note": "list all buttons on alova request",
    "expr": "JSON.stringify(Array.from(document.querySelectorAll('button')).map(b => b.innerText.trim()).filter(t => t.length>0 && t.length<40))"
@@ -114,7 +114,7 @@
   {"kind": "screenshot", "file": "./screenshots/shot-92-after-modal.png"},
 
   {"kind": "log", "msg": "=== #1: 主動登出按鈕(放最後,因為會 logout) ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/home", "waitMs": 4000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/home", "waitMs": 4000},
   {"kind": "eval", "note": "find user avatar / dropdown / logout button",
    "expr": "(() => { const els = [...document.querySelectorAll('button, [role=button], .n-avatar, [class*=avatar], [class*=user-menu], [class*=logout]')]; const candidates = els.filter(el => { const t = (el.innerText || el.title || el.ariaLabel || '').trim(); return t.length > 0 && t.length < 30; }).slice(0, 20); return JSON.stringify({candidates: candidates.map(el => ({tag: el.tagName, cls: el.className?.slice(0,40), text: (el.innerText || el.title || el.ariaLabel)?.slice(0,30)}))}); })()"
   },

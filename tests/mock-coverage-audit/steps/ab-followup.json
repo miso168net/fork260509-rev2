@@ -1,10 +1,10 @@
 [
   {"kind": "log", "msg": "=== Part B: /login/bind-wechat 頁面驗證 ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login", "waitMs": 3000},
   {"kind": "eval", "note": "clear LS for clean check",
    "expr": "(() => { localStorage.clear(); sessionStorage.clear(); return JSON.stringify({cleared: true}); })()"
   },
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login/bind-wechat", "waitMs": 4000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login/bind-wechat", "waitMs": 4000},
   {"kind": "screenshot", "file": "./screenshots/shot-110-bind-wechat.png"},
   {"kind": "eval", "note": "bind-wechat page details",
    "expr": "JSON.stringify({url: location.href, title: document.title, h: document.querySelector('h1, h2, h3, .login-form-title, [class*=title]')?.innerText?.trim() || 'none', inputs: Array.from(document.querySelectorAll('input')).map(i => ({type: i.type, placeholder: i.placeholder})), buttons: Array.from(document.querySelectorAll('button')).map(b => b.innerText.trim()).filter(t => t.length>0 && t.length<30)})"

@@ -1,12 +1,12 @@
 [
   {"kind": "log", "msg": "=== Phase 0: ensure logged in ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/home", "waitMs": 3000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/home", "waitMs": 3000},
   {"kind": "eval", "note": "token check",
    "expr": "JSON.stringify({hasToken: !!localStorage.getItem('SOY_token'), url: location.href})"
   },
 
   {"kind": "log", "msg": "=== Phase 1: navigate /alova/request demo ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/alova/request", "waitMs": 4500},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/alova/request", "waitMs": 4500},
   {"kind": "screenshot", "file": "./screenshots/shot-60-alova-request.png"},
   {"kind": "eval", "note": "list all buttons on /alova/request",
    "expr": "JSON.stringify(Array.from(document.querySelectorAll('button')).map(b => b.innerText.trim()).filter(t => t.length > 0 && t.length < 30))"
@@ -19,7 +19,7 @@
   {"kind": "sleep", "ms": 3000},
 
   {"kind": "log", "msg": "=== Phase 3: navigate /alova/scenes ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/alova/scenes", "waitMs": 4500},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/alova/scenes", "waitMs": 4500},
   {"kind": "screenshot", "file": "./screenshots/shot-61-alova-scenes.png"},
 
   {"kind": "log", "msg": "=== Phase 4: raw fetch alova endpoints to see real wire ==="},

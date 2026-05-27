@@ -1,10 +1,10 @@
 [
   {"kind": "log", "msg": "=== ROUND 1: 超級管理員 ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login", "waitMs": 3000},
   {"kind": "eval", "note": "clear localStorage",
    "expr": "(() => { localStorage.clear(); sessionStorage.clear(); return JSON.stringify({cleared: true}); })()"
   },
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 4000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login", "waitMs": 4000},
   {"kind": "eval", "note": "list all quick-fill buttons",
    "expr": "JSON.stringify(Array.from(document.querySelectorAll('button')).map(b => b.innerText.trim()).filter(t => t.length > 0 && t.length < 20))"
   },
@@ -25,11 +25,11 @@
   },
 
   {"kind": "log", "msg": "=== ROUND 2: 管理員 ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login", "waitMs": 3000},
   {"kind": "eval", "note": "clear localStorage",
    "expr": "(() => { localStorage.clear(); sessionStorage.clear(); return JSON.stringify({cleared: true}); })()"
   },
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 4000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login", "waitMs": 4000},
   {"kind": "eval", "note": "click 管理員",
    "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const candidates = btns.filter(b => { const t = b.innerText.trim(); return (t === '管理員' || t === '管理员') && !t.includes('超'); }); if (candidates.length === 0) return JSON.stringify({err: 'btn not found', all: btns.map(b => b.innerText.trim())}); candidates[0].click(); return JSON.stringify({ok: true, clicked: candidates[0].innerText.trim()}); })()"
   },
@@ -47,11 +47,11 @@
   },
 
   {"kind": "log", "msg": "=== ROUND 3: 普通用户 ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login", "waitMs": 3000},
   {"kind": "eval", "note": "clear localStorage",
    "expr": "(() => { localStorage.clear(); sessionStorage.clear(); return JSON.stringify({cleared: true}); })()"
   },
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 4000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login", "waitMs": 4000},
   {"kind": "eval", "note": "click 普通用户",
    "expr": "(() => { const btns = Array.from(document.querySelectorAll('button')); const target = btns.find(b => { const t = b.innerText.trim(); return t.includes('普通用户') || t.includes('普通用戶'); }); if (!target) return JSON.stringify({err: 'btn not found', all: btns.map(b => b.innerText.trim())}); target.click(); return JSON.stringify({ok: true, clicked: target.innerText.trim()}); })()"
   },

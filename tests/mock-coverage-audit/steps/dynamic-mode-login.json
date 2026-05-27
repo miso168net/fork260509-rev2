@@ -1,10 +1,10 @@
 [
   {"kind": "log", "msg": "=== Phase 0: force logout (clear localStorage) ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 3000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login", "waitMs": 3000},
   {"kind": "eval", "note": "clear localStorage + reload",
    "expr": "(() => { localStorage.clear(); sessionStorage.clear(); return JSON.stringify({cleared: true, lsKeys: Object.keys(localStorage)}); })()"
   },
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/login", "waitMs": 5000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/login", "waitMs": 5000},
   {"kind": "screenshot", "file": "./screenshots/shot-40-login-fresh.png"},
   {"kind": "eval", "note": "confirm logged out + check VITE_AUTH_ROUTE_MODE injected",
    "expr": "JSON.stringify({url: location.href, lsKeys: Object.keys(localStorage), routeMode: typeof window.__VITE_AUTH_ROUTE_MODE !== 'undefined' ? window.__VITE_AUTH_ROUTE_MODE : 'check-via-network'})"
@@ -31,11 +31,11 @@
   },
 
   {"kind": "log", "msg": "=== Phase 3: navigate to /manage/role to trigger additional reads ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/manage/role", "waitMs": 5000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/manage/role", "waitMs": 5000},
   {"kind": "screenshot", "file": "./screenshots/shot-43-role-dyn.png"},
 
   {"kind": "log", "msg": "=== Phase 4: navigate to /manage/menu ==="},
-  {"kind": "navigate", "url": "http://127.0.0.1:9527/manage/menu", "waitMs": 5000},
+  {"kind": "navigate", "url": "http://127.0.0.1:21079/manage/menu", "waitMs": 5000},
   {"kind": "screenshot", "file": "./screenshots/shot-44-menu-dyn.png"},
 
   {"kind": "log", "msg": "=== Phase 5: enumerate sidebar menu items (compare static vs dynamic sidebar) ==="},
