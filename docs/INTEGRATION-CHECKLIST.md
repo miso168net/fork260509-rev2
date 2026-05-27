@@ -8,7 +8,7 @@
 
 ## 1. Current Focus
 
-**階段**:rev2 spec-kit 第二個 feature(002-dockerfile-base-web)已合回 `rev2-admin-root`;Phase 1 #1 ✅ #2 ✅;準備啟動 Phase 1 #3 TLS 憑證 skeleton feature。
+**階段**:rev2 spec-kit 第二個 feature(002-dockerfile-base-web)已合回 `rev2-admin-root`;準備啟動 Phase 1 #3 TLS 憑證 skeleton feature。
 
 **最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
 - **2026-05-28 002-dockerfile-base-web 完整實作 + 驗收 + merge + push**(outer merge `a70fa5f` / base-web inner `942d4e7a` / 外層 feat+SHA pin `c0b17ef`)— 20/20 task PASS / image 29 MB / dev hot reload OK / prod healthy 30s 內 + unhealthy 60s 內 / build-arg VITE_SERVICE_BASE_URL override 雙向驗 / BASE-WEB-ADAPT 軌道首次在 `public/` 應用 / Bonus 修 builder stage corepack ESM bug(改 `npm install -g pnpm@10`);push 完成(base-web 到 fork remote / outer + feature branch 到 origin)
@@ -80,7 +80,7 @@ baseline 規格回填於 [DESIGN §4.6](INTEGRATION-DESIGN.md);6 項實作驗收
 
 ### Phase 0 — 設計拍板 ✅ 全完成+已歸檔 (2026-05-28)
 
-### Phase 1 — P0 部署基建(對齊 [DESIGN §10 Phase 1](INTEGRATION-DESIGN.md);**#1 ✅ #2 ✅ 完成 2026-05-28**)
+### Phase 1 — P0 部署基建(對齊 [DESIGN §10 Phase 1](INTEGRATION-DESIGN.md);進行中)
 
 - [x] **rust-api Dockerfile feature ✅ 2026-05-28**(spec-kit 001-dockerfile-rust-api,merge `a21e932`)— 3 crate workspace + multi-stage Dockerfile + standalone compose + `_FILE` secret loader + 8/8 unit test;feature branch `001-dockerfile-rust-api` 保留供 audit
 - [x] **base-web Dockerfile feature ✅ 2026-05-28**(spec-kit 002-dockerfile-base-web,merge `a70fa5f`)— port 21079 對齊 §8.2 + nginx HEALTHCHECK + build-arg `VITE_SERVICE_BASE_URL`(走 `.env.prod.local` precedence,因 vite `loadEnv` 不讀 process.env)+ `base-web/public/health.html` 新增(BASE-WEB-ADAPT 軌道首次在 `public/` 應用)+ 000-bootstrap.md surgical patch + Bonus 修 builder stage corepack ESM bug(`npm install -g pnpm@10`);feature branch `002-dockerfile-base-web` 保留供 audit
