@@ -23,29 +23,13 @@
 
 ## 2. Follow-up Backlog
 
-### 2.1 §11 設計拍板項索引(2026-05-27 完成、權威源:[DESIGN §11](INTEGRATION-DESIGN.md))
+### 2.1 §11 設計拍板項索引 ✅ 全完成+已歸檔 (2026-05-27)
 
-> **兩條鐵紀律**(constitution v1.0.0 將凍結):
+> **兩條鐵紀律**(已凍結於 [constitution v1.0.0](../.specify/memory/constitution.md) §I):
 > 1. **base-web 為權威** — base-web 有的功能、rust-api 都要實作(設計範圍嚴格)
 > 2. **menu 權限 Casbin enforce** — rev2 核心突破,即使動 base-web 也要做
 
-| § | 主題 | 拍板 |
-|---|---|---|
-| §11.1 | 預設帳號命名 | (b) `Super/Admin/User` 對齊 mock + 模仿 User→User01 alias |
-| §11.2 | alova 7 endpoint | (a) 全實作 + 個別可 disabled flag |
-| §11.3 ★ | modal CRUD 衝突 | (B) 升 L4 改 modal placeholder(MODAL-WIRING 啟用) |
-| §11.4 | apifoxToken | (c) rust-api 寬容 unknown header |
-| §11.5 ★ | alova menu | (b'-narrow) `pageExcludePatterns` 隱藏 demo(BASE-WEB-BUILD-CONFIG 啟用) |
-| §11.6 | sub-crate | axum-casbin 重寫 + sea-orm-adapter / xdb 拷貝 |
-| §11.7 | auth route mode | (b) dynamic(後端控 menu) |
-| §11.8 | obs stack | (a) Phase 5 obs-min + Phase 6 obs-full |
-| §11.9 | 軌道清單 | 5 軌道全啟用(BASE-WEB-ADAPT / WRAPPER / BUILD-CONFIG ★ / MODAL-WIRING ★ / RUSTAPI-SOURCE-ISOLATION) |
-| §11.10 | wire 細節 | Role.id / MenuRoute.id = **string**、User alias 模仿、business error `5xxx` |
-| §11.11 | prod path | (a) `/api/*` 主流 |
-| §11.12 | brainstorm 位置 | (a) `docs/superpowers/<NNN>-<feature-name>.md` |
-| §11.13 | login 替代入口 | (c) 全實作雙模 + v1 啟 stub mode |
-
-★ = 違反「不動 inline / build 配置」直覺紀律、需 constitution v1.0.0 顯式授權。詳細理由 + 影響軌道見 DESIGN §11.X 對應 callout。
+完整 12 拍板項與軌道授權細節見 [DESIGN §11](INTEGRATION-DESIGN.md);spec-kit `/speckit-plan` 將自動對照 constitution v1.0.0 跑 Compliance Check。
 
 ### 2.2 spec phase 0 對稱盤點(權威源:`INTEGRATION-RESEARCH.md` §7.2 L1263-1271)
 
@@ -72,7 +56,7 @@
 
 完整 commit 里程碑歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)(append-only、不在 SOP 注入,避免本檔膨脹)。
 
-§1「最新進展」滾動最近 5 條;歷史在 MILESTONES.md 永久保留。歸檔流程見 [CLAUDE.md §7.5](../CLAUDE.md)。
+§1「最新進展」滾動最近 2 條;歷史在 MILESTONES.md 永久保留。歸檔流程見 [CLAUDE.md §7.5](../CLAUDE.md)。
 
 ---
 
