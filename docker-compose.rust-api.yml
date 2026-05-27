@@ -1,0 +1,76 @@
+# rust-api 容器化 (3 crate workspace, multi-stage Dockerfile)
+#
+# 用法:
+#   dev 模式 (熱重載 cargo-watch in-container, http://127.0.0.1:21081/health):
+#     docker compose -f docker-compose.rust-api.yml --profile dev up
+#   prod 模式 (near-prod, 需先用 openssl rand 生 secret 實值):
+#     openssl rand -base64 48 > deploy/secrets/jwt_secret.txt
+#     openssl rand -base64 48 > deploy/secrets/refresh_token_secret.txt
+#     docker compose -f docker-compose.rust-api.yml --profile prod up --build
+#   停止 + 移除容器:
+#     docker compose -f docker-compose.rust-api.yml --profile dev down
+#     docker compose -f docker-compose.rust-api.yml --profile prod down
+#
+# 設計:
+#   - profile 用法永遠顯式 -f + --profile dev|prod (FR-020, 不用 docker-compose.override.yml auto-load)
+#   - dev profile 用 bind mount + named volume mask /app/target + /usr/local/cargo (避 WSL2 9P 慢)
+#   - prod profile 用 Docker secret file mount (走 _FILE 路徑, env loader 讀檔)
+#   - image tag 顯式設定 (dev/latest), 讓 `docker run rev2-admin-rust-api:latest <subcmd>` 可直接用
+#
+# 注意:
+#   - prod profile 啟動前需先生成 deploy/secrets/{jwt_secret,refresh_token_secret}.txt
+#     (gitignored, .example 範本 git-tracked)
+#   - 未啟動 prod profile 時, secret file 不存在不會擋 compose parse, 只在 prod up 時才失敗
+#   - 對齊 specs/001-dockerfile-rust-api/contracts/compose-profiles.md
+
+services:
+  rust-api-dev:
+    profiles: ["dev"]
+    image: rev2-admin-rust-api:dev
+    build:
+      context: ./
+      dockerfile: deploy/Dockerfile.rust-api.txt
+      target: dev
+    container_name: rev2-admin-rust-api-dev
+    volumes:
+      - ./rust-api:/app
+      - rust_api_cargo_cache:/usr/local/cargo
+      - rust_api_target:/app/target
+    ports:
+      - "127.0.0.1:21081:21081"
+    environment:
+      APP_JWT_JWT_SECRET: "${APP_JWT_JWT_SECRET:-dev_jwt_secret_for_local_only_x32xxxxxx}"
+      APP_JWT_REFRESH_TOKEN_SECRET: "${APP_JWT_REFRESH_TOKEN_SECRET:-dev_refresh_secret_for_local_only_x32xx}"
+      RUST_LOG: "info,tower_http=debug"
+    init: true
+
+  rust-api:
+    profiles: ["prod"]
+    image: rev2-admin-rust-api:latest
+    build:
+      context: ./
+      dockerfile: deploy/Dockerfile.rust-api.txt
+      target: runtime
+    container_name: rev2-admin-rust-api
+    ports:
+      - "127.0.0.1:21081:21081"
+    environment:
+      APP_JWT_JWT_SECRET_FILE: /run/secrets/jwt_secret
+      APP_JWT_REFRESH_TOKEN_SECRET_FILE: /run/secrets/refresh_token_secret
+      RUST_LOG: "info"
+    secrets:
+      - jwt_secret
+      - refresh_token_secret
+    restart: unless-stopped
+
+secrets:
+  jwt_secret:
+    file: ./deploy/secrets/jwt_secret.txt
+  refresh_token_secret:
+    file: ./deploy/secrets/refresh_token_secret.txt
+
+volumes:
+  rust_api_cargo_cache:
+    name: rev2_rust_api_cargo_cache
+  rust_api_target:
+    name: rev2_rust_api_target
