@@ -398,7 +398,7 @@ base-web 用 `@elegant-router/vue@0.3.8`(舊版 namespace,**新版改名為 `ele
 | (c)只動 apifoxToken | 同 §4.8 移除策略 (a) | L4(axios + alova 兩處 inline 改) | 仍有 alova menu(同 (b)) | 仍會衝突(同 (a)/(c)) |
 
 **Claude 建議(更新版)**:從乾淨度與 rebase 風險平衡看:
-- 若 rev2 完全不想看到 alova(包括誤點 menu)→ **(b')** 最佳:建議在 Constitution 新增 **「W-BASE-WEB-BUILD-CONFIG(L4 build infra,需授權)」軌道**,專管 `base-web/build/*` 改動
+- 若 rev2 完全不想看到 alova(包括誤點 menu)→ **(b')** 最佳:建議在 Constitution 新增 **「BASE-WEB-BUILD-CONFIG(L4 build infra,需授權)」軌道**,專管 `base-web/build/*` 改動
 - 若 rev2 不介意 sidebar 有個多餘 menu(反正不會誤點到 rust-api 業務) → **(b) 保留不動** 仍是最保守
 - 不建議 (a)(rebase 風險高)與 (c)(動 inline 但沒解決 menu 問題)
 
@@ -711,9 +711,9 @@ CDP grep 證實:
 基於 audit 發現,§10.4 第 1~5 條建議微調:
 
 1. **base-web 受管例外軌道**(視 user Q5 答案):
-   - 若選 (A):W-BASE-WEB-ADAPT(L1+L2)即可 + 接受 read-only UI
-   - 若選 (B):W-BASE-WEB-ADAPT(L1+L2) + W-BASE-WEB-WRAPPER(L3) + 新增 **W-MODAL-WIRING(L4 narrow)** 軌道,只授權 `views/manage/*/modules/*-operate-{modal,drawer}.vue` 內 `// request` placeholder 處改 inline、其他 inline 絕對不動
-   - **(共通 — alova 隱藏)**:若選 §4.10.2 (b'),新增 **W-BASE-WEB-BUILD-CONFIG(L4 build infra,需授權)** 軌道,管 `base-web/build/*` 改動(目前只一處:`build/plugins/router.ts` 加 `pageExcludePatterns: ['**/alova/**', '**/components/**']` 隱藏 alova menu)
+   - 若選 (A):BASE-WEB-ADAPT 軌道(L1+L2)即可 + 接受 read-only UI
+   - 若選 (B):BASE-WEB-ADAPT 軌道(L1+L2) + BASE-WEB-WRAPPER 軌道(L3) + 新增 **MODAL-WIRING 軌道(L4 narrow)**,只授權 `views/manage/*/modules/*-operate-{modal,drawer}.vue` 內 `// request` placeholder 處改 inline、其他 inline 絕對不動
+   - **(共通 — alova 隱藏)**:若選 §4.10.2 (b'),新增 **BASE-WEB-BUILD-CONFIG 軌道(L4 build infra,需授權)**,管 `base-web/build/*` 改動(目前只一處:`build/plugins/router.ts` 加 `pageExcludePatterns: ['**/alova/**', '**/components/**']` 隱藏 alova menu)
 
 2. **rust-api 從 0 設計時務必對齊**:
    - envelope 拿掉 `success`,`code` 用 string `"0000"`(rev1 DESIGN-B B1+B2 的「改成 number」**回退**)
@@ -723,10 +723,10 @@ CDP grep 證實:
    - JWT data 是 array 包 user object(`[{userName: "Super"}]`)— 這對 rev2 從 0 寫的 Claims struct 是 unusual,要決定是否保持
 
 3. **rev1 superpowers 對應 feature 變化**(取代 §10.4 第 3 點原本敘述):
-   - F4 response-shape:envelope **沒有 success**;code 是 **string**;對齊調整
-   - F22 / F24 / 030:仍是「rust-api 端 mapping」pattern,但對齊目標是 mock wire shape(本檔 §4)
-   - F18 / F19:rev2 完全不必;refresh token JWT 自選格式即可
-   - F1.1 jwt-secrets:三重防護紀律不變,但 Claims fields 對齊 mock 結構
+   - rev1 F4 response-shape:envelope **沒有 success**;code 是 **string**;對齊調整
+   - rev1 F22 / F24 / 030:仍是「rust-api 端 mapping」pattern,但對齊目標是 mock wire shape(本檔 §4)
+   - rev1 F18 / F19:rev2 完全不必;refresh token JWT 自選格式即可
+   - rev1 F1.1 jwt-secrets:三重防護紀律不變,但 Claims fields 對齊 mock 結構
 
 4. **新增 rev2 啟動對稱盤點清單(§10.4 第 4 點補)**:
    - [x] **已完成**(2026-05-27):`apifoxToken` 注入點 = `src/service/request/index.ts:17`(axios)+ `src/service-alova/request/index.ts:37`(alova)— 詳見 §4.8 含 3 條移除策略候選
@@ -942,7 +942,7 @@ mock ~~未實作或~~ ApiFox 偶發錯誤。對 rev2 影響:**static mode 不觸
 ### 7.3 待後續執行的延伸驗證
 
 - [x] **已完成**(2026-05-27 從 TS 型確認,非 capture)— paginated wrapper 結構:`{current: number, size: number, total: number, records: T[]}`(無 pages 欄),見 §4.9 完整
-- [x] **已完成**(2026-05-27)— grep base-web 程式碼找 `apifoxToken` 注入點:`src/service/request/index.ts:17` + `src/service-alova/request/index.ts:37`(見 §4.8 與 §6.4)
+- [x] **已完成**(2026-05-27)— grep base-web 程式碼找 `apifoxToken` 注入點:`src/service/request/index.ts:17` + `src/service-alova/request/index.ts:37`(見 §4.8 與 §6)
 - [x] **已完成**(2026-05-27 從 H6 store/modules/route 確認,非 CDP 重跑)— dynamic mode 流程:見 §4.13 完整對比表 + `/route/getUserRoutes` 必含 `home` 欄發現
 - [x] **已完成**(2026-05-27 [followup §2](INTEGRATION-RESEARCH-FOLLOWUP.md))— 切 `.env` `VITE_AUTH_ROUTE_MODE=dynamic` + container restart 實機驗證,確認 dynamic mode 觸發鏈 `getConstantRoutes → login → getUserInfo → getUserRoutes`(login 後自動)+ `home: "home"` 欄真實存在 + getConstantRoutes 每次 SPA reload 都觸發
 - [ ] 探 ApiFox 上 「项目配置 / REST 風格」endpoint 的具體 path 與 schema(目前只從 link text 推測,但 audit §6 第 5 條已建議 rev2 不對齊 REST 風格,優先級低)

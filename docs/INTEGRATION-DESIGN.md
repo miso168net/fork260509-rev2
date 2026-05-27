@@ -9,7 +9,7 @@
 > - [`MOCK-COVERAGE-AUDIT.md`](MOCK-COVERAGE-AUDIT.md) — base-web mock wire 三段 CDP capture
 > - [`INTEGRATION-RESEARCH-FOLLOWUP.md`](INTEGRATION-RESEARCH-FOLLOWUP.md) — Tier 1/2/3 八項深入研究 + audit 翻案
 >
-> **命名紀律**:本檔**完全不使用 rev1 編號**(F1 / F4 / F5.1 / W-F1 / W-FW1 / 040 等)。所有 feature 用語意命名(如「JWT 機密管理 feature」「動態選單 feature」)。歷史對照在 [`INTEGRATION-RESEARCH.md` §3](INTEGRATION-RESEARCH.md) 可查。
+> **命名紀律**:本檔**完全不使用 rev1 編號**(F1 / F4 / F5.1 / W-F1 / W-FW1 / 040 等)。所有 feature 用語意命名(如「JWT 機密管理 feature」「動態選單 feature」);**軌道命名亦不用 `W-` 前綴**(如 `BASE-WEB-ADAPT 軌道` 而非 `W-BASE-WEB-ADAPT`)。歷史對照在 [`INTEGRATION-RESEARCH.md` §3](INTEGRATION-RESEARCH.md) 可查。
 >
 > **建立日期**:2026-05-27
 > **建立者**:Claude(Opus 4.7,1M context,/effort max)
@@ -152,8 +152,8 @@ front-nginx 內部 location:
 | 階段 | base-web 來源 | rust-api 來源 | path 前綴(base-web 看) | 真實 endpoint host |
 |---|---|---|---|---|
 | **base-web dev(對 mock)** | vite dev server `:9527` | ApiFox cloud mock | `/proxy-default/*`(vite proxy 重寫) | `https://mock.apifox.cn/m1/3109515-0-default/*` |
-| **rev2 整合 dev** | vite dev server `:9527`(改 .env) | 自家 rust-api(container `:21081` 或 internal) | `/proxy-default/*` 或 `/api/*` | `http://rust-api:11081/*`(internal) |
-| **rev2 整合 prod** | nginx serve build artifact | 自家 rust-api(internal) | `/api/*`(SPA build 時 inject) | `http://rust-api:11081/*`(internal,front-nginx proxy) |
+| **rev2 整合 dev** | vite dev server `:9527`(改 .env) | 自家 rust-api(container `:21081` 或 internal) | `/proxy-default/*` 或 `/api/*` | `http://rust-api:21081/*`(internal) |
+| **rev2 整合 prod** | nginx serve build artifact | 自家 rust-api(internal) | `/api/*`(SPA build 時 inject) | `http://rust-api:21081/*`(internal,front-nginx proxy) |
 
 ---
 
@@ -688,7 +688,7 @@ CREATE TABLE sys_operation_log (
 
 ## §7 base-web 受管例外軌道
 
-### §7.1 W-BASE-WEB-ADAPT(L1 + L2,預設可動)
+### §7.1 BASE-WEB-ADAPT 軌道(L1 + L2,預設可動)
 
 **範圍**:
 - `base-web/.env` / `.env.test` / `.env.prod`(L1)
@@ -703,7 +703,7 @@ CREATE TABLE sys_operation_log (
 
 **紀律**:**新增為主、不改 inline**;**禁止刪除既有 type / field**(upstream 演進時這些可能仍在用)
 
-### §7.2 W-BASE-WEB-WRAPPER(L3,需授權)
+### §7.2 BASE-WEB-WRAPPER 軌道(L3,需授權)
 
 **範圍**:`src/service/api/` 新增獨立檔(如 `rev2-extra.ts`)、或 `src/service-alova/api/` 新增獨立檔
 
@@ -716,7 +716,7 @@ CREATE TABLE sys_operation_log (
 - 命名前綴 `rev2-` 讓 upstream rebase 時不衝突
 - 必須在 spec 內列「為何升 L3」(預設 L2 不夠時的證據)
 
-### §7.3 W-BASE-WEB-BUILD-CONFIG(L4 build infra,需授權)
+### §7.3 BASE-WEB-BUILD-CONFIG 軌道(L4 build infra,需授權)
 
 **範圍**:`base-web/build/*`、`base-web/package.json`(deps 改)、`base-web/pnpm-workspace.yaml`
 
@@ -729,7 +729,7 @@ CREATE TABLE sys_operation_log (
 - 屬 build infra 改動,upstream rebase 風險「中低」(這層 upstream 較穩定)
 - 每次改動寫 spec 解釋目的,review 時對齊 upstream 演進
 
-### §7.4 W-MODAL-WIRING(L4 view inline,僅在特定拍板下啟用)
+### §7.4 MODAL-WIRING 軌道(L4 view inline,僅在特定拍板下啟用)
 
 **範圍**:`base-web/src/views/manage/*/modules/*-operate-{modal,drawer}.vue` 內 `// request` placeholder 處的 inline 改動
 
@@ -777,7 +777,7 @@ docker-compose.obs-full.yml                 observability 完整(+ prometheus + 
 |---|---|---|---|
 | front-nginx HTTP | 80 | `127.0.0.1:21080:80` | `0.0.0.0:80:80`(redirect 443) |
 | front-nginx HTTPS | 443 | `127.0.0.1:21443:443` | `0.0.0.0:443:443` |
-| rust-api | 11081 | `127.0.0.1:21081:11081` | 無暴露 |
+| rust-api | 21081 | `127.0.0.1:21081:21081` | 無暴露 |
 | postgres | 5432 | `127.0.0.1:25432:5432` | 無暴露 |
 | redis | 6379 | `127.0.0.1:26379:6379` | 無暴露 |
 | grafana(obs-min/full) | 3000 | `127.0.0.1:23000:3000` | 無暴露 |
@@ -1010,7 +1010,7 @@ base-web modal/drawer/delete button 全是 `// request` placeholder,Q3 (a)「完
 | (A) | 純 read-only(只實作 13 個 read endpoint,write modal 開但 save 沒反應) | 0 | 60%(read OK) |
 | (B) | 升 L4 改 modal `// request` placeholder 接到 wrapper | 6-10 檔、每檔 1-3 行 | 100%(完整 CRUD) |
 | (C) | runtime monkey-patch 動態替換 modal handler | 0 inline,1 新檔 | 100%(但 fragile) |
-| (D) | 並列 view(`src/views/rev2-manage/*` 完整重寫) | 大 | 100%(但工作量 ≈ 重寫 9 個 W-FW) |
+| (D) | 並列 view(`src/views/rev2-manage/*` 完整重寫) | 大 | 100%(但工作量 ≈ 重寫 9 個 rev1 W-FW) |
 | (E) | 混合 read 走 (A) + write 走 (B) | 部分 | 80% |
 
 **Claude 推薦**:**(B)** — L4 衝擊範圍小、upstream rebase 衝突可控、Q3 體驗最好,但需 user 親自拍板(違反 Q1 紀律「不動 inline」)
@@ -1052,7 +1052,7 @@ axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index
 | (a) static(.env 不動) | 不必實作 3 個 routes endpoint;menu 全寫死前端;失去 server 控 menu 能力 |
 | (b) dynamic(切 `.env VITE_AUTH_ROUTE_MODE=dynamic`)| 需實作 3 個 routes endpoint;menu server 端控制(rev1 後端控 menu 的設計核心)|
 
-**Claude 建議**:**(b) dynamic** — rev2 對齊 rev1 設計核心、後端控 menu 是 admin 後台核心價值;且 .env 改動屬 L1 W-BASE-WEB-ADAPT 範圍
+**Claude 建議**:**(b) dynamic** — rev2 對齊 rev1 設計核心、後端控 menu 是 admin 後台核心價值;且 .env 改動屬 L1 BASE-WEB-ADAPT 軌道範圍
 
 ### §11.8 觀察性 stack 啟動時機(followup §8 已建議,需 user 同意)
 
@@ -1064,11 +1064,11 @@ axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index
 
 ### §11.9 Constitution 軌道清單最終確認
 
-§7 列了四條軌道(W-BASE-WEB-ADAPT / WRAPPER / BUILD-CONFIG / MODAL-WIRING)。需 user 拍板:
+§7 列了四條軌道(BASE-WEB-ADAPT / WRAPPER / BUILD-CONFIG / MODAL-WIRING)。需 user 拍板:
 
-- W-MODAL-WIRING 是否設立(取決 §11.3 是否走 (B))
-- W-BASE-WEB-BUILD-CONFIG 是否設立(取決 §11.5 是否走 (b'-narrow))
-- 是否加新軌道(例:「W-RUSTAPI-SOURCE-ISOLATION」紀律專門管 §1.3 + §7.5 源碼隔離)
+- MODAL-WIRING 軌道是否設立(取決 §11.3 是否走 (B))
+- BASE-WEB-BUILD-CONFIG 軌道是否設立(取決 §11.5 是否走 (b'-narrow))
+- 是否加新軌道(例:「RUSTAPI-SOURCE-ISOLATION」紀律專門管 §1.3 + §7.5 源碼隔離)
 
 ### §11.10 wire 細節決策
 

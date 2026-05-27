@@ -41,10 +41,10 @@ rev1 的設計分為三層,彼此服務同一個目標 —— 「base-web(Vue ex
    - 雙方都缺 SMS captcha / batch delete 等功能
 
 2. **DESIGN 層**(雙軌並行):
-   - **DESIGN-A**(`INTEGRATION-DESIGN-A-RUST-NESTJS.md`):過渡期 — rust 主後端 + nestjs 補特定 endpoint,共享 postgres/redis
-   - **DESIGN-B**(`INTEGRATION-DESIGN-B-RUST-ONLY.md`):最終形態 = **rev2 直接起點** — rust 單獨後端,nestjs 退場,redis pub-sub 升為必要(Casbin policy 跨 instance 同步)
-   - **DESIGN-W-BASE-WEB**(`INTEGRATION-DESIGN-W-BASE-WEB.md`):base-web 改動的受管例外框架(三條軌道:W-WEBUI / TS-Typing-Sync / TS-DepGraph-Hygiene)
-   - **DESIGN-W-DEPLOYMENT**(`INTEGRATION-DESIGN-W-DEPLOYMENT.md`):統一容器化部署設計,支援 dev/staging/prod + DESIGN-A/B 軌道切換
+   - **rev1 DESIGN-A**(`INTEGRATION-DESIGN-A-RUST-NESTJS.md`):過渡期 — rust 主後端 + nestjs 補特定 endpoint,共享 postgres/redis
+   - **rev1 DESIGN-B**(`INTEGRATION-DESIGN-B-RUST-ONLY.md`):最終形態 = **rev2 直接起點** — rust 單獨後端,nestjs 退場,redis pub-sub 升為必要(Casbin policy 跨 instance 同步)
+   - **rev1 DESIGN-W-BASE-WEB**(`INTEGRATION-DESIGN-W-BASE-WEB.md`):base-web 改動的受管例外框架(三條軌道:rev1 W-WEBUI / TS-Typing-Sync / TS-DepGraph-Hygiene)
+   - **rev1 DESIGN-W-DEPLOYMENT**(`INTEGRATION-DESIGN-W-DEPLOYMENT.md`):統一容器化部署設計,支援 dev/staging/prod + DESIGN-A/B 軌道切換
 
 3. **執行層**(`INTEGRATION-CHECKLIST.md` + 30 份 `superpowers/*.md`):每個 feature 從 brainstorm → spec → plan → tasks → implement → review 的紀錄,以及每次 acceptance 階段 surface 的 friction / decision 沉澱。
 
@@ -52,9 +52,9 @@ rev1 的設計分為三層,彼此服務同一個目標 —— 「base-web(Vue ex
 
 | rev1 產物 | rev2 立場 | 原因 |
 |---|---|---|
-| DESIGN-A(NestJS bridge) | **完全捨棄** | rev2 無 nestjs worktree |
-| DESIGN-B(Rust-only) | **設計權威,直接採納** | rev2 起點即 B |
-| DESIGN-W-BASE-WEB(受管例外三軌) | **直接繼承** | base-web 動 UI 需走軌道申請(W-WEBUI / TS-Typing-Sync / TS-DepGraph-Hygiene) |
+| rev1 DESIGN-A(NestJS bridge) | **完全捨棄** | rev2 無 nestjs worktree |
+| rev1 DESIGN-B(Rust-only) | **設計權威,直接採納** | rev2 起點即 B |
+| rev1 DESIGN-W-BASE-WEB(受管例外三軌) | **直接繼承** | base-web 動 UI 需走軌道申請(W-WEBUI / TS-Typing-Sync / TS-DepGraph-Hygiene) |
 | DESIGN-W-DEPLOYMENT(部署設計) | **直接繼承,port 改 2XXXX** | rev2 並存於同一台機器,需避開 rev1 1XXXX port 系列 |
 | INTEGRATION-RESEARCH(GAP 盤點) | **結論直接採納** | response shape 路線 II、alias router、抽離項 stub 等已拍板,不必重新評估 |
 | INTEGRATION-CHECKLIST(進度) | **參考已驗證體例** | rev1 F1–F14 + W-F1–W-F14 + 040–052 已交付,每個 feature 都可查 spec 與實作 |
@@ -63,16 +63,16 @@ rev1 的設計分為三層,彼此服務同一個目標 —— 「base-web(Vue ex
 
 ### 1.3 rev2 相比 rev1 省掉的工作量
 
-rev2 起點即 DESIGN-B,可直接跳過:
+rev2 起點即 rev1 DESIGN-B,可直接跳過:
 - NestJS 過渡期所有複雜度(跨服務 JWT 共識、雙重 RBAC enforcement、entrypoint wrapper bridge)
-- NestJS service 在 docker-compose 中的 profile gating(F14 cutover 步驟)
-- `nginx TRANSITIONAL` block(F15 → F29 整個 marker block 機制)
-- F10 / F10.1 / F10.2 三輪 friction surface(對 nestjs verify 邏輯的 alignment)
-- F29 cutover(rev2 不需做)
+- NestJS service 在 docker-compose 中的 profile gating(rev1 F14 cutover 步驟)
+- `nginx TRANSITIONAL` block(rev1 F15 → F29 整個 marker block 機制)
+- rev1 F10 / F10.1 / F10.2 三輪 friction surface(對 nestjs verify 邏輯的 alignment)
+- rev1 F29 cutover(rev2 不需做)
 
 但**仍需建立**(rust-only 的硬前提):
-- redis pub-sub channel `casbin:policy:invalidate`(F5 起即需,即使 v1 單 instance)
-- `sys_tokens` rotation_chain + 舊 token 標 `used`(F13 rust 自簽 refresh JWT)
+- redis pub-sub channel `casbin:policy:invalidate`(rev1 F5 起即需,即使 v1 單 instance)
+- `sys_tokens` rotation_chain + 舊 token 標 `used`(rev1 F13 rust 自簽 refresh JWT)
 - Casbin 動態 policy reload + cached enforcer
 
 ---
@@ -81,7 +81,7 @@ rev2 起點即 DESIGN-B,可直接跳過:
 
 ### 2.1 `INTEGRATION-RESEARCH.md`(rev1 版)
 
-**TL;DR**:研究期最大成果是「三方 GAP 盤點 + 7 個候選方案對比」,確立後端分工策略(rust-only vs rust+nestjs 並用)與 NestJS 補位點清單,為 DESIGN-A/B 奠定事實基礎。
+**TL;DR**:研究期最大成果是「三方 GAP 盤點 + 7 個候選方案對比」,確立後端分工策略(rust-only vs rust+nestjs 並用)與 NestJS 補位點清單,為 rev1 DESIGN-A/B 奠定事實基礎。
 
 **rev2 直接採納的研究結論**:
 
@@ -94,12 +94,12 @@ rev2 起點即 DESIGN-B,可直接跳過:
 **rev2 捨棄的研究內容**(NestJS 相關):
 - nestjs 的 CQRS 模式(rust 直接 service method,無此複雜性)
 - nestjs 的 `PrismaAdapter`(rust 用 `sea-orm-adapter`)
-- 跨服務 JWT 共識設計(DESIGN-B 單後端、JWT 自簽自驗)
-- nestjs 的 refresh token 實作細節(rust 自實作,見 §3 F18/F19/F28)
+- 跨服務 JWT 共識設計(rev1 DESIGN-B 單後端、JWT 自簽自驗)
+- nestjs 的 refresh token 實作細節(rust 自實作,見 §3 rev1 F18/F19/F28)
 
-### 2.2 `INTEGRATION-DESIGN-B-RUST-ONLY.md`(**rev2 的直接權威**)
+### 2.2 rev1 `INTEGRATION-DESIGN-B-RUST-ONLY.md`(**rev2 的直接權威**)
 
-**TL;DR**:rev2 設計權威。繼承 DESIGN-A 的原則框架(RBAC 中心、base 不改、soft delete + audit),但「nestjs 過渡補位」簡化為「rust 全部自實作」。redis pub-sub 升格為 P1 必要基礎設施(F5 起點即支援多 replica 水平擴展)。
+**TL;DR**:rev2 設計權威。繼承 rev1 DESIGN-A 的原則框架(RBAC 中心、base 不改、soft delete + audit),但「nestjs 過渡補位」簡化為「rust 全部自實作」。redis pub-sub 升格為 P1 必要基礎設施(F5 起點即支援多 replica 水平擴展)。
 
 **rev2 的實作指南**:
 
@@ -108,14 +108,14 @@ rev2 起點即 DESIGN-B,可直接跳過:
 
 §3.1 endpoint 分工
   既有對齊:/auth/login, /auth/getUserInfo, /route/*, /user/*, /role/* 等
-  rust 自實作(DESIGN-B v1 新增):/auth/refreshToken
+  rust 自實作(rev1 DESIGN-B v1 新增):/auth/refreshToken
   alias router(10 條):/systemManage/* thin wrapper(重用既有 service)
-  抽離項 stub(F11):sendCaptcha / verifyCaptcha / batchDeleteUser / /auth/error / /mock/getLastTime
+  抽離項 stub(rev1 F11):sendCaptcha / verifyCaptcha / batchDeleteUser / /auth/error / /mock/getLastTime
 
-§3.2 資源管理(DESIGN-B 簡化版)
+§3.2 資源管理(rev1 DESIGN-B 簡化版)
   JWT secret:單一 envvar,rust 內部管理
   sys_tokens 表:rust 主寫主讀,refresh 時 rotation_chain 記錄、舊 token 標 used
-  Casbin policy:rust 主寫主讀 + redis pub-sub channel "casbin:policy:invalidate" 必要(DESIGN-B v1 即支援水平擴展,非可選延遲)
+  Casbin policy:rust 主寫主讀 + redis pub-sub channel "casbin:policy:invalidate" 必要(rev1 DESIGN-B v1 即支援水平擴展,非可選延遲)
   sys_operation_log:全域 audit,rust 同 transaction 寫
 
 §4.1 GAP 拍板
@@ -124,12 +124,12 @@ rev2 起點即 DESIGN-B,可直接跳過:
   B4:rust 自實作 refresh token rotation(取代 nestjs 補位)
 
 §6.1 feature 優先序
-  P1 基礎設施(F1–F4):JWT / audit / soft-delete / response-shape(任一順序)
-  P2 認證 + 動態 menu(F5–F6):login / getUserInfo / route + redis pub-sub channel
-  P3 主流業務(F7–F9):manage CRUD + assign-users + alias router
-  P4 補位(F10–F12):rust-refresh-token / stubs / cleanup-job
+  P1 基礎設施(rev1 F1–F4):JWT / audit / soft-delete / response-shape(任一順序)
+  P2 認證 + 動態 menu(rev1 F5–F6):login / getUserInfo / route + redis pub-sub channel
+  P3 主流業務(rev1 F7–F9):manage CRUD + assign-users + alias router
+  P4 補位(rev1 F10–F12):rust-refresh-token / stubs / cleanup-job
 
-§7 全功能驗證:DESIGN-B 已於 2026-05-22 落地並完整驗證(D-1 ~ D-16 16 項測試案全 PASS)
+§7 全功能驗證:rev1 DESIGN-B 已於 2026-05-22 落地並完整驗證(D-1 ~ D-16 16 項測試案全 PASS)
 ```
 
 ### 2.3 `INTEGRATION-DESIGN-W-BASE-WEB.md`(受管例外三軌)
@@ -140,7 +140,7 @@ rev2 起點即 DESIGN-B,可直接跳過:
 
 1. **§1.2 軌道辨識義務**:rev2 新 feature 若改 base-web,必須在 spec-kit `plan.md` 明示屬哪條軌道,否則違 Constitution。
 
-2. **W-WEBUI 軌道**(`src/views/manage/*`, `src/service/api/system-manage.ts` 的 CRUD 接線 + 授權 modal):
+2. **rev1 W-WEBUI 軌道**(`src/views/manage/*`, `src/service/api/system-manage.ts` 的 CRUD 接線 + 授權 modal):
    - 不准動:`src/typings/`、表格 render、router、store、i18n、`.env` 設定
    - 修改授權:W-FW1–W-FW9 共 9 個 feature(rev1 編號 031–038 + 040),已於 2026-05-23 全部交付
    - v1.2.0 amendment 授權「為接通既有後端能力所必需的最小 UI 新增」(如密碼欄),但仍禁版面重構
@@ -149,20 +149,20 @@ rev2 起點即 DESIGN-B,可直接跳過:
 
 4. **TS-DepGraph-Hygiene 軌道**:build/dep config(Dockerfile / package.json / pnpm-workspace.yaml)清潔。rev1 於 049 落地完成(直接 devDeps 提升、nodeLinker strict isolation、packageManager pin)。
 
-### 2.4 `INTEGRATION-DESIGN-A-RUST-NESTJS.md`(歷史脈絡)
+### 2.4 rev1 `INTEGRATION-DESIGN-A-RUST-NESTJS.md`(歷史脈絡)
 
 **TL;DR**:rev1 過渡期設計,rev2 不採用。仍保留設計理由作為歷史脈絡:
 
-- nestjs 補位 `POST /api/auth/refreshToken`(F10),前提是「不動 nestjs source」
+- nestjs 補位 `POST /api/auth/refreshToken`(rev1 F10),前提是「不動 nestjs source」
 - 跨服務 JWT 共識:rust 簽 refresh JWT(HS256 + refresh_secret 獨立),nestjs `jwtService.verifyAsync` 驗證
-- TokenStatus enum 字串對齊:rust SCREAMING_SNAKE → snake_case 對齊 nestjs(F10.2)
-- 完成於 F14 cutover 退場
+- TokenStatus enum 字串對齊:rust SCREAMING_SNAKE → snake_case 對齊 nestjs(rev1 F10.2)
+- 完成於 rev1 F14 cutover 退場
 
-**rev2 應觀察的**:DESIGN-A 的 nestjs friction 證明「跨服務協作」會 surface 至少 2 輪 alignment(F10.1 + F10.2),rev2 走 rust-only 直接省掉這層 friction。
+**rev2 應觀察的**:rev1 DESIGN-A 的 nestjs friction 證明「跨服務協作」會 surface 至少 2 輪 alignment(F10.1 + F10.2),rev2 走 rust-only 直接省掉這層 friction。
 
-### 2.5 `INTEGRATION-DESIGN-W-DEPLOYMENT.md`(部署設計)
+### 2.5 rev1 `INTEGRATION-DESIGN-W-DEPLOYMENT.md`(部署設計)
 
-**TL;DR**:容器化部署的具體設計方案,統合 DESIGN-A/B 兩軌與 dev/staging/prod 三環境。rev2 主要繼承 §1.x(部署原則)與 §2(Dockerfile)。
+**TL;DR**:容器化部署的具體設計方案,統合 rev1 DESIGN-A/B 兩軌與 dev/staging/prod 三環境。rev2 主要繼承 §1.x(部署原則)與 §2(Dockerfile)。
 
 **rev2 直接繼承**:
 
@@ -184,8 +184,8 @@ rev2 起點即 DESIGN-B,可直接跳過:
 
 2. **Follow-up Backlog**:
    - 條件觸發 4 條(042-N4 audit latency / 042-N5 dev multi-replica / 048-N1(d) pnpm upgrade / 050-N1 cleanup-binary `SECRET_FILE` pattern)
-   - 長期 3 段(F1.2 JWT key versioning、W-F6b acme.sh 真實 cert、W-F15/16 backup+DR)
-   - W-WEBUI-INIT-DEFENSE(base-web refresh token stale localStorage 防御)
+   - 長期 3 段(rev1 F1.2 JWT key versioning、W-F6b acme.sh 真實 cert、W-F15/16 backup+DR)
+   - rev1 W-WEBUI-INIT-DEFENSE(base-web refresh token stale localStorage 防御)
 
 3. **測試規範 C-V(contract-verification)**:編號與驗收方法(curl + psql + CDP browser)已設立,rev2 可沿用。
 
@@ -215,185 +215,185 @@ rev1 累積 30 份 feature 持久記憶,rev2 繼承分類:
 
 | 分類 | 數量 | feature 編號 |
 |---|---|---|
-| `[CARRY]` 直接適用 rev2 | 21 | 001, 002, 003, 004, 005, 006, 007, 011, 012, 013, 020, 021, 022, 025, 026, 027, 028, 030 + 延伸 |
-| `[REFERENCE]` 概念適用、細節不同 | 4 | 018, 019, 023, 024 |
-| `[REV1-ONLY]` NestJS / cutover 專屬 | 5 | 014, 015, 016, 017, 029 |
+| `[CARRY]` 直接適用 rev2 | 21 | rev1 001, 002, 003, 004, 005, 006, 007, 011, 012, 013, 020, 021, 022, 025, 026, 027, 028, 030 + 延伸 |
+| `[REFERENCE]` 概念適用、細節不同 | 4 | rev1 018, 019, 023, 024 |
+| `[REV1-ONLY]` NestJS / cutover 專屬 | 5 | rev1 014, 015, 016, 017, 029 |
 
-### 3.2 feature 紀要(P1 基礎設施 — F001~F004)
+### 3.2 feature 紀要(P1 基礎設施 — rev1 F001~F004)
 
 #### 001 — response-shape-alignment `[CARRY]`
 - **描述**:rust admin endpoint 全 response shape(code / data / msg / ~~success~~)+ camelCase 序列化(`refresh_token` → `refreshToken`)對齊 base 期望
-- **教訓**:① DTO 層級 `rename_all = "camelCase"` 優於 per-field rename;② F4 envelope 是後續所有 API 層的基礎;③ nested struct 各自需 rename_all(**不遞迴**);④ collection 欄位用 `Vec<T>` 不用 `Option<Vec<T>>`(統一空 `[]`)
+- **教訓**:① DTO 層級 `rename_all = "camelCase"` 優於 per-field rename;② rev1 F4 envelope 是後續所有 API 層的基礎;③ nested struct 各自需 rename_all(**不遞迴**);④ collection 欄位用 `Vec<T>` 不用 `Option<Vec<T>>`(統一空 `[]`)
 - **對 rev2**:回應形狀設計直接沿用、無 nestjs layer 故不需 bridge 相容
   - ⚠️ **2026-05-27 修正(audit §4.1 + [followup §1.2](INTEGRATION-RESEARCH-FOLLOWUP.md))**:rev1 envelope 含 `success` bool,但 mock 實機 capture 確認 **無 `success`**,envelope = `{data, code, msg}`;`code` 是 string `"0000"`(非 number)。rev2 對齊 mock,**拿掉 `success`** + `code` 用 string。
 - **踩雷**:「rename_all 不遞迴」是常見誤解,多個 nested struct 需逐層檢查
 
-#### 002 — soft-delete-infrastructure `[CARRY]`
+#### rev1 002 — soft-delete-infrastructure `[CARRY]`
 - **描述**:7 個業務 entity(user/role/menu 等)從物理刪除改軟刪,加 `deleted_at` column + partial unique index
 - **教訓**:① `soft_delete` trait + facade module 必須 **atomic 交付**(單獨改 schema 沒 facade 仍可硬刪);② CI lint 守護 entity 直接 import(`grep` 禁 `use entities::sys_user`);③ Casbin orphan 不動 join row、靠 `find_active` 自然掩蔽
 - **對 rev2**:軟刪設計完全適用,facade 模式 best practice
 - **踩雷**:`ActiveModel.delete()` API 仍可繞過 facade,需**三重防護**(類型系統 + facade + CI lint)
 
-#### 003 — audit-log-infrastructure `[CARRY]`
+#### rev1 003 — audit-log-infrastructure `[CARRY]`
 - **描述**:INSERT / UPDATE / SOFT_DELETE / RESTORE 路徑統一走 single audit context、`AuditEvent` + `AuditSerialize` trait、敏感欄位 redact(password)
 - **教訓**:① schema 升級 4 欄(operation enum / entity_id / payload_before / payload_after JSONB)必須與 service migration 同期;② redaction shallow-only(top-level 替換 `"<redacted>"`);③ HTTP middleware 與 service-level audit 可雙寫、無需去重;④ migration 用 `DEFAULT 'LEGACY'` 相容既有行
 - **對 rev2**:audit 紀律是 Principle II 核心,全套直接繼承
 - **踩雷**:payload JSONB 對 flat admin entity 足夠,nested 敏感結構需遞迴 redact(未來課題)
 
-#### 004 — jwt-secrets `[CARRY]`
-- **描述**:F1.1 — strict validation(fail-fast empty/placeholder/length<32)+ `_FILE` pattern + `application.yaml` placeholder
-- **教訓**:① `validate_jwt_secret()` boot-time panic、無 dev/prod 分支;② `_FILE` precedence over bare envvar;③ `PLACEHOLDER_SECRETS` 黑名單 6 個值;④ `Claims` 11 fields 不改(forward compat 留給 F1.2 / F10 加字段)
+#### rev1 004 — jwt-secrets `[CARRY]`
+- **描述**:rev1 F1.1 — strict validation(fail-fast empty/placeholder/length<32)+ `_FILE` pattern + `application.yaml` placeholder
+- **教訓**:① `validate_jwt_secret()` boot-time panic、無 dev/prod 分支;② `_FILE` precedence over bare envvar;③ `PLACEHOLDER_SECRETS` 黑名單 6 個值;④ `Claims` 11 fields 不改(forward compat 留給 rev1 F1.2 / F10 加字段)
 - **對 rev2**:secret 載入機制直接適用,Docker `_FILE` 模式對 rev2 至關重要
 - **踩雷**:「`_FILE` 讀失敗仍需驗證 placeholder」,二重驗證缺一不可
 
-### 3.3 feature 紀要(P2 認證 + 動態 menu — F005~F006)
+### 3.3 feature 紀要(P2 認證 + 動態 menu — rev1 F005~F006)
 
 #### 005 — auth-login-and-dynamic-menu `[CARRY]`
-- **描述**:F5.1 P2 解鎖 — `/auth/login` + `/auth/getUserInfo` + `/route/getUserRoutes` 4 endpoint 整合 e2e
-- **教訓**:① endpoint path align(`/auth/getUserRoutes` → `/route/getUserRoutes`);② Casbin enforce 首次啟用、policy seed 必完整;③ login flow 跨 F1.1 / F2.1 / F3 / F4 四基建;④ TreeBuilder 邏輯 + UserRoute nested 結構需深測
+- **描述**:rev1 F5.1 P2 解鎖 — `/auth/login` + `/auth/getUserInfo` + `/route/getUserRoutes` 4 endpoint 整合 e2e
+- **教訓**:① endpoint path align(`/auth/getUserRoutes` → `/route/getUserRoutes`);② Casbin enforce 首次啟用、policy seed 必完整;③ login flow 跨 rev1 F1.1 / F2.1 / F3 / F4 四基建;④ TreeBuilder 邏輯 + UserRoute nested 結構需深測
 - **對 rev2**:auth 整套流程是 rev2 MVP 必須路徑,無 nestjs 簡化了 bridge 邏輯
 - **踩雷**:「Casbin enforce enable 無 policy seed」會整個 flow reject,acceptance test 必須包含 seed 完整驗證
 
 #### 013 — route-guard `[CARRY]`
-- **描述**:F6 P2 — `GET /route/isRouteExist?routeName=<name>` endpoint、全域存在性(sys_menu active+enabled),與 user role 無關
+- **描述**:rev1 F6 P2 — `GET /route/isRouteExist?routeName=<name>` endpoint、全域存在性(sys_menu active+enabled),與 user role 無關
 - **教訓**:① 全域存在性 vs user-specific 可訪問性(getUserRoutes)必須區分;② protected endpoint(token-required)但無 Casbin policy(所有 role 可查避免 overengineer);③ handle soft-delete + status filter 必須同時檢查;④ base-web 零改動(既有 wiring 已對齊)
 - **對 rev2**:guard 邏輯適用
 - **踩雷**:「Casbin policy 的有無」會影響 UX(無 policy 避免退化 403 → 404)
 
-### 3.4 feature 紀要(部署 — F006/F007/F011/F012/W-F11)
+### 3.4 feature 紀要(部署 — rev1 F006/F007/F011/F012/W-F11)
 
-#### 006 — dockerfile-rust-api `[CARRY]`
-- **描述**:W-F1 部署起點 — `rust:1.86-slim-bookworm` builder + `debian:bookworm-slim` runtime、2 binary(server + migration)、加 `/health` endpoint
+#### rev1 006 — dockerfile-rust-api `[CARRY]`
+- **描述**:rev1 W-F1 部署起點 — `rust:1.86-slim-bookworm` builder + `debian:bookworm-slim` runtime、2 binary(server + migration)、加 `/health` endpoint
 - **教訓**:① multi-stage build 必須考慮 runtime deps(libssl3 / curl / tzdata);② BuildKit cache mount(`/usr/local/cargo/*` + `/app/target`)加速增量 build;③ non-root user 統一(uid 10001 rust-api);④ `/health` 不走 auth middleware,plain text `"ok"` 回
 - **對 rev2**:image 構建流程直接沿用
 - **踩雷**:「musl → glibc 切換」需重驗,某些 crate 可能相容性問題(但 rev1 已驗)
 
-#### 007 — dockerfile-base-web `[CARRY]`
-- **描述**:W-F2 — `node:22-slim` builder(pnpm corepack) + `nginx:1.27-alpine` runtime、Vite build with `ARG` override、`/health` location
+#### rev1 007 — dockerfile-base-web `[CARRY]`
+- **描述**:rev1 W-F2 — `node:22-slim` builder(pnpm corepack) + `nginx:1.27-alpine` runtime、Vite build with `ARG` override、`/health` location
 - **教訓**:① deps-first COPY layer + BuildKit cache mount(`/root/.local/share/pnpm/store`)→ 第二次 build < 30s;② `VITE_SERVICE_BASE_URL` build-arg 注入(避免動 `.env.prod`);③ nginx config 為 SPA fallback(`try_files $uri $uri/ /index.html`);④ assets 30d cache + index.html no-cache
 - **對 rev2**:SPA 部署完全沿用
 - **踩雷**:「pnpm install 在 builder 慢」是已知代價,接受 5–10 min first build
 
-#### 011 — port-mapping `[CARRY]`
-- **描述**:W-F7 dev 環境 — `docker-compose.dev.yml` 拆檔、host port 4 個全綁 `127.0.0.1`(dev/prod 顯式切換)
+#### rev1 011 — port-mapping `[CARRY]`
+- **描述**:rev1 W-F7 dev 環境 — `docker-compose.dev.yml` 拆檔、host port 4 個全綁 `127.0.0.1`(dev/prod 顯式切換)
 - **教訓**:① 拆檔模式(主 compose 不動,`-f -f` 手動加載)是「prod safe by default」紀律;② `127.0.0.1` loopback binding 避 LAN 暴露(prod 切 `0.0.0.0`);③ 1XXXX prefix 避開 fork260509 port
 - **對 rev2**:dev/prod 配置切換模式完全適用(rev2 改 2XXXX prefix)
 - **踩雷**:「`docker-compose.override.yml` auto-load」危險(會誤暴露 prod),必須手動 `-f` 選擇
 
-#### 012 — tls-cert-management `[CARRY]`
-- **描述**:W-F6 TLS 終止 — dev 自簽 openssl + prod acme.sh skeleton、nginx 443 server block、80 redirect-only(prod)vs serve(dev)
+#### rev1 012 — tls-cert-management `[CARRY]`
+- **描述**:rev1 W-F6 TLS 終止 — dev 自簽 openssl + prod acme.sh skeleton、nginx 443 server block、80 redirect-only(prod)vs serve(dev)
 - **教訓**:① dev/prod 兩份 nginx config(`default.conf` + `default.conf.prod`),443 段完全相同避 DRY;② dev cert SAN 需同時含 `DNS:localhost + IP:127.0.0.1`;③ acme service `profile=prod` 預設不啟;④ 主 compose 加對外 port(`0.0.0.0:11080/11443`)
 - **對 rev2**:TLS 策略直接沿用,`generate-dev-cert.sh` 指令碼複製即可
 - **踩雷**:「volume mount 衝突」需驗證(同 path 兩個 source 的 merge 行為)
 
 #### 026 — rust-horizontal-scaling `[CARRY]`
-- **描述**:W-F11 補 rust 水平擴展 — Casbin redis pub-sub channel(`casbin:policy:invalidate`) + docker-compose replicas + nginx upstream resolve
-- **教訓**:① Q2 拍板「一次包到底」(pub-sub + replica + nginx)而非分拆,因 pub-sub 是「硬前提」;② Q5 拍板「pub-sub 永遠啟用、不靠環境分支」為一致性優先;③ roadmap doc 矛盾(W-F11 mislabel observability)於 brainstorm 階段 catch
+- **描述**:rev1 W-F11 補 rust 水平擴展 — Casbin redis pub-sub channel(`casbin:policy:invalidate`) + docker-compose replicas + nginx upstream resolve
+- **教訓**:① Q2 拍板「一次包到底」(pub-sub + replica + nginx)而非分拆,因 pub-sub 是「硬前提」;② Q5 拍板「pub-sub 永遠啟用、不靠環境分支」為一致性優先;③ roadmap doc 矛盾(rev1 W-F11 mislabel observability)於 brainstorm 階段 catch
 - **對 rev2**:Casbin redis pub-sub 機制完整可沿用;**v1 即啟用 pub-sub channel**,即使只單 instance,亦不留環境分支
 - **踩雷**:roadmap inconsistency 發現為 doc 維護優先度提示
 
 #### 027 — cleanup-job `[CARRY]`
-- **描述**:F12 一次性 cron job 物理刪除過期軟刪 row(`deleted_at < retention`)、dry-run 預設、`--execute` 才真刪、獨立最小權限 credential
-- **教訓**:① Q1 拍板「local shell script + host cron」為個人 workspace 簡約選擇;② Q4 拍板「文件化 psql setup」避開 migration 無法建 role 的雞生蛋;③ F12 pattern「dry-run 為預設」為風險管理防呆設計
+- **描述**:rev1 F12 一次性 cron job 物理刪除過期軟刪 row(`deleted_at < retention`)、dry-run 預設、`--execute` 才真刪、獨立最小權限 credential
+- **教訓**:① Q1 拍板「local shell script + host cron」為個人 workspace 簡約選擇;② Q4 拍板「文件化 psql setup」避開 migration 無法建 role 的雞生蛋;③ rev1 F12 pattern「dry-run 為預設」為風險管理防呆設計
 - **對 rev2**:soft-delete 生命週期清理機制直接沿用(per-row txn + audit 同 txn);獨立 credential 最小權限模式參考
-- **踩雷**:Q2「不碰 casbin_rule orphan cleanup」為 spec drift 對稱(F12 明寫無 casbin、則不碰)
+- **踩雷**:Q2「不碰 casbin_rule orphan cleanup」為 spec drift 對稱(rev1 F12 明寫無 casbin、則不碰)
 
-### 3.5 feature 紀要(NestJS bridge 系列 — F014~F017,**rev2 不採用**)
+### 3.5 feature 紀要(NestJS bridge 系列 — rev1 F014~F017,**rev2 不採用**)
 
 #### 014 — compose-nestjs-service `[REV1-ONLY]`
 - **描述**:把 nestjs service 加進 rev1 docker-compose stack(`profile=track-a`),共享 postgres + redis,JWT secret 透過 `_FILE` pattern 共享
 - **教訓**:Q2-4 拍板「不動 nestjs fork source + 不跑 prisma migrate + entrypoint wrapper bridge `_FILE` secret」為跨版本約束設計典範
-- **對 rev2**:W-FA1 整套無用,但「沿用 fork 既有 Dockerfile + 不動 fork source」的約束思維 rev2 仍適用
-- **踩雷**:OQ-1 nestjs prisma lazy-init 與 sys_tokens schema 對齊的 stack-不可見問題,留 F10 debug
+- **對 rev2**:rev1 W-FA1 整套無用,但「沿用 fork 既有 Dockerfile + 不動 fork source」的約束思維 rev2 仍適用
+- **踩雷**:OQ-1 nestjs prisma lazy-init 與 sys_tokens schema 對齊的 stack-不可見問題,留 rev1 F10 debug
 
 #### 015 — nginx-track-a-transitional-block `[REV1-ONLY]`
-- **描述**:補 `POST /api/auth/refreshToken` nginx 反代到 nestjs upstream,用 inline `TRANSITIONAL` marker block + variable proxy_pass + resolver 讓 DESIGN-B 退場時可機械整段刪
-- **教訓**:Q2 拍板「variable proxy_pass + lazy DNS」而非「upstream block + profile-aware volume」大幅簡化 operator UX;marker convention `>>>>> TRANSITIONAL BEGIN/END` 直接服務 F14 cutover 的 `sed` 刪除
+- **描述**:補 `POST /api/auth/refreshToken` nginx 反代到 nestjs upstream,用 inline `TRANSITIONAL` marker block + variable proxy_pass + resolver 讓 rev1 DESIGN-B 退場時可機械整段刪
+- **教訓**:Q2 拍板「variable proxy_pass + lazy DNS」而非「upstream block + profile-aware volume」大幅簡化 operator UX;marker convention `>>>>> TRANSITIONAL BEGIN/END` 直接服務 rev1 F14 cutover 的 `sed` 刪除
 - **對 rev2**:無用
 - **踩雷**:DESIGN-W §4.3 草稿漏 `/v1` prefix 與錯誤 port 3000,實作對齊現實(port 9528 + `/v1/auth/refreshToken`)
 
 #### 016 — cicd-nestjs-build-job `[REV1-ONLY]`
-- **描述**:抽象 W-FA1 nestjs image build cmd 成 local shell script,內建 `NODE_VERSION` build-arg + image size feedback
+- **描述**:抽象 rev1 W-FA1 nestjs image build cmd 成 local shell script,內建 `NODE_VERSION` build-arg + image size feedback
 - **教訓**:Q1 拍板「local script 無 CI 平台」為個人 workspace v1 務實選擇;NFR-001「≤ 30 行」確保簡潔
 - **對 rev2**:無用
 - **踩雷**:實際 image 870MB 超 NFR-001 SHOULD ≤500MB,但未來退場故不投資優化
 
 #### 017 — refresh-token-nestjs-bridge `[REV1-ONLY]`
-- **描述**:F10 端點驗證 e2e refreshToken flow(rust login → nestjs `/api/auth/refreshToken` → 新 token pair),DB 準據(sys_tokens 雙端讀寫對齊)
-- **教訓**:Q2「不動 nestjs source」延伸 DESIGN-A §3.2;Q3「friction 只改 rust 遷就 nestjs」為跨服務協作的關鍵取捨;R-8 / R-7 為 F10.1 / F10.2 拆分根據
+- **描述**:rev1 F10 端點驗證 e2e refreshToken flow(rust login → nestjs `/api/auth/refreshToken` → 新 token pair),DB 準據(sys_tokens 雙端讀寫對齊)
+- **教訓**:Q2「不動 nestjs source」延伸 rev1 DESIGN-A §3.2;Q3「friction 只改 rust 遷就 nestjs」為跨服務協作的關鍵取捨;R-8 / R-7 為 F10.1 / F10.2 拆分根據
 - **對 rev2**:無用
 - **踩雷**:R-8 / R-7 friction 明確於 brainstorm 階段預判,為後續拆分 feature 奠基
 
-### 3.6 feature 紀要(refresh token + 對齊 — F018~F019)
+### 3.6 feature 紀要(refresh token + 對齊 — rev1 F018~F019)
 
 #### 018 — rust-jwt-refresh-token-signing `[REFERENCE]`
-- **描述**:F10.1 修 R-8 — rust 改簽 `refresh_token` 為 HS256 JWT(`RefreshClaims`)以通過 nestjs `jwtService.verifyAsync`
+- **描述**:rev1 F10.1 修 R-8 — rust 改簽 `refresh_token` 為 HS256 JWT(`RefreshClaims`)以通過 nestjs `jwtService.verifyAsync`
 - **教訓**:N-1 拍板「refresh_secret 獨立分離」為 JWT security best practice;兩段式 commit(rust worktree + outer spec)規模適中;R-7 surface 證實「acceptance 階段 catch new friction」模式
 - **對 rev2**:rust JWT 簽署基礎設施可參考(secret 分離、`generate_refresh_token` 函式),但「對齊 nestjs」工作 rev2 無對象
-- **踩雷**:N-7「R-7 仍 surface」預言自驗實現,為 F10.2 準備
+- **踩雷**:N-7「R-7 仍 surface」預言自驗實現,為 rev1 F10.2 準備
 
 #### 019 — rust-tokenstatus-string-align `[REFERENCE]`
-- **描述**:F10.2 修 R-7 — rust `TokenStatus` enum serialize 從 SCREAMING_SNAKE 改 snake_case(`Active → "unused"` / `Refreshed → "used"`)以對齊 nestjs
-- **教訓**:Q2 拍板「`strum serialize_all="snake_case"` + per-variant override」極簡;Q3 拍板「不動既有 migration、acceptance 重 login」為軟體化債對稱邏輯;F10.2 precedent「純函式 mapping + 1 個 unit test」為日後 F7.2 模板
+- **描述**:rev1 F10.2 修 R-7 — rust `TokenStatus` enum serialize 從 SCREAMING_SNAKE 改 snake_case(`Active → "unused"` / `Refreshed → "used"`)以對齊 nestjs
+- **教訓**:Q2 拍板「`strum serialize_all="snake_case"` + per-variant override」極簡;Q3 拍板「不動既有 migration、acceptance 重 login」為軟體化債對稱邏輯;rev1 F10.2 precedent「純函式 mapping + 1 個 unit test」為日後 F7.2 模板
 - **對 rev2**:enum string 對齊機制可參考(per-variant override),但具體 TokenStatus 對 rev2 無意義(rev2 自訂 status enum,不需對齊 nestjs)
 - **踩雷**:R-2「未涵蓋的 consumer」grep 驗證,R-5「is_valid / can_refresh 邏輯維持」自驗確認
 
-### 3.7 feature 紀要(systemManage 系列 — F020~F022)
+### 3.7 feature 紀要(systemManage 系列 — rev1 F020~F022)
 
 #### 020 — extracted-stubs `[CARRY]`
-- **描述**:F11 補 4 條抽離項 stub endpoint(`/auth/sendCaptcha` / `/auth/verifyCaptcha` / `/auth/error` / `/mock/getLastTime`)+ 8 row Casbin policy seed(ROLE_SUPER / ADMIN allow)
-- **教訓**:Q1「sendCaptcha 完整、auth_error / getLastTime stub」為最小可用;Q4「3 role × 4 endpoint = 5 curl」為緊湊 acceptance;F11 pattern「純 wiring、無 unit test、curl + psql」為後續標配
+- **描述**:rev1 F11 補 4 條抽離項 stub endpoint(`/auth/sendCaptcha` / `/auth/verifyCaptcha` / `/auth/error` / `/mock/getLastTime`)+ 8 row Casbin policy seed(ROLE_SUPER / ADMIN allow)
+- **教訓**:Q1「sendCaptcha 完整、auth_error / getLastTime stub」為最小可用;Q4「3 role × 4 endpoint = 5 curl」為緊湊 acceptance;rev1 F11 pattern「純 wiring、無 unit test、curl + psql」為後續標配
 - **對 rev2**:抽離項機制概念適用(stub → real 漸進演進),具體 4 條 endpoint 在 rust-only 下可留或升
 - **踩雷**:Q3「handler 進階設計(validation / audit)不加」為 stub 定義的 v1 約束
 
 #### 021 — systemManage-alias-router `[CARRY]`
-- **描述**:F9 補最後 1 條 `batchDeleteUser` stub + 9 條 alias router(重用或變形既有 user / role / menu handler)+ 20 row Casbin policy seed
-- **教訓**:Q1 拍板「getAllRoles 完整、getAllPages 簡 SQL」為「最簡實作」哲學(非全 stub);Q4「wrapper handler 加 api、route 集中新檔」為文件組織平衡;R-Q5 / R-Q6(v4='' baseline + deny envelope wrap)來自 F11 implement-time finding 沿用
+- **描述**:rev1 F9 補最後 1 條 `batchDeleteUser` stub + 9 條 alias router(重用或變形既有 user / role / menu handler)+ 20 row Casbin policy seed
+- **教訓**:Q1 拍板「getAllRoles 完整、getAllPages 簡 SQL」為「最簡實作」哲學(非全 stub);Q4「wrapper handler 加 api、route 集中新檔」為文件組織平衡;R-Q5 / R-Q6(v4='' baseline + deny envelope wrap)來自 rev1 F11 implement-time finding 沿用
 - **對 rev2**:10 條 systemManage alias 的業務邏輯適用,實作細節涉及 nest 層級可簡化
-- **踩雷**:F9 R-Q3「batchDeleteUser 永遠 200 + `{deletedCount: N}`」為 partial-success pragmatism
+- **踩雷**:rev1 F9 R-Q3「batchDeleteUser 永遠 200 + `{deletedCount: N}`」為 partial-success pragmatism
 
 #### 022 — manage-crud-alignment `[CARRY]`
-- **描述**:F7 對齊 base-web 表列的 5 條讀 endpoint,加 shape mapping Output DTO + camelCase rename,補 ROLE_ADMIN 的 Casbin policy(15 row)
-- **教訓**:Q1「read-only path + endpoint shape 對齊」為 Constitution IV 下的可行邊界;Q2「最小 mapping、缺 column hardcode」為「後端適應 base」策略;F7 shape mapping pattern(`Output DTO` + `From` impl)為 DESIGN-B form-shaping 基礎
+- **描述**:rev1 F7 對齊 base-web 表列的 5 條讀 endpoint,加 shape mapping Output DTO + camelCase rename,補 ROLE_ADMIN 的 Casbin policy(15 row)
+- **教訓**:Q1「read-only path + endpoint shape 對齊」為 Constitution IV 下的可行邊界;Q2「最小 mapping、缺 column hardcode」為「後端適應 base」策略;rev1 F7 shape mapping pattern(`Output DTO` + `From` impl)為 DESIGN-B form-shaping 基礎
 - **對 rev2**:Output DTO shape mapping 機制直接適用(camelCase + missing field hardcode);Casbin 補 ROLE_ADMIN allow 邏輯沿用
-- **踩雷**:F7 R-Q4「base-web view-load CDP smoke test」選項提升為 mandatory verification 層級
+- **踩雷**:rev1 F7 R-Q4「base-web view-load CDP smoke test」選項提升為 mandatory verification 層級
 
-### 3.8 feature 紀要(後續修正 + assign — F023~F025)
+### 3.8 feature 紀要(後續修正 + assign — rev1 F023~F025)
 
 #### 023 — fix-route-getuserroutes-wiring `[REFERENCE]`
-- **描述**:F7.1 follow-up — 修 F5.1 wiring bug(缺 `SysAuthService` extension) + F7 menu paginated wrapper shape 對齊
-- **教訓**:Q1「2 fix bundle」共用 commit/acceptance;Q3「3 fix 全包 vs 只 F5.1 vs 拆」中選「最窄」為設計風規;「acceptance 階段 catch + spec 收為新 feature」的 modal pattern 確立
-- **對 rev2**:F5.1 wiring fix 機制(manual layer pattern adding `Arc<SysAuthService>`)在 rust-only 版仍適用;menu paginated wrapper 概念參考
-- **踩雷**:F7.1 R-Q-AT1「SPA static mode 無 null-guard」基於誤查,後續 CDP 驗證時發現 null-guard 存在,促發 F7.2 scope 精化
+- **描述**:rev1 F7.1 follow-up — 修 F5.1 wiring bug(缺 `SysAuthService` extension) + F7 menu paginated wrapper shape 對齊
+- **教訓**:Q1「2 fix bundle」共用 commit/acceptance;Q3「3 fix 全包 vs 只 rev1 F5.1 vs 拆」中選「最窄」為設計風規;「acceptance 階段 catch + spec 收為新 feature」的 modal pattern 確立
+- **對 rev2**:rev1 F5.1 wiring fix 機制(manual layer pattern adding `Arc<SysAuthService>`)在 rust-only 版仍適用;menu paginated wrapper 概念參考
+- **踩雷**:rev1 F7.1 R-Q-AT1「SPA static mode 無 null-guard」基於誤查,後續 CDP 驗證時發現 null-guard 存在,促發 F7.2 scope 精化
 
 #### 024 — role-code-alignment `[REFERENCE]`
-- **描述**:F7.2 應對 F7.1 發現的 `R_SUPER` vs `ROLE_SUPER` 字串不符,加 getUserInfo response 層 role code 映射 helper
-- **教訓**:Approach A「rust response-layer mapping」為「後端適應 base 預期」純粹實踐;role code 映射為純函式(3-entry match、未知 pass-through)為 explicit contract;與 F10.2 同級「minimal + 1 unit test」precedent
+- **描述**:rev1 F7.2 應對 F7.1 發現的 `R_SUPER` vs `ROLE_SUPER` 字串不符,加 getUserInfo response 層 role code 映射 helper
+- **教訓**:Approach A「rust response-layer mapping」為「後端適應 base 預期」純粹實踐;role code 映射為純函式(3-entry match、未知 pass-through)為 explicit contract;與 rev1 F10.2 同級「minimal + 1 unit test」precedent
 - **對 rev2**:role 字串展示映射在 response 邊界為整體 shape-adaption 策略一部分,直接參考
 - **踩雷**:Q1「不動 base-web `.env`」確保 Constitution IV,縮小 scope
 
 #### 025 — assign-users `[CARRY]`
-- **描述**:F8 交付 `/authorization/assign-users` 後端 endpoint,接 `AssignUserDto` + 既有 service method,新 Casbin seed(ROLE_SUPER-only)
-- **教訓**:Q2「寫 join table、不寫 Casbin g rule」因「login `get_user_roles` 讀 join」的實作現況;Q3「ROLE_SUPER-only」為 assign-permission / assign-routes 家族一致性;set-semantics(整組覆蓋)的 capture → assign → verify → restore pattern 為 soft-delete-then-restore 紀律的演伸
+- **描述**:rev1 F8 交付 `/authorization/assign-users` 後端 endpoint,接 `AssignUserDto` + 既有 service method,新 Casbin seed(ROLE_SUPER-only)
+- **教訓**:Q2「寫 join table、不寫 Casbin g rule」因「login `get_user_roles` 讀 join」的實作現況;Q3「rev1 ROLE_SUPER-only」為 assign-permission / assign-routes 家族一致性;set-semantics(整組覆蓋)的 capture → assign → verify → restore pattern 為 soft-delete-then-restore 紀律的演伸
 - **對 rev2**:user-role 關聯機制(join table 為權威源)沿用;Casbin seed pattern 參考
 - **踩雷**:Q2「寫 join table vs Casbin g rule」為跨服務 schema 選擇的原則分析
 
-### 3.9 feature 紀要(rust refresh token + cutover + status — F028~F030)
+### 3.9 feature 紀要(rust refresh token + cutover + status — rev1 F028~F030)
 
 #### 028 — rust-refresh-token-impl `[CARRY]`
-- **描述**:F13 rust 補實作 `/auth/refreshToken` endpoint(驗 refresh JWT + DB 查詢 + 輪替核發新 token + 舊 token 標 `used`)
-- **教訓**:Q1「完整輪替、舊 token 標 used」對齊 nestjs(非 DESIGN-A 文字的 `revoked`);Q3「refresh 時重查 user 當下狀態」為身份準時性原則;「複用 login 既有 building block」為程式複用最小化模式
-- **對 rev2**:rust refresh token 端點實作為 core 功能,直接沿用(F13 已是 DESIGN-B 形態)
+- **描述**:rev1 F13 rust 補實作 `/auth/refreshToken` endpoint(驗 refresh JWT + DB 查詢 + 輪替核發新 token + 舊 token 標 `used`)
+- **教訓**:Q1「完整輪替、舊 token 標 used」對齊 nestjs(非 rev1 DESIGN-A 文字的 `revoked`);Q3「refresh 時重查 user 當下狀態」為身份準時性原則;「複用 login 既有 building block」為程式複用最小化模式
+- **對 rev2**:rust refresh token 端點實作為 core 功能,直接沿用(rev1 F13 已是 DESIGN-B 形態)
 - **踩雷**:Q2「不額外寫 audit log」因 rust 既有 login 也無(sys_tokens 本身即紀錄)
 
 #### 029 — design-a-to-b-cutover `[REV1-ONLY]`
-- **描述**:F14 nestjs 退場、DESIGN-B 正式生效 — 刪 nginx `TRANSITIONAL` block、移除 docker-compose nestjs、刪 build script、清理文件
+- **描述**:rev1 F14 nestjs 退場、DESIGN-B 正式生效 — 刪 nginx `TRANSITIONAL` block、移除 docker-compose nestjs、刪 build script、清理文件
 - **教訓**:Q1「R3+R4 都納入」於 cutover 時順手清掉盤點漏項;Q2「R3 最小 — 登記進 namespace」避免 behavioral change(runtime 值不變);marker convention「sed 機械刪除」實現驗證
-- **對 rev2**:無用(rev2 起點即 DESIGN-B)
+- **對 rev2**:無用(rev2 起點即 rev1 DESIGN-B)
 - **rev2 啟示**:pre-cutover 盤點捉 2 項(R3 code namespace / R4 secret example)為 maintenance discipline 示範。**rev2 啟動時應做對稱盤點**:檢視 `application.yaml` placeholder 完整性、`.env.example` 與 `deploy/secrets/*.txt.example` 是否齊備、Casbin policy seed 是否完整覆蓋預期 role × endpoint 矩陣
 
 #### 030 — systemmanage-status-gender-alignment `[CARRY]`
-- **描述**:F14 後 follow-up — 補 systemManage 列表的 `status`(bug fix、enum 對齊到 `"1"/"2"`) + `gender`(功能新增、rust 補欄位 + 映射)
+- **描述**:rev1 F14 後 follow-up — 補 systemManage 列表的 `status`(bug fix、enum 對齊到 `"1"/"2"`) + `gender`(功能新增、rust 補欄位 + 映射)
 - **教訓**:CDP 全功能巡檢發現的既有瑕疵;Part A 純粹 output 層 mapping(`map_status` helper);Part B「domain-typed 方案」(PG enum Gender)為未來 migration 設計參考;「拆分 base-web CRUD 接線為獨立 feature」確保 Constitution IV
 - **對 rev2**:status 對齊映射機制(enum → string)直接適用;gender 作為可選欄的建模(nullable)為 DB 設計參考
 - **踩雷**:Q2 更正「base-web render 有 null-guard」發現,精化 scope 為「status 修正 + gender 功能」(非「gender bug 修」)
@@ -402,57 +402,57 @@ rev1 累積 30 份 feature 持久記憶,rev2 繼承分類:
 
 跨 30 個 feature,以下 8 個主題反覆出現,**rev2 應全套繼承為紀律**:
 
-1. **「Atomic increment」紀律**:每個 feature 的多個片段(schema + code + test + doc)必須原子交付。單一片段交付會讓 codebase 陷入「部分狀態」(F2 schema + facade 必須同 commit)。
+1. **「Atomic increment」紀律**:每個 feature 的多個片段(schema + code + test + doc)必須原子交付。單一片段交付會讓 codebase 陷入「部分狀態」(rev1 F2 schema + facade 必須同 commit)。
 
-2. **「Wire DTO 三端對齊」**:F4 response shape、F2 AuditEvent、F1.1 JWT Claims 都需 client / server / audit 三層完全對齊。rev2 CLAUDE.md §3「Phase 0 research 紀律」已明文化(rust handler return type ↔ base-web inline type ↔ component state 對齊 grep)。
+2. **「Wire DTO 三端對齊」**:rev1 F4 response shape、F2 AuditEvent、F1.1 JWT Claims 都需 client / server / audit 三層完全對齊。rev2 CLAUDE.md §3「Phase 0 research 紀律」已明文化(rust handler return type ↔ base-web inline type ↔ component state 對齊 grep)。
 
-3. **「CI lint 守護紀律」**:F2 entity import 禁令、F3 audit-coverage lint —— 編譯時檢查無法保證的「約定」,用 CI 執行。
+3. **「CI lint 守護紀律」**:rev1 F2 entity import 禁令、F3 audit-coverage lint —— 編譯時檢查無法保證的「約定」,用 CI 執行。
 
 4. **「三重防護」(類型 + facade + grep)**:F2 軟刪三重防護(類型系統 trait 封閉 + facade module 不 re-export Entity + CI grep 禁直接 import)是 rev1 最成熟的紀律,rev2 直接照辦。
 
-5. **「Build-arg + env override」**:F7 deploy `VITE_*`、F1.1 `_FILE` pattern —— 「source 不改、layer 選擇」哲學。
+5. **「Build-arg + env override」**:rev1 F7 deploy `VITE_*`、F1.1 `_FILE` pattern —— 「source 不改、layer 選擇」哲學。
 
-6. **「Dev/prod 顯式切換」**:W-F7 / W-F6 拆檔 + 手動 `-f`,**不**用 `override.yml` auto-load(prod safe by default)。
+6. **「Dev/prod 顯式切換」**:rev1 W-F7 / W-F6 拆檔 + 手動 `-f`,**不**用 `override.yml` auto-load(prod safe by default)。
 
-7. **「單一 audit context API」**:F2 統一所有 write path(INSERT / UPDATE / SOFT_DELETE)走 `audit_log::write_in_txn(AuditEvent)`。
+7. **「單一 audit context API」**:rev1 F2 統一所有 write path(INSERT / UPDATE / SOFT_DELETE)走 `audit_log::write_in_txn(AuditEvent)`。
 
-8. **「acceptance 階段 catch → spec 收為新 feature」modal pattern**:F7.1 / F7.2 / F10.1 / F10.2 / 030 都是此模式 — implement / acceptance 時 surface friction,當下不擴張 scope,而是登記為下一個 feature。**rev2 follow-up backlog 維護紀律的根據**。
+8. **「acceptance 階段 catch → spec 收為新 feature」modal pattern**:rev1 F7.1 / F7.2 / F10.1 / F10.2 / 030 都是此模式 — implement / acceptance 時 surface friction,當下不擴張 scope,而是登記為下一個 feature。**rev2 follow-up backlog 維護紀律的根據**。
 
 ### 3.11 rev2 第一個 feature 優先級建議
 
 基於 rev1 累積,rev2 建議按以下順序開展:
 
 **P0 部署基建**(可與 P1 並行,無 app 相依):
-- W-F1 dockerfile-rust-api(image build)
-- W-F2 dockerfile-base-web(image build)
-- W-F6 tls-cert-management(`generate-dev-cert.sh` + dev-certs)
-- W-F7 port-mapping(改 2XXXX)
+- rev1 W-F1 dockerfile-rust-api(image build)
+- rev1 W-F2 dockerfile-base-web(image build)
+- rev1 W-F6 tls-cert-management(`generate-dev-cert.sh` + dev-certs)
+- rev1 W-F7 port-mapping(改 2XXXX)
 
 **P1 基礎設施**(無此不能動 app):
-- F1.1 jwt-secrets(strict validation + `_FILE`)
-- F3 soft-delete-infrastructure(全 entity 軟刪 + facade + CI lint)
-- F4 response-shape-alignment(envelope + camelCase)
-- F2 audit-log-infrastructure(schema 升級 + AuditEvent,依 F3)
+- rev1 F1.1 jwt-secrets(strict validation + `_FILE`)
+- rev1 F3 soft-delete-infrastructure(全 entity 軟刪 + facade + CI lint)
+- rev1 F4 response-shape-alignment(envelope + camelCase)
+- rev1 F2 audit-log-infrastructure(schema 升級 + AuditEvent,依 F3)
 
 **P2 認證 + 動態 menu**(P1 完):
-- F5.1 auth-login + getUserInfo + getUserRoutes(依 F1.1+F2+F3+F4)
-- F6 route-guard(`/route/isRouteExist`)
-- **同步啟用 Casbin redis pub-sub channel `casbin:policy:invalidate`**(W-F11 026,即使 v1 單 instance)
+- rev1 F5.1 auth-login + getUserInfo + getUserRoutes(依 F1.1+F2+F3+F4)
+- rev1 F6 route-guard(`/route/isRouteExist`)
+- **同步啟用 Casbin redis pub-sub channel `casbin:policy:invalidate`**(rev1 W-F11 026,即使 v1 單 instance)
 
 **P3 主流業務**(P2 完):
-- F7 manage-crud-alignment(Output DTO + shape mapping)
-- F8 assign-users(`/authorization/assign-users`)
-- F9 systemManage-alias-router(10 條 thin wrapper)
+- rev1 F7 manage-crud-alignment(Output DTO + shape mapping)
+- rev1 F8 assign-users(`/authorization/assign-users`)
+- rev1 F9 systemManage-alias-router(10 條 thin wrapper)
 
 **P4 補位 + 抽離項**(P3 完):
-- F13 rust-refresh-token-impl(自實作,跳過 F10/F10.1/F10.2 對齊步驟)
-- F11 extracted-stubs(4 條抽離 stub + Casbin seed)
-- F12 cleanup-job(dry-run 預設、cron 觸發)
+- rev1 F13 rust-refresh-token-impl(自實作,跳過 F10/F10.1/F10.2 對齊步驟)
+- rev1 F11 extracted-stubs(4 條抽離 stub + Casbin seed)
+- rev1 F12 cleanup-job(dry-run 預設、cron 觸發)
 
 **P5 觀察性**(可選,生產必備):
-- W-F12 promtail + loki(log)
-- W-F13 prometheus + 3 exporter + pushgateway(metrics)
-- W-F14 grafana + alerting(dashboard)
+- rev1 W-F12 promtail + loki(log)
+- rev1 W-F13 prometheus + 3 exporter + pushgateway(metrics)
+- rev1 W-F14 grafana + alerting(dashboard)
 
 ---
 
@@ -470,20 +470,20 @@ rev1 累積 30 份 feature 持久記憶,rev2 繼承分類:
 ### 4.2 21 個 commit(按時序)
 
 ```
-bbedf2c2 chore(base-web): F4 將 VITE_SERVICE_SUCCESS_CODE 改 0000 → 0
-cb897e9c feat(base-web): W-F2 dockerfile-base-web 落地(multi-stage Vite + nginx + /health endpoint)
-d56b9f85 fix(base-web): W-F2 follow-up — nginx cache temp subdirs 預先 mkdir + chown
-1793b361 feat(base-web): W-FW1 user CRUD 接線 — drawer/list submit 接 systemManage
-b43634c0 feat(base-web): W-FW2 menu CRUD 接線 — modal/list submit 接 systemManage
-ceafe62a feat(base-web): role 管理頁 CRUD 接線 — W-FW3
-c9e12e7a feat(base-web): 接線 menu-auth-modal 角色菜單授權讀寫 — W-FW4
-7325b091 fix(base-web): menu-auth-modal 成功訊息移除多餘 optional chaining — W-FW4 code review 修正
-ff227c9e feat(base-web): W-FW5 user 抽屜加選填密碼欄
-9a6ec60c feat(base-web): W-FW5 帳號中心補修改密碼面板
-003de689 fix(base-web): W-FW5 移除 user 抽屜角色欄 mock scaffolding 殘留
-bfa1494d feat(base-web): W-FW6 N2 角色首頁 menu-auth-modal 接通真 API
-08bbe315 feat(base-web): W-FW8 button-auth-modal 接通 systemManage endpoint alias
-2989c2eb feat(base-web): 040 T002-T005 W-FW9 修 modal body roleId String→number cascade(039 critical bug 修)
+bbedf2c2 chore(base-web): rev1 F4 將 VITE_SERVICE_SUCCESS_CODE 改 0000 → 0
+cb897e9c feat(base-web): rev1 W-F2 dockerfile-base-web 落地(multi-stage Vite + nginx + /health endpoint)
+d56b9f85 fix(base-web): rev1 W-F2 follow-up — nginx cache temp subdirs 預先 mkdir + chown
+1793b361 feat(base-web): rev1 W-FW1 user CRUD 接線 — drawer/list submit 接 systemManage
+b43634c0 feat(base-web): rev1 W-FW2 menu CRUD 接線 — modal/list submit 接 systemManage
+ceafe62a feat(base-web): rev1 role 管理頁 CRUD 接線 — W-FW3
+c9e12e7a feat(base-web): rev1 接線 menu-auth-modal 角色菜單授權讀寫 — W-FW4
+7325b091 fix(base-web): rev1 menu-auth-modal 成功訊息移除多餘 optional chaining — W-FW4 code review 修正
+ff227c9e feat(base-web): rev1 W-FW5 user 抽屜加選填密碼欄
+9a6ec60c feat(base-web): rev1 W-FW5 帳號中心補修改密碼面板
+003de689 fix(base-web): rev1 W-FW5 移除 user 抽屜角色欄 mock scaffolding 殘留
+bfa1494d feat(base-web): rev1 W-FW6 N2 角色首頁 menu-auth-modal 接通真 API
+08bbe315 feat(base-web): rev1 W-FW8 button-auth-modal 接通 systemManage endpoint alias
+2989c2eb feat(base-web): rev1 040 T002-T005 W-FW9 修 modal body roleId String→number cascade(039 critical bug 修)
 496f301b fix(base-web): 040 fix #3 fetchGetRoleEndpointIds 真實 wire 為 string[]、checks 對齊
 d521c819 fix(base-web): pnpm-workspace.yaml 加 nodeLinker: hoisted (048 env-repair adjacent)
 4e05d478 feat(base-web): typings/api 對齊 rust wire 真實序列化型 (048 US1+US2)
@@ -497,18 +497,18 @@ f6efe906 style(base-web): Dockerfile line 9 註解 outdated cleanup (049 polish)
 
 | 主題 | Commit | 數量 |
 |---|---|---|
-| 部署基建(W-F2) | `cb897e9c`, `d56b9f85` | 2 |
-| 使用者 CRUD(W-FW1) | `1793b361` | 1 |
-| 菜單 CRUD(W-FW2) | `b43634c0` | 1 |
-| 角色 CRUD(W-FW3) | `ceafe62a` | 1 |
-| 角色菜單授權(W-FW4) | `c9e12e7a`, `7325b091` | 2 |
-| 帳號中心(W-FW5) | `ff227c9e`, `9a6ec60c`, `003de689` | 3 |
-| 角色首頁(W-FW6) | `bfa1494d` | 1 |
-| 端點授權(W-FW8) | `08bbe315` | 1 |
-| 型別對齊 & Bug 修(W-FW9+040) | `2989c2eb`, `496f301b` | 2 |
+| 部署基建(rev1 W-F2) | `cb897e9c`, `d56b9f85` | 2 |
+| 使用者 CRUD(rev1 W-FW1) | `1793b361` | 1 |
+| 菜單 CRUD(rev1 W-FW2) | `b43634c0` | 1 |
+| 角色 CRUD(rev1 W-FW3) | `ceafe62a` | 1 |
+| 角色菜單授權(rev1 W-FW4) | `c9e12e7a`, `7325b091` | 2 |
+| 帳號中心(rev1 W-FW5) | `ff227c9e`, `9a6ec60c`, `003de689` | 3 |
+| 角色首頁(rev1 W-FW6) | `bfa1494d` | 1 |
+| 端點授權(rev1 W-FW8) | `08bbe315` | 1 |
+| 型別對齊 & Bug 修(rev1 W-FW9+040) | `2989c2eb`, `496f301b` | 2 |
 | 型別序列化同步(048 US1+US2) | `4e05d478` | 1 |
 | 依賴清潔 & pnpm 升級(048-049) | `d521c819`, `b4453385`, `94c15832`, `f6efe906`, `64af823b` | 5 |
-| 雜務(F4 config) | `bbedf2c2` | 1 |
+| 雜務(rev1 F4 config) | `bbedf2c2` | 1 |
 
 ### 4.4 檔案範圍
 
@@ -536,13 +536,13 @@ f6efe906 style(base-web): Dockerfile line 9 註解 outdated cleanup (049 polish)
 
 #### 4.5.1 直接可重用的改動
 
-- **部署基建(W-F2, Dockerfile + nginx.conf,`cb897e9c` + `d56b9f85`)**:純新檔案、0 現有代碼侵入;rev2 可直接 cherry-pick(含 nginx cache mkdir 修復)。
+- **部署基建(rev1 W-F2, Dockerfile + nginx.conf,`cb897e9c` + `d56b9f85`)**:純新檔案、0 現有代碼侵入;rev2 可直接 cherry-pick(含 nginx cache mkdir 修復)。
 - **型別序列化對齊(`4e05d478`)**:`MenuRoute.id` `string → number`、`MenuTree.pid` 型別修正,對齊 rust wire 真實形狀;若 rev2 base-web 源碼尚未對齊,建議同步 cherry-pick(無業務邏輯牽連)。
 - **依賴清潔(`94c15832` 049 sprint)**:pnpm 11 strict isolation、explicit devDeps、`packageManager` field SoT 統一;**rev2 應整套採用**(避免重蹈 rev1 044/045/046 環境修復 sprint 的覆轍)。
 
 #### 4.5.2 需評估的改動
 
-**Web UI CRUD 全鏈路(W-FW1 ~ W-FW9,10+ 個 commit)**:涉及:
+**rev1 Web UI CRUD 全鏈路(W-FW1 ~ W-FW9,10+ 個 commit)**:涉及:
 - `src/service/api/system-manage.ts` 新增 9+ endpoint wrapper(user / menu / role / endpoint CRUD + 授權)
 - `src/views/manage/{user,menu,role}/` 視圖層接線
 - 型別修正(`roleId` `string → number` cascade、`fetchGetRoleEndpointIds` return `string[]`)
@@ -558,7 +558,7 @@ f6efe906 style(base-web): Dockerfile line 9 註解 outdated cleanup (049 polish)
 #### 4.5.4 可能的 follow-up backlog
 
 - **pnpm hoisting 策略長期檢視**:049 選 `nodeLinker: hoisted`,但建議未來進行「pnpm 預設 strict isolation vs hoisted」長期 review。
-- **W-WEBUI Constitution 邊界紀律**:21 個 commit 多次強調 Constitution v1.2 ~ v1.6.0 的「受管例外」行使;rev2 設計紀律應確認已更新至相同 Constitution 版本。
+- **rev1 W-WEBUI Constitution 邊界紀律**:21 個 commit 多次強調 Constitution v1.2 ~ v1.6.0 的「受管例外」行使;rev2 設計紀律應確認已更新至相同 Constitution 版本。
 - **Rust wire type 持續對齊**:`4e05d478` comment 指出「phase 0 型別對齊完成、phase 1 consumer cascade 待做」;rev2 若涉及 Rust 端型別演進應複查 TS 端對齊。
 - **後端 API endpoint 契約穩定性**:CRUD 全鏈路涉及 systemManage / auth / endpoint 9+ endpoint;若 rev2 backend 改動此層契約,Web UI 層應重新測試。
 
@@ -566,9 +566,9 @@ f6efe906 style(base-web): Dockerfile line 9 註解 outdated cleanup (049 polish)
 
 整體節奏為:**部署先行 → 功能集中 → 型別整理 → 清潔收尾**。
 
-- **第 0–1 週(5/14–15)**:部署基建兩個 commit(W-F2 Dockerfile + nginx 修復)
-- **第 1–2 週(5/22)**:Web UI CRUD 全鏈路集中登陸(7 個 commit W-FW1 ~ W-FW5)
-- **第 2 週末(5/23–24)**:CRUD 功能補完(W-FW6 / W-FW8 + 039 critical bug 型別修正)
+- **第 0–1 週(5/14–15)**:部署基建兩個 commit(rev1 W-F2 Dockerfile + nginx 修復)
+- **第 1–2 週(5/22)**:Web UI CRUD 全鏈路集中登陸(7 個 commit rev1 W-FW1 ~ W-FW5)
+- **第 2 週末(5/23–24)**:CRUD 功能補完(rev1 W-FW6 / W-FW8 + 039 critical bug 型別修正)
 - **第 3 週(5/24–25)**:型別同步 + 依賴清潔 sprint(4 個 commit 048-049)
 - **5/26**:最終 polish(Dockerfile comment 清理)
 
@@ -856,7 +856,7 @@ rust-api (workspace root)
 - workspace 子 crate 結構:可採 rev1 的 `server/{bin,api,core,service,router,model,initialize,middleware,config,global,constant,utils}` 分層,也可更精簡(例如 v1 合併 `constant` 進 `core`)
 - `workspace.dependencies` 集中版本管理(rev1 已驗證的做法)
 - migration crate 需獨立運行(`sea-orm-migration` 模式)
-- `application.yaml` 路徑與 envvar 注入機制(F1.1 已驗證的 `_FILE` pattern)
+- `application.yaml` 路徑與 envvar 注入機制(rev1 F1.1 已驗證的 `_FILE` pattern)
 - **rev1 自製的 sub-crate**(`axum-casbin`、`sea-orm-adapter`、`xdb`):
   - ✅ **2026-05-27 [followup §7](INTEGRATION-RESEARCH-FOLLOWUP.md) 拍板**:
     - `sea-orm-adapter`(758 LoC):**拷貝**(0 人日)— rev1 自寫、上游可能落後、實作通用無 rev1-specific patch
@@ -917,7 +917,7 @@ rust-api (workspace root)
 │  │  └──────────────────────────────────┘  │                     │
 │  │                                          │                     │
 │  │  ┌──────────────────────────────────┐  │                     │
-│  │  │  cleanup (one-shot job)          │  │ (F12)                │
+│  │  │  cleanup (one-shot job)          │  │ (rev1 F12)           │
 │  │  │  profile: ["jobs"]               │  │ cron-triggered       │
 │  │  └──────────────────────────────────┘  │                     │
 │  └──────────────────────────────────────────┘                     │
@@ -1101,10 +1101,10 @@ BASE_WEB_TAG=rev1-admin-base-web       # (rev2: rev2-admin-base-web)
 ```
 deploy/
 ├── README.md
-├── generate-dev-cert.sh               ★ W-F6: 生成 dev 自簽 cert
+├── generate-dev-cert.sh               ★ rev1 W-F6: 生成 dev 自簽 cert
 ├── cleanup/
-│   └── setup-role.sql                 ★ F12: Postgres cleanup_job 角色初始化
-├── dev-certs/                         ★ W-F6
+│   └── setup-role.sql                 ★ rev1 F12: Postgres cleanup_job 角色初始化
+├── dev-certs/                         ★ rev1 W-F6
 │   ├── README.md
 │   ├── fullchain.pem                  (self-signed cert,年度 renew)
 │   └── privkey.pem                    (private key,勿 commit)
@@ -1116,10 +1116,10 @@ deploy/
 │   │   └── stub_status.conf           (metrics endpoint :8081)
 │   └── snippets/
 │       └── proxy_headers.inc          (X-Forwarded-* + Host header)
-├── prometheus.yml                     (044 W-F13: 7 scrape_configs + pushgateway)
+├── prometheus.yml                     (rev1 044 W-F13: 7 scrape_configs + pushgateway)
 ├── prometheus-rules/                  (Phase 5 填 alert rules)
-├── loki-config.yml                    (044 W-F12)
-├── promtail-config.yml                (044 W-F12)
+├── loki-config.yml                    (rev1 044 W-F12)
+├── promtail-config.yml                (rev1 044 W-F12)
 ├── grafana-provisioning/
 │   ├── datasources/
 │   │   ├── prometheus.yml
@@ -1133,7 +1133,7 @@ deploy/
 │   │   ├── observability-self.json
 │   │   └── audit-pipeline-detail.json
 │   └── alerting/
-│       └── alert-rules.yml            (044 W-F14)
+│       └── alert-rules.yml            (rev1 044 W-F14)
 └── secrets/
     ├── README.md                      (詳細說明、雙寫紀律)
     ├── *.example                      (範本檔)
@@ -1142,7 +1142,7 @@ deploy/
 
 ### 6.9 設計理由摘錄(來自 yaml comment)
 
-1. **Secret 雙層機制(W-F4)**:secrets 為 tmpfs read-only + mode 0444;service 透過 `_FILE` 或 shell wrapper 讀取。**理由**:env var 易洩漏到 `/proc/self/environ`,secrets 更安全且支援 swarm / k8s。
+1. **Secret 雙層機制(rev1 W-F4)**:secrets 為 tmpfs read-only + mode 0444;service 透過 `_FILE` 或 shell wrapper 讀取。**理由**:env var 易洩漏到 `/proc/self/environ`,secrets 更安全且支援 swarm / k8s。
 
 2. **Observability 預設 always-on(dev)vs opt-in(prod)**:base 無 profiles → dev include 即得 7 service;prod 加 `profiles: ["observability"]` → opt-in。**理由**:Compose 不支援 override 移除既有 profiles,gating 統一由 prod 加。
 
@@ -1154,13 +1154,13 @@ deploy/
 4. **nginx upstream `keepalive` / `resolve`**:
    - dev:`server rust-api:11081;` + `keepalive 32;`(固定單點)
    - prod:`zone rust_api 64k;` + `server rust-api:11081 resolve;` + `keepalive 32;`(動態解析、replica scaling)
-   - **理由**:W-F11 prod 2 replica,nginx 需能偵測 DNS 變化自動加入新 replica。
+   - **理由**:rev1 W-F11 prod 2 replica,nginx 需能偵測 DNS 變化自動加入新 replica。
 
 5. **postgres / redis 密碼 dual-write**:`database_url.txt` 內 password 段 ≡ `postgres_password.txt` 純值。**理由**:容器 postgres / redis 分別從 secret 讀密碼,app 又從另一 secret 讀 URL;不一致 → 連線認證失敗 → `/health` unhealthy。
 
-6. **cleanup service one-shot 設計(F12)**:`profile: ["jobs"]` + `restart: "no"` + `docker compose run --rm cleanup --execute` 觸發。**理由**:cleanup 只需定期執行,不需常駐;cron 呼叫比 container timer 更 robust。
+6. **cleanup service one-shot 設計(rev1 F12)**:`profile: ["jobs"]` + `restart: "no"` + `docker compose run --rm cleanup --execute` 觸發。**理由**:cleanup 只需定期執行,不需常駐;cron 呼叫比 container timer 更 robust。
 
-7. **acme.sh daemon 模式(W-F6)**:`profile: ["prod"]` + `command: ["daemon"]`(不退出、持續監聽 cert 過期)。實際 cert acquisition 留後續(需公網 + DNS)。**理由**:daemon 模式週期檢查 cert 有效期、自動 renew。
+7. **acme.sh daemon 模式(rev1 W-F6)**:`profile: ["prod"]` + `command: ["daemon"]`(不退出、持續監聽 cert 過期)。實際 cert acquisition 留後續(需公網 + DNS)。**理由**:daemon 模式週期檢查 cert 有效期、自動 renew。
 
 8. **redis-exporter JSON secret(044)**:`REDIS_PASSWORD_FILE` 期望 JSON 格式(非 plain text),image distroless 無 sh。**理由**:image entrypoint 固化、無 sh 無法 shell 展開;故另建 JSON 格式 secret。
 
@@ -1174,7 +1174,7 @@ deploy/
 - **observability dual-layer**:base always-on + prod gating
 - **Grafana 自動配置**:`provisioning/` 目錄手工編輯
 - **nginx upstream resolve**:prod 加 resolve 支援 replica
-- **cleanup 角色分離**:Postgres role 最小權限(F12)
+- **cleanup 角色分離**:Postgres role 最小權限(rev1 F12)
 - **Loki 7d retention**:dev BoltDB + filesystem(prod 需 cloud storage 為 future)
 
 #### 必須調整
@@ -1234,29 +1234,29 @@ services:
 | Phase | feature | 依賴 | rev1 對應 |
 |---|---|---|---|
 | **Setup** | 創 `docs/INTEGRATION-CHECKLIST.md`(進度單一真相)+ Constitution v1.0.0(`.specify/memory/constitution.md`) | 無 | rev1 既有 |
-| **P0 部署基建** | W-F1 dockerfile-rust-api | 無 | 006 |
-| | W-F2 dockerfile-base-web | 無 | 007 |
-| | W-F6 TLS dev/prod cert skeleton | 無 | 012 |
-| | W-F7 port-mapping(2XXXX) | W-F1/W-F2/W-F6 | 011 |
-| **P1 基礎設施** | F1.1 jwt-secrets(strict + `_FILE`) | 無 | 004 |
-| | F3 soft-delete-infrastructure(7 entity + facade + CI lint) | 無 | 002 |
-| | F4 response-shape-alignment(envelope `{data, code, msg}` 無 success + camelCase,對齊 audit §4.1 + [followup §1.2](INTEGRATION-RESEARCH-FOLLOWUP.md) mock 真實 shape) | 無 | 001 |
-| | F2 audit-log-infrastructure(schema + AuditEvent) | F3 | 003 |
-| **P2 認證 + 動態 menu** | F5.1 auth-login + getUserInfo + getUserRoutes + Casbin enforce | F1.1+F2+F3+F4 | 005 |
-| | F6 route-guard(`/route/isRouteExist`) | F5.1 | 013 |
-| | **W-F11(併入 P2)** Casbin redis pub-sub channel(v1 即啟用) | F5.1 | 026 |
-| **P3 主流業務** | F7 manage-crud-alignment(Output DTO + shape mapping) | F5.1 | 022 |
-| | F8 assign-users(`/authorization/assign-users`) | F5.1+F7 | 025 |
-| | F9 systemManage-alias-router(10 條 thin wrapper) | F7+F8 | 021 |
-| **P4 補位 + 抽離項** | F13 rust-refresh-token-impl | F5.1 | 028 |
-| | F11 extracted-stubs(4 條 stub + Casbin seed) | F9 | 020 |
-| | F12 cleanup-job(dry-run 預設、cron) | F2+F3 | 027 |
-| **P5 觀察性(可選)** | W-F12 promtail + loki | P0 完 | (044) |
-| | W-F13 prometheus + 3 exporter + pushgateway | W-F12 | (044) |
-| | W-F14 grafana + alerting | W-F13 | (044) |
+| **P0 部署基建** | rev1 W-F1 dockerfile-rust-api | 無 | 006 |
+| | rev1 W-F2 dockerfile-base-web | 無 | 007 |
+| | rev1 W-F6 TLS dev/prod cert skeleton | 無 | 012 |
+| | rev1 W-F7 port-mapping(2XXXX) | W-F1/W-F2/W-F6 | 011 |
+| **P1 基礎設施** | rev1 F1.1 jwt-secrets(strict + `_FILE`) | 無 | 004 |
+| | rev1 F3 soft-delete-infrastructure(7 entity + facade + CI lint) | 無 | 002 |
+| | rev1 F4 response-shape-alignment(envelope `{data, code, msg}` 無 success + camelCase,對齊 audit §4.1 + [followup §1.2](INTEGRATION-RESEARCH-FOLLOWUP.md) mock 真實 shape) | 無 | 001 |
+| | rev1 F2 audit-log-infrastructure(schema + AuditEvent) | F3 | 003 |
+| **P2 認證 + 動態 menu** | rev1 F5.1 auth-login + getUserInfo + getUserRoutes + Casbin enforce | F1.1+F2+F3+F4 | 005 |
+| | rev1 F6 route-guard(`/route/isRouteExist`) | F5.1 | 013 |
+| | **rev1 W-F11(併入 P2)** Casbin redis pub-sub channel(v1 即啟用) | F5.1 | 026 |
+| **P3 主流業務** | rev1 F7 manage-crud-alignment(Output DTO + shape mapping) | F5.1 | 022 |
+| | rev1 F8 assign-users(`/authorization/assign-users`) | F5.1+F7 | 025 |
+| | rev1 F9 systemManage-alias-router(10 條 thin wrapper) | F7+F8 | 021 |
+| **P4 補位 + 抽離項** | rev1 F13 rust-refresh-token-impl | F5.1 | 028 |
+| | rev1 F11 extracted-stubs(4 條 stub + Casbin seed) | F9 | 020 |
+| | rev1 F12 cleanup-job(dry-run 預設、cron) | F2+F3 | 027 |
+| **P5 觀察性(可選)** | rev1 W-F12 promtail + loki | P0 完 | (044) |
+| | rev1 W-F13 prometheus + 3 exporter + pushgateway | W-F12 | (044) |
+| | rev1 W-F14 grafana + alerting | W-F13 | (044) |
 | **P6 維護** | status / gender alignment + base-web CDP 全功能巡檢 | 全 P 完 | 030 |
 
-### 7.2 rev2 啟動對稱盤點(借鑑 F29 pre-cutover 紀律)
+### 7.2 rev2 啟動對稱盤點(借鑑 rev1 F29 pre-cutover 紀律)
 
 rev1 在 F29 cutover 前做了盤點,捉到 R3(code namespace)+ R4(secret example)兩項漏項。rev2 起點即 B,**應做對稱盤點**確認以下完整性:
 
@@ -1279,11 +1279,11 @@ rev1 在 F29 cutover 前做了盤點,捉到 R3(code namespace)+ R4(secret exampl
 | 042-N4 audit latency 可選優化 | 條件觸發,rev2 觀察 |
 | 042-N5 dev-compose multi-replica setup | dev stack 限制,rev2 prod 才需 |
 | 048-N1(d) pnpm upgrade trigger | 已於 049 處理,rev2 直接採用 pnpm 11 終態 |
-| 050-N1 cleanup-binary `SECRET_FILE` pattern | rev2 落地 F12 時直接採 `_FILE` pattern |
-| F1.2 JWT key versioning | 長期 backlog,rev2 v1 暫不做 |
-| W-F6b acme.sh 真實 cert | 長期,需公網 + domain + DNS provider |
-| W-F15/16 backup + DR | 長期,生產上線後 |
-| W-WEBUI-INIT-DEFENSE base-web refresh token stale localStorage | rev2 若採 W-WEBUI 軌道改 UI 需注意 |
+| rev1 050-N1 cleanup-binary `SECRET_FILE` pattern | rev2 落地 F12 時直接採 `_FILE` pattern |
+| rev1 F1.2 JWT key versioning | 長期 backlog,rev2 v1 暫不做 |
+| rev1 W-F6b acme.sh 真實 cert | 長期,需公網 + domain + DNS provider |
+| rev1 W-F15/16 backup + DR | 長期,生產上線後 |
+| rev1 W-WEBUI-INIT-DEFENSE base-web refresh token stale localStorage | rev2 若採 W-WEBUI 軌道改 UI 需注意 |
 
 ### 7.4 rev2 設計紀律(從 rev1 共通教訓提煉)
 
@@ -1295,7 +1295,7 @@ rev2 應以下列紀律啟動 spec-kit feature 工作流(對應 CLAUDE.md §3):
 4. **「acceptance 階段 catch → spec 收為新 feature」modal pattern**:當下不擴張 scope,登記為下一個 feature。
 5. **「dev/prod 顯式切換」**:絕不用 `docker-compose.override.yml` auto-load,所有環境切換用 `-f -f` 顯式。
 6. **「CDP smoke 不可省」**:base-web 改動的 acceptance 必須含 CDP browser smoke test,不可用 curl 直送替代(curl ≠ base-web modal 對齊)。
-7. **「pub-sub 永遠啟用、不靠環境分支」**(W-F11 教訓):Casbin redis pub-sub 從 v1 即啟用,即使單 instance。
+7. **「pub-sub 永遠啟用、不靠環境分支」**(rev1 W-F11 教訓):Casbin redis pub-sub 從 v1 即啟用,即使單 instance。
 
 ---
 
@@ -1331,15 +1331,15 @@ rev2 應以下列紀律啟動 spec-kit feature 工作流(對應 CLAUDE.md §3):
 
 ### 9.1 rev1 是個極高密度的設計實驗田
 
-14 天累積 30 個 feature(F1~F14 + W-F1~W-F14 + 040~052 follow-up),每個都走完整 brainstorm → spec → plan → tasks → implement → review 流程,還在 `superpowers/` 沉澱 acceptance 階段的 friction。這個密度在「個人 workspace」是罕見水準,基本上是「**Claude Code + spec-kit + superpowers + 持久記憶**」這套工作流組合的可行性證明。
+14 天累積 30 個 feature(rev1 F1~F14 + W-F1~W-F14 + 040~052 follow-up),每個都走完整 brainstorm → spec → plan → tasks → implement → review 流程,還在 `superpowers/` 沉澱 acceptance 階段的 friction。這個密度在「個人 workspace」是罕見水準,基本上是「**Claude Code + spec-kit + superpowers + 持久記憶**」這套工作流組合的可行性證明。
 
-### 9.2 DESIGN-A 的存在價值不只是「過渡」
+### 9.2 rev1 DESIGN-A 的存在價值不只是「過渡」
 
 rev2 起點即 B 看起來省事,但實際是**繼承了 A 已經繳過的學費** —
 - `>>>>> TRANSITIONAL` marker 機制
 - 跨服務 `_FILE` secret pattern
 - `TokenStatus` enum 字串對齊的純函式 mapping
-- F10 / F10.1 / F10.2 三輪 friction modal pattern
+- rev1 F10 / F10.1 / F10.2 三輪 friction modal pattern
 
 這些都流回 DESIGN-B 成為更好的設計。rev2 不會踩這些雷,但也不會發明這些 pattern;**rev1 在 NestJS 過渡期付出的真實成本,是 rev2 直接拿到的設計資產**。
 
@@ -1351,7 +1351,7 @@ F2 軟刪三重防護(類型 trait 封閉 + facade module + CI grep lint)是 rev
 
 ### 9.4 Constitution v1.0.0 → v1.6.0 六次 amendment 揭示「原則演化的健康節奏」
 
-每次 amendment 都是「base 不改」撞上現實需求(密碼欄、型別對齊、依賴清潔),最後把 exception 明文化為新軌道(W-WEBUI / TS-Typing-Sync / TS-DepGraph-Hygiene)。
+每次 amendment 都是「base 不改」撞上現實需求(密碼欄、型別對齊、依賴清潔),最後把 exception 明文化為新軌道(rev1 W-WEBUI / TS-Typing-Sync / TS-DepGraph-Hygiene)。
 
 這比「碰到例外就棄守」或「死守原則」都健康 —— 原則本身有版本化、有 amendment trail。
 
@@ -1359,7 +1359,7 @@ F2 軟刪三重防護(類型 trait 封閉 + facade module + CI grep lint)是 rev
 
 rev1 的部署設計(15 service + dual network + 11 個 secret + profile gating + 6 個 dashboard)對「個人 workspace」是 over-engineered 的。rev1 自己在 W-F11 / 044 brainstorm 也有過「是不是太早做」的對話。
 
-**rev2 可以考慮**:P5 觀察性 stack(W-F12/13/14)真的要早早建嗎?還是等 P3 業務跑起來、有實際量產壓力或調試需求再建?這是值得親自拍板的取捨,不該照搬。
+**rev2 可以考慮**:P5 觀察性 stack(rev1 W-F12/13/14)真的要早早建嗎?還是等 P3 業務跑起來、有實際量產壓力或調試需求再建?這是值得親自拍板的取捨,不該照搬。
 
 > ✅ **2026-05-27 [followup §8](INTEGRATION-RESEARCH-FOLLOWUP.md) 拍板三段式啟動**:
 > - **P0-P3(setup + 業務跑通)**:**完全不啟 obs**,rev2 docker-compose 只含 5 service(postgres / redis / rust-api / base-web / front-nginx)
@@ -1415,20 +1415,20 @@ rev1 的部署設計(15 service + dual network + 11 個 secret + profile gating 
 
 | 風險級 | commit 類別 | rev1 commit |
 |---|---|---|
-| 高(改 upstream 演進目錄) | W-FW1~W-FW9 視圖層 CRUD 接線 | 10 個 commit(`1793b361` 起到 `496f301b`) |
+| 高(改 upstream 演進目錄) | rev1 W-FW1~W-FW9 視圖層 CRUD 接線 | 10 個 commit(`1793b361` 起到 `496f301b`) |
 | 中(改 upstream 演進目錄,但偏接線層) | service/api/system-manage.ts 新增 wrapper | (隨 W-FW 系列一併) |
 | 中(改 build / dep config) | 048-049 dep hygiene + pnpm 升級 | 5 個 commit |
 | 低(只動 typings) | 048 typings/api 對齊 rust wire | 1 個 commit(`4e05d478`) |
-| 低(新增獨立檔,無 upstream 衝突) | W-F2 Dockerfile + deploy/nginx.conf | 2 個 commit |
-| 雜務(改 .env 設定) | F4 VITE_SERVICE_SUCCESS_CODE config | 1 個 commit |
+| 低(新增獨立檔,無 upstream 衝突) | rev1 W-F2 Dockerfile + deploy/nginx.conf | 2 個 commit |
+| 雜務(改 .env 設定) | rev1 F4 VITE_SERVICE_SUCCESS_CODE config | 1 個 commit |
 
 ### 10.2 動機二:rev1 雙後端研究結論 — nestjs 沒特別好接、最終都用 rust-api
 
 **rev1 的起點研究目的**:評估 `soybeanjs/soybean-admin-rust` + `soybeanjs/soybean-admin-nestjs` 兩個後端能否與 base-web 對接,作為整合練習的雙軌參考。
 
 **rev1 的實做結論(user 感受,2026-05-26)**:
-- DESIGN-A(rust + nestjs bridge)→ DESIGN-B(rust-only)的整個演化過程中,**nestjs 沒有提供特別好的對接方式**
-- 最終 base-web 都是直接呼叫 rust-api、nestjs 退場(F29 cutover)
+- rev1 DESIGN-A(rust + nestjs bridge)→ DESIGN-B(rust-only)的整個演化過程中,**nestjs 沒有提供特別好的對接方式**
+- 最終 base-web 都是直接呼叫 rust-api、nestjs 退場(rev1 F29 cutover)
 - user 不能完全確認過程中是否「**不知不覺借了 nestjs 程式碼作為實作參考**」(例如 prisma schema 命名、CQRS module 結構、refresh token rotation 邏輯細節等可能在 brainstorm 階段隱性流入 rust-api 設計)
 
 **rev2 的設計回應**:
@@ -1534,29 +1534,29 @@ rev1 的 W-FW1~W-FW9 改了 `src/views/manage/` 把 mock 換成真 endpoint,才�
 **1. base-web 受管例外軌道重設**(2026-05-27 audit §4.10 alova 發現後更新):
 - W-WEBUI(rev1 的軌道,改 `src/views/manage/`)在 rev2 **完全捨棄**(views/ 永遠不在軌道內)
 - 改設新軌道清單(視 §10.5 mock 涵蓋率定 + audit §4.10 alova 處理選擇 + audit §5.4 Q5 Q3 達成度選擇):
-  - **W-BASE-WEB-ADAPT**(L1+L2,預設可動):只動 `.env` + `src/typings/api/`(新增為主、不改 inline)
-  - **W-BASE-WEB-WRAPPER**(L3,需 user 授權):允許在 `src/service/api/` 新增獨立 wrapper 檔(不動既有檔)
-  - **W-BASE-WEB-BUILD-CONFIG**(L4 build infra,需 user 授權):管 `base-web/build/*` 改動 — 目前已知一處:若採 audit §4.10.2 (b'),需在 `build/plugins/router.ts` 加 `pageExcludePatterns: ['**/alova/**', '**/components/**']` 隱藏 alova menu;未來若需動 `package.json` / `pnpm-workspace.yaml` 等 dep config 也歸這軌
-  - **W-MODAL-WIRING**(L4 view inline,需 user 授權,僅 audit §5.4 Q5 (B) 才需):極窄,只授權 `views/manage/*/modules/*-operate-{modal,drawer}.vue` 內 `// request` placeholder 處改 inline、其他 inline 絕對不動
-- TS-Typing-Sync(rev1 既有,L2 範圍)→ 併入 W-BASE-WEB-ADAPT
-- TS-DepGraph-Hygiene(rev1 既有,改 build/dep config)→ 併入 W-BASE-WEB-BUILD-CONFIG
+  - **BASE-WEB-ADAPT 軌道**(L1+L2,預設可動):只動 `.env` + `src/typings/api/`(新增為主、不改 inline)
+  - **BASE-WEB-WRAPPER 軌道**(L3,需 user 授權):允許在 `src/service/api/` 新增獨立 wrapper 檔(不動既有檔)
+  - **BASE-WEB-BUILD-CONFIG 軌道**(L4 build infra,需 user 授權):管 `base-web/build/*` 改動 — 目前已知一處:若採 audit §4.10.2 (b'),需在 `build/plugins/router.ts` 加 `pageExcludePatterns: ['**/alova/**', '**/components/**']` 隱藏 alova menu;未來若需動 `package.json` / `pnpm-workspace.yaml` 等 dep config 也歸這軌
+  - **MODAL-WIRING 軌道**(L4 view inline,需 user 授權,僅 audit §5.4 Q5 (B) 才需):極窄,只授權 `views/manage/*/modules/*-operate-{modal,drawer}.vue` 內 `// request` placeholder 處改 inline、其他 inline 絕對不動
+- TS-Typing-Sync(rev1 既有,L2 範圍)→ 併入 BASE-WEB-ADAPT 軌道
+- TS-DepGraph-Hygiene(rev1 既有,改 build/dep config)→ 併入 BASE-WEB-BUILD-CONFIG 軌道
 
 **2. 後端適應方向反轉(對比 rev1)**:
 - rev1 的 048 sprint:「base typings 對齊 rust 真實序列化型」(rust 主、base 跟)
 - rev2:**「rust-api 對齊 base mock wire 形狀」**(base 主、rust 跟)
 - 凡 base mock 用 ULID string,rust 就用 string;凡 base mock 用 number id,rust 就用 i64;**全以 mock 為準**
-- **2026-05-27 audit §4.1 驗到實際 envelope = `{data, code, msg}`,無 `success` bool**;`code` 是 string `"0000"`(不是 number);super role 是 `R_SUPER`(不是 `ROLE_SUPER`);id 在不同 endpoint 不一致(string vs number 並存)— 詳見 audit §4 全
+- **2026-05-27 audit §4.1 驗到實際 envelope = `{data, code, msg}`,無 `success` bool**;`code` 是 string `"0000"`(不是 number);super role 是 `R_SUPER`(不是 rev1 `ROLE_SUPER`);id 在不同 endpoint 不一致(string vs number 並存)— 詳見 audit §4 全
 
 **3. rev1 30 個 feature 在 rev2 的對應變化**(§3 sub-table 補充):
 - **W-FW1~W-FW9**(rev1 動 views/manage/):rev2 對應改為「rust-api 端模仿 mock + 不動 views/」— W-FW 系列在 rev2 不再是「base-web feature」,而是「rust-api 對齊 feature」
-- **F22 / F24 / 030**(response-layer mapping 在 rust-api 端做)的 pattern,在 rev2 強化為**唯一允許的 mapping 位置**
-- **F18 / F19**(rust 為對齊 nestjs 做的工作):rev2 **完全不必做**;改為對齊 base mock 的 wire shape(自由設計、無 nestjs 約束)
-- **F4 response-shape-alignment**:仍是 P1 必做,但**對齊目標換成 base mock 的真實 envelope 格式**(不一定就是 `code: "0000"` — 看 mock 怎麼回)
-- **F1.1 jwt-secrets**(strict + `_FILE`):紀律不變(三重防護仍要),但 `Claims` 11 fields **不必對齊 nestjs**,以 base 預期為準
+- **rev1 F22 / F24 / 030**(response-layer mapping 在 rust-api 端做)的 pattern,在 rev2 強化為**唯一允許的 mapping 位置**
+- **rev1 F18 / F19**(rust 為對齊 nestjs 做的工作):rev2 **完全不必做**;改為對齊 base mock 的 wire shape(自由設計、無 nestjs 約束)
+- **rev1 F4 response-shape-alignment**:仍是 P1 必做,但**對齊目標換成 base mock 的真實 envelope 格式**(不一定就是 `code: "0000"` — 看 mock 怎麼回)
+- **rev1 F1.1 jwt-secrets**(strict + `_FILE`):紀律不變(三重防護仍要),但 `Claims` 11 fields **不必對齊 nestjs**,以 base 預期為準
 
 **4. Constitution v1.0.0 起手條款**(rev2 自起點即適用):
 - **Principle I — upstream pull-ability 為首要紀律**(對比 rev1 此原則只到 Constitution IV 等級,rev2 升頂)
-- 受管例外只兩條:W-BASE-WEB-ADAPT / W-BASE-WEB-WRAPPER(W-WEBUI 不在內)
+- 受管例外只兩條:BASE-WEB-ADAPT / BASE-WEB-WRAPPER 軌道(rev1 W-WEBUI 不在內)
 - **「新增不改 inline」**紀律明文化:任何 base-web 改動必須以新增檔案 / 新增 export 為主,改既有 inline 程式碼需走 amendment
 - **「源碼隔離」**紀律(§10.2 新增第 9 條):rev2 spec phase 0 research 只 grep rust-api(rev2 自己) + base-web,不 grep rev1 / nestjs source
 
@@ -1624,5 +1624,5 @@ rev1 的 W-FW1~W-FW9 改了 `src/views/manage/` 把 mock 換成真 endpoint,才�
 > **下一步建議(2026-05-26 更新)**:
 > 1. **執行 §10.5 CDP 驗證任務**(user 等等下令)→ 產出 mock-coverage-audit
 > 2. 落地 `docs/INTEGRATION-CHECKLIST.md`(進度單一真相,rev2 CLAUDE.md §6 已預留)
-> 3. 撰寫 `.specify/memory/constitution.md` v1.0.0(含 Principle I upstream pull-ability + W-BASE-WEB-ADAPT/WRAPPER 兩軌道 + 「新增不改 inline」+ 「源碼隔離」紀律;~~**等 §10.5 涵蓋率審計完後再定 WRAPPER 軌道授權範圍**~~ — ✅ **2026-05-27 已完成**:audit 確認 12 個 read 全覆蓋、alova 7 個 endpoint 在 ApiFox 全 404 純依賴 local mock;**WRAPPER 軌道授權範圍** = (a) 補 rev2 自家 rust-api 新增業務 endpoint 的 wrapper、(b) alova 7 個 endpoint 若 rev2 想對齊則新增,詳見 [`MOCK-COVERAGE-AUDIT.md` §6](MOCK-COVERAGE-AUDIT.md) 與 [`INTEGRATION-RESEARCH-FOLLOWUP.md` §6.4](INTEGRATION-RESEARCH-FOLLOWUP.md))
-> 4. 進入 P0 部署基建第一個 feature(W-F1 dockerfile-rust-api)的 brainstorm — 注意 rev2 從 0 寫、不繼承 rev1 程式碼
+> 3. 撰寫 `.specify/memory/constitution.md` v1.0.0(含 Principle I upstream pull-ability + BASE-WEB-ADAPT/WRAPPER 兩軌道 + 「新增不改 inline」+ 「源碼隔離」紀律;~~**等 §10.5 涵蓋率審計完後再定 WRAPPER 軌道授權範圍**~~ — ✅ **2026-05-27 已完成**:audit 確認 12 個 read 全覆蓋、alova 7 個 endpoint 在 ApiFox 全 404 純依賴 local mock;**WRAPPER 軌道授權範圍** = (a) 補 rev2 自家 rust-api 新增業務 endpoint 的 wrapper、(b) alova 7 個 endpoint 若 rev2 想對齊則新增,詳見 [`MOCK-COVERAGE-AUDIT.md` §6](MOCK-COVERAGE-AUDIT.md) 與 [`INTEGRATION-RESEARCH-FOLLOWUP.md` §6.4](INTEGRATION-RESEARCH-FOLLOWUP.md))
+> 4. 進入 P0 部署基建第一個 feature(dockerfile-rust-api,對應 rev1 W-F1)的 brainstorm — 注意 rev2 從 0 寫、不繼承 rev1 程式碼

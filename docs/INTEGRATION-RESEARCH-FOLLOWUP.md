@@ -126,7 +126,7 @@ delta    HTTP  Method  URL                            body
 | 後端 endpoint 數 | 0 routes endpoint | 3 routes endpoint(constant/user/exists) | **dynamic** — 配合動機二 rust-api 從 0,routes endpoint 不算多 |
 | menu 來源 | 寫死前端 | server 控制 | **dynamic** — 對齊 rev1 F5/F6 設計核心 |
 | 上手成本 | 低(無 endpoint 要實作) | 中(3 個 endpoint + tree builder) | **dynamic** — rev1 已驗 pattern,複製成本低 |
-| upstream rebase 風險 | 略低(`.env` 不動) | 略高(`.env` `VITE_AUTH_ROUTE_MODE=dynamic` 是改 inline) | **dynamic 仍可接受**(W-BASE-WEB-ADAPT L1 改 `.env` 屬 default 允許範圍) |
+| upstream rebase 風險 | 略低(`.env` 不動) | 略高(`.env` `VITE_AUTH_ROUTE_MODE=dynamic` 是改 inline) | **dynamic 仍可接受**(BASE-WEB-ADAPT 軌道 L1 改 `.env` 屬 default 允許範圍) |
 
 ---
 
@@ -173,7 +173,7 @@ delta    HTTP  Method  URL                            body
 |---|---|---|---|
 | **高** | rev2 prod build 後,alova demo 頁(/alova/request, /alova/scenes)呼 `addUser` 等 7 endpoint,自家 rust-api 沒實作 | 404 (rev2 rust-api 回業務 envelope 404) — alova request 收到 404 後行為未知,可能 silent fail / toast | rev2 三選:(a) 實作這 7 endpoint;(b) build 時排除 alova demo(`pageExcludePatterns`);(c) 接受 prod 下 alova demo 頁壞掉 |
 | **中** | rev2 dev 跑 base-web + 自家 rust-api,alova 7 endpoint 仍走 local mock(全返 `data:null`)| **silent fallback** — rev2 dev 跑看到 alova demo「成功」但實際沒打 rust-api,user 誤判已對齊 | rev2 dev 改 alova adapter 不 enable(動 `src/service-alova/request/index.ts:L25`,屬 L4 改 inline — 違反 Q1 紀律)or 完全排除 alova(audit §4.10.2 (b'-narrow) 隱藏) |
-| **低** | rev2 切 prod 時,axios 13 個業務 endpoint 對自家 rust-api,但 `.env.prod` 仍指 ApiFox(`VITE_SERVICE_BASE_URL=https://mock.apifox.cn/...`) | rev2 build 出來打 ApiFox,不是自家 rust-api | **rev2 必改 `.env.prod` `VITE_SERVICE_BASE_URL`**(屬 W-BASE-WEB-ADAPT L1 軌道允許範圍) |
+| **低** | rev2 切 prod 時,axios 13 個業務 endpoint 對自家 rust-api,但 `.env.prod` 仍指 ApiFox(`VITE_SERVICE_BASE_URL=https://mock.apifox.cn/...`) | rev2 build 出來打 ApiFox,不是自家 rust-api | **rev2 必改 `.env.prod` `VITE_SERVICE_BASE_URL`**(屬 BASE-WEB-ADAPT 軌道 L1 允許範圍) |
 
 ---
 
@@ -344,7 +344,7 @@ cp -r /home/anew/x_Project/fork260509-rev1/rust-api/xdb .
 
 ### 8.1 rev1 既有 stack 規模(reference)
 
-rev1 完整 obs stack = 7 service(`loki / promtail / prometheus / 3 exporter / pushgateway`)+ `grafana`(6 dashboard)+ 11 個 secret + 雙 network bridge。設計 doc 在 [`INTEGRATION-DESIGN-W-DEPLOYMENT.md`](INTEGRATION-DESIGN-W-DEPLOYMENT.md)、落地在 rev1 W-F12 / W-F13 / W-F14(044 sprint)。
+rev1 完整 obs stack = 7 service(`loki / promtail / prometheus / 3 exporter / pushgateway`)+ `grafana`(6 dashboard)+ 11 個 secret + 雙 network bridge。設計 doc 在 rev1 `INTEGRATION-DESIGN-W-DEPLOYMENT.md`(rev1 workspace 檔、rev2 未拷貝)、落地在 rev1 W-F12 / W-F13 / W-F14(044 sprint)。
 
 rev1 自己在 W-F11 / 044 brainstorm 已自承「對個人 workspace over-engineered」(`INTEGRATION-RESEARCH.md` §9.5 直接引用此 brainstorm)。
 
@@ -353,8 +353,8 @@ rev1 自己在 W-F11 / 044 brainstorm 已自承「對個人 workspace over-engin
 | 時機 | 啟動範圍 | 目的 | 工作量 |
 |---|---|---|---|
 | **rev2 P0-P3(setup + 業務跑通)** | **完全不啟 obs**(rev2 docker-compose 只含 5 service:postgres / redis / rust-api / base-web / front-nginx) | 聚焦 rust-api MVP 對齊 base mock;obs 是 distraction | 0 |
-| **rev2 P3 後半 / P4 中段(業務驗收 + 抽離項補位)** | **加 promtail + loki**(2 service,純 log)+ 1 個 grafana(只看 log,不接 metric)| 開始有實際 log 量、可 debug;observability 第一階段 | 0.5-1 人日(W-F12 機械複製) |
-| **rev2 P5 或 P6(production-ready / 對外切換)** | **加 prometheus + 3 exporter + pushgateway + grafana alerting**(完整 stack) | 性能監控、alerting | 2-3 人日(W-F13 + W-F14 機械複製) |
+| **rev2 P3 後半 / P4 中段(業務驗收 + 抽離項補位)** | **加 promtail + loki**(2 service,純 log)+ 1 個 grafana(只看 log,不接 metric)| 開始有實際 log 量、可 debug;observability 第一階段 | 0.5-1 人日(rev1 W-F12 機械複製) |
+| **rev2 P5 或 P6(production-ready / 對外切換)** | **加 prometheus + 3 exporter + pushgateway + grafana alerting**(完整 stack) | 性能監控、alerting | 2-3 人日(rev1 W-F13 + W-F14 機械複製) |
 
 ### 8.3 早做的反對理由
 
@@ -458,7 +458,7 @@ rust-api/migration/migrations/*.rs    # migration 是 stateful,圖譜化意義�
 
 | 位置 | 舊內容 | 修正為 |
 |---|---|---|
-| §3.2 F001 描述 | 「envelope 含 success」 | **去掉 success**(envelope = `{data, code, msg}`)— audit §4.1 已修,本檔 §1 強化 |
+| §3.2 rev1 F001 描述 | 「envelope 含 success」 | **去掉 success**(envelope = `{data, code, msg}`)— audit §4.1 已修,本檔 §1 強化 |
 | §7.1 P1 F4 描述 | envelope 對齊「rev1 樣態」 | 改為「對齊 audit §4.1 + 本檔 §1 mock 真實 envelope」 |
 | §7.2 對稱盤點第 5 條 sys_user 預設帳號 | 寫 `Soybean / Administrator / GeneralUser` | **判斷分歧**:此命名是 rev1 自家 migration seed,**不對齊 mock**;rev2 啟動時要決定走 (a) rev1 命名延用(`Soybean...`)還是 (b) mock 對齊(`Super/Admin/User01`)。建議**寫死於 spec phase 0 brainstorm 拍板**、不要遺漏 |
 | §5.5 sub-crate 「拷貝/重寫/用上游」未拍板 | 留三選 | **完成**:axum-casbin 重寫、sea-orm-adapter 拷貝、xdb 拷貝(本檔 §7) |
@@ -471,7 +471,7 @@ rust-api/migration/migrations/*.rs    # migration 是 stateful,圖譜化意義�
 | 檔案 | 回填處數 | 風格 |
 |---|---|---|
 | `MOCK-COVERAGE-AUDIT.md` | 9 處(§4.4 / §4.7 / §4.11 / §4.13 H6 / §4.13 表 / §7.2.13 / §7.3 第 4 / §7.3 H7 / §7.3 M2) | 4 處 marker banner、2 處 strikethrough 翻案、3 處待辦改 `[x]` 勾選 |
-| `INTEGRATION-RESEARCH.md` | 7 處(§3.2 F001 / §7.1 F4 表格 / §7.2 對稱盤點第 5 / §5.5 sub-crate / §9.5 obs / §9.6 graphify / §10.5 結尾建議第 3) | 全部用 `> ✅ ... 拍板` 或 `~~strikethrough~~ + ✅ 已完成` 風格 |
+| `INTEGRATION-RESEARCH.md` | 7 處(§3.2 rev1 F001 / §7.1 F4 表格 / §7.2 對稱盤點第 5 / §5.5 sub-crate / §9.5 obs / §9.6 graphify / §10.5 結尾建議第 3) | 全部用 `> ✅ ... 拍板` 或 `~~strikethrough~~ + ✅ 已完成` 風格 |
 
 ### 10.3 本檔自身的新待辦(下一輪)
 
@@ -549,7 +549,7 @@ nothing to commit, working tree clean
 
 ## §12 給 rev2 spec-kit feature 啟動的具體決策清單(綜合本檔 + audit + research)
 
-> rev2 P0 第一個 feature(W-F1 dockerfile-rust-api 或 W-F6 TLS)brainstorm 時,以下決策已可拍板。
+> rev2 P0 第一個 feature(dockerfile-rust-api 或 TLS feature,對應 rev1 W-F1 / W-F6)brainstorm 時,以下決策已可拍板。
 
 ### 12.1 P0/P1 階段決策(設計權威)
 
@@ -601,7 +601,7 @@ nothing to commit, working tree clean
 > 1. user 過目本檔、決定要不要把 §10 衝突回填動作直接做進 audit / research(機械式 edit、不擴張內容)
 > 2. 落地 `docs/INTEGRATION-CHECKLIST.md`(rev2 進度單一真相,CLAUDE.md §6 預留)
 > 3. 撰寫 `.specify/memory/constitution.md` v1.0.0(把 §12 拍板項目 frozen)
-> 4. 進入 P0 W-F1 dockerfile-rust-api brainstorm
+> 4. 進入 P0 dockerfile-rust-api feature brainstorm(對應 rev1 W-F1)
 
 ---
 
