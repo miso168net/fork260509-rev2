@@ -345,10 +345,10 @@ git commit -m "bump base-web: rebase on upstream <短 SHA>"
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: （尚無 active feature）
-**Active Plan**: （尚無 active plan）
-**Phase**: （未啟動 spec-kit feature 流程）
-**下一步**: §11 12 待拍板 user 親決 → constitution.md v1.0.0 → 啟動 P0 第一個 feature（dockerfile-rust-api）
+**Active Spec**: [`specs/001-dockerfile-rust-api/spec.md`](specs/001-dockerfile-rust-api/spec.md)
+**Active Plan**: [`specs/001-dockerfile-rust-api/plan.md`](specs/001-dockerfile-rust-api/plan.md)
+**Phase**: 階段 1 SDD 設計鏈進行中 — `/speckit-specify` ✅ + `/speckit-clarify` ✅(no critical ambiguity) + `/speckit-plan` ✅(Constitution Check 7 項全 PASS)
+**下一步**: `/speckit-tasks` → `/speckit-analyze` → `superpowers:executing-plans`(階段 2 TDD 實作)
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
