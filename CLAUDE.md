@@ -50,7 +50,15 @@ fork260509-rev2/                            ← workspace root（傘狀 repo rev
 │   ├── hook-git-submodule-SOP.sh          ← 每次 session 開頭執行的 SOP 檢查
 │   └── skills/                            ← 本地 skill 集合
 ├── .specify/                              ← spec-kit 安裝結構（templates / scripts / memory / extensions / integrations / workflows）
-├── docs/                                  ← 整合設計 / 進度 / brainstorm 文件（見 §7 索引）
+├── docs/                                  ← 整合設計 / 進度 / brainstorm 文件（完整職責分工見 §7）
+│   ├── INTEGRATION-RESEARCH.md            ← 早期研究（rev1 設計鏈萃取，大致完結 §7.1）
+│   ├── INTEGRATION-RESEARCH-FOLLOWUP.md   ← RESEARCH 深入深研（大致完結 §7.1）
+│   ├── MOCK-COVERAGE-AUDIT.md             ← base-web mock api 查驗（wire ground truth §7.1）
+│   ├── INTEGRATION-DESIGN.md              ← ★ 設計權威 / 核心事實（rev2 架構與執行順序 §7.2）
+│   ├── INTEGRATION-CHECKLIST.md           ← 動態 todo（SOP 注入、不無限膨脹 §7.3）
+│   └── superpowers/                       ← 持久記憶 + brainstorm 決策（§7.4）
+│       ├── 000-base-web-docker-bootstrap.md   ← base-web docker-compose 落地過程
+│       └── <NNN>-<feature-name>.md        ← ⏳ 每個 feature 的 Phase 0 brainstorm
 ├── specs/                                 ← ⏳ spec-kit feature 規格目錄（每 feature 一個 <NNN>-<feature-name>/；工作流見 §3）
 ├── graphify-out/                          ← ⏳ 知識圖譜輸出（外層 git 追蹤 GRAPH_REPORT.md + graph.json + graph.html + obsidian/ 內 notes；只排除個人化/可重產項目）
 │   ├── GRAPH_REPORT.md                    ← 含 god nodes / surprises / suggested questions
@@ -213,7 +221,7 @@ ls -la base-web/.git rust-api/.git    # 確認仍是 worktree（.git 為檔案�
 git log --oneline -5                  # 最近 5 個外層 commit、看 pin 變動
 ```
 
-hook 另會 cat `docs/INTEGRATION-CHECKLIST.md` ⏳ 全檔注入 session context（見 §6）。
+hook 另會 cat `docs/INTEGRATION-CHECKLIST.md` 全檔注入 session context（見 §6）。
 
 `git submodule status` 行首判讀與處置：
 - **空格** — outer pin == worktree HEAD，乾淨。
