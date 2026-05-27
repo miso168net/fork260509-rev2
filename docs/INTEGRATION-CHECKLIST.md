@@ -8,15 +8,16 @@
 
 ## 1. Current Focus
 
-**階段**:rev2 重建中、骨幹搭建完成、設計拍板進行中(spec-kit 第一個 feature **尚未啟動**)。
+**階段**:rev2 spec-kit 第一個 feature(001-dockerfile-rust-api)已合回 `rev2-admin-root`;Phase 1 #1 ✅;準備啟動 Phase 1 下一個 feature。
 
 **最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
-- 2026-05-28 DESIGN §4.6 Phase 0 對稱盤點 baseline 固化(commit `7d044a7`)
-- **2026-05-28 001-dockerfile-rust-api Phase 0 brainstorm spec-design**(本次 commit)— 3 crate workspace 骨架 + 完整 `_FILE` secret loader + multi-stage Dockerfile + standalone compose;Phase 1 #5 scope 變動標
+- **2026-05-28 001-dockerfile-rust-api 完整實作 + 驗收 + merge 回 rev2-admin-root**(outer merge `a21e932` / rust-api `44d20fb` / 外層 infra `a379378` + SHA pin `f64392a`)— 8/8 unit test + 9 acceptance scenario 全 PASS / image 35 MB / dev hot reload 2 秒(--poll fallback)
+- 2026-05-28 001-dockerfile-rust-api Phase 0 brainstorm + 階段 1 spec/plan/tasks 文件落地
 
 **下一步**(優先序):
-1. **執行 `/speckit-specify`**(階段 1)— input 為 [`docs/superpowers/001-dockerfile-rust-api.md`](superpowers/001-dockerfile-rust-api.md);`before_specify` pre-hook 會自動建 `001-dockerfile-rust-api` feature branch + 產出 `specs/001-dockerfile-rust-api/spec.md`
-2. `/speckit-plan` 步將自動對照 [constitution v1.0.0](../.specify/memory/constitution.md) 跑 Compliance Check(§IV 7 項 yes/no)+ 引用 [DESIGN §4.6](INTEGRATION-DESIGN.md) baseline
+1. **Phase 1 #2 base-web Dockerfile feature** — DESIGN §10 Phase 1 第 2 條(base-web docker 已於 commit `24ed26d` 落地,但尚未經 spec-kit 走過完整 SDD 流程;若要補 retrospective spec 才執行 `/speckit-specify`,否則直接標完成)
+2. **Phase 1 #5 secret 注入機制(scope 縮小)** — 本 feature 已交 secret loader logic + 2 個 JWT 範本檔;#5 變為「9 個其他 secret 範本檔 + `deploy/generate-secrets.sh` 統一生成腳本 + dual-write docs」
+3. 或先補本 feature follow-up:spec doc grep pattern 修正(T030/T031/T032(c)過寬 grep)、`contracts/compose-profiles.md` 字串長度筆誤(38 → 39)
 
 ---
 
@@ -67,13 +68,13 @@ baseline 規格回填於 [DESIGN §4.6](INTEGRATION-DESIGN.md);6 項實作驗收
 
 ### Phase 0 — 設計拍板 ✅ 全完成+已歸檔 (2026-05-28)
 
-### Phase 1 — P0 部署基建(對齊 [DESIGN §10 Phase 1](INTEGRATION-DESIGN.md);尚未啟動)
+### Phase 1 — P0 部署基建(對齊 [DESIGN §10 Phase 1](INTEGRATION-DESIGN.md);**#1 ✅ 完成 2026-05-28**)
 
-- [ ] rust-api Dockerfile feature
+- [x] **rust-api Dockerfile feature ✅ 2026-05-28**(spec-kit 001-dockerfile-rust-api,merge `a21e932`)— 3 crate workspace + multi-stage Dockerfile + standalone compose + `_FILE` secret loader + 8/8 unit test;feature branch `001-dockerfile-rust-api` 保留供 audit
 - [ ] base-web Dockerfile feature
 - [ ] TLS 憑證 skeleton feature
 - [ ] 容器 port 與編排 feature(2XXXX port)
-- [ ] secret 注入機制 feature(`_FILE` pattern)
+- [ ] secret 注入機制 feature(`_FILE` pattern)— **scope 縮小**(loader 已交、剩 9 範本檔 + 統一生成腳本 + dual-write docs)
 
 ### Phase 2 — P1 基礎設施(對齊 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md);尚未啟動)
 

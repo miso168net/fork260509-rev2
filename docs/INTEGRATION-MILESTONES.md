@@ -39,4 +39,11 @@
 | `b0ec406` | 2026-05-28 | docs: constitution v1.0.0 凍結 + Phase 0 歸檔 + MILESTONES.md 落地 + CHECKLIST 結構整理 |
 | `35b8861` | 2026-05-28 | docs(checklist): §2.1 拍板項歸檔 + 標題格式統一 |
 | `7d044a7` | 2026-05-28 | docs(design): §4.6 Phase 0 對稱盤點 baseline 固化(6 項規格回填)+ CHECKLIST §2.2 歸檔 |
-| `(本次)` | 2026-05-28 | docs(superpowers): 001-dockerfile-rust-api Phase 0 brainstorm spec-design |
+| `4eceb5c` | 2026-05-28 | docs(superpowers): 001-dockerfile-rust-api Phase 0 brainstorm spec-design |
+| `93088ee` | 2026-05-28 | docs(spec): 001-dockerfile-rust-api spec + quality checklist(階段 1 /speckit-specify) |
+| `b1a2c9d` | 2026-05-28 | docs(plan): 001-dockerfile-rust-api Phase 0/1 design artifacts(階段 1 /speckit-plan) |
+| `08c49c5` | 2026-05-28 | docs(tasks): 001-dockerfile-rust-api tasks.md(階段 1 /speckit-tasks) |
+| `a379378` | 2026-05-28 | feat(deploy): rust-api multi-stage Dockerfile + standalone compose + secret 範本(階段 2) |
+| `44d20fb` | 2026-05-28 | feat(rust-api): 3 crate workspace + axum /health + _FILE secret loader(階段 2,inner) |
+| `f64392a` | 2026-05-28 | chore(submodule): bump rust-api 到 44d20fb(階段 2 兩段式 commit 第二段) |
+| `a21e932` | 2026-05-28 | Merge feature 001-dockerfile-rust-api 回 rev2-admin-root(--no-ff,feature branch 保留) |
