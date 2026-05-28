@@ -86,3 +86,15 @@
 | `e1fc88f` | 2026-05-28 | fix(deploy): healthcheck localhost → 127.0.0.1(alpine localhost 先解 ::1 IPv6、nginx/vite 只綁 IPv4) |
 | `b8edfa0` | 2026-05-28 | docs(spec): 004 polish — §8.2.1 named volume 微修 + 回填 3 處 as-built healthcheck/nginx 偏離 |
 | `b4294c7` | 2026-05-28 | Merge feature 004-compose-port-orchestration 回 rev2-admin-root(--no-ff,feature branch 保留)— dev/prod/acme 三模式 up --wait exit 0、SC-001~008 全 PASS |
+| `ccd322e` | 2026-05-28 | docs(spec): 005-secret-injection spec.md + checklist(階段 1 /speckit-specify) |
+| `d1c3496` | 2026-05-28 | docs(clarify): 005-secret-injection §Clarifications(階段 1 /speckit-clarify,0 提問全 Clear) |
+| `8f27e53` | 2026-05-28 | docs(plan): 005-secret-injection Phase 0/1 design artifacts(階段 1 /speckit-plan,Constitution 7+7=14 ✅) |
+| `689fb02` | 2026-05-28 | docs(tasks): 005-secret-injection tasks.md(階段 1 /speckit-tasks,14 task / 6 phase) |
+| `2453ba5` | 2026-05-28 | docs(analyze): 005-secret-injection 跨檔 consistency 報告(階段 1 /speckit-analyze) |
+| `493c045` | 2026-05-28 | feat(deploy): generate-secrets.sh 一鍵生成 7 必 secret(4 leaf + 3 URL,腳本同次同源保證 dual-write、idempotent + --force、docker openssl,階段 2) |
+| `38df9ae` | 2026-05-28 | fix(deploy): postgres/redis 密碼 base64→rand -hex 24(URL-safe,避免 +// 破壞連線 URL;user 拍板偏離,同步 spec docs) |
+| `5643be7` | 2026-05-28 | docs(deploy): 3 URL secret 範本 + retrofit postgres/redis 範本 + secrets/README.md |
+| `ddd3ddc` | 2026-05-28 | fix(deploy): URL 範本手動 fallback 改讀既有 leaf(cat/cp)避免 dual-write drift |
+| `d54107d` | 2026-05-28 | fix(deploy): docker-compose postgres 命名對齊 soybean/soybean_admin_rust(取代 004 暫用 rev2admin/rev2) |
+| `74819d0` | 2026-05-28 | docs(spec): T013 只清 postgres 卷偏離(避免 down -v 冷重建假性失敗)全面同步 spec/tasks/quickstart/data-model/research |
+| `068b2a8` | 2026-05-28 | Merge feature 005-secret-injection 回 rev2-admin-root(--no-ff,feature branch 保留)— Phase 1 #5 完成、**Phase 1 P0 部署基建全數收尾**;dev stack 5 service healthy、psql -U soybean 連線通、2 處 user 拍板偏離(hex / 只清 pg 卷) |

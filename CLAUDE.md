@@ -347,8 +347,8 @@ git commit -m "bump base-web: rebase on upstream <短 SHA>"
 <!-- SPECKIT START -->
 **Active Spec**: [`specs/005-secret-injection/spec.md`](specs/005-secret-injection/spec.md)
 **Active Plan**: [`specs/005-secret-injection/plan.md`](specs/005-secret-injection/plan.md)
-**Phase**: 階段 1 SDD 設計鏈 ✅ 全完成 — Phase 0 brainstorm ✅(6 拍板)+ `/speckit-specify` ✅(spec.md + 16/16 checklist PASS、零 [NEEDS CLARIFICATION])+ `/speckit-clarify` ✅(0 提問、全 taxonomy Clear)+ `/speckit-plan` ✅(Constitution 7+7=14 ✅ Pass、9 research 全 grep 確認、openssl docker 化決議)+ `/speckit-tasks` ✅(14 task / 6 phase)+ `/speckit-analyze` ✅(coverage 100%、0 CRITICAL、僅 2 LOW)
-**下一步**: `superpowers:executing-plans`(階段 2 TDD 實作;C1 README down -v 於 T009 順手納入)
+**Phase**: ✅ 完成並 merge — 階段 1 SDD 設計鏈(specify/clarify/plan/tasks/analyze 全 ✅、Constitution 7+7=14 ✅ Pass)+ 階段 2 TDD 實作(executing-plans → subagent-driven-development;US1/US2/US3 各 spec+quality 雙審 + final holistic review)+ acceptance(7 必 secret 一鍵生 dual-write、dev stack 5 service healthy、`psql -U soybean` 連線通);2 處 user 拍板偏離(postgres/redis 密碼改 hex URL-safe / T013 只清 postgres 卷不 down -v);merge `068b2a8` 回 `rev2-admin-root`(--no-ff,feature branch 保留)
+**下一步**: Phase 1 部署基建 #1~#5 全數完成;啟動 Phase 2 P1 基礎設施(rust-api 接 `database_url`/`redis_url`:config.rs 加 `[database]`/`[redis]` section + 掛 compose secret + `APP_*_FILE` env + db schema migration)
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工

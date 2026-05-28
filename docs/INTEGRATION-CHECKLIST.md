@@ -8,15 +8,15 @@
 
 ## 1. Current Focus
 
-**階段**:rev2 spec-kit 第四個 feature(004-compose-port-orchestration)已合回 `rev2-admin-root`;Phase 1 #4 容器 port 與編排完成(master compose dev/prod/acme 三模式可跑);準備啟動 Phase 1 #5 secret 注入機制(scope 縮小)。
+**階段**:rev2 spec-kit 第五個 feature(005-secret-injection)已合回 `rev2-admin-root`;**Phase 1 P0 部署基建全數完成(#1~#5)**;準備啟動 Phase 2 P1 基礎設施(DB/Redis 連線層 wire)。
 
 **最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
+- **2026-05-28 005-secret-injection 完整實作 + 驗收 + merge**(outer merge `068b2a8`)— executing-plans → subagent-driven-development(US1/US2/US3 各 spec+quality 雙審 + final holistic review)/ `deploy/generate-secrets.sh` 一鍵生 7 必 secret(4 leaf + 3 URL,腳本同次同源保證 dual-write、idempotent + `--force`、docker 化 openssl、chmod 600 不印值)+ 3 URL 範本 + retrofit postgres/redis 範本 + `deploy/secrets/README.md` + docker-compose postgres 命名對齊 `soybean`/`soybean_admin_rust` / dev stack 5 service healthy、`psql -U soybean` 連線通 / 2 處 user 拍板偏離(postgres/redis 密碼 base64→hex 避免破 URL、T013 只清 postgres 卷不 down -v 避免冷重建假性失敗)已全面同步 spec docs / Constitution 7+7=14 ✅ / 純 workspace-level 單段(無 SHA pin)/ feature branch 保留;未 push(待 user 下令)
 - **2026-05-28 004-compose-port-orchestration 完整實作 + 驗收 + merge**(outer merge `b4294c7` / feature commit `21508a4`)— executing-plans → subagent-driven-development(2 unit + spec/quality 雙審)/ 3 檔分層 master compose(base + dev/prod override)+ front-nginx 反代(`/`→base-web、`/api/*` strip→rust-api)+ postgres17 + redis-stack + acme skeleton(profile=prod)+ TLS 三來源 + 2 standalone DEPRECATED / 3 runtime fix(dev front-nginx :21080、dev rust-api bash /dev/tcp readiness 因 image 無 http client、全 healthcheck localhost→127.0.0.1 因 alpine ::1 IPv6)/ dev+prod+acme 三模式 `up --wait` 全 exit 0、SC-001~008 全 PASS / Constitution 7+7=14 ✅ / 純 workspace-level 單段(無 SHA pin)/ feature branch 保留;未 push(待 user 下令)
-- **2026-05-28 003-tls-dev-cert 完整實作 + 驗收 + merge + push**(outer merge `cb5e1a1` / feature commit `82cc95a`)— 16/16 task PASS / `deploy/generate-dev-cert.sh` 129 行(Hybrid CA + alpine/openssl docker + RSA 2048 + SAN localhost+127.0.0.1)/ Implementation 2 fix(docker run `-i` flag、`self-signed-marker` 機制解 FR-004 vs FR-013 spec 內部矛盾)/ Constitution 7+7=14 ✅ Pass / 純 workspace-level 單段 commit(無 SHA pin)/ feature branch 保留;push 完成
 
 **下一步**(優先序):
-1. **Phase 1 #5 secret 注入機制(scope 縮小)** — 001 已交 loader logic + jwt/refresh 範本、004 已交 postgres/redis 範本;#5 變為「其餘 secret 範本檔 + `deploy/generate-secrets.sh` 統一生成腳本 + dual-write docs」
-2. Phase 1 全完成後 → 啟動 Phase 2 P1 基礎設施(rust-api DATABASE_URL / redis URL wire + db schema migration + Casbin adapter;004 已起 postgres/redis service、留連線 wire)
+1. **啟動 Phase 2 P1 基礎設施** — rust-api 接 `database_url`/`redis_url`(config.rs 加 `[database]`/`[redis]` section + 掛 compose `secrets:` + `APP_DATABASE_URL_FILE`/`APP_REDIS_URL_FILE` env)+ db schema migration + Casbin adapter;005 已 provision-ahead 3 URL secret、留連線 wire
+2. (可選)005 + 004 兩 feature 尚未 push origin — 待 user 下令一併 push
 
 ---
 
@@ -46,7 +46,7 @@ baseline 規格回填於 [DESIGN §4.6](INTEGRATION-DESIGN.md);6 項實作驗收
 - [x] ✅ `.specify/memory/constitution.md` v1.0.0(2026-05-28 凍結,155 行;5 sections + Compliance Check + Governance)
 - [x] ✅ `docker-compose.yml` + `docker-compose.{dev,prod}.yml` + `deploy/nginx/` + acme skeleton(004-compose-port-orchestration 落地 2026-05-28)
 - [x] ✅ `deploy/generate-dev-cert.sh`(self-signed TLS for dev,003-tls-dev-cert 落地 2026-05-28)
-- [ ] `deploy/secrets/`(env-file pattern;001 jwt/refresh + 004 postgres/redis 範本已交,剩 Phase 1 #5 其餘範本 + 生成腳本)
+- [x] ✅ `deploy/secrets/`(env-file pattern;001 jwt/refresh + 004 postgres/redis + 005 三 URL 範本 + `generate-secrets.sh` 一鍵生成腳本 + README 全交,005-secret-injection 落地 2026-05-28)
 - [ ] fork 源倉設 upstream remote(CLAUDE.md §4.6,目前未設、無法 `git fetch upstream`)
 - [ ] `docs/GRAPHIFY-NOTES.md`(graphify 抽取限制與盲點筆記,圖譜跑完後)
 - [ ] `specs/` 第一個 feature 目錄(P0 dockerfile-rust-api,§11 拍板後啟動)
@@ -81,15 +81,11 @@ baseline 規格回填於 [DESIGN §4.6](INTEGRATION-DESIGN.md);6 項實作驗收
 
 ### Phase 0 — 設計拍板 ✅ 全完成+已歸檔 (2026-05-28)
 
-### Phase 1 — P0 部署基建(對齊 [DESIGN §10 Phase 1](INTEGRATION-DESIGN.md);進行中)
+### Phase 1 — P0 部署基建 ✅ 全完成+已歸檔 (2026-05-28)
 
-- [x] **rust-api Dockerfile feature ✅ 2026-05-28**(spec-kit 001-dockerfile-rust-api,merge `a21e932`)— 3 crate workspace + multi-stage Dockerfile + standalone compose + `_FILE` secret loader + 8/8 unit test;feature branch `001-dockerfile-rust-api` 保留供 audit
-- [x] **base-web Dockerfile feature ✅ 2026-05-28**(spec-kit 002-dockerfile-base-web,merge `a70fa5f`)— port 21079 對齊 §8.2 + nginx HEALTHCHECK + build-arg `VITE_SERVICE_BASE_URL`(走 `.env.prod.local` precedence,因 vite `loadEnv` 不讀 process.env)+ `base-web/public/health.html` 新增(BASE-WEB-ADAPT 軌道首次在 `public/` 應用)+ 000-bootstrap.md surgical patch + Bonus 修 builder stage corepack ESM bug(`npm install -g pnpm@10`);feature branch `002-dockerfile-base-web` 保留供 audit
-- [x] **TLS 憑證 skeleton feature ✅ 2026-05-28**(spec-kit 003-tls-dev-cert,merge `cb5e1a1`)— `deploy/generate-dev-cert.sh` 129 行(zero-arg + `--force`,Hybrid CA 偵測 + `self-signed-marker` 機制)+ `deploy/dev-certs/.gitkeep` + `.gitignore` rule(`deploy/dev-certs/*` + `!.gitkeep` negation);全 docker 化 alpine/openssl(host 無 openssl dep)+ RSA 2048 + SAN `localhost`+`127.0.0.1` + CA 10 年 / leaf 1 年;Implementation 2 fix(docker run `-i` flag 讓 heredoc stdin reach container、marker 機制解 spec 內部矛盾)brainstorm + spec FR-004 + plan + quickstart 全 sync;純 workspace-level 單段 commit(無 SHA pin);feature branch `003-tls-dev-cert` 保留供 audit
-- [x] **容器 port 與編排 feature ✅ 2026-05-28**(spec-kit 004-compose-port-orchestration,merge `b4294c7`)— 3 檔分層 master compose(base + dev/prod override)+ front-nginx 反代(`/`→base-web、`/api/*` strip→rust-api)+ postgres17 + redis-stack + acme skeleton(profile=prod)+ TLS 三來源(dev bind / prod named volume / acme)+ 2 standalone DEPRECATED;3 runtime fix(健康檢查 localhost→127.0.0.1 因 alpine ::1、dev rust-api bash /dev/tcp 因 image 無 http client、prod /health 不被 server-level 301 吃掉)；dev/prod/acme 三模式 `up --wait` exit 0、SC-001~008 PASS;feature branch 保留供 audit
-- [ ] secret 注入機制 feature(`_FILE` pattern)— **scope 縮小**(loader 已交、剩其餘範本檔 + 統一生成腳本 + dual-write docs)
+> 5 feature 全交(001 rust-api Dockerfile `a21e932` / 002 base-web Dockerfile `a70fa5f` / 003 TLS cert `cb5e1a1` / 004 compose 編排 `b4294c7` / 005 secret 注入 `068b2a8`),各 feature branch 保留供 audit;詳細 deliverable 見 [DESIGN §10 Phase 1](INTEGRATION-DESIGN.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
 
-### Phase 2 — P1 基礎設施(對齊 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md);尚未啟動)
+### Phase 2 — P1 基礎設施(對齊 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md);準備啟動)
 
 - [ ] JWT 機密管理 feature
 - [ ] soft-delete 基礎設施 feature(7 entity + 三重防護)
