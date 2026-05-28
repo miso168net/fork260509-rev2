@@ -98,3 +98,6 @@
 | `d54107d` | 2026-05-28 | fix(deploy): docker-compose postgres 命名對齊 soybean/soybean_admin_rust(取代 004 暫用 rev2admin/rev2) |
 | `74819d0` | 2026-05-28 | docs(spec): T013 只清 postgres 卷偏離(避免 down -v 冷重建假性失敗)全面同步 spec/tasks/quickstart/data-model/research |
 | `068b2a8` | 2026-05-28 | Merge feature 005-secret-injection 回 rev2-admin-root(--no-ff,feature branch 保留)— Phase 1 #5 完成、**Phase 1 P0 部署基建全數收尾**;dev stack 5 service healthy、psql -U soybean 連線通、2 處 user 拍板偏離(hex / 只清 pg 卷) |
+| `cd86dd7` | 2026-05-28 | chore: 001~005 spec-compliance audit(5 feature 對 spec.md 全 PASS、偏離皆有書面紀錄)+ 3 minor 修正(002 standalone compose port 綁 127.0.0.1 / 003 .gitignore 冗餘行 / 005 README chmod drvfs 說明) |
+| `f506c66` | 2026-05-28 | docs: CLAUDE.md ⏳ 標記清理 + CHECKLIST §2.3 workspace-level 歸檔(Phase 1 完成後狀態同步) |
+| `cfa9707` | 2026-05-28 | docs(superpowers): 006-docker-volume-naming Phase 0 brainstorm spec-design(volume 命名統一 rev2_→rev2-admin_ auto-prefix、bw→base_web、redis→redis_stack) |
