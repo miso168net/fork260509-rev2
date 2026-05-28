@@ -45,6 +45,10 @@
 - [ ] **migration invocation prod path**:dev 用 cargo-watch image `cargo run --bin migration`;prod 須走 image entrypoint dispatch `migration`(Phase 5 cleanup-job / CI migration step 沿用 prod path、非 dev cargo path)
 - [ ] **URL secret 驗證邊界**(`validate_secret` 為 opaque token 設計、套用到連線 URL 的已知 gap;research R4 知情、決定不另造 URL validator):(a) `.example` 的 `CHANGE_ME` 內嵌於 URL,而 `validate_secret` 是 case-insensitive **全等**比對(非 substring)+ URL >32 → 誤用 `.example` 會過 boot、拖到 connect 才以隱晦 auth error 失敗(⚠️ Unit 1 review「加 `CHANGE_ME` 進 `PLACEHOLDER_SECRETS`」**無效**,全等語意擋不住內嵌 substring);(b) 未來若用無密碼 redis(短 URL <32)會以 `length<32` 失敗、訊息與 URL 無關;(c) migration `main.rs` 讀 URL 為 raw(不過 validate),與 server `load_secret` 有意分流。日後若要強化:URL 專屬 validator 或 substring placeholder 偵測
 
+### 2.11 feature 008-response-envelope follow-up
+
+- [ ] **`Res` err 建構子綁 `()` 型**:`Res::<()>::err`/`err_msg` 掛 `impl Res<()>`;Phase 3+ handler 若要在 `-> Res<SomeDto>` 成功型內提早回業務錯誤(`data:null` 但 `T≠()`)會型別對不上 → 屆時改 `impl<T> Res<T>`(回 `data:None`)。現無 caller、不改(final review Minor 標記)
+
 ---
 
 ## 3. 已完成里程碑
@@ -115,7 +119,7 @@
 
 ### 5.1 wire envelope 與型一致性
 
-- [ ] **envelope**:`{data, code, msg}`(無 `success` bool);`code` 是 string `"0000"` not number(§4.1)
+- [ ] **envelope**:`{data, code, msg}`(無 `success` bool);`code` 是 string `"0000"` not number(§4.1)— rust-api 側 ✅ 008 已實作(21 單測 + 404 curl 鎖形狀),end-to-end base-web 回應層消費待 Phase 3+ endpoint
 - [x] **paginated**:`{current, size, total, records}`(無 `pages` 欄)(§4.9 已驗)
 - [ ] **Role.id** 型(統一策略待 §11.10 拍板):mock string vs TS number
 - [ ] **MenuType enum**:1=directory / 2=menu(非舊推測「1=group / 2=page」)(§4.2.1)
@@ -150,7 +154,7 @@
 
 ### 5.6 業務驗證 error code
 
-- [ ] rev2 業務驗證錯誤自訂 `5xxx`(refresh 絕不回 9999/9998/3333);具體區段待 §11.10 拍板
+- [ ] rev2 業務驗證錯誤自訂 `5xxx`(refresh 絕不回 9999/9998/3333);具體區段待 §11.10 拍板 — 008 已釘 `5000`=infra sentinel、`5001-5999` 留業務
 
 ### 5.7 base-web wrapper 軌道(若 §11.3 拍板 (B))
 
