@@ -18,6 +18,7 @@
 
 - 全 taxonomy 掃描:**無 spec-level critical ambiguity 需正式 clarify**。Phase 0 brainstorm 已凍結全部 5 項設計決策(交付邊界＝信封型別+404 fallback / 完整業務 code 詞彙一次定義 / 錯誤類別隨 feature 長、本 feature 僅 NotFound+Internal / 內部錯誤 code＝`5000` 屬 rev2 自訂 5xxx / 不做 camelCase 轉換機制)。spec 0 [NEEDS CLARIFICATION]。
 - 回應信封形狀與業務 code 集為 **mock 實機 capture 的 wire 契約事實**(權威:[DESIGN §3.2 / §3.3](../../docs/INTEGRATION-DESIGN.md) + [MOCK-COVERAGE-AUDIT §4.1](../../docs/MOCK-COVERAGE-AUDIT.md)),非本 feature 自由設計 —— 本 feature 只負責在 rust-api 側忠實實作該契約。
+- `/speckit-clarify` 正式掃描(11 taxonomy 類別)結果:**全部 Clear、0 提問**。無需正式 clarify,可直接進 `/speckit-plan`。
 
 ---
 
