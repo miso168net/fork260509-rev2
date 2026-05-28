@@ -121,6 +121,13 @@
 | `f9829d7` | 2026-05-29 | docs(plan): 007 補 Implementation Notes/Deviations(Cargo.lock MSRV pin + migration DATABASE_URL bridge) |
 | `39eb43d` | 2026-05-29 | chore(submodule): bump rust-api 到 091fe6a(007 階段 2 兩段式第二段;worktree `44d20fb..091fe6a` 已 push fork:deps+config / 連線層+AppState+boot / migration proof / config 單測 4 commit) |
 | `928949d` | 2026-05-29 | Merge feature 007-db-redis-connection 回 rev2-admin-root(--no-ff,feature branch 保留)— rust-api Postgres+Redis 連線層+AppState+fail-fast boot + migration pipeline proof(sys_user seed Super/Admin/User、argon2id、冪等)+ config 12 單測;5 unit/18 task subagent-driven TDD,各 spec+quality 雙審 + final holistic review = Ready;dev stack 5 svc healthy / Constitution 7+7=14 ✅ / 2 偏離回填 plan.md |
+| `ea6ca9f` | 2026-05-29 | docs(brainstorm): 008-response-envelope Phase 0 spec-design(envelope 對齊 — Res<T>+AppError+完整 BizCode 矩陣+404 fallback;Internal=5000、不做 camelCase 機制) |
+| `227387f` | 2026-05-29 | docs(spec): 008-response-envelope spec.md + quality checklist(階段 1 /speckit-specify,16/16 PASS,0 NEEDS CLARIFICATION) |
+| `13de898` | 2026-05-29 | docs(clarify): 008-response-envelope §Clarifications 補 /speckit-clarify 掃描結果(11 類全 Clear、0 提問) |
+| `41bf8a8` | 2026-05-29 | docs(plan): 008-response-envelope Phase 0/1 design artifacts(階段 1 /speckit-plan,Constitution 7+7=14 ✅;research R1-R4 + 3 entity + C-V contract + quickstart;dep +serde_json) |
+| `1294bee` | 2026-05-29 | docs(tasks): 008-response-envelope tasks.md(階段 1 /speckit-tasks,13 task / 6 phase,test-first 純邏輯單測) |
+| `e1b0a6c` | 2026-05-29 | chore(submodule): bump rust-api 到 fac12f6(008 階段 2 兩段式第二段;worktree `091fe6a..fac12f6` 已 push fork:信封 Res<T>+BizCode 12-variant / AppError::NotFound+404 fallback / AppError::Internal+500/5000 三 commit) |
+| `7bdf5bb` | 2026-05-29 | Merge feature 008-response-envelope 回 rev2-admin-root(--no-ff,feature branch 保留)— rust-api 統一回應信封契約:Res<T>{data,code,msg}(code=string、無 success、欄位序 data→code→msg)+ IntoResponse;BizCode 完整 12-variant 矩陣(只 wire 0000/4040/5000);AppError(NotFound→404、Internal→500/5000)+ axum .fallback()(404 live curl 驗);/health 不動。3 unit/13 task subagent-driven TDD,各 spec+quality 雙審 + final holistic review = Ready;21 單測 PASS / 2 拍板(Internal=5000 rev2 自訂 5xxx、不做 camelCase 機制)/ Constitution 7+7=14 ✅ |
 
 
 ## 2. ✅ 完成+歸檔

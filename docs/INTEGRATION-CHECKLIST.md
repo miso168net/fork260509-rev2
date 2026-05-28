@@ -8,15 +8,13 @@
 
 ## 1. Current Focus
 
-**階段**:**Phase 1 P0 部署基建全數完成(#1~#5)** + 006-docker-volume-naming 已合;**Phase 2 P1 已啟動 — 007-db-redis-connection(rust-api Postgres+Redis 連線層 + AppState + fail-fast boot + migration pipeline proof〔sys_user seed Super/Admin/User〕+ config 單測)完整實作+驗收+merge 回 `rev2-admin-root`**。本 feature 為 Phase 2+ 所有依賴 DB/Redis 的 feature 之基礎。
+**階段**:**Phase 1 P0 部署基建全數完成(#1~#5)**;**Phase 2 P1 進行中 — 007-db-redis-connection(DB/Redis 連線層 + migration proof)、008-response-envelope(統一回應信封 `Res<T>` + `BizCode` 矩陣 + `AppError` + 404 fallback)皆完整實作+驗收+merge 回 `rev2-admin-root`**。Phase 2 餘:JWT / soft-delete 7-entity / audit log / sub-crate(見 [§4 Phase 2](#phase-2--p1-基礎設施對齊-design-§10-phase-2integration-designmd已啟動))。
 
 **最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
-- **2026-05-29 007-db-redis-connection 完整實作 + 驗收 + merge**(outer merge `928949d` / rust-api worktree `091fe6a` 已 push fork)— executing-plans → subagent-driven-development(5 unit / 18 task,各 spec+quality 雙審 + final holistic review = Ready)/ rust-api boot fail-fast 建 Postgres(sea-orm 1.1.20 `ConnectOptions`+`ping`)+ Redis(redis 1.2 `ConnectionManager`+`PING`)連線、握 `AppState`;migration crate stub→真 sea-orm-migration runner + proof migration(`sys_user` 最小欄 id/user_name/password + seed Super/Admin/User、argon2id of `123456`、冪等 seaql_migrations+ON CONFLICT)；docker-compose 接 005 `database_url`/`redis_url` secret(`_FILE`);config 12 單測 PASS / dev stack 5 service healthy、log postgres+redis connected、`/health`=ok、fail-fast bad-url exit101 指 redis / 2 偏離回填 plan.md(Cargo.lock pin time0.3.37・home0.5.9 配 toolchain1.86 / migration `DATABASE_URL` bridge)/ **兩段式 commit**(rust-api worktree→fork `44d20fb..091fe6a` + 外層 SHA pin `39eb43d`)/ Constitution 7+7=14 ✅ / 007 branch 保留;**rust-api fork 已 push;`origin/rev2-admin-root` 待 user 同意 push**
-- **2026-05-28 006-docker-volume-naming 完整實作 + 驗收 + merge**(outer merge `a12fd18`)— executing-plans → subagent-driven-development(US1/US2/US3 各 spec+quality 雙審 + final holistic review)/ 7 named volume 統一 `rev2-admin_<service>_<purpose>`(auto-prefix、移除顯式 name:、3 key 更名 redis_data→redis_stack_data・bw_*→base_web_*)+ CLAUDE.md §8.2.2 規則文件化 + DESIGN/000 同步 + 002/004 superseded cross-ref / dev stack 5 service healthy、6 卷〔dev〕皆 `rev2-admin_` 前綴、psql/redis 連線通 / 2 處 user 拍板偏離(接受 dev 6 卷 / prod.yml L4 註解修)/ Constitution 7+7=14 ✅ / 純 workspace-level 單段(無 SHA pin)/ feature branch 保留;**已 push `origin/rev2-admin-root`(`cb7adba`)+ `origin/006-docker-volume-naming`**
+- **2026-05-29 008-response-envelope 完整實作 + 驗收 + merge**(outer merge `7bdf5bb` / SHA pin `e1b0a6c` / rust-api worktree `fac12f6` 已 push fork)— subagent-driven-development(3 unit / 13 task,各 spec+quality 雙審 + final holistic review = Ready)/ 統一回應信封 `Res<T>{data,code,msg}`(code=string、無 success、欄位序 data→code→msg)+ `IntoResponse`(HTTP200)/ `BizCode` 完整 12-variant 矩陣(只 wire `0000`/`4040`/`5000`,餘 9 variant 定義待 Phase 3+)/ `AppError`(thiserror;NotFound→404、Internal(String)→500/`5000`)+ axum `.fallback()`(404 live curl `{"data":null,"code":"4040","msg":"接口不存在"}`)/ `/health` 純 ok 不動 / 21 單測 PASS / 2 拍板(Internal=`5000` rev2 自訂 5xxx sentinel、不做 camelCase 機制留 Phase 4 DTO)/ Constitution 7+7=14 ✅ / 兩段式 commit / 008 branch 保留
+- **2026-05-29 007-db-redis-connection 完整實作 + 驗收 + merge**(outer merge `928949d` / rust-api worktree `091fe6a` 已 push fork)— subagent-driven-development(5 unit / 18 task,各 spec+quality 雙審 + final review)/ rust-api boot fail-fast 建 Postgres(sea-orm 1.1.20)+ Redis(redis 1.2 `ConnectionManager`)連線、握 `AppState`;migration runner + proof migration(`sys_user` id/user_name/password + seed Super/Admin/User、argon2id of `123456`、冪等)/ docker-compose 接 005 secret(`_FILE`)/ config 12 單測 PASS、dev stack 5 service healthy / 2 偏離回填 plan.md(Cargo.lock pin time0.3.37・home0.5.9 配 toolchain1.86 / migration `DATABASE_URL` bridge)/ **兩段式 commit**(worktree→fork `44d20fb..091fe6a` + 外層 SHA pin `39eb43d`)/ Constitution 7+7=14 ✅ / 007 branch 保留
 
-**下一步**:
-1. **(待 user 同意)push `origin/rev2-admin-root`**(merge `928949d` + 收尾 docs commit)
-2. **Phase 2 P1 續推** — 連線層已就緒,接續 JWT 機密管理 / soft-delete 7-entity 基礎設施(含 sys_user 完整欄 + `id` auto_increment,見 §2.10)/ envelope / audit log / sub-crate(Casbin sea-orm-adapter)等依賴 DB 的 feature
+**下一步**: **Phase 2 P1 續推** — 連線層 + envelope 已就緒,接續 JWT 機密管理 / soft-delete 7-entity 基礎設施(含 sys_user 完整欄 + `id` auto_increment,見 §2.10)/ audit log / sub-crate(Casbin sea-orm-adapter)等 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md) 餘 feature
 
 ---
 
@@ -70,9 +68,9 @@
 ### Phase 2 — P1 基礎設施(對齊 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md);已啟動)
 
 - [x] **DB/Redis 連線層 + migration pipeline proof feature(007)** ✅ (2026-05-29 merge `928949d`)— rust-api boot 連 Postgres+Redis(fail-fast)+ AppState + migration runner + sys_user proof seed
+- [x] **envelope 對齊 feature(008)** ✅ (2026-05-29 merge `7bdf5bb`)— `Res<T>{data,code,msg}` + `IntoResponse` + `BizCode` 12-variant 矩陣 + `AppError`(NotFound→404/Internal→500)+ axum 404 `.fallback()`;camelCase 留 Phase 4 DTO
 - [ ] JWT 機密管理 feature
 - [ ] soft-delete 基礎設施 feature(7 entity + 三重防護)
-- [ ] envelope 對齊 feature(`{data, code, msg}` + camelCase)
 - [ ] audit log 基礎設施 feature
 - [ ] sub-crate setup feature(`axum-casbin` 重寫 / `sea-orm-adapter` + `xdb` 拷貝)
 

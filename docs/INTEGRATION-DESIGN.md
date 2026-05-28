@@ -1026,6 +1026,8 @@ BASE_WEB_TAG=rev2-admin-base-web
 
 所有 rust handler return type 必須 `Result<Res<T>, AppError>`,**禁止直接回 `Json<T>` 等繞過 envelope**。CI lint:`grep "Json<" rust-api/server/src/api/ | grep -v "Json<Res<"` 應為空。
 
+> **✅ 008 已立 base 型別與 pattern**(2026-05-29):`Res<T>`/`AppError` 兩個 `IntoResponse` 已就緒(`server/src/envelope.rs` + `error.rs`),`Res` 內唯一 `Json` 為 `Json(self)` 包自身、`AppError` 經 `Json(Res::<()>::err(..))` 走信封 — 本不變式的 grep(`Json<` 排除 `Json<Res`)目前全淨。Phase 3+ 各 handler 沿用 `Result<Res<T>, AppError>` 簽名即自動受此 pattern 約束。
+
 ### §9.4 mock 偶發 502 應對
 
 `/route/getConstantRoutes` 在 mock 偶發 502(audit §7.2.13 + followup §1.1):rev2 rust-api **必須 100% 成功回**(實作邏輯沒理由 fail,只回 4 條 hardcoded constant route)。
@@ -1071,7 +1073,7 @@ deliverables(全部完成):
 
 1. **JWT 機密管理 feature** — strict validation + `_FILE` + refresh secret 分離
 2. **soft-delete 基礎設施 feature** — 7 entity + facade + CI lint(三重防護)
-3. **envelope 對齊 feature** — `Res<T>` + camelCase rename + 業務 code 矩陣
+3. **envelope 對齊 feature** — `Res<T>` + 業務 code 矩陣（**✅ 008 已交,2026-05-29 merge `7bdf5bb` / SHA pin `e1b0a6c` / rust-api `fac12f6`**:`Res<T>{data,code,msg}`〔`code`=string、無 `success` 欄、`data:None`→`null`、欄位序 data→code→msg〕+ `impl IntoResponse`〔回 HTTP200,業務錯誤未來也走 200〕;`BizCode` 完整 12-variant 矩陣〔`0000/1000/2222/3333/9998/9999/7777/7778/8888/8889/4040/5000`,`code()`+`default_msg()`,本 feature 只 wire `0000`/`4040`/`5000`,餘 9 variant 定義待 Phase 3+〕;`AppError`〔thiserror,最小 variant `NotFound`→404、`Internal(String)`→500;client msg 走 `BizCode::default_msg()`、thiserror Display 僅 log〕+ axum `.fallback()`〔不存在 path 回 `{data:null,code:"4040",msg:"接口不存在"}` live curl 驗〕;`/health` 維持純 `ok`。**拍板:camelCase rename 機制移出本 feature scope、留 Phase 4 各 DTO 自帶**〔信封欄名 data/code/msg 本就小寫無需轉換〕。21 單測鎖契約形狀；3 unit/13 task subagent-driven TDD,各 spec+quality 雙審 + final holistic review）
 4. **audit log 基礎設施 feature** — schema + `AuditEvent` + redact(依 soft-delete)
 5. **sub-crate setup feature** — 拷貝 `sea-orm-adapter` + `xdb`,重寫 `axum-casbin`
 

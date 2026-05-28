@@ -352,8 +352,8 @@ cd ..
 <!-- SPECKIT START -->
 **Active Spec**: [`specs/008-response-envelope/spec.md`](specs/008-response-envelope/spec.md)
 **Active Plan**: [`specs/008-response-envelope/plan.md`](specs/008-response-envelope/plan.md)
-**Phase**: 階段 1 SDD 設計鏈進行中 — specify ✅(16/16、0 NEEDS CLARIFICATION) / clarify ✅(11 類全 Clear、0 提問) / plan ✅(Constitution 7+7=14 ✅、research R1-R4 + 3 entity data-model + C-V contract + quickstart;新增 dep `serde_json = "1"`)。**Phase 2 P1「envelope 對齊」(DESIGN §10 #3)**:選為最小可獨立完成 feature。建 `Res<T>`(`{data,code,msg}`、code=string、無 success、欄位序 data→code→msg)+ `IntoResponse`;完整 `BizCode` 矩陣 enum(只 wire 0000/4040/5000)；`AppError`(thiserror;NotFound/Internal)+ 404 `.fallback()`。`/health` 不動。2 拍板:Internal=`5000`(rev2 自訂 5xxx sentinel) / 不做 camelCase 機制(無 DTO)
-**下一步**: `/speckit-tasks` → `/speckit-analyze` → `superpowers:executing-plans`(★ 本 feature 動 rust-api worktree → 兩段式 commit;走 RUSTAPI-SOURCE-ISOLATION 軌道)。feature branch `008-response-envelope`(pre-hook 已建);spec docs 落此 branch,實作改 rust-api worktree(server/src/envelope.rs + error.rs + main.rs + Cargo.toml 加 serde_json)
+**Phase**: ✅ 完整實作 + 驗收 + merge 回 `rev2-admin-root`(2026-05-29)— executing-plans → subagent-driven-development(3 unit / 13 task,各 spec+quality 雙審 + final holistic review = Ready)。`Res<T>`(`{data,code,msg}`、code=string、無 success、欄位序 data→code→msg)+ `IntoResponse`;`BizCode` 完整 12-variant 矩陣(只 wire 0000/4040/5000);`AppError`(thiserror;NotFound→404/Internal→500)+ axum `.fallback()`(404 live curl 驗)。21 單測 PASS / `/health` 不動 / 2 拍板(Internal=`5000` rev2 自訂 5xxx sentinel、不做 camelCase 機制)/ Constitution 7+7=14 ✅。兩段式 commit(rust-api worktree `091fe6a..fac12f6` push fork + 外層 SHA pin);008 branch 保留
+**下一步**: Phase 2 P1 續推 — JWT 機密管理 / soft-delete 7-entity 基礎設施 / audit log / sub-crate(Casbin)等 [DESIGN §10 Phase 2](docs/INTEGRATION-DESIGN.md) 餘 feature(envelope 已 ✅)
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
