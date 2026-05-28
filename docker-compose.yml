@@ -10,7 +10,7 @@
 #   - base 層禁止放 dev/prod 專屬 volume/bind-mount
 #   - base-web 不放 image/build/command(dev=node:20 無 build;prod=nginx build;異質、無法靠 target 覆寫)
 #   - rust-api 放 build(dev/prod 同 Dockerfile 不同 target,override 覆寫 build.target 即可)
-#   - named volume 用顯式 name: rev2_* (bypass COMPOSE_PROJECT_NAME prefix)
+#   - named volume 移除顯式 name:,靠 project name (rev2-admin) auto-prefix → 實際名 rev2-admin_<service>_<purpose>
 
 name: rev2-admin
 
@@ -91,7 +91,7 @@ services:
     secrets:
       - redis_password
     volumes:
-      - redis_data:/data
+      - redis_stack_data:/data
     healthcheck:
       test: ["CMD-SHELL", "redis-cli -a \"$(cat /run/secrets/redis_password)\" --no-auth-warning ping"]
       interval: 10s
@@ -116,19 +116,12 @@ networks:
 
 volumes:
   postgres_data:
-    name: rev2_postgres_data
-  redis_data:
-    name: rev2_redis_data
+  redis_stack_data:
   front_nginx_certs:
-    name: rev2_front_nginx_certs
-  bw_node_modules:
-    name: rev2_bw_node_modules
-  bw_pnpm_store:
-    name: rev2_bw_pnpm_store
+  base_web_node_modules:
+  base_web_pnpm_store:
   rust_api_cargo_cache:
-    name: rev2_rust_api_cargo_cache
   rust_api_target:
-    name: rev2_rust_api_target
 
 secrets:
   postgres_password:

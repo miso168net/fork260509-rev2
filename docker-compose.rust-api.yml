@@ -27,6 +27,8 @@
 #   - 未啟動 prod profile 時, secret file 不存在不會擋 compose parse, 只在 prod up 時才失敗
 #   - 對齊 specs/001-dockerfile-rust-api/contracts/compose-profiles.md
 
+name: rev2-admin
+
 services:
   rust-api-dev:
     profiles: ["dev"]
@@ -75,6 +77,4 @@ secrets:
 
 volumes:
   rust_api_cargo_cache:
-    name: rev2_rust_api_cargo_cache
   rust_api_target:
-    name: rev2_rust_api_target

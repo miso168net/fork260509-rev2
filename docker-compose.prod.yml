@@ -1,7 +1,7 @@
 # rev2-admin prod override
 #
 # 用法(配合 base):
-#   prod baseline(需先 seed cert 進 rev2_front_nginx_certs volume):
+#   prod baseline(需先 seed cert 進 rev2-admin_front_nginx_certs volume):
 #     docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --wait
 #   prod + acme skeleton:
 #     docker compose -f docker-compose.yml -f docker-compose.prod.yml --profile prod up -d --wait

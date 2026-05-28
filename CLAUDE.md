@@ -345,10 +345,10 @@ git commit -m "bump base-web: rebase on upstream <短 SHA>"
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/005-secret-injection/spec.md`](specs/005-secret-injection/spec.md)
-**Active Plan**: [`specs/005-secret-injection/plan.md`](specs/005-secret-injection/plan.md)
-**Phase**: ✅ 完成並 merge — 階段 1 SDD 設計鏈(specify/clarify/plan/tasks/analyze 全 ✅、Constitution 7+7=14 ✅ Pass)+ 階段 2 TDD 實作(executing-plans → subagent-driven-development;US1/US2/US3 各 spec+quality 雙審 + final holistic review)+ acceptance(7 必 secret 一鍵生 dual-write、dev stack 5 service healthy、`psql -U soybean` 連線通);2 處 user 拍板偏離(postgres/redis 密碼改 hex URL-safe / T013 只清 postgres 卷不 down -v);merge `068b2a8` 回 `rev2-admin-root`(--no-ff,feature branch 保留)
-**下一步**: Phase 1 部署基建 #1~#5 全數完成;啟動 Phase 2 P1 基礎設施(rust-api 接 `database_url`/`redis_url`:config.rs 加 `[database]`/`[redis]` section + 掛 compose secret + `APP_*_FILE` env + db schema migration)
+**Active Spec**: [`specs/006-docker-volume-naming/spec.md`](specs/006-docker-volume-naming/spec.md)
+**Active Plan**: [`specs/006-docker-volume-naming/plan.md`](specs/006-docker-volume-naming/plan.md)
+**Phase**: 階段 1 SDD 設計鏈進行中 — `/speckit-specify` ✅(spec.md + 16/16 checklist) / `/speckit-clarify` ✅(0 提問、全 taxonomy Clear) / `/speckit-plan` ✅(Constitution 7+7=14 ✅ Pass、6 research + 3 entity + 2 contract + quickstart) / `/speckit-tasks` ✅(17 task / 6 phase、無單元測試)；Phase 0 brainstorm 已凍結 5 決策(key+name 同改 / `rev2-admin_` auto-prefix 移除顯式 name: / 凍結 spec 加 superseded 註記 / 000 全面改寫 / 全 7 卷)
+**下一步**: `/speckit-analyze`(spec/plan/tasks 跨檔 consistency)→ 後 `superpowers:executing-plans` 實作
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
@@ -437,6 +437,7 @@ feature 啟動  →  docs/superpowers/<NNN>-<feature-name>.md(brainstorm)
 | prometheus | host 映射 `13090:9090` | host 映射 `23090:9090` | metrics scrape + 儲存 |
 | pushgateway | host 映射 `19091:9091` | host 映射 `29091:9091` | short-lived job metrics push |
 | docker compose project name | `rev1-admin` | `rev2-admin` | 透過 `COMPOSE_PROJECT_NAME` 環境變數設定 |
+| docker volume name | `rev1-admin_<vol>`（auto-prefix） | `rev2-admin_<service>_<purpose>`（auto-prefix,移除顯式 name:） | 命名規則 + 正典 7 卷見 §8.2.2 |
 
 **啟動模式**（3 種；TLS 結構規劃如下）：
 - **dev**（`-f -f dev.yml`）：127.0.0.1 loopback、HTTP `:21080` + HTTPS `:21443`（自簽 cert）+ 直連 backend port `:21081 :25432 :26379` + observability `:23000 :23090 :29091`（範例見 §8.2.1）
@@ -466,7 +467,7 @@ openssl x509 -in deploy/dev-certs/fullchain.pem -noout -ext subjectAltName
 # === prod baseline 啟動（0.0.0.0 對外、80 redirect 443、無 acme）===
 # 先 seed cert 進 named volume（acme 自動 issue 流程後續再做）：
 docker compose -f docker-compose.yml -f docker-compose.dev.yml down -v --remove-orphans
-docker run --rm -v rev2_front_nginx_certs:/certs -v "$PWD/deploy/dev-certs":/src alpine \
+docker run --rm -v rev2-admin_front_nginx_certs:/certs -v "$PWD/deploy/dev-certs":/src alpine \
   sh -c "cp /src/fullchain.pem /src/privkey.pem /certs/"
 
 # 啟 prod baseline：
@@ -479,6 +480,30 @@ docker compose exec acme acme.sh --version    # sanity check
 
 > WSL2 NAT mode 不可用 `127.0.0.1` — 設 `.wslconfig` `[wsl2] networkingMode=mirrored`（Win11 22H2+ 預設）、或用 `wsl hostname -I` 拿 WSL IP。
 > 實際 acme.sh cert acquisition / renew 流程留待後續（需公網 + 真實 domain + DNS provider creds）。
+
+#### 8.2.2 named volume 命名規則
+
+**命名規則**：
+- compose key 格式：`<service>_<purpose>`（不含 project prefix、**不加**顯式 `name:`）
+- 實際卷名：`rev2-admin_<service>_<purpose>`（由 compose top-level `name: rev2-admin` 自動補前綴）
+- 設頂層 `name: rev2-admin` 的是 master `docker-compose.yml` 與 2 個 standalone（`docker-compose.base-web.yml` / `docker-compose.rust-api.yml`）；`docker-compose.dev.yml` / `docker-compose.prod.yml` override **不**自設、`-f` 疊加時繼承 master 的 project name，故全 stack 共用同一 prefix。
+- `<service>` 對應 §1 短名（`-` 改 `_`）：`front_nginx` / `base_web` / `rust_api` / `postgres` / `redis_stack`
+- `<purpose>` ∈ `data` / `certs` / `node_modules` / `pnpm_store` / `cargo_cache` / `target`
+- feature 006 移除所有顯式 `name:` 欄位，project prefix 成為唯一前綴來源；US1 同時重命名 3 個 key：`redis_data` → `redis_stack_data`、`bw_node_modules` → `base_web_node_modules`、`bw_pnpm_store` → `base_web_pnpm_store`。
+
+**正典 7 卷清單**：
+
+| compose key | 實際卷名 | 消費 service / mount | 類型 |
+|---|---|---|---|
+| `postgres_data` | `rev2-admin_postgres_data` | postgres `/var/lib/postgresql/data` | data |
+| `redis_stack_data` | `rev2-admin_redis_stack_data` | redis-stack `/data` | data |
+| `front_nginx_certs` | `rev2-admin_front_nginx_certs` | front-nginx prod `/etc/nginx/certs`（+ acme `/acme.sh`） | certs |
+| `base_web_node_modules` | `rev2-admin_base_web_node_modules` | base-web dev `/app/node_modules` | build 快取 |
+| `base_web_pnpm_store` | `rev2-admin_base_web_pnpm_store` | base-web dev `/pnpm-store` | build 快取 |
+| `rust_api_cargo_cache` | `rev2-admin_rust_api_cargo_cache` | rust-api dev `/usr/local/cargo` | build 快取 |
+| `rust_api_target` | `rev2-admin_rust_api_target` | rust-api dev `/app/target` | build 快取 |
+
+> feature 006（US1）已移除所有顯式 `name:` 欄位，project prefix `rev2-admin_` 為唯一前綴來源，新增卷只需依上述規則命名 compose key 即自動對齊。
 
 ### 8.3 知識圖譜（graphify）
 

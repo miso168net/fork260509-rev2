@@ -888,7 +888,7 @@ CREATE TABLE sys_operation_log (
 | base-web | `node:22-slim`(pnpm corepack builder)+ `nginx:1.27-alpine`(runtime) | Vite build with `VITE_*` build-arg + nginx SPA fallback + 30d asset cache | `/health` location |
 | front-nginx | `nginx:1.27-alpine` | mount `deploy/front-nginx/conf.d` + snippets | TLS terminator |
 | postgres | `postgres:17.4` | 官方 | named volume `postgres_data` |
-| redis | `redis/redis-stack:7.4.0-v3` | 官方 + `--requirepass` shell wrapper | named volume `redis_data` |
+| redis | `redis/redis-stack:7.4.0-v3` | 官方 + `--requirepass` shell wrapper | named volume `redis_stack_data` |
 
 ### §8.2 容器編排(dev / prod 雙 compose)
 

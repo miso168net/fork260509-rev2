@@ -69,6 +69,8 @@ VITE_SERVICE_BASE_URL=http://rust-api:21081 docker compose -f docker-compose.bas
 
 **全 000 既有、不動**。
 
+> **superseded(006)**:本表卷名為 002/004 凍結當時樣貌;named volume 命名已由 [006-docker-volume-naming](../../006-docker-volume-naming/spec.md) 統一為 `rev2-admin_<service>_<purpose>`(移除顯式 name:、3 key 更名)。現行正典見 CLAUDE.md §8.2.2。
+
 ## 整套 §8.2 stack 整合預留
 
 Phase 1 #4「容器 port 與編排 feature」啟動後:
