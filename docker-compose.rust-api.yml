@@ -1,3 +1,7 @@
+# ⚠️ DEPRECATED — 本 standalone compose 已退場(Phase 1 #4 master compose 落地 2026-05-28)
+# 主流用法:docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --wait
+# 保留作 single-service debug 後備、未來不一定同步
+#
 # rust-api 容器化 (3 crate workspace, multi-stage Dockerfile)
 #
 # 用法:

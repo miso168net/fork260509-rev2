@@ -1,0 +1,138 @@
+# rev2-admin master compose — base layer (5 service 共通定義)
+#
+# 用法:
+#   dev:  docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --wait
+#   prod: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --wait
+#   prod + acme: docker compose -f docker-compose.yml -f docker-compose.prod.yml --profile prod up -d --wait
+#
+# 設計:
+#   - base 層禁止放 host ports(R1: list append → dev/prod 疊加衝突)
+#   - base 層禁止放 dev/prod 專屬 volume/bind-mount
+#   - base-web 不放 image/build/command(dev=node:20 無 build;prod=nginx build;異質、無法靠 target 覆寫)
+#   - rust-api 放 build(dev/prod 同 Dockerfile 不同 target,override 覆寫 build.target 即可)
+#   - named volume 用顯式 name: rev2_* (bypass COMPOSE_PROJECT_NAME prefix)
+
+name: rev2-admin
+
+services:
+  front-nginx:
+    image: nginx:1.31.0-alpine
+    depends_on:
+      base-web:
+        condition: service_healthy
+      rust-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost/health | grep -q ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - rev2_net
+
+  base-web:
+    # ★ image/build/command 故意不放 base 層(H1 base-web vs rust-api 差異):
+    #   dev override → node:20.19-alpine(無 build);prod override → nginx multi-stage build
+    #   異質不能靠 target 覆寫;若在 base 放 build,docker 會誤 build 並 tag 成 node:20
+    depends_on: {}
+    networks:
+      - rev2_net
+
+  rust-api:
+    build:
+      context: ./
+      dockerfile: deploy/Dockerfile.rust-api.txt
+      target: runtime
+    image: rev2-admin-rust-api:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis-stack:
+        condition: service_healthy
+    environment:
+      APP_JWT_JWT_SECRET_FILE: /run/secrets/jwt_secret
+      APP_JWT_REFRESH_TOKEN_SECRET_FILE: /run/secrets/refresh_token_secret
+      RUST_LOG: "info"
+    secrets:
+      - jwt_secret
+      - refresh_token_secret
+    networks:
+      - rev2_net
+
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      POSTGRES_USER: rev2admin
+      POSTGRES_DB: rev2
+    secrets:
+      - postgres_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rev2admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - rev2_net
+
+  redis-stack:
+    image: redis/redis-stack-server:latest
+    command:
+      - sh
+      - -c
+      - 'redis-stack-server --requirepass "$(cat /run/secrets/redis_password)"'
+    secrets:
+      - redis_password
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"$(cat /run/secrets/redis_password)\" --no-auth-warning ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - rev2_net
+
+  acme:
+    profiles: [prod]
+    build:
+      context: deploy/
+      dockerfile: Dockerfile.acme.txt
+    volumes:
+      - front_nginx_certs:/acme.sh
+    networks:
+      - rev2_net
+
+networks:
+  rev2_net:
+
+volumes:
+  postgres_data:
+    name: rev2_postgres_data
+  redis_data:
+    name: rev2_redis_data
+  front_nginx_certs:
+    name: rev2_front_nginx_certs
+  bw_node_modules:
+    name: rev2_bw_node_modules
+  bw_pnpm_store:
+    name: rev2_bw_pnpm_store
+  rust_api_cargo_cache:
+    name: rev2_rust_api_cargo_cache
+  rust_api_target:
+    name: rev2_rust_api_target
+
+secrets:
+  postgres_password:
+    file: ./deploy/secrets/postgres_password.txt
+  redis_password:
+    file: ./deploy/secrets/redis_password.txt
+  jwt_secret:
+    file: ./deploy/secrets/jwt_secret.txt
+  refresh_token_secret:
+    file: ./deploy/secrets/refresh_token_secret.txt

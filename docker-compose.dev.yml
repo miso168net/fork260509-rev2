@@ -1,0 +1,80 @@
+# rev2-admin dev override
+#
+# 用法(配合 base):
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --wait
+#
+# 特性:
+#   - 全部 host port 綁 127.0.0.1 loopback(開發機隔離)
+#   - front-nginx:HTTP :21080 + HTTPS :21443(dev-certs bind mount + dev.conf)
+#   - base-web:node:20.19-alpine hot-reload vite dev --host 0.0.0.0 --port 21079
+#   - rust-api:cargo-watch dev target(bind mount source + named volume mask cargo/target)
+#   - postgres/redis:直連 debug port
+
+services:
+  front-nginx:
+    ports:
+      - "127.0.0.1:21080:21080"
+      - "127.0.0.1:21443:21443"
+    volumes:
+      - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./deploy/nginx/conf.d/_locations.inc:/etc/nginx/conf.d/_locations.inc:ro
+      - ./deploy/nginx/conf.d/dev.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./deploy/dev-certs:/etc/nginx/certs:ro
+
+  base-web:
+    image: node:20.19-alpine
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+      - COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+      - npm_config_store_dir=/pnpm-store
+      - CI=true
+    volumes:
+      - ./base-web:/app
+      - bw_node_modules:/app/node_modules
+      - bw_pnpm_store:/pnpm-store
+    ports:
+      - "127.0.0.1:21079:21079"
+    command:
+      - sh
+      - -c
+      - "npm install -g pnpm@10 && pnpm install && pnpm dev --host 0.0.0.0 --port 21079"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:21079/ | grep -qi '<!doctype\\|<html'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+    init: true
+    tty: true
+    stdin_open: true
+
+  rust-api:
+    build:
+      target: dev
+    image: rev2-admin-rust-api:dev
+    volumes:
+      - ./rust-api:/app
+      - rust_api_cargo_cache:/usr/local/cargo
+      - rust_api_target:/app/target
+    ports:
+      - "127.0.0.1:21081:21081"
+    environment:
+      APP_JWT_JWT_SECRET: "${APP_JWT_JWT_SECRET:-dev_jwt_secret_for_local_only_x32xxxxxx}"
+      APP_JWT_REFRESH_TOKEN_SECRET: "${APP_JWT_REFRESH_TOKEN_SECRET:-dev_refresh_secret_for_local_only_x32xx}"
+      RUST_LOG: "info,tower_http=debug"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:21081/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+    init: true
+
+  postgres:
+    ports:
+      - "127.0.0.1:25432:5432"
+
+  redis-stack:
+    ports:
+      - "127.0.0.1:26379:6379"
