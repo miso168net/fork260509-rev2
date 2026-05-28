@@ -65,7 +65,7 @@ description: "Task list for 003-tls-dev-cert implementation"
     * 收尾 print:`✅ cert 生成完成,fullchain 結構:$CHAIN_MSG` + 4 檔列表 + 標記(自簽 root / 外部 CA、未動 / nginx 用 / SECRET)
     * 自簽路線 print:3 OS trust 教學(Windows certutil / macOS security / Linux update-ca-certificates)+ 「有效期 CA 10 年 / leaf 1 年」+「renew 跑 --force」(FR-015)
     * 外部 CA 路線 print:「★ 你用了外部 CA,本 script 假設你已 trust 該 CA 的 root」提醒 +「renew leaf 跑 --force」(FR-016)
-    * **注意**:本 task 完整 script 內容直接從 [`docs/superpowers/003-tls-dev-cert.md` §5](../../docs/superpowers/003-tls-dev-cert.md) 拷貝(80 行,brainstorm 拍板版),不再變動 logic
+    * **注意**:本 task 完整 script 內容直接從 [`docs/superpowers/003-tls-dev-cert.md` §5](../../docs/superpowers/003-tls-dev-cert.md) 拷貝(80 行,brainstorm 拍板版),不再變動 logic;若 brainstorm doc §5 與 [plan.md §5 邏輯描述](./plan.md) 有差異,以 plan.md 為準(SDD 設計鏈權威)
 
 - [ ] T005 `chmod +x deploy/generate-dev-cert.sh`(讓 script 可執行,User Story 用 `bash deploy/generate-dev-cert.sh` 跑也 work、但加 x 對齊一般 shell script 習慣)
 
@@ -106,6 +106,7 @@ description: "Task list for 003-tls-dev-cert implementation"
 - [ ] T011 [US1] Acceptance:3 OS trust 教學印(對應 FR-015;[verification-commands.md](./contracts/verification-commands.md) §5 前段)
     * `bash deploy/generate-dev-cert.sh --force 2>&1 | grep -c "Windows 11\|macOS\|Linux (Debian/Ubuntu)"` 應 ≥ 3(3 個 OS 標記都印到)
     * `bash deploy/generate-dev-cert.sh --force 2>&1 | grep -c "certutil -addstore"` 應 ≥ 1(Windows 教學命令在)
+    * `bash deploy/generate-dev-cert.sh --force 2>&1 | grep -c "security add-trusted-cert"` 應 ≥ 1(macOS 教學命令在)
     * `bash deploy/generate-dev-cert.sh --force 2>&1 | grep -c "update-ca-certificates"` 應 ≥ 1(Linux 教學命令在)
 
 **Checkpoint**: User Story 1 fully functional;MVP 達成、可 ship 此階段(若只交 cert script + 自簽路線)
@@ -170,7 +171,7 @@ description: "Task list for 003-tls-dev-cert implementation"
     * (c)`git diff --name-only HEAD` 結果只含 `deploy/generate-dev-cert.sh` + `deploy/dev-certs/.gitkeep` + `.gitignore`(本 feature scope FR-023);**不**含 `docker-compose.*.yml` / `deploy/Dockerfile.*.txt` / `CLAUDE.md` / `base-web` gitlink / `rust-api` gitlink
     * (d)本 plan Constitution Check 7 項對照 [plan.md](./plan.md) Constitution Check + Re-Check 段、合計 ≥ 14 個 `✅ Pass`
 
-- [ ] T016 [P] End-to-end smoke:跑 [quickstart.md](./quickstart.md) Path A(自簽 happy path)+ Path B(`--force` renew)+ Path C(Hybrid 外部 CA + `--force` 不動 ca.*)+ Path D(gitignore 紀律驗)完整流程,記錄任何 friction 進 `docs/superpowers/003-tls-dev-cert.md` §10 Open Questions(若需)。**[P] 註**:本 task 與 T015 Constitution self-check 不同檔不互鎖、可平行跑
+- [ ] T016 [P] End-to-end smoke:跑 [quickstart.md](./quickstart.md) Path A(自簽 happy path)+ Path B(`--force` renew)+ Path C(Hybrid 外部 CA + `--force` 不動 ca.*)+ Path D(gitignore 紀律驗)完整流程 + **明確 assert [CLAUDE.md §8.2.1](../../CLAUDE.md) 第一行 `bash deploy/generate-dev-cert.sh` 第一次跑 `echo "exit: $?"` = 0**(SC-008 字面對齊;Path A 開頭已涵蓋、本 task 顯式紀錄)。記錄任何 friction 進 `docs/superpowers/003-tls-dev-cert.md` §10 Open Questions(若需)。**[P] 註**:本 task 與 T015 Constitution self-check 不同檔不互鎖、可平行跑
 
 **Checkpoint**: feature 完整、可進 `superpowers:finishing-a-development-branch` 階段(outer commit + push 003-tls-dev-cert + merge 回 `rev2-admin-root` + 更新 CHECKLIST §1 + Phase 1 entry + MILESTONES append + CLAUDE.md §6 marker 收尾)
 
