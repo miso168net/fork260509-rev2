@@ -486,7 +486,7 @@ docker compose exec acme acme.sh --version    # sanity check
 **命名規則**：
 - compose key 格式：`<service>_<purpose>`（不含 project prefix、**不加**顯式 `name:`）
 - 實際卷名：`rev2-admin_<service>_<purpose>`（由 compose top-level `name: rev2-admin` 自動補前綴）
-- 4 個 compose 檔（`docker-compose.yml`、`docker-compose.dev.yml`、`docker-compose.prod.yml` 以及 standalone 版本）均設定 `name: rev2-admin`，確保同一 project prefix。
+- 設頂層 `name: rev2-admin` 的是 master `docker-compose.yml` 與 2 個 standalone（`docker-compose.base-web.yml` / `docker-compose.rust-api.yml`）；`docker-compose.dev.yml` / `docker-compose.prod.yml` override **不**自設、`-f` 疊加時繼承 master 的 project name，故全 stack 共用同一 prefix。
 - `<service>` 對應 §1 短名（`-` 改 `_`）：`front_nginx` / `base_web` / `rust_api` / `postgres` / `redis_stack`
 - `<purpose>` ∈ `data` / `certs` / `node_modules` / `pnpm_store` / `cargo_cache` / `target`
 - feature 006 移除所有顯式 `name:` 欄位，project prefix 成為唯一前綴來源；US1 同時重命名 3 個 key：`redis_data` → `redis_stack_data`、`bw_node_modules` → `base_web_node_modules`、`bw_pnpm_store` → `base_web_pnpm_store`。
