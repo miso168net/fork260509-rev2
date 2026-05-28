@@ -90,6 +90,8 @@ acme service mount named volume cert(與 front-nginx 共享 `/acme.sh` 或 cert 
 
 **命名策略**(R8):顯式 `name: rev2_*` 對齊 standalone 慣例;COMPOSE_PROJECT_NAME=rev2-admin(影響 container name + network)。**§8.2.1 seed 命令的 `rev2-admin_front_nginx_certs` 須同步改 `rev2_front_nginx_certs`**。
 
+> **superseded(006)**:本表卷名為 002/004 凍結當時樣貌;named volume 命名已由 [006-docker-volume-naming](../../006-docker-volume-naming/spec.md) 統一為 `rev2-admin_<service>_<purpose>`(移除顯式 name:、3 key 更名)。現行正典見 CLAUDE.md §8.2.2。
+
 ---
 
 ## Entity 7: secret(2 新 + 2 既有)

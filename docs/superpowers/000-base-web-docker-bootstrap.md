@@ -80,12 +80,12 @@ docker compose -f docker-compose.base-web.yml --profile prod up --build  # prod
 
 ### 2.4 node_modules 策略(dev mode)
 
-named volume `rev2_bw_node_modules` mask `/app/node_modules`:
+named volume `rev2-admin_base_web_node_modules` mask `/app/node_modules`:
 
 ```yaml
 volumes:
   - ./base-web:/app                          # source bind mount(熱重載要)
-  - bw_node_modules:/app/node_modules        # named volume 蓋過 host 同名目錄
+  - base_web_node_modules:/app/node_modules        # named volume 蓋過 host 同名目錄
 ```
 
 理由:
@@ -146,7 +146,7 @@ hardlink 不可用 → pnpm fallback 把 store 放到 `<project-root>/.pnpm-stor
 但 `/app` 是 bind mount → store 寫回 host `base-web/.pnpm-store/`(踩到 **1.3 GB 污染**,
 違反「不改 worktree」紀律)。
 
-named volume `bw_node_modules` 只 mask `/app/node_modules`,沒 mask `/app/.pnpm-store`,
+named volume `base_web_node_modules` 只 mask `/app/node_modules`,沒 mask `/app/.pnpm-store`,
 所以 store 透過 bind mount 漏到 host。
 
 **修法**:env 重定向 + 第三個 named volume,把 store 完全放在 docker volume:
@@ -156,17 +156,17 @@ environment:
   - npm_config_store_dir=/pnpm-store    # pnpm 認 npm-style env (lowercase)
 volumes:
   - ./base-web:/app
-  - bw_node_modules:/app/node_modules
-  - bw_pnpm_store:/pnpm-store           # 新加 named volume,store 完全留 docker volume
+  - base_web_node_modules:/app/node_modules
+  - base_web_pnpm_store:/pnpm-store           # 新加 named volume,store 完全留 docker volume
 
 volumes:
-  bw_pnpm_store:
-    name: rev2_bw_pnpm_store
+  base_web_pnpm_store:
+    name: rev2-admin_base_web_pnpm_store
 ```
 
 **附加 — `CI=true` 預防 pnpm 跳 confirm prompt 卡 stdin**:
 
-若 named volume `bw_node_modules` 跟 `bw_pnpm_store` 不一致(例如只清一邊),
+若 named volume `base_web_node_modules` 跟 `base_web_pnpm_store` 不一致(例如只清一邊),
 pnpm install 偵測會跳:
 
 ```
@@ -204,8 +204,8 @@ services:
       - CI=true                              # §2.7 non-interactive,pnpm 不跳 confirm prompt
     volumes:
       - ./base-web:/app
-      - bw_node_modules:/app/node_modules
-      - bw_pnpm_store:/pnpm-store            # §2.7 store 完全留 docker volume
+      - base_web_node_modules:/app/node_modules
+      - base_web_pnpm_store:/pnpm-store            # §2.7 store 完全留 docker volume
     ports:
       - "21079:21079"
     command:
@@ -227,17 +227,17 @@ services:
     restart: unless-stopped
 
 volumes:
-  bw_node_modules:
-    name: rev2_bw_node_modules
-  bw_pnpm_store:                            # §2.7 新加
-    name: rev2_bw_pnpm_store
+  base_web_node_modules:
+    name: rev2-admin_base_web_node_modules
+  base_web_pnpm_store:                            # §2.7 新加
+    name: rev2-admin_base_web_pnpm_store
 ```
 
 注意:
 - `command:` **必須用 array form**(不能用 YAML `>` 折疊 scalar) — 詳見第 4 節第 1 輪 debug
 - `tty: true` + `stdin_open: true` + `init: true` 給 dev mode,讓 Ctrl-C 能正確終止 vite dev server
 - `container_name` 加 `rev2-` 前綴對齊 §8.2 規劃的 `rev2-admin` compose project name(便於未來整合辨識)
-- volume name 用 `rev2_bw_node_modules` / `rev2_bw_pnpm_store`(顯式 name 避免 compose 自動加 project name 前綴)
+- volume name 用 `rev2-admin_base_web_node_modules` / `rev2-admin_base_web_pnpm_store`(006-docker-volume-naming 已移除顯式 `name:`、改由 `rev2-admin` project name 自動前綴)
 
 ### 3.2 deploy/Dockerfile.base-web.txt
 
@@ -416,13 +416,13 @@ modified:   base-web (untracked content)
 2. hardlink **必須同 filesystem** — 容器內 `$HOME=/root`(image layer)≠ `/app`(host bind mount)
 3. pnpm fallback 把 store 放到 `<project-root>/.pnpm-store/` 確保同 fs(這對 native dev 是正解)
 4. 但 `/app` 是 bind mount → 寫回 host `base-web/.pnpm-store/`
-5. named volume `bw_node_modules` 只 mask `/app/node_modules`,沒 mask `/app/.pnpm-store`,所以漏出去
+5. named volume `base_web_node_modules` 只 mask `/app/node_modules`,沒 mask `/app/.pnpm-store`,所以漏出去
 
 **驗證**:
 - 容器內 `pnpm store path` 回 `/app/.pnpm-store/v10`(在 bind mount 內 = host base-web/.pnpm-store/v10)
 - 結構 `files/` + `index/` + `projects/` = pnpm 10 content-addressable layout(`v10` schema version)
 
-**修法**:詳見 §2.7。env `npm_config_store_dir=/pnpm-store` + 第三個 named volume `bw_pnpm_store:/pnpm-store` 把 store 完全留在 docker volume。
+**修法**:詳見 §2.7。env `npm_config_store_dir=/pnpm-store` + 第三個 named volume `base_web_pnpm_store:/pnpm-store` 把 store 完全留在 docker volume。
 
 清現有污染:
 ```bash
@@ -438,7 +438,7 @@ docker compose -f docker-compose.base-web.yml --profile dev up -d
 | host `base-web/` worktree | `git status` 空輸出 ✓ |
 | host `base-web/.pnpm-store` | 不存在 ✓ |
 | `/pnpm-store/v10/files` in named volume | **1.3 GB**(內容全進 docker volume) |
-| `/app/node_modules/.pnpm` in bw_node_modules | 1.4 GB |
+| `/app/node_modules/.pnpm` in base_web_node_modules | 1.4 GB |
 | `curl http://127.0.0.1:21079` | HTTP 200 / 622 bytes / 10 ms ✓ |
 
 **教訓**:bind mount source + named volume 蓋 node_modules 是常見 dev 容器化 pattern,
@@ -458,15 +458,15 @@ Scope: all 9 workspace projects
 容器 status 看是 Up,看 logs 才知卡哪。
 
 **根因**:
-- down 後 `bw_node_modules` named volume 保留(沒 down -v 也沒 docker volume rm)
-- 新加 `bw_pnpm_store` 從零開始(空)
+- down 後 `base_web_node_modules` named volume 保留(沒 down -v 也沒 docker volume rm)
+- 新加 `base_web_pnpm_store` 從零開始(空)
 - pnpm install 偵測 node_modules 跟 store **inconsistent**(node_modules 內 packages 對應的 store metadata 在新 volume 內找不到)→ 預設行為跳 confirm prompt
 - `‣ true` 是 pnpm 預設答案 display,但仍等 Enter → 容器非互動 TTY → 永遠卡
 
 **修法 ①(立即 unstuck)**:全清相關 volume:
 ```bash
 docker compose -f docker-compose.base-web.yml --profile dev down
-docker volume rm rev2_bw_node_modules rev2_bw_pnpm_store
+docker volume rm rev2-admin_base_web_node_modules rev2-admin_base_web_pnpm_store
 docker compose -f docker-compose.base-web.yml --profile dev up -d
 ```
 
@@ -713,7 +713,7 @@ node /tmp/cdp-login.mjs "$PAGE_ID" 超级管理员              /tmp/postlogin.p
 docker compose -f docker-compose.base-web.yml --profile dev down
 
 # 6. (極端)清掉所有 dev mode named volume(下次重 pnpm install 從零)
-docker volume rm rev2_bw_node_modules rev2_bw_pnpm_store
+docker volume rm rev2-admin_base_web_node_modules rev2-admin_base_web_pnpm_store
 ```
 
 CDP script 內容見 Appendix A。
