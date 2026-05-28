@@ -3,7 +3,7 @@
 **Type**: Shell command sequence;對應 spec User Stories + SCs。
 
 > **§0 — CLAUDE.md §3 紀律**：本 feature 有 1 個可單測純邏輯單元（config 反序列化 + URL secret 載入），其餘（連線建立、migration、compose wiring）為需真 DB/Redis 的 wiring → 由本 C-V contract 覆蓋。`tasks.md`/`plan.md` 須明示「config 反序列化單測 + 連線/migration acceptance 覆蓋」及理由。
-> dev rust-api 為 cargo-watch image（bind-mount source）；migration 經 migration binary 跑，下列指令為候選、tasks 階段定稿確切 invocation（含是否加 `--entrypoint ""` 覆寫）。
+> dev rust-api 為 cargo-watch image（bind-mount source）；dev migration invocation = `run --rm --entrypoint "" rust-api cargo run --bin migration -- up`（覆寫 cargo-watch entrypoint）；prod 用 image entrypoint dispatch `migration`。implementer 對真 image 確認可跑。
 
 ---
 
@@ -25,7 +25,7 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml run --rm --entryp
 # 前置: dev stack postgres healthy(或單起 postgres)
 docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d postgres --wait
 
-# 跑 migration（候選 invocation；tasks 定稿）
+# 跑 migration（dev：覆寫 cargo-watch entrypoint）
 docker compose -f docker-compose.yml -f docker-compose.dev.yml run --rm --entrypoint "" rust-api cargo run --bin migration -- up
 # 預期: exit 0、sys_user 表建立 + 3 帳號 seed
 
@@ -61,8 +61,9 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml ps --format 'tabl
 docker compose -f docker-compose.yml -f docker-compose.dev.yml logs rust-api | grep -iE 'postgres|redis|connect'
 # 預期: 可見 DB + Redis connected 記錄
 
-# fail-fast: 給錯 redis URL → rust-api 非零退出、log 指出 Redis 連線失敗
-#（手動驗證：暫改 APP_REDIS_URL_FILE 指向錯誤 host，up rust-api，觀察非零退出 + log）
+# fail-fast(implementer 跑;loader 為 _FILE>envvar): 令 redis 不可達後啟 rust-api,斷言非零退出 + log 指 Redis 連線失敗
+# 方法擇一:(a) docker compose ... stop redis-stack 後重啟 rust-api;(b) 暫改 deploy/secrets/redis_url.txt 內嵌 host 為不存在值再 up rust-api(用畢還原)
+# ⚠️ 不可用 `-e APP_REDIS_URL=...` 覆寫——既有 load_secret 為 _FILE 優先於 envvar,有 _FILE 掛載時 envvar 被忽略、蓋不到
 ```
 
 ---
