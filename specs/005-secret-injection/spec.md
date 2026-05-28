@@ -12,6 +12,15 @@
 
 ---
 
+## Clarifications
+
+### Session 2026-05-28
+
+- 全 taxonomy 掃描結果:無 spec-level critical ambiguity 需正式 clarify(brainstorm 已做 3 輪澄清:scope / DB 命名 / 腳本行為;剩餘開放點已吸收進 Assumptions)。
+- Deferred 到 `/speckit-plan`:`generate-secrets.sh` 的 openssl 來源(host vs docker 化 alpine/openssl fallback)屬 plan-level 實作細節,預設沿用 003 `generate-dev-cert.sh` hybrid 模式(已記 Assumptions),不影響 spec 的 WHAT/驗收。
+
+---
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 — 一鍵生成全部必須 secret (Priority: P1)
