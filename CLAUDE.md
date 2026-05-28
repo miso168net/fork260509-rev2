@@ -442,7 +442,7 @@ feature 啟動  →  docs/superpowers/<NNN>-<feature-name>.md(brainstorm)
 
 **啟動模式**（3 種；TLS 結構規劃如下）：
 - **dev**（`-f -f dev.yml`）：127.0.0.1 loopback、HTTP `:21080` + HTTPS `:21443`（自簽 cert）+ 直連 backend port `:21081 :25432 :26379` + observability `:23000 :23090 :29091`（範例見 §8.2.1）
-- **prod baseline**（`-f -f prod.yml`、不帶 `--profile prod`）：0.0.0.0 對外、80 強制 redirect 443、acme.sh 不啟（需先 seed cert into named volume `front_nginx_certs`）
+- **prod baseline**（`-f -f prod.yml`、不帶 `--profile prod`）：0.0.0.0 對外、80 強制 redirect 443、acme.sh 不啟（需先 seed cert into named volume `front_nginx_certs`,實際卷名 `rev2-admin_front_nginx_certs`）
 - **prod + acme**（`-f -f prod.yml --profile prod`）：同 prod baseline + acme.sh skeleton（實際 cert acquisition 留待後續、需真實 domain + DNS provider）
 
 #### 8.2.1 dev / prod 啟動命令範例

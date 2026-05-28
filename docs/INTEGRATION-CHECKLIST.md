@@ -37,13 +37,7 @@
 - [ ] base-web SPA 經 nginx 打 rust-api 端到端 CDP browser smoke(本 feature curl 直送驗 nginx 路由 ≠ browser 內 wire)— 已涵蓋於 Phase 4 wire feature + [§5.5](#55-base-web-環境配置)
 - [ ] prod base-web 真打 `/api` 前須重 build:現存 `rev2-admin-base-web:latest` 是 002 default build-arg(ApiFox mock),prod profile 雖宣告 `VITE_SERVICE_BASE_URL=/api` 但 `up` 不自動 rebuild 既有 image → 需 `docker compose -f docker-compose.yml -f docker-compose.prod.yml build base-web`(或 `up --build`)(與上一條 CDP smoke 連動)
 
-### 2.9 feature 006-docker-volume-naming follow-up
-
-> 皆為 code review 評定的 Minor、非阻斷(已 merge);純文件精修。
-- [ ] `docs/superpowers/000` §2.7 debug-era YAML 片段仍顯式 `name:`(史料、非操作範本)— 可加一行括註說明 006 已移除
-- [ ] `docs/superpowers/000` §2.4 標題用實際卷名、其下 YAML 用 compose key,兩形態無橋接說明(comprehension gap)
-- [ ] `docker-compose.base-web.yml` L16 `docker volume rm` 提示只列 `node_modules`、漏 `pnpm_store`(DEPRECATED 檔、pre-existing)
-- [ ] `CLAUDE.md` §8.2「啟動模式」prod baseline bullet 寫「named volume `front_nginx_certs`」用 compose key、讀似實際卷名(實際 `rev2-admin_front_nginx_certs`)— 可加括註對齊 §8.2.2 慣例
+### 2.9 feature 006-docker-volume-naming follow-up ✅ 全完成+已歸檔 (2026-05-29)
 
 ---
 

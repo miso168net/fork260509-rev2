@@ -80,7 +80,7 @@ docker compose -f docker-compose.base-web.yml --profile prod up --build  # prod
 
 ### 2.4 node_modules 策略(dev mode)
 
-named volume `rev2-admin_base_web_node_modules` mask `/app/node_modules`:
+named volume `rev2-admin_base_web_node_modules`(compose key `base_web_node_modules`,實際名由 `rev2-admin` project name auto-prefix 補成)mask `/app/node_modules`:
 
 ```yaml
 volumes:
@@ -161,7 +161,7 @@ volumes:
 
 volumes:
   base_web_pnpm_store:
-    name: rev2-admin_base_web_pnpm_store
+    name: rev2-admin_base_web_pnpm_store   # §2.7 當時顯式 name;006 後已移除、改 rev2-admin auto-prefix(現行見 §3.1 / CLAUDE.md §8.2.2)
 ```
 
 **附加 — `CI=true` 預防 pnpm 跳 confirm prompt 卡 stdin**:
