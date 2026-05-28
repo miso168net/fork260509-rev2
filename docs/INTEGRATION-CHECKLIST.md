@@ -8,14 +8,15 @@
 
 ## 1. Current Focus
 
-**階段**:**Phase 1 P0 部署基建全數完成(#1~#5)**;其後第六個 feature(006-docker-volume-naming,named volume 命名統一)已合回 `rev2-admin-root`;準備啟動 Phase 2 P1 基礎設施(DB/Redis 連線層 wire)。
+**階段**:**Phase 1 P0 部署基建全數完成(#1~#5)** + 006-docker-volume-naming 已合;**Phase 2 P1 已啟動 — 007-db-redis-connection(rust-api Postgres+Redis 連線層 + AppState + fail-fast boot + migration pipeline proof〔sys_user seed Super/Admin/User〕+ config 單測)完整實作+驗收+merge 回 `rev2-admin-root`**。本 feature 為 Phase 2+ 所有依賴 DB/Redis 的 feature 之基礎。
 
 **最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
-- **2026-05-28 006-docker-volume-naming 完整實作 + 驗收 + merge**(outer merge `a12fd18`)— executing-plans → subagent-driven-development(US1/US2/US3 各 spec+quality 雙審 + final holistic review)/ 7 named volume 統一 `rev2-admin_<service>_<purpose>`(auto-prefix、移除顯式 name:、3 key 更名 redis_data→redis_stack_data・bw_*→base_web_*)+ CLAUDE.md §8.2.2 規則文件化 + DESIGN/000 同步 + 002/004 superseded cross-ref / dev stack 5 service healthy、6 卷〔dev〕皆 `rev2-admin_` 前綴(front_nginx_certs prod-only、名稱已驗)、psql/redis 連線通 / 2 處 user 拍板偏離(接受 dev 6 卷 / prod.yml L4 註解修)/ Constitution 7+7=14 ✅(`/speckit-analyze` 未跑、final review 覆蓋)/ 純 workspace-level 單段(無 SHA pin)/ feature branch 保留;**已 push `origin/rev2-admin-root`(`cb7adba`)+ `origin/006-docker-volume-naming`**
-- **2026-05-28 005-secret-injection 完整實作 + 驗收 + merge**(outer merge `068b2a8`)— executing-plans → subagent-driven-development(US1/US2/US3 各 spec+quality 雙審 + final holistic review)/ `deploy/generate-secrets.sh` 一鍵生 7 必 secret(4 leaf + 3 URL,腳本同次同源保證 dual-write、idempotent + `--force`、docker 化 openssl、chmod 600 不印值)+ 3 URL 範本 + retrofit postgres/redis 範本 + `deploy/secrets/README.md` + docker-compose postgres 命名對齊 `soybean`/`soybean_admin_rust` / dev stack 5 service healthy、`psql -U soybean` 連線通 / 2 處 user 拍板偏離(postgres/redis 密碼 base64→hex 避免破 URL、T013 只清 postgres 卷不 down -v 避免冷重建假性失敗)已全面同步 spec docs / Constitution 7+7=14 ✅ / 純 workspace-level 單段(無 SHA pin)/ feature branch 保留;**已 push `origin/rev2-admin-root` + `origin/005-secret-injection`(`74819d0`)**
+- **2026-05-29 007-db-redis-connection 完整實作 + 驗收 + merge**(outer merge `928949d` / rust-api worktree `091fe6a` 已 push fork)— executing-plans → subagent-driven-development(5 unit / 18 task,各 spec+quality 雙審 + final holistic review = Ready)/ rust-api boot fail-fast 建 Postgres(sea-orm 1.1.20 `ConnectOptions`+`ping`)+ Redis(redis 1.2 `ConnectionManager`+`PING`)連線、握 `AppState`;migration crate stub→真 sea-orm-migration runner + proof migration(`sys_user` 最小欄 id/user_name/password + seed Super/Admin/User、argon2id of `123456`、冪等 seaql_migrations+ON CONFLICT)；docker-compose 接 005 `database_url`/`redis_url` secret(`_FILE`);config 12 單測 PASS / dev stack 5 service healthy、log postgres+redis connected、`/health`=ok、fail-fast bad-url exit101 指 redis / 2 偏離回填 plan.md(Cargo.lock pin time0.3.37・home0.5.9 配 toolchain1.86 / migration `DATABASE_URL` bridge)/ **兩段式 commit**(rust-api worktree→fork `44d20fb..091fe6a` + 外層 SHA pin `39eb43d`)/ Constitution 7+7=14 ✅ / 007 branch 保留;**rust-api fork 已 push;`origin/rev2-admin-root` 待 user 同意 push**
+- **2026-05-28 006-docker-volume-naming 完整實作 + 驗收 + merge**(outer merge `a12fd18`)— executing-plans → subagent-driven-development(US1/US2/US3 各 spec+quality 雙審 + final holistic review)/ 7 named volume 統一 `rev2-admin_<service>_<purpose>`(auto-prefix、移除顯式 name:、3 key 更名 redis_data→redis_stack_data・bw_*→base_web_*)+ CLAUDE.md §8.2.2 規則文件化 + DESIGN/000 同步 + 002/004 superseded cross-ref / dev stack 5 service healthy、6 卷〔dev〕皆 `rev2-admin_` 前綴、psql/redis 連線通 / 2 處 user 拍板偏離(接受 dev 6 卷 / prod.yml L4 註解修)/ Constitution 7+7=14 ✅ / 純 workspace-level 單段(無 SHA pin)/ feature branch 保留;**已 push `origin/rev2-admin-root`(`cb7adba`)+ `origin/006-docker-volume-naming`**
 
 **下一步**:
-1. **啟動 Phase 2 P1 基礎設施** — rust-api 接 `database_url`/`redis_url`(config.rs 加 `[database]`/`[redis]` section + 掛 compose `secrets:` + `APP_DATABASE_URL_FILE`/`APP_REDIS_URL_FILE` env)+ db schema migration + Casbin adapter;005 已 provision-ahead 3 URL secret、留連線 wire
+1. **(待 user 同意)push `origin/rev2-admin-root`**(merge `928949d` + 收尾 docs commit)
+2. **Phase 2 P1 續推** — 連線層已就緒,接續 JWT 機密管理 / soft-delete 7-entity 基礎設施(含 sys_user 完整欄 + `id` auto_increment,見 §2.10)/ envelope / audit log / sub-crate(Casbin sea-orm-adapter)等依賴 DB 的 feature
 
 ---
 
@@ -39,6 +40,12 @@
 
 ### 2.9 feature 006-docker-volume-naming follow-up ✅ 全完成+已歸檔 (2026-05-29)
 
+### 2.10 feature 007-db-redis-connection follow-up
+
+- [ ] **`sys_user.id` 無 auto_increment**:007 proof migration 用顯式 seed id 1/2/3,column 為 `big_integer().primary_key()` 無 sequence。Phase 3 login 唯讀不受影響,但 soft-delete(#2)做完整 7-entity schema 或任何「建 user」path 時須改 `auto_increment`/`BIGSERIAL`(final review 標記)
+- [ ] **CLAUDE.md §8.1 帳號名 stale**:§8.1 仍列 rev1 `Soybean/Administrator/GeneralUser`;rev2 權威為 `Super/Admin/User`(007 seed 已用、DESIGN §11.1 拍板)。日後修 §8.1(research R1 已登記)
+- [ ] **migration invocation prod path**:dev 用 cargo-watch image `cargo run --bin migration`;prod 須走 image entrypoint dispatch `migration`(Phase 5 cleanup-job / CI migration step 沿用 prod path、非 dev cargo path)
+
 ---
 
 ## 3. 已完成里程碑
@@ -59,8 +66,9 @@
 
 > 5 feature 全交(001 rust-api Dockerfile `a21e932` / 002 base-web Dockerfile `a70fa5f` / 003 TLS cert `cb5e1a1` / 004 compose 編排 `b4294c7` / 005 secret 注入 `068b2a8`),各 feature branch 保留供 audit;詳細 deliverable 見 [DESIGN §10 Phase 1](INTEGRATION-DESIGN.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
 
-### Phase 2 — P1 基礎設施(對齊 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md);準備啟動)
+### Phase 2 — P1 基礎設施(對齊 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md);已啟動)
 
+- [x] **DB/Redis 連線層 + migration pipeline proof feature(007)** ✅ (2026-05-29 merge `928949d`)— rust-api boot 連 Postgres+Redis(fail-fast)+ AppState + migration runner + sys_user proof seed
 - [ ] JWT 機密管理 feature
 - [ ] soft-delete 基礎設施 feature(7 entity + 三重防護)
 - [ ] envelope 對齊 feature(`{data, code, msg}` + camelCase)

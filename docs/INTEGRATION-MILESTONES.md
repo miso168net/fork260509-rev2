@@ -112,6 +112,15 @@
 | `a2fefe9` | 2026-05-28 | docs(deploy): CLAUDE.md §8.2 文件化 named volume 命名規則 + §8.2.2 正典 7 卷(US2;+ c8db9ab 修正設 name: 檔列舉) |
 | `f0d2fd2` | 2026-05-28 | docs: US3 既有文件對齊 — DESIGN/000 改新卷名 + 002/004 superseded cross-ref(+ a5ee96e 連結深度修 + 7a7f659 §3.1 schema 移除 name:) |
 | `a12fd18` | 2026-05-28 | Merge feature 006-docker-volume-naming 回 rev2-admin-root(--no-ff,feature branch 保留)— named volume 命名統一精修;US1/US2/US3 各 spec+quality 雙審 + final holistic review、SC-001~005 全 PASS、2 處 user 拍板偏離(dev 6 卷 / prod.yml L4) |
+| `22e08da` | 2026-05-29 | docs(spec): 007-db-redis-connection spec.md + quality checklist(階段 1 /speckit-specify,16/16 PASS) |
+| `d3bad48` | 2026-05-29 | docs(clarify): 007-db-redis-connection 補 §Clarifications(階段 1 /speckit-clarify,0 提問全 Clear) |
+| `d24ddaa` | 2026-05-29 | docs(plan): 007-db-redis-connection Phase 0/1 design artifacts(階段 1 /speckit-plan,Constitution 7+7=14 ✅、research R1-R4 + 5 entity + C-V contract + quickstart) |
+| `d3bea3f` | 2026-05-29 | docs(tasks): 007-db-redis-connection tasks.md(階段 1 /speckit-tasks,18 task / 6 phase,有 config 單測) |
+| `3c8ffe4` | 2026-05-29 | docs(spec): 007 對齊 /speckit-analyze 3 LOW remediation |
+| `6b88cec` | 2026-05-29 | chore(deploy): docker-compose 接 database_url/redis_url secret 至 rust-api(007 階段 2 Foundational,外層單段) |
+| `f9829d7` | 2026-05-29 | docs(plan): 007 補 Implementation Notes/Deviations(Cargo.lock MSRV pin + migration DATABASE_URL bridge) |
+| `39eb43d` | 2026-05-29 | chore(submodule): bump rust-api 到 091fe6a(007 階段 2 兩段式第二段;worktree `44d20fb..091fe6a` 已 push fork:deps+config / 連線層+AppState+boot / migration proof / config 單測 4 commit) |
+| `928949d` | 2026-05-29 | Merge feature 007-db-redis-connection 回 rev2-admin-root(--no-ff,feature branch 保留)— rust-api Postgres+Redis 連線層+AppState+fail-fast boot + migration pipeline proof(sys_user seed Super/Admin/User、argon2id、冪等)+ config 12 單測;5 unit/18 task subagent-driven TDD,各 spec+quality 雙審 + final holistic review = Ready;dev stack 5 svc healthy / Constitution 7+7=14 ✅ / 2 偏離回填 plan.md |
 
 
 ## 2. ✅ 完成+歸檔
