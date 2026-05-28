@@ -42,11 +42,11 @@ healthcheck 帶 password:`redis-cli -a "$(cat /run/secrets/redis_password)" --no
 
 | service | healthcheck test | 備註 |
 |---|---|---|
-| `front-nginx` | `wget -qO- http://localhost/health \| grep -q ok` | alpine busybox wget(無 curl)|
-| `base-web`(prod)| image 自帶(002)| compose 不重複 |
-| `base-web`(dev)| `wget -qO- http://localhost:21079/ \| grep -q "<!DOCTYPE\|<html"` | vite dev,compose dev override 補 |
+| `front-nginx` | `wget -qO- http://127.0.0.1/health \| grep -q ok` | alpine busybox wget(無 curl);★ 用 127.0.0.1 不用 localhost(alpine localhost 先解 ::1、nginx 只綁 IPv4)|
+| `base-web`(prod)| image 自帶(002,127.0.0.1/health.html)| compose 不重複 |
+| `base-web`(dev)| `wget -qO- http://127.0.0.1:21079/ \| grep -qi "<!doctype\|<html"` | vite dev,compose dev override 補;★ 127.0.0.1(vite --host 只綁 IPv4)|
 | `rust-api`(prod)| image 自帶(001 curl /health)| compose 不重複 |
-| `rust-api`(dev)| `curl -fsS http://localhost:21081/health` | cargo-watch dev,compose dev override 補(image 有 curl)|
+| `rust-api`(dev)| `bash -c "exec 3<>/dev/tcp/127.0.0.1/21081"` | ★ as-built 修正:dev image **無 curl/wget**(FR-023 凍結 Dockerfile 不可加),改 bash /dev/tcp TCP-accept readiness;`start_period 120s` 容 cargo-watch 冷編譯 |
 | `postgres` | `pg_isready -U rev2admin` | |
 | `redis-stack` | `redis-cli -a "$(cat /run/secrets/redis_password)" --no-auth-warning ping` | |
 

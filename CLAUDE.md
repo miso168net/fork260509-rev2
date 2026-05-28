@@ -466,7 +466,7 @@ openssl x509 -in deploy/dev-certs/fullchain.pem -noout -ext subjectAltName
 # === prod baseline 啟動（0.0.0.0 對外、80 redirect 443、無 acme）===
 # 先 seed cert 進 named volume（acme 自動 issue 流程後續再做）：
 docker compose -f docker-compose.yml -f docker-compose.dev.yml down -v --remove-orphans
-docker run --rm -v rev2-admin_front_nginx_certs:/certs -v "$PWD/deploy/dev-certs":/src alpine \
+docker run --rm -v rev2_front_nginx_certs:/certs -v "$PWD/deploy/dev-certs":/src alpine \
   sh -c "cp /src/fullchain.pem /src/privkey.pem /certs/"
 
 # 啟 prod baseline：

@@ -175,3 +175,23 @@ Phase 1 設計完成後重跑 Compliance Check 7 項。
 ## Complexity Tracking
 
 > Constitution Check 7 項全 PASS、無 violations、本段不需填。
+
+---
+
+## Implementation Notes（as-built 偏離,2026-05-28 executing-plans 階段發現）
+
+實作 + runtime acceptance 過程發現 3 處 contract 原設計在實機行不通,已修正並回填(對齊 Constitution v1.0.0 §V「偏離須註明」紀律)。三者皆 healthcheck / nginx 行為層,不影響 wire / 架構拍板。
+
+1. **rust-api dev healthcheck:`curl /health` → `bash /dev/tcp` TCP-connect**
+   - 原 contract([service-secrets.md](./contracts/service-secrets.md) / [data-model.md](./data-model.md))註「dev image 有 curl」,實測 `rev2-admin-rust-api:dev`(`rust:1.86-slim-bookworm` dev stage)**無 curl / wget / nc**(只裝 pkg-config + libssl-dev + cargo-watch);runtime stage 才裝 curl。
+   - FR-023 凍結 `Dockerfile.rust-api.txt` 不可改 → 不能加 curl。dev image 有 `/usr/bin/bash` 且支援 `/dev/tcp`,改用 `test: ["CMD","bash","-c","exec 3<>/dev/tcp/127.0.0.1/21081"]` 做 TCP-accept readiness(server listen 21081 即 healthy);`start_period: 120s` 容 cargo-watch 冷編譯。
+
+2. **prod.conf `:80` block:server-level `return 301` → location-based**
+   - 原 contract([nginx-routing.md](./contracts/nginx-routing.md))prod.conf `:80` 用 server-level `return 301 https://...`。但 nginx server-level `return` 在 rewrite phase 早於 location match 觸發 → 會把 `/health` 也 301 吃掉;而 base 層 front-nginx healthcheck 在 prod 打 `:80/health`,故 `/health` 必須在 `:80` 回 200。
+   - 改為 location-based:`location = /health { return 200 "ok\n"; }` + `location / { return 301 https://$host$request_uri; }`(/health 走 HTTP 200、其餘才 redirect)。
+
+3. **全 wget-based healthcheck:`localhost` → `127.0.0.1`**
+   - alpine `/etc/hosts` 把 `localhost` 先解到 `::1`(IPv6),但 nginx(`listen 80`/`21080`)與 vite(`--host 0.0.0.0`)只綁 IPv4 → `wget http://localhost` connection refused、healthcheck 永久 fail → `depends_on service_healthy` 卡死、`up --wait` exit 1。
+   - 3 處 healthcheck(base front-nginx prod :80、dev front-nginx :21080、dev base-web :21079)改用 `127.0.0.1` 直打 IPv4。rust-api dev(/dev/tcp/127.0.0.1)與 prod base-web image(127.0.0.1/health.html)本就安全。
+
+**驗收結果**:修正後 dev / prod baseline / prod+acme 三模式 `up --wait` 全 exit 0、5(prod+acme 6)service 全 healthy;7 段 C-V acceptance(SC-001~008)全 PASS。

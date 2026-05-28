@@ -58,7 +58,16 @@ server {
 server {
     listen 80;
     server_name _;
-    return 301 https://$host$request_uri;
+    # /health 走 HTTP 200(front-nginx healthcheck 在 prod 打 :80/health);其餘才 redirect。
+    # ★ 不可用 server-level `return 301`:nginx server-level return 在 rewrite phase
+    #   早於 location match 觸發,會把 /health 也 301 吃掉 → healthcheck 永久 fail(as-built 修正)。
+    location = /health {
+        add_header Content-Type text/plain;
+        return 200 "ok\n";
+    }
+    location / {
+        return 301 https://$host$request_uri;
+    }
 }
 server {
     listen 443 ssl;
