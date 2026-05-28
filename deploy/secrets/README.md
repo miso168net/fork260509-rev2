@@ -17,6 +17,8 @@ bash deploy/generate-secrets.sh
 bash deploy/generate-secrets.sh --force
 ```
 
+> ℹ️ 檔案權限：腳本對生成的 `.txt` 設 `chmod 600`。在 WSL2 掛載 Windows 磁碟（drvfs，如 `/mnt/d/...`）下 `chmod` 為 no-op，權限會顯示 `777` 屬正常；在原生 Linux 檔系統則正確生效。
+
 > ⚠️ `--force` 風險：腳本覆寫 leaf secret 後，正在運行的 stack **必須 restart** 才能讀到新值。  
 > 且絕對不可手動修改單一 leaf 檔（如 `postgres_password.txt`）而不重新生成對應的 URL secret——  
 > 否則 `database_url.txt` / `cleanup_database_url.txt` 內嵌的密碼與 postgres 設定的密碼就會不一致（dual-write drift），導致連線失敗。

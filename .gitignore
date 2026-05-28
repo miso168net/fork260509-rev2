@@ -70,9 +70,6 @@ deploy/.env
 /deploy/secrets/*.json
 !/deploy/secrets/*.json.example
 
-# dev 自簽憑證 — 只在本機 dev 用，勿 commit
-deploy/dev-certs/*.pem
-
 # ============================================================
 # Docker / dev container 個人 override
 # ============================================================
