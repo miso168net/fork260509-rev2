@@ -12,6 +12,16 @@
 
 ---
 
+## Clarifications
+
+### Session 2026-05-29
+
+- 全 taxonomy 掃描(11 類):**無 spec-level critical ambiguity 需正式 clarify**。Phase 0 brainstorm 已凍結全部 6 項設計決策(D1 範圍=立機制套 `sys_user` / D2 新建 entity crate + facade / D3 CI lint=build-failing test / D4 `id` auto_increment 留 §2.10 / D5 trait 最小面 `find_active`+`soft_delete` / D6 proof=SQL-build 純單測)。spec 0 [NEEDS CLARIFICATION]。
+- 軟刪除機制、active 唯一性語意、繞過防護皆為 [DESIGN §6.5](../../docs/INTEGRATION-DESIGN.md) 三重防護(類型 trait / facade / build-time lint)的落地(權威),非本 feature 自由設計 —— 本 feature 只負責忠實實作該 pattern 並套 `sys_user` proof。
+- `/speckit-clarify` 正式掃描(11 taxonomy 類別)結果:**全部 Clear / N-A、0 提問**。無需正式 clarify,可直接進 `/speckit-plan`。
+
+---
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 — 軟刪除機制立定（Priority: P1）🎯 MVP
