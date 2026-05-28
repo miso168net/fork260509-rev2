@@ -74,6 +74,7 @@ echo | openssl s_client -connect 127.0.0.1:21443 -servername localhost 2>/dev/nu
 ```bash
 # 先 down dev + seed cert 進 named volume
 docker compose -f docker-compose.yml -f docker-compose.dev.yml down
+# ⚠️ superseded(006-docker-volume-naming):卷名已改 rev2-admin_front_nginx_certs(現行指令見 CLAUDE.md §8.2.1);下行 rev2_front_nginx_certs 為 004 凍結當時舊名、勿直接複製
 docker run --rm -v rev2_front_nginx_certs:/certs -v "$PWD/deploy/dev-certs":/src alpine \
   sh -c "cp /src/fullchain.pem /src/privkey.pem /certs/"
 
