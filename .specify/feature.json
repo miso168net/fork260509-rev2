@@ -1,1 +1,3 @@
-{"feature_directory": "specs/007-db-redis-connection"}
+{
+  "feature_directory": "specs/008-response-envelope"
+}

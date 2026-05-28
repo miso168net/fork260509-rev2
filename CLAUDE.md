@@ -350,10 +350,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/007-db-redis-connection/spec.md`](specs/007-db-redis-connection/spec.md)
-**Active Plan**: [`specs/007-db-redis-connection/plan.md`](specs/007-db-redis-connection/plan.md)
-**Phase**: 階段 1 SDD ✅ + **階段 2 TDD 實作 ✅ 全完成** — executing-plans → subagent-driven-development,5 unit / 18 task,各 unit spec+quality 雙審 + final holistic review = Ready。rust-api boot fail-fast 建 Postgres(sea-orm 1.1.20 ConnectOptions+ping)+ Redis(redis 1.2 ConnectionManager+PING)連線、握 AppState;migration crate stub→真 sea-orm-migration runner + proof migration(sys_user[id/user_name/password] + seed `Super`/`Admin`/`User`、argon2id of `123456`、冪等);docker-compose 接 005 database_url/redis_url secret(_FILE);config 12 單測。**驗收**:dev stack 5 service healthy、log postgres+redis connected、`/health`=ok、fail-fast bad-url exit101;`sys_user` 3 帳號 + 冪等。**2 偏離回填 plan.md**(Cargo.lock pin time0.3.37·home0.5.9 配 toolchain1.86 / migration DATABASE_URL bridge)
-**下一步**: **007 已收尾** — 兩段式 commit 完成(rust-api worktree `44d20fb..091fe6a` 已 push fork / 外層 SHA pin `39eb43d`)、merge `--no-ff` 回 `rev2-admin-root`(`928949d`,007 branch 保留)、CHECKLIST/MILESTONES 更新。**`origin/rev2-admin-root` 待 user 同意 push**。接續 Phase 2 P1 其餘 feature(JWT 機密管理 / soft-delete 7-entity〔含 sys_user 補 auto_increment,見 CHECKLIST §2.10〕/ envelope / audit log / sub-crate Casbin adapter)
+**Active Spec**: [`specs/008-response-envelope/spec.md`](specs/008-response-envelope/spec.md)
+**Active Plan**: [`specs/008-response-envelope/plan.md`](specs/008-response-envelope/plan.md)
+**Phase**: 階段 1 SDD 設計鏈進行中 — specify ✅(16/16、0 NEEDS CLARIFICATION) / clarify ✅(11 類全 Clear、0 提問) / plan ✅(Constitution 7+7=14 ✅、research R1-R4 + 3 entity data-model + C-V contract + quickstart;新增 dep `serde_json = "1"`)。**Phase 2 P1「envelope 對齊」(DESIGN §10 #3)**:選為最小可獨立完成 feature。建 `Res<T>`(`{data,code,msg}`、code=string、無 success、欄位序 data→code→msg)+ `IntoResponse`;完整 `BizCode` 矩陣 enum(只 wire 0000/4040/5000)；`AppError`(thiserror;NotFound/Internal)+ 404 `.fallback()`。`/health` 不動。2 拍板:Internal=`5000`(rev2 自訂 5xxx sentinel) / 不做 camelCase 機制(無 DTO)
+**下一步**: `/speckit-tasks` → `/speckit-analyze` → `superpowers:executing-plans`(★ 本 feature 動 rust-api worktree → 兩段式 commit;走 RUSTAPI-SOURCE-ISOLATION 軌道)。feature branch `008-response-envelope`(pre-hook 已建);spec docs 落此 branch,實作改 rust-api worktree(server/src/envelope.rs + error.rs + main.rs + Cargo.toml 加 serde_json)
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
