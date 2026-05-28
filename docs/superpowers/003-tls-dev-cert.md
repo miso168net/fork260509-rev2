@@ -106,11 +106,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CERT_DIR="$SCRIPT_DIR/dev-certs"
 mkdir -p "$CERT_DIR"
 
-# 偵測外部 CA
+# 偵測外部 CA(ca.* 同時存在 AND 無 self-signed-marker → 外部 CA;否則自簽)
+# marker 機制:Step 1 自簽生 CA 後寫入 marker,讓未來 --force 知道 ca.* 是 script 自己生的、要一併重生
+# 切換到外部 CA 時須手動 `rm deploy/dev-certs/self-signed-marker` 後再放外部 ca.*
 EXTERNAL_CA=0
-if [ -f "$CERT_DIR/ca.pem" ] && [ -f "$CERT_DIR/ca.key" ]; then
+if [ -f "$CERT_DIR/ca.pem" ] && [ -f "$CERT_DIR/ca.key" ] && [ ! -f "$CERT_DIR/self-signed-marker" ]; then
     EXTERNAL_CA=1
-    echo "📌 偵測到外部 CA(deploy/dev-certs/ca.pem + ca.key)— 跳 Step 1、直接用外部 CA 簽 leaf"
+    echo "📌 偵測到外部 CA(deploy/dev-certs/ca.pem + ca.key,無 self-signed-marker)— 跳 Step 1、直接用外部 CA 簽 leaf"
 fi
 
 # 已有 leaf?
@@ -125,7 +127,8 @@ OPENSSL_IMG="alpine/openssl:latest"
 docker pull -q "$OPENSSL_IMG" >/dev/null
 
 run_openssl() {
-    docker run --rm -v "$CERT_DIR:/certs" -w /certs "$OPENSSL_IMG" "$@"
+    # -i:讓 heredoc stdin 進得了 container(否則 -extfile /dev/stdin 讀到空 input、SAN/BasicConstraints/KeyUsage extension 全沒 embed)
+    docker run --rm -i -v "$CERT_DIR:/certs" -w /certs "$OPENSSL_IMG" "$@"
 }
 
 # Step 1: 生 CA (僅自簽路線)
@@ -136,6 +139,8 @@ if [ "$EXTERNAL_CA" -eq 0 ]; then
         -subj "/CN=rev2-admin-root dev CA" \
         -addext "basicConstraints=critical,CA:TRUE" \
         -addext "keyUsage=critical,keyCertSign,cRLSign"
+    # 標記自簽:讓下次 --force 知道 ca.* 是 script 自己生的、可一併重生
+    touch "$CERT_DIR/self-signed-marker"
 fi
 
 # Step 2: 用 CA 簽 leaf (always)

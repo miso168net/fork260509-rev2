@@ -131,3 +131,7 @@ logs/
 *.rej
 
 tests/**/screenshots/
+
+# dev TLS cert(feature 003-tls-dev-cert,內容全 ignore、保留 .gitkeep)
+deploy/dev-certs/*
+!deploy/dev-certs/.gitkeep
