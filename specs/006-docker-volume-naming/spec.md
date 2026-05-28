@@ -12,6 +12,15 @@
 
 ---
 
+## Clarifications
+
+### Session 2026-05-28
+
+- 全 taxonomy 掃描結果:**無 spec-level critical ambiguity 需正式 clarify**。Phase 0 brainstorm 已拍板全部 5 項設計決策(key+name 同改 / `rev2-admin_` auto-prefix 移除顯式 `name:` / 凍結 spec 加 superseded 註記 / `docs/superpowers/000` 全面改寫 / 全 7 卷),spec checklist 16/16 PASS、0 [NEEDS CLARIFICATION]。
+- Deferred 到 `/speckit-plan`:具體實作細節(各 compose 檔逐行編輯點 / 各 doc cross-ref 落點 / 卷遷移指令序)屬 plan-level,不影響 spec 的 WHAT 與驗收。
+
+---
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 — named volume 命名統一、grep 友善 (Priority: P1) 🎯 MVP
