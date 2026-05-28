@@ -99,7 +99,7 @@
 - **FR-007**:`CLAUDE.md` §8.2 表 MUST 新增「docker volume name」列;MUST 新增 §8.2.2 命名規則 + 正典 7 卷清單;§8.2.1 live 指令的舊卷名 MUST 更新為新名
 - **FR-008**:`docs/INTEGRATION-DESIGN.md`(權威)對舊卷名的引用 MUST 同步為新名(如 `redis_data`→`redis_stack_data`)
 - **FR-009**:`docs/superpowers/000-base-web-docker-bootstrap.md`(持久記憶)MUST 全面改寫所有舊卷名/key(`rev2_bw_*` / `bw_*`)為新名(`rev2-admin_base_web_*` / `base_web_*`)
-- **FR-010**:已凍結 spec(`specs/002/**`、`specs/004/**`、`specs/005/**`、`docs/superpowers/002-dockerfile-base-web.md`、`docs/INTEGRATION-RESEARCH.md`)MUST NOT 改寫內文舊卷名;MUST 於各受影響 feature 最 load-bearing 處加 1 行 superseded cross-ref 指向 006
+- **FR-010**:已凍結 spec(`specs/002/**`、`specs/004/**`、`specs/005/**`、`docs/superpowers/002-dockerfile-base-web.md`、`docs/INTEGRATION-RESEARCH.md`)MUST NOT 改寫內文舊卷名;MUST 於**以該卷為交付物的受影響 feature(002 範本定義 / 004 compose 卷宣告)**最 load-bearing 處加 1 行 superseded cross-ref 指向 006。005 對 `bw_node_modules` 僅 plan deviation 內 incidental 歷史提及(非卷交付宣告)→ 不加 cross-ref、內文保留
 
 **驗證不變式**
 
@@ -125,7 +125,7 @@
 - **SC-002**:4 個 live compose 檔 `grep` 舊 key / 舊顯式 `name: rev2_*` = 0
 - **SC-003**:dev stack `up -d --wait` 5 service 全 healthy,`psql -U soybean -d soybean_admin_rust` 連線成功(005 dual-write 不破)
 - **SC-004**:`CLAUDE.md` §8.2.2 命名規則 + 正典 7 卷清單存在;`INTEGRATION-DESIGN.md` / `docs/superpowers/000` 已改為新卷名(grep 舊名 = 0)
-- **SC-005**:凍結 spec 內文舊卷名保留(grep 仍在,未改寫)+ 各受影響 feature(002/004/005)有 superseded cross-ref 指向 006
+- **SC-005**:凍結 spec 內文舊卷名保留(grep 仍在,未改寫)+ 以卷為交付物的受影響 feature(**002 / 004**)有 superseded cross-ref 指向 006(005 為 incidental 歷史提及,不需 cross-ref)
 
 ---
 
