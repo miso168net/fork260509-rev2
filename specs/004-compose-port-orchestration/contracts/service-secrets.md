@@ -8,7 +8,7 @@
 
 | service | 機制 | compose 寫法 |
 |---|---|---|
-| `postgres` | 官方原生 `_FILE` | `environment: { POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password, POSTGRES_USER: rev2admin, POSTGRES_DB: rev2 }` + `secrets: [postgres_password]` |
+| `postgres` | 官方原生 `_FILE` | `environment: { POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password, POSTGRES_USER: rev2admin, POSTGRES_DB: rev2 }` + `secrets: [postgres_password]`（**user/db 於 005-secret-injection 改為 `soybean`/`soybean_admin_rust` 對齊 DESIGN §8.4**）|
 | `redis-stack` | 無 `_FILE`,command/env wrap | `environment: { REDIS_ARGS: "--requirepass <from-secret>" }` 或 entrypoint `--requirepass "$(cat /run/secrets/redis_password)"` + `secrets: [redis_password]` |
 | `rust-api`(prod)| 既有 001 `_FILE` | `APP_JWT_*_SECRET_FILE`(本 feature 不動)|
 
@@ -47,7 +47,7 @@ healthcheck 帶 password:`redis-cli -a "$(cat /run/secrets/redis_password)" --no
 | `base-web`(dev)| `wget -qO- http://127.0.0.1:21079/ \| grep -qi "<!doctype\|<html"` | vite dev,compose dev override 補;★ 127.0.0.1(vite --host 只綁 IPv4)|
 | `rust-api`(prod)| image 自帶(001 curl /health)| compose 不重複 |
 | `rust-api`(dev)| `bash -c "exec 3<>/dev/tcp/127.0.0.1/21081"` | ★ as-built 修正:dev image **無 curl/wget**(FR-023 凍結 Dockerfile 不可加),改 bash /dev/tcp TCP-accept readiness;`start_period 120s` 容 cargo-watch 冷編譯 |
-| `postgres` | `pg_isready -U rev2admin` | |
+| `postgres` | `pg_isready -U rev2admin` | 005-secret-injection 改 `pg_isready -U soybean` |
 | `redis-stack` | `redis-cli -a "$(cat /run/secrets/redis_password)" --no-auth-warning ping` | |
 
 healthcheck 通用參數:`interval: 10s` `timeout: 5s` `retries: 5` `start_period: 10s`(base-web/rust-api 首啟較久可調 start_period)。
