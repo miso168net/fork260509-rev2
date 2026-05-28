@@ -41,7 +41,7 @@
 
 ### User Story 2 — migration pipeline 端到端可跑（proof: sys_user + seed，Priority: P2）
 
-開發者執行 migration 後，`sys_user` 表被建立並 seed 3 個預設帳號（`Soybean` / `Administrator` / `GeneralUser`）。這證明 sea-orm-migration runner 從原本的 stub 變成真正可跑的 pipeline，Phase 2+ 的 entity migration 有了可複製的基礎。migration 可重複執行而不重複插入（冪等）。
+開發者執行 migration 後，`sys_user` 表被建立並 seed 3 個預設帳號（`Super` / `Admin` / `User`）。這證明 sea-orm-migration runner 從原本的 stub 變成真正可跑的 pipeline，Phase 2+ 的 entity migration 有了可複製的基礎。migration 可重複執行而不重複插入（冪等）。
 
 **Why this priority**：migration pipeline 是 Phase 2+ 所有 schema 工作的載體。用 `sys_user` + seed 當 proof 一次驗證「建表 + seed 資料」兩件事都通；且 `sys_user` 是 Phase 3 login 馬上要用的表。P2（連線層通了之後，證明 schema pipeline 是第二層基礎）。
 
@@ -101,7 +101,7 @@
 **Migration pipeline**
 
 - **FR-009**：`migration` crate MUST 從 stub 變成可執行的 schema migration runner，且 server 與 migration MUST 維持獨立 binary（server 不自動跑 migration）
-- **FR-010**：MUST 提供 1 個 proof migration 建立 `sys_user` 表並 seed 3 個預設帳號（`Soybean` / `Administrator` / `GeneralUser`，共用 plaintext `123456` 的 argon2id hash）
+- **FR-010**：MUST 提供 1 個 proof migration 建立 `sys_user` 表並 seed 3 個預設帳號（`Super` / `Admin` / `User`，共用 plaintext `123456` 的 argon2id hash）
 - **FR-011**：migration MUST 冪等 —— 重複執行不重複建表、不重複 seed（exit 0、資料筆數不變）
 
 **scope 邊界 / 不做的事**
@@ -132,7 +132,7 @@
 
 - **005 secret 已可用**：`database_url` / `redis_url` secret 由 `deploy/generate-secrets.sh` 產生（dual-write 保證內嵌密碼 ≡ leaf）；本 feature 不重新設計 secret 生成。
 - **依賴順序由 compose 保證**：postgres / redis-stack 透過 `depends_on: condition: service_healthy` 先於 rust-api 起；連線層的 ping 為 app 層雙保險。
-- **`sys_user` schema 與 seed hash 由 plan 階段 research 對齊真實來源**：CLAUDE.md §8.1 引用 `rust-api/migration/src/datas/m20241024_033005_insert_sys_user.rs`，但該檔不在當前 rust-api worktree（migration 僅 stub）。plan Phase 0 research MUST grep 定位真實 schema（upstream / rev1 來源）或設計欄位後自生 argon2id hash，**不可盲拷 rev1 code**（Constitution §I.5）。本 spec 僅定 scope（建表 + seed 3 帳號）。
+- **`sys_user` schema 與 seed 已由 plan Phase 0 research 解析**（見 [research.md](./research.md) R1 + [data-model.md](./data-model.md)）：CLAUDE.md §8.1 引用的 `migration/src/datas/m20241024_033005_insert_sys_user.rs` 確認**不存在於 rev2**（rust-api anew、migration 僅 stub），且 §8.1 的 `Soybean/Administrator/GeneralUser` 為 **rev1 legacy**。rev2 權威（DESIGN §11.1 拍板 + §4.6.5 + base-web mock ground truth）一致為 **`Super`/`Admin`/`User`**（id 1/2/3、密碼 `123456`）。proof migration 最小欄位 = `id`(i64 PK)/`user_name`(unique)/`password`(argon2id)；argon2id hash 由 implementer 用 `argon2` crate 自生（anew、任何 valid hash of `123456` 即可，無需 byte-match rev1）。**不盲拷 rev1 code**（Constitution §I.5）。
 - **dev/prod 共用 URL secret**：URL 內嵌 host 為 internal service 名（`postgres` / `redis-stack`），dev 與 prod 連同一組（005 已如此設計）。
 - **無單元測試於連線本身**：連線建立 / migration 需真 DB/Redis，由 acceptance（C-V）覆蓋；可單測者為 config 反序列化 + secret 載入（對齊 CLAUDE.md §3 + 003/004/005 慣例）。
 
