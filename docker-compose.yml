@@ -24,7 +24,9 @@ services:
         condition: service_healthy
     healthcheck:
       # dev override 改 :21080(dev.conf 無 :80);prod 直接用(prod.conf 在 :80 先回 200 再 redirect)
-      test: ["CMD-SHELL", "wget -qO- http://localhost/health | grep -q ok"]
+      # 用 127.0.0.1 而非 localhost:alpine /etc/hosts 把 localhost 先解到 ::1(IPv6),
+      # nginx listen 80 只綁 IPv4 → localhost 會 connection refused、healthcheck 永遠 fail
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health | grep -q ok"]
       interval: 10s
       timeout: 5s
       retries: 5
