@@ -152,3 +152,13 @@ Phase 1 設計完成後重跑 7 項：
 ## Complexity Tracking
 
 > Constitution Check 7+7=14 全 PASS、無 violations、本段不需填。
+
+---
+
+## Implementation Notes / Deviations（executing-plans 階段回填,Constitution v1.0.0 §V）
+
+實作過程兩項偏離 / 補強 plan 原假設,記錄於此:
+
+1. **Cargo.lock MSRV pin（T002）**：`sea-orm 1.1.20` transitive 拉進 `time 0.3.47` / `home 0.5.12`,二者新 patch 把 MSRV 爬到 **Rust 1.88**,但本專案 `rust-toolchain.toml` pin **1.86**(research R2 只查了 sea-orm 本身 MSRV 1.81、未預期 transitive 爬升)。解法:`Cargo.lock` pin `time=0.3.37` / `home=0.5.9`(1.86 相容),不動任何直接 dep 版本、不升 toolchain。`Cargo.toml` `[workspace.dependencies]` 已加註解說明。`cargo check --workspace` exit 0。
+
+2. **migration `main.rs` 的 DATABASE_URL bridge（T014）**：plan/T014 原寫「stub → `cli::run_cli(Migrator).await`」,但 `sea_orm_migration::cli::run_cli` 從 `DATABASE_URL` env(或 `-u`)取連線,而 rust-api 走 005 secret 機制注入的是 `APP_DATABASE_URL[_FILE]`(非 `DATABASE_URL`)。故 `main.rs` 補一段橋接:先讀 `APP_DATABASE_URL_FILE`(讀檔、trim、非空)→ fallback `APP_DATABASE_URL` → `set_var("DATABASE_URL", url)`,再 `cli::run_cli`。不依賴 server crate 的 `load_secret`(migration crate 不引 server),為最小本地讀取;與 server 的 `load_secret`(含 validate)有意分流(migration 為 ops 工具、同 stack 同 secret 檔,placeholder URL 會在 server boot 先擋下)。
