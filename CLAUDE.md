@@ -74,8 +74,8 @@ fork260509-rev2/                            ← workspace root（傘狀 repo rev
 ├── fork260509-rev2-anew-rust-api/         ← Rust axum + Casbin backend，rust-api worktree 源倉（gitignored，本機必留）
 ├── base-web/                              ← worktree + submodule（外層記 gitlink SHA）
 ├── rust-api/                              ← worktree + submodule（外層記 gitlink SHA）
-├── docker-compose.yml                     ← ⏳ outer root compose；dev/prod override = docker-compose.{dev,prod}.yml（見 §8.2）
-└── deploy/                                ← ⏳ 部署支援檔（nginx conf / secrets / dev-certs / cleanup 等；見 §8.2）
+├── docker-compose.yml                     ← outer root compose；dev/prod override = docker-compose.{dev,prod}.yml（見 §8.2）
+└── deploy/                                ← 部署支援檔（nginx conf / secrets / dev-certs / cleanup 等；見 §8.2）
 ```
 
 **關鍵事實**：
@@ -424,9 +424,9 @@ feature 啟動  →  docs/superpowers/<NNN>-<feature-name>.md(brainstorm)
 
 ### 8.2 容器 endpoint 與 port 配置
 
-> 以下為 rev2 **規劃** port 配置（刻意用 2XXXX 前綴避開 fork260509-rev1 既有 port，方便兩個 workspace 並存）；⏳ 尚未落地 `deploy/` 與 docker-compose、dev stack 尚未實機運行。
+> rev2 port 配置（刻意用 2XXXX 前綴避開 fork260509-rev1 既有 port，方便兩個 workspace 並存）。**核心 5 service（front-nginx / base-web / rust-api / postgres / redis-stack）已落地，dev stack 實機運行通過**（Phase 1 #4/#5；005 T013 五 service healthy、`psql -U soybean` 連線通）。observability 3 service（grafana / prometheus / pushgateway）⏳ 仍 Phase 6 規劃、尚未進 compose。
 
-| 角色 | fork260509-rev1（舊有） | fork260509-rev2（規劃） | 備註 |
+| 角色 | fork260509-rev1（舊有） | fork260509-rev2 | 備註 |
 |---|---|---|---|
 | front-nginx | HTTP `11080:80` / HTTPS `11443:443` | HTTP `21080:80` / HTTPS `21443:443` | prod 環境時 host 直用 `:80` / `:443` |
 | base-web | internal `:80` | host 映射 `21079:21079` | dev 期間 host 直連用(避免 internal `:80` 在單 compose 啟動時撞 port);prod 由 `front-nginx` reverse proxy 至 internal `:21079` |
@@ -443,7 +443,7 @@ feature 啟動  →  docs/superpowers/<NNN>-<feature-name>.md(brainstorm)
 - **prod baseline**（`-f -f prod.yml`、不帶 `--profile prod`）：0.0.0.0 對外、80 強制 redirect 443、acme.sh 不啟（需先 seed cert into named volume `front_nginx_certs`）
 - **prod + acme**（`-f -f prod.yml --profile prod`）：同 prod baseline + acme.sh skeleton（實際 cert acquisition 留待後續、需真實 domain + DNS provider）
 
-#### 8.2.1 dev / prod 啟動命令範例 ⏳
+#### 8.2.1 dev / prod 啟動命令範例
 
 ```bash
 # === 第一次：生成 dev 自簽 cert（只需跑一次、每年 renew）===

@@ -40,15 +40,7 @@ baseline 規格回填於 [DESIGN §4.6](INTEGRATION-DESIGN.md);6 項實作驗收
 - §4.6.5 sys_user 預設帳號(§11.1 拍板 `Super/Admin/User`)✅
 - §4.6.6 `graphify-out/` 落地時機(Phase 4 後)✅
 
-### 2.3 workspace-level ⏳ 落地
-
-- [x] ✅ `.specify/memory/constitution.md` v1.0.0(2026-05-28 凍結,155 行;5 sections + Compliance Check + Governance)
-- [x] ✅ `docker-compose.yml` + `docker-compose.{dev,prod}.yml` + `deploy/nginx/` + acme skeleton(004-compose-port-orchestration 落地 2026-05-28)
-- [x] ✅ `deploy/generate-dev-cert.sh`(self-signed TLS for dev,003-tls-dev-cert 落地 2026-05-28)
-- [x] ✅ `deploy/secrets/`(env-file pattern;001 jwt/refresh + 004 postgres/redis + 005 三 URL 範本 + `generate-secrets.sh` 一鍵生成腳本 + README 全交,005-secret-injection 落地 2026-05-28)
-- [ ] fork 源倉設 upstream remote(CLAUDE.md §4.6,目前未設、無法 `git fetch upstream`)
-- [ ] `docs/GRAPHIFY-NOTES.md`(graphify 抽取限制與盲點筆記,圖譜跑完後)
-- [ ] `specs/` 第一個 feature 目錄(P0 dockerfile-rust-api,§11 拍板後啟動)
+### 2.3 workspace-level 落地 ✅ 全完成+已歸檔 (2026-05-28)
 
 ### 2.4 feature 001-dockerfile-rust-api spec doc follow-up ✅ 全完成+已歸檔 (2026-05-28)
 
