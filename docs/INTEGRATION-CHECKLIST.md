@@ -62,6 +62,7 @@ baseline 規格回填於 [DESIGN §4.6](INTEGRATION-DESIGN.md);6 項實作驗收
 - [ ] `docs/superpowers/000` §2.7 debug-era YAML 片段仍顯式 `name:`(史料、非操作範本)— 可加一行括註說明 006 已移除
 - [ ] `docs/superpowers/000` §2.4 標題用實際卷名、其下 YAML 用 compose key,兩形態無橋接說明(comprehension gap)
 - [ ] `docker-compose.base-web.yml` L16 `docker volume rm` 提示只列 `node_modules`、漏 `pnpm_store`(DEPRECATED 檔、pre-existing)
+- [ ] `CLAUDE.md` §8.2「啟動模式」prod baseline bullet 寫「named volume `front_nginx_certs`」用 compose key、讀似實際卷名(實際 `rev2-admin_front_nginx_certs`)— 可加括註對齊 §8.2.2 慣例
 
 ---
 
