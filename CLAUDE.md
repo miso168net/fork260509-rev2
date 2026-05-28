@@ -347,8 +347,8 @@ git commit -m "bump base-web: rebase on upstream <短 SHA>"
 <!-- SPECKIT START -->
 **Active Spec**: [`specs/005-secret-injection/spec.md`](specs/005-secret-injection/spec.md)
 **Active Plan**: [`specs/005-secret-injection/plan.md`](specs/005-secret-injection/plan.md)
-**Phase**: 階段 1 SDD 設計鏈進行中 — Phase 0 brainstorm ✅([`docs/superpowers/005-secret-injection.md`](docs/superpowers/005-secret-injection.md),6 拍板)+ `/speckit-specify` ✅(spec.md + 16/16 checklist PASS、零 [NEEDS CLARIFICATION])+ `/speckit-clarify` ✅(0 提問、全 taxonomy Clear、openssl 機制 deferred 到 plan)+ `/speckit-plan` ✅(Constitution 7+7=14 ✅ Pass;9 research 主題全 ground-truth grep 確認、openssl docker 化決議、無 critical 偏離 brainstorm)
-**下一步**: `/speckit-tasks` → `/speckit-analyze` → `superpowers:executing-plans`(階段 2)
+**Phase**: 階段 1 SDD 設計鏈 ✅ 全完成 — Phase 0 brainstorm ✅(6 拍板)+ `/speckit-specify` ✅(spec.md + 16/16 checklist PASS、零 [NEEDS CLARIFICATION])+ `/speckit-clarify` ✅(0 提問、全 taxonomy Clear)+ `/speckit-plan` ✅(Constitution 7+7=14 ✅ Pass、9 research 全 grep 確認、openssl docker 化決議)+ `/speckit-tasks` ✅(14 task / 6 phase)+ `/speckit-analyze` ✅(coverage 100%、0 CRITICAL、僅 2 LOW)
+**下一步**: `superpowers:executing-plans`(階段 2 TDD 實作;C1 README down -v 於 T009 順手納入)
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
