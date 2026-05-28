@@ -144,9 +144,19 @@ Design artifacts:
 
 ## Constitution Re-Check (Post-Design)
 
-Phase 1 設計完成後重跑 Compliance Check 7 項。
+Phase 1 設計完成後重跑 Compliance Check 7 項:
 
-**結果**:7 項仍全 PASS。Phase 1 設計未引入任何 base-web inline 改動、未動 wire envelope、未從 rev1 拷貝 code、未觸 ★ 軌道。research 階段確認 alpine/openssl image + openssl CLI 行為 + gitignore wildcard+negation 規則,屬 implementation detail、不違反任何凍結紀律。
+| § | 檢查項 | Re-Check 立場 | Pass/Fail |
+|---|---|---|---|
+| 1 | 違反 §I.1 base-web 為權威? | 仍 N/A — Phase 1 設計未引入 wire endpoint | ✅ Pass |
+| 2 | 動到 base-web inline? | 仍否 — `contracts/` 設計純 deploy cert / shell script、未動 base-web | ✅ Pass |
+| 3 | menu 走 Casbin enforce? | 仍 N/A — 本 feature 不涉 menu / auth | ✅ Pass |
+| 4 | wire 對齊 §I.3 mock ground truth? | 仍 N/A — cert 為 deploy artifact、非 HTTP API | ✅ Pass |
+| 5 | 從 rev1 拷貝 code? | 仍否 — research 階段確認 alpine/openssl + openssl CLI 屬 best-practice 借鏡,非 rev1 source | ✅ Pass |
+| 6 | 凍結到 §II 12 拍板項? | 仍全凍結 — Phase 1 設計未改任何拍板 | ✅ Pass |
+| 7 | 觸及 §III ★ 軌道? | 仍不觸 ★ 軌道 — Phase 1 設計純 workspace-level `deploy/` artifact(對齊 001/002 屬性) | ✅ Pass |
+
+**結論**:7 項仍全 PASS。research 階段確認 alpine/openssl image + openssl CLI 行為 + gitignore wildcard+negation 規則,屬 implementation detail、不違反任何凍結紀律。
 
 可進 `/speckit-tasks` 階段。
 

@@ -100,14 +100,14 @@ bash deploy/generate-dev-cert.sh --force
 cp /path/to/myca.crt deploy/dev-certs/ca.pem
 cp /path/to/myca.key deploy/dev-certs/ca.key  # plain version
 
-# clean leaf(避免冪等 block)
-rm -f deploy/dev-certs/{fullchain.pem,privkey.pem}
+# clean leaf + self-signed-marker(否則 script 仍視 ca.* 為自簽生、不會走外部 CA 路線)
+rm -f deploy/dev-certs/{fullchain.pem,privkey.pem,self-signed-marker}
 
 # 跑 script(會偵測外部 CA)
 bash deploy/generate-dev-cert.sh
 
 # 預期:
-# - 印「📌 偵測到外部 CA(deploy/dev-certs/ca.pem + ca.key)— 跳 Step 1、直接用外部 CA 簽 leaf」
+# - 印「📌 偵測到外部 CA(deploy/dev-certs/ca.pem + ca.key,無 self-signed-marker)— 跳 Step 1、直接用外部 CA 簽 leaf」
 # - 印「=== Step 2: 生 leaf cert ... ===」(無 Step 1)
 # - 印「✅ cert 生成完成,fullchain 結構:leaf + intermediate(外部 CA,對齊 acme chain)」
 # - 印「★ 你用了外部 CA,本 script 假設你已 trust 該 CA 的 root」提醒段(不印 3 OS trust 教學)
@@ -159,7 +159,7 @@ git add deploy/dev-certs/ca.key 2>&1 | head -1
 | `docker pull alpine/openssl` 卡住 | 檢查網路;script 第一行 `docker pull -q` 不 ignore 失敗 |
 | 跑完 `openssl x509 -in fullchain.pem -noout -text` 找不到 SAN | 檢查 Dockerfile heredoc `subjectAltName=DNS:localhost,IP:127.0.0.1` 拼寫;openssl 對 ext 名稱拼寫嚴格 |
 | `openssl verify -CAfile ca.pem fullchain.pem` 回 `unable to get local issuer certificate` | 外部 CA 路線下,`ca.pem` 須是 leaf 的 direct Issuer;若 user 把 root 放當 ca.pem 但 myca chain 中間還有 intermediate → verify fail。確認 ca.pem 即 leaf 的 signer |
-| `bash deploy/generate-dev-cert.sh --force` 後 ca.* 還是被覆蓋(外部 CA 路線預期不動) | 確認 `deploy/dev-certs/ca.pem` + `deploy/dev-certs/ca.key` 都存在(只放一檔會走自簽、覆蓋);若兩檔都在但仍被動 → 看 script EXTERNAL_CA 偵測邏輯 |
+| `bash deploy/generate-dev-cert.sh --force` 後 ca.* 還是被覆蓋(外部 CA 路線預期不動) | 確認 `deploy/dev-certs/ca.pem` + `deploy/dev-certs/ca.key` 都存在(只放一檔會走自簽、覆蓋)+ **`deploy/dev-certs/self-signed-marker` 不存在**(marker 存在 → script 視 ca.* 為自簽生、--force 一併重生);切外部 CA 前 `rm -f deploy/dev-certs/self-signed-marker` |
 | `git add -A` 之後 cert/key 被 stage | 檢查 `.gitignore` 是否真有 `deploy/dev-certs/*` + `!deploy/dev-certs/.gitkeep` 兩行,順序對 |
 | `ca.key` 是 AES256 加密、Hybrid 路線 fail | 先手動解出 plain:`openssl rsa -in myca.enc -out deploy/dev-certs/ca.key -passin env:SSL_MYCA_PASS` |
 | Edge browser 開 `https://localhost` 仍 NET::ERR_CERT_AUTHORITY_INVALID | 確認 ca.pem 已 trust(Win11: `certutil -addstore -user Root deploy/dev-certs/ca.pem`);Chrome / Edge 共用 OS root store |

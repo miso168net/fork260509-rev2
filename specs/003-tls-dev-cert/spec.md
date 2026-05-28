@@ -90,7 +90,7 @@ user 帶既有自己的 CA(例如多年使用的 myca),把 `myca.crt` rename 為
 
 **Hybrid CA 偵測**
 
-- **FR-004**:script MUST 在開始時偵測 `deploy/dev-certs/ca.pem` 與 `deploy/dev-certs/ca.key` 是否**同時**存在;兩檔皆存在 → 走外部 CA 路線(EXTERNAL_CA=1)、跳 Step 1;否則 → 走自簽路線(EXTERNAL_CA=0)
+- **FR-004**:script MUST 在開始時偵測 `deploy/dev-certs/ca.pem` 與 `deploy/dev-certs/ca.key` 是否**同時**存在 **AND** `deploy/dev-certs/self-signed-marker` 是否**不**存在;兩檔皆存在且 marker 不存在 → 走外部 CA 路線(EXTERNAL_CA=1)、跳 Step 1;否則 → 走自簽路線(EXTERNAL_CA=0)。**marker 機制**:Step 1 自簽生 CA 後 `touch self-signed-marker`,讓未來 `--force` 知道 ca.* 是 script 自己生的(FR-013 自簽 renew 才能 trigger);user 切換到外部 CA 時須手動 `rm self-signed-marker` 後再放外部 ca.*
 - **FR-005**:外部 CA 路線 MUST 不動 `ca.pem` 與 `ca.key`;只簽 leaf cert
 - **FR-006**:自簽路線 MUST 自生 `ca.pem`(RSA 2048,Subject `CN=rev2-admin-root dev CA`,validity 3650 天,basicConstraints CA:TRUE,keyUsage keyCertSign+cRLSign)與 `ca.key`(RSA 2048 plain PEM)
 
