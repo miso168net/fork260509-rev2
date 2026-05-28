@@ -27,7 +27,7 @@ description: "Task list for 002-dockerfile-base-web implementation"
 
 **Purpose**:確認 worktree 與 outer 狀態正確,才能安全動 `base-web/` 與 `deploy/`。
 
-- [ ] T001 Pre-flight check:`git -C base-web branch --show-current` 必須 = `rev2-admin-rust-api`、`git -C base-web status --short` 必須空(乾淨);外層 `git branch --show-current` 必須 = `002-dockerfile-base-web`、`git status --short` 必須空。任一不符 → 停下並回報。
+- [ ] T001 Pre-flight check:`git -C base-web branch --show-current` 必須 = `rev2-admin-base-web`、`git -C base-web status --short` 必須空(乾淨);外層 `git branch --show-current` 必須 = `002-dockerfile-base-web`、`git status --short` 必須空。任一不符 → 停下並回報。
 
 ---
 

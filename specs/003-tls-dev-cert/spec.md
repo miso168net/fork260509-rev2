@@ -75,6 +75,7 @@ user 帶既有自己的 CA(例如多年使用的 myca),把 `myca.crt` rename 為
 - **跨 OS trust 命令命令失敗**:script 只**印**教學、**不**執行 trust install;user 在自家 OS 上跑教學命令出錯需自查(避免 OS 偵測 + sudo + trust store API 跨 OS 複雜化)
 - **外部 CA 為 intermediate(非 root)**:fullchain.pem 含 leaf + intermediate(ca.pem)concat,但 root 不在 chain 內;browser 仍需從 OS trust store 找到 root 才驗 chain — script 教學第二段明示「假設你已 trust 該 CA 的 root」
 - **`--force` 與外部 CA 混用語意**:外部 CA 路線 `--force` 只覆寫 leaf 2 檔、不動 `ca.*`(避免破壞 user 預放的外部 CA);自簽路線 `--force` 覆寫全部 4 檔。script 第二段 print 已明示
+- **user 預放外部 CA 但忘 `rm self-signed-marker`**:若 user 先跑自簽路線(script 在 `dev-certs/` 寫 marker)後,放外部 CA cert+key 但忘 `rm self-signed-marker`,script 會視為自簽路線(因 marker 存在)、`--force` 可能覆寫 user 預放的 `ca.*`。user 須先 `rm -f deploy/dev-certs/self-signed-marker` 後再放外部 CA(quickstart.md Path C / troubleshooting 已涵蓋)
 
 ---
 

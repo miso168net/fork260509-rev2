@@ -62,7 +62,7 @@ cert 有效期:CA 10 年 / leaf 1 年。renew 跑 `--force`。
 ### 外部 CA 路線 happy path
 
 ```
-📌 偵測到外部 CA(deploy/dev-certs/ca.pem + ca.key)— 跳 Step 1、直接用外部 CA 簽 leaf
+📌 偵測到外部 CA(deploy/dev-certs/ca.pem + ca.key,無 self-signed-marker)— 跳 Step 1、直接用外部 CA 簽 leaf
 === Step 2: 生 leaf cert (RSA 2048, 1 年, SAN localhost+127.0.0.1) ===
 Generating RSA private key...
 Certificate request self-signature ok
@@ -98,9 +98,10 @@ exit 1。
 |---|---|
 | `SCRIPT_DIR` 解析後不依賴 cwd,允許 workspace 任何子目錄跑 | FR-003 |
 | zero-arg 第二次跑(已生)exit 1、不覆寫 | FR-011 + SC-006 |
-| `--force` 自簽路線覆寫 4 檔 | FR-013 |
+| `--force` 自簽路線覆寫 4 檔(`ca.* + leaf 2 檔`,marker 不變但 mtime 更新) | FR-013 |
 | `--force` 外部 CA 路線只覆寫 leaf 2 檔、保留 `ca.*` bytes 不變 | FR-012 + SC-007 |
 | 3 OS trust 教學:自簽路線印 / 外部 CA 路線不印 | FR-015 / FR-016 |
+| Step 1 自簽生 CA 結束 `touch self-signed-marker`,讓未來偵測 + `--force` 區分自簽 vs 外部 CA 來源(解 FR-004 vs FR-013 spec 內部矛盾) | FR-004 implementation note |
 
 ## 不在 contract 內
 

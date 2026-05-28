@@ -19,7 +19,7 @@
 | volumes | `./rust-api:/app` + `rust_api_cargo_cache:/usr/local/cargo` + `rust_api_target:/app/target` |
 | ports | `127.0.0.1:21081:21081`(loopback only,不對 LAN 暴露) |
 | environment.APP_JWT_JWT_SECRET | `${APP_JWT_JWT_SECRET:-dev_jwt_secret_for_local_only_x32xxxxxx}`(長度 39) |
-| environment.APP_JWT_REFRESH_TOKEN_SECRET | `${APP_JWT_REFRESH_TOKEN_SECRET:-dev_refresh_secret_for_local_only_x32xx}`(長度 38) |
+| environment.APP_JWT_REFRESH_TOKEN_SECRET | `${APP_JWT_REFRESH_TOKEN_SECRET:-dev_refresh_secret_for_local_only_x32xx}`(長度 39) |
 | environment.RUST_LOG | `"info,tower_http=debug"` |
 
 **啟動命令**:

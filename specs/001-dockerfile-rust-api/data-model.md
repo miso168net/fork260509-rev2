@@ -29,6 +29,19 @@
 
 **State transition**:N/A(stateless config object,boot 時 build once,放進 axum `State` 或全域 `Arc`)
 
+**Struct 命名**(實作對齊,Phase 0 brainstorm 拍板 + tasks.md T010 命名表):
+
+| Struct | 用途 | 含 secret? |
+|---|---|---|
+| `AppConfigYaml` | yaml 載入結構(`serde_yaml::from_str` target) | ✘ — 只含 yaml-derivable fields |
+| `AppConfig` | runtime merged 結構(yaml + secrets) | ✓ |
+| `ServerConfig` | `server.*` 子段(host / port) | ✘ |
+| `JwtYaml` | yaml 載入的 `jwt.*` 子段(僅 TTL 兩 field) | ✘ |
+| `JwtConfig` | runtime merged 的 `jwt.*` 子段(TTL + 兩 secret) | ✓ |
+| `LoggingConfig` | `logging.*` 子段(level / format) | ✘ |
+
+`Yaml` 後綴版本對齊 serde derive snapshot,`Config` 後綴為 runtime merged;命名邏輯避免「`secret: Option<String>` 在 yaml load 時 None、後 load_secret 補上」這種 nullable 過渡狀態的歧義。
+
 ---
 
 ## Entity 2: Container Image(`rev2-admin-rust-api`)

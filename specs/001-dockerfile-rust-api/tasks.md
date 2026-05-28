@@ -138,9 +138,9 @@ description: "Task list for 001-dockerfile-rust-api implementation"
 
 **Purpose**:DESIGN §4.6 baseline 對應驗收、Constitution Compliance 自我覆查、end-to-end smoke。
 
-- [ ] T030 Verification:`grep -rn "<TO_BE_SET>" rust-api/` 為空(對應 SC-006 + DESIGN §4.6.1;[verification-commands.md](./contracts/verification-commands.md) §5.1)
-- [ ] T031 Verification:`ls rust-api/migration/src/m*.rs 2>/dev/null` 為空(本 feature stub bin、無 entity migration;Phase 2 migration feature 才有 `m_<timestamp>_*.rs`;[verification-commands.md](./contracts/verification-commands.md) §5.2)
-- [ ] T032 Constitution Compliance 自我覆查:(a) `grep -rn "rev1\|fork260509-soybean-admin-rust" rust-api/server/ rust-api/migration/ rust-api/cleanup-job/ 2>/dev/null` 為空(§I.5 RUSTAPI-SOURCE-ISOLATION 紀律) (b) `git -C base-web diff` 為空(§I.1 base-web 為權威紀律) (c) `grep -E "secret|password|token" rust-api/application.yaml` 為空(§I.5 + spec FR-019;對應 [verification-commands.md](./contracts/verification-commands.md) §7)
+- [ ] T030 Verification:`grep -rn "<TO_BE_SET>" rust-api/ --include='*.yaml' --include='*.toml' --include='*.env*'` 為空(對應 SC-006 + DESIGN §4.6.1;限 config 檔副檔名以排除 `server/src/config.rs` 內 `PLACEHOLDER_SECRETS` 黑名單常數定義;[verification-commands.md](./contracts/verification-commands.md) §5.1)
+- [ ] T031 Verification:`ls rust-api/migration/src/m_*.rs 2>/dev/null` 為空(本 feature stub bin、無 entity migration;Phase 2 migration feature 才有 `m_<timestamp>_*.rs`;底線必要以排除 `main.rs`;[verification-commands.md](./contracts/verification-commands.md) §5.2)
+- [ ] T032 Constitution Compliance 自我覆查:(a) `grep -rn "rev1\|fork260509-soybean-admin-rust" rust-api/server/ rust-api/migration/ rust-api/cleanup-job/ 2>/dev/null` 為空(§I.5 RUSTAPI-SOURCE-ISOLATION 紀律) (b) `git -C base-web diff` 為空(§I.1 base-web 為權威紀律) (c) `grep -E "secret|password|token" rust-api/application.yaml | grep -v "_ttl_secs"` 為空(§I.5 + spec FR-019;`_ttl_secs` 排除是因 `access_token_ttl_secs` / `refresh_token_ttl_secs` 是 TTL 欄、非 secret 值;對應 [verification-commands.md](./contracts/verification-commands.md) §7)
 - [ ] T033 [P] Re-verify in-container unit test pass:`docker compose -f docker-compose.rust-api.yml --profile dev run --rm rust-api-dev cargo test --bin server -- config::tests` 8 tests 全 PASS(quickstart Path D)
 - [ ] T034 End-to-end smoke:跑 quickstart.md Path A(dev profile + 改 source 驗熱重載)+ Path B(prod profile + 3 binary entrypoint)完整流程,記錄任何 friction 進 `docs/superpowers/001-dockerfile-rust-api.md` §9 Open Questions(若需)
 

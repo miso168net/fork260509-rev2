@@ -15,8 +15,8 @@ docker compose -f docker-compose.base-web.yml --profile dev up -d
 # 等 ~30-60s(pnpm install + vite ready;首次更久)
 for i in $(seq 1 60); do
   sleep 1
-  resp=$(curl -fsS http://127.0.0.1:21079/health.html 2>/dev/null)
-  if [ "$resp" = "ok" ]; then echo "${i}s: /health.html=ok"; break; fi
+  # 用 grep -q 對齊 §2/§3 紀律 + HEALTHCHECK probe(health.html 含 2 行 HTML 註解 + ok body,字面 `=` 比對會失敗)
+  if curl -fsS http://127.0.0.1:21079/health.html 2>/dev/null | grep -q "ok"; then echo "${i}s: /health.html=ok"; break; fi
 done
 ```
 

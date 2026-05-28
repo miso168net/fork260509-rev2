@@ -127,11 +127,13 @@ docker run --rm rev2-admin-rust-api:latest unknown
 ## §5 Phase 0 baseline DESIGN §4.6 驗收(對應 spec SC-006)
 
 ```bash
-grep -rn "<TO_BE_SET>" rust-api/
+grep -rn "<TO_BE_SET>" rust-api/ --include='*.yaml' --include='*.toml' --include='*.env*'
 # 預期: 空輸出(application.yaml 不含 placeholder,secret 走 envvar/_FILE)
+# 註:限 config 檔副檔名以排除 server/src/config.rs 內 PLACEHOLDER_SECRETS 黑名單常數定義(legitimate code,非洩漏)
 
-ls migration/src/m*.rs 2>/dev/null | sort
+ls migration/src/m_*.rs 2>/dev/null | sort
 # 預期: 本 feature 階段空輸出(migration 是 stub bin、無 entity migration);Phase 2 migration feature 落實後才有 m_<timestamp>_*.rs
+# 註:底線必要以排除 main.rs(stub bin 入口);entity migration 規範命名 m_<timestamp>_*.rs
 ```
 
 ---
@@ -169,8 +171,9 @@ git -C ../base-web diff
 # 預期: 無 diff(base-web 完全不動)
 
 # 3. application.yaml 無 secret
-grep -E "secret|password|token" rust-api/application.yaml
+grep -E "secret|password|token" rust-api/application.yaml | grep -v "_ttl_secs"
 # 預期: 空(yaml 不含 secret-related key/value)
+# 註:_ttl_secs 排除是因 access_token_ttl_secs / refresh_token_ttl_secs 是 TTL 欄、非 secret 值
 ```
 
 ---

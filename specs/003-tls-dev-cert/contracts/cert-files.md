@@ -17,6 +17,12 @@
 |---|---|---|
 | `.gitkeep` | empty | git track,保留目錄存在 |
 
+## 額外 script-managed marker file
+
+| File | Format | Path | Track? | Purpose |
+|---|---|---|---|---|
+| `self-signed-marker` | empty | `deploy/dev-certs/self-signed-marker` | gitignored(line 136 wildcard 覆蓋) | Step 1 自簽生 CA 後 `touch` 寫入;script 偵測時若 `ca.* + marker` 同時在 → 視為自簽路線(`--force` 可一併重生 ca.*);若 `ca.* + 無 marker` → 視為外部 CA 路線。implementation 加,解 FR-004 純看 ca.* 存在 vs FR-013 自簽 `--force` 重生 4 檔的 spec 內部矛盾。切換外部 CA 時 user 須手動 `rm self-signed-marker`(quickstart.md Path C / troubleshooting 已涵蓋)|
+
 ## `ca.pem` 規格(自簽路線)
 
 ```text

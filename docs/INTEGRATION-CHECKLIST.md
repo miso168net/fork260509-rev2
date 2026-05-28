@@ -52,30 +52,13 @@ baseline 規格回填於 [DESIGN §4.6](INTEGRATION-DESIGN.md);6 項實作驗收
 - [ ] `docs/GRAPHIFY-NOTES.md`(graphify 抽取限制與盲點筆記,圖譜跑完後)
 - [ ] `specs/` 第一個 feature 目錄(P0 dockerfile-rust-api,§11 拍板後啟動)
 
-### 2.4 feature 001-dockerfile-rust-api spec doc follow-up ⏳ (2026-05-28)
+### 2.4 feature 001-dockerfile-rust-api spec doc follow-up ✅ 全完成+已歸檔 (2026-05-28)
 
-實作驗收期間發現的 spec doc 小修(只動文件、不動 code、不影響 acceptance 結果):
-- [ ] `specs/001-dockerfile-rust-api/tasks.md` T030 / T031 / T032(c) grep pattern 過寬:
-    * T030 `grep -rn "<TO_BE_SET>" rust-api/` 抓到 `server/src/config.rs:24` 內 `PLACEHOLDER_SECRETS` 常數(legitimately 定義黑名單、非洩漏)
-    * T031 `ls rust-api/migration/src/m*.rs` 抓到 `main.rs`(應 `m_*.rs` 限 sea-orm migration entity 命名)
-    * T032(c) `grep -E "secret|password|token" rust-api/application.yaml` 抓到 `access_token_ttl_secs` / `refresh_token_ttl_secs`(TTL 欄、非 secret 值)
-    驗收已用 tightened grep PASS;spec 字面未同步
-- [ ] `specs/001-dockerfile-rust-api/contracts/compose-profiles.md` L22 寫 refresh 預設字串長度 38、實際 39(typo,字串字面為 `dev_refresh_secret_for_local_only_x32xx` = 39 chars)
-- [ ] `specs/001-dockerfile-rust-api/data-model.md` 未明確命名 merged runtime 的 `JwtConfig` struct(實作選此名、對齊 `JwtYaml` 命名邏輯;data-model 可補回填)
-
-### 2.5 feature 002-dockerfile-base-web spec doc follow-up ⏳ (2026-05-28)
-
-實作驗收期間發現的 spec doc 小修(只動文件、不動 code、不影響 acceptance 結果):
-- [ ] `specs/002-dockerfile-base-web/tasks.md` T001 typo:寫「`git -C base-web branch --show-current` 必須 = `rev2-admin-rust-api`」,應為 `rev2-admin-base-web`(base-web worktree 自己的長期分支,見 CLAUDE.md §1)
-- [ ] `specs/002-dockerfile-base-web/contracts/verification-commands.md` §1 字串比對 bug:`if [ "$resp" = "ok" ]` 字面比對失敗(`health.html` 含 2 行 HTML 註解 + ok body),應改 `if curl ... | grep -q "ok"`(對齊 HEALTHCHECK probe + §2 / §3 已用 grep)
+### 2.5 feature 002-dockerfile-base-web spec doc follow-up ✅ 全完成+已歸檔 (2026-05-28)
 
 ### 2.6 superpowers 000-base-web-docker-bootstrap.md §3.2 corepack 範例同步 ✅ 全完成+已歸檔 (2026-05-28)
 
-### 2.7 feature 003-tls-dev-cert spec doc follow-up ⏳ (2026-05-28)
-
-實作驗收期間發現的 spec doc 小修(只動文件、不動 code、不影響 acceptance 結果):
-- [ ] `specs/003-tls-dev-cert/contracts/hybrid-ca-detection.md` / `cert-files.md` / `script-cli.md` 未 sync `self-signed-marker` 機制(實作為解 FR-004 純看 ca.* 存在 vs FR-013 自簽 --force 重生 4 檔的內部矛盾而加,user 在 AskUserQuestion 選此 option)— 保留作 plan 階段 design snapshot,source-of-truth 在 spec.md FR-004 + brainstorm doc §5;contracts 字面未同步
-- [ ] `specs/003-tls-dev-cert/spec.md` Edge Cases 段未加「user 預放外部 CA 但忘 `rm self-signed-marker`」edge case 條目(quickstart.md troubleshooting 已涵蓋,spec 字面未同步)
+### 2.7 feature 003-tls-dev-cert spec doc follow-up ✅ 全完成+已歸檔 (2026-05-28)
 
 ---
 
