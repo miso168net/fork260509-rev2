@@ -352,8 +352,8 @@ cd ..
 <!-- SPECKIT START -->
 **Active Spec**: [`specs/007-db-redis-connection/spec.md`](specs/007-db-redis-connection/spec.md)
 **Active Plan**: [`specs/007-db-redis-connection/plan.md`](specs/007-db-redis-connection/plan.md)
-**Phase**: 階段 1 SDD 設計鏈進行中 — `/speckit-specify` ✅(16/16) / `/speckit-clarify` ✅(0 提問全 Clear) / `/speckit-plan` ✅(Constitution 7+7=14 ✅、research R1-R4 + 5 entity data-model + C-V contract + quickstart;dep pin sea-orm 1.1.20 / sea-orm-migration 1.1.20 / redis 1.2 / argon2 0.5.3)；**Phase 2 P1 基礎設施起點**:rust-api Postgres(sea-orm)+ Redis 連線層 + AppState + fail-fast + proof migration(sys_user 最小欄位 + seed `Super`/`Admin`/`User`);research 修正:§8.1 帳號名 `Soybean/...` 為 rev1 stale、rev2 權威用 `Super/Admin/User`(DESIGN §11.1 拍板 + mock)
-**下一步**: `/speckit-tasks` → `/speckit-analyze` → `superpowers:executing-plans`(★ 本 feature 動 rust-api worktree → 兩段式 commit;走 RUSTAPI-SOURCE-ISOLATION 軌道)
+**Phase**: 階段 1 SDD 設計鏈 ✅ 全完成 — specify ✅(16/16) / clarify ✅(0 提問) / plan ✅(Constitution 7+7=14 ✅、research R1-R4 + 5 entity data-model + C-V contract + quickstart) / tasks ✅(18 task / 6 phase) / analyze ✅(coverage 100%、0 CRITICAL/HIGH、3 LOW remediation 已套)；**Phase 2 P1 基礎設施起點**:rust-api Postgres(sea-orm 1.1.20)+ Redis(1.2)連線層 + AppState + fail-fast + proof migration(sys_user[id/user_name/password] + seed `Super`/`Admin`/`User`、argon2 0.5.3 自生 hash);research 修正:§8.1 帳號名 `Soybean/...` 為 rev1 stale、rev2 權威用 `Super/Admin/User`(DESIGN §11.1 + mock)
+**下一步**: **階段 2 TDD 實作** → `superpowers:executing-plans`(讀 [tasks.md](specs/007-db-redis-connection/tasks.md) → subagent-driven-development、各 unit spec+quality 雙審)。★ 本 feature 動 **rust-api worktree** → §4.1 兩段式 commit(worktree commit+push fork → 外層 SHA pin);走 RUSTAPI-SOURCE-ISOLATION 軌道。**注意 §3 紀律(push/merge 不得早於 finishing)與兩段式 fork push 的張力 — 起 executing-plans 時先與 user 確認 commit/push 時機**。feature branch `007-db-redis-connection` 本地、未 push(收尾才 push origin)
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
