@@ -63,3 +63,13 @@
 | `bc2a004` | 2026-05-28 | docs(checklist): 對齊 §7.5 歸檔規則 — 拔 §4 Phase 1 標題與 §1 階段行的子項 ✅ 標示 |
 | `1651d8b` | 2026-05-28 | docs(checklist): 新增 §2.5 / §2.6 follow-up — 002 spec doc 小修 + 000 §3.2 corepack 範例不同步 |
 | `2a34c64` | 2026-05-28 | docs+test: 000-bootstrap §3.2 corepack 同步(option iii)+ mock-coverage-audit 9 step files port 9527→21079 同步(33 處)+ CHECKLIST §2.6 歸檔;9 step files 全跑通(100 records / 334 steps) |
+| `c6e1c7e` | 2026-05-28 | docs(milestones): append 2a34c64 — 000-bootstrap §3.2 + mock-coverage-audit step files port + CHECKLIST §2.6 歸檔 |
+| `38b0ef9` | 2026-05-28 | docs(checklist+milestones): §2.6 標題對齊 §2.1/2.2 歸檔格式 + 補 3 個遺漏 MILESTONES entries |
+| `e25062e` | 2026-05-28 | docs(superpowers): 003-tls-dev-cert Phase 0 brainstorm spec-design |
+| `39b48c1` | 2026-05-28 | docs(spec): 003-tls-dev-cert spec.md + quality checklist(階段 1 /speckit-specify) |
+| `0d2f4a6` | 2026-05-28 | docs(plan): 003-tls-dev-cert Phase 0/1 design artifacts(階段 1 /speckit-plan) |
+| `23c1093` | 2026-05-28 | docs(tasks): 003-tls-dev-cert tasks.md(階段 1 /speckit-tasks) |
+| `3b10841` | 2026-05-28 | docs(tasks): 對齊 /speckit-analyze 3 LOW 修(T004 註腳 + T011 macOS + T016 SC-008 字面) |
+| `45b711f` | 2026-05-28 | chore(spec-kit): auto_commit 全 hook enabled 開啟(16 個 hook 全 true) |
+| `82cc95a` | 2026-05-28 | feat(deploy): 003-tls-dev-cert 落地 dev TLS cert 生成 skeleton(zero-arg + --force,Hybrid CA + self-signed-marker 機制,RSA 2048 + SAN localhost+127.0.0.1,CA 10 年 / leaf 1 年,全 docker 化 alpine/openssl) |
+| `cb5e1a1` | 2026-05-28 | Merge feature 003-tls-dev-cert 回 rev2-admin-root(--no-ff,feature branch 保留) |
