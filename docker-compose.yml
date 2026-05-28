@@ -67,14 +67,14 @@ services:
     image: postgres:17-alpine
     environment:
       POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
-      POSTGRES_USER: rev2admin
-      POSTGRES_DB: rev2
+      POSTGRES_USER: soybean
+      POSTGRES_DB: soybean_admin_rust
     secrets:
       - postgres_password
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U rev2admin"]
+      test: ["CMD-SHELL", "pg_isready -U soybean"]
       interval: 10s
       timeout: 5s
       retries: 5
