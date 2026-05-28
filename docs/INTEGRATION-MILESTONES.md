@@ -1,14 +1,16 @@
 # INTEGRATION-MILESTONES.md — rev2 整合 commit 里程碑歷史
 
 > rev2 整合的 commit milestone 永久 append-only 紀錄。**不在 SOP hook 注入範圍**(避免 CHECKLIST 膨脹)。
-> CHECKLIST §3 不再記;CHECKLIST §1「最新進展」滾動最近 5 條、本檔保留完整歷史。
+> CHECKLIST §3 不再記;CHECKLIST §1「最新進展」滾動最近 2 條、本檔保留完整歷史。
 >
 > **編輯紀律**:append-only、按 commit 時間順序(舊 → 新)、不刪除已記項目。
 > **更新時機**:任何 docs / feature commit 落地後立即追加(見 CLAUDE.md §7.5 歸檔流程)。
 
 ---
 
-## 全部 milestone(舊 → 新)
+## 1. 全部 milestone(舊 → 新)
+
+> 來源於 INTEGRATION-CHECKLIST.md 的 §1. Current Focus
 
 | commit | 日期 | 主題 |
 |---|---|---|
@@ -110,3 +112,29 @@
 | `a2fefe9` | 2026-05-28 | docs(deploy): CLAUDE.md §8.2 文件化 named volume 命名規則 + §8.2.2 正典 7 卷(US2;+ c8db9ab 修正設 name: 檔列舉) |
 | `f0d2fd2` | 2026-05-28 | docs: US3 既有文件對齊 — DESIGN/000 改新卷名 + 002/004 superseded cross-ref(+ a5ee96e 連結深度修 + 7a7f659 §3.1 schema 移除 name:) |
 | `a12fd18` | 2026-05-28 | Merge feature 006-docker-volume-naming 回 rev2-admin-root(--no-ff,feature branch 保留)— named volume 命名統一精修;US1/US2/US3 各 spec+quality 雙審 + final holistic review、SC-001~005 全 PASS、2 處 user 拍板偏離(dev 6 卷 / prod.yml L4) |
+
+
+## 2. ✅ 完成+歸檔
+
+> 來源於 INTEGRATION-CHECKLIST.md 的 §2. Follow-up Backlog - 已完成 (手動搬)
+
+### 2.2 spec phase 0 對稱盤點 ✅ baseline 已固化 (2026-05-28)
+
+baseline 規格回填於 [DESIGN §4.6](INTEGRATION-DESIGN.md);6 項實作驗收(grep `<TO_BE_SET>` 殘留 / 範本檔齊備 / `SELECT casbin_rule` / `ls migration/src/m*.rs` 等)由對應 Phase 1-4 feature spec 跑。
+
+- §4.6.1 application.yaml placeholder 規劃 ✅
+- §4.6.2 11 個 secret 清單(必 7 + 選 4)✅
+- §4.6.3 Casbin policy seed 矩陣(3 role × 12 endpoint)✅
+- §4.6.4 migration entity 清單(7 業務 + sys_tokens + casbin_rule + sys_operation_log)+ timestamp 規則 ✅
+- §4.6.5 sys_user 預設帳號(§11.1 拍板 `Super/Admin/User`)✅
+- §4.6.6 `graphify-out/` 落地時機(Phase 4 後)✅
+
+### 2.3 workspace-level 落地 ✅ 全完成+已歸檔 (2026-05-28)
+
+### 2.4 feature 001-dockerfile-rust-api spec doc follow-up ✅ 全完成+已歸檔 (2026-05-28)
+
+### 2.5 feature 002-dockerfile-base-web spec doc follow-up ✅ 全完成+已歸檔 (2026-05-28)
+
+### 2.6 superpowers 000-base-web-docker-bootstrap.md §3.2 corepack 範例同步 ✅ 全完成+已歸檔 (2026-05-28)
+
+### 2.7 feature 003-tls-dev-cert spec doc follow-up ✅ 全完成+已歸檔 (2026-05-28)

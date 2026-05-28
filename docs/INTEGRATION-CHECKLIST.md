@@ -29,26 +29,7 @@
 
 完整 12 拍板項與軌道授權細節見 [DESIGN §11](INTEGRATION-DESIGN.md);spec-kit `/speckit-plan` 將自動對照 constitution v1.0.0 跑 Compliance Check。
 
-### 2.2 spec phase 0 對稱盤點 ✅ baseline 已固化 (2026-05-28)
-
-baseline 規格回填於 [DESIGN §4.6](INTEGRATION-DESIGN.md);6 項實作驗收(grep `<TO_BE_SET>` 殘留 / 範本檔齊備 / `SELECT casbin_rule` / `ls migration/src/m*.rs` 等)由對應 Phase 1-4 feature spec 跑。
-
-- §4.6.1 application.yaml placeholder 規劃 ✅
-- §4.6.2 11 個 secret 清單(必 7 + 選 4)✅
-- §4.6.3 Casbin policy seed 矩陣(3 role × 12 endpoint)✅
-- §4.6.4 migration entity 清單(7 業務 + sys_tokens + casbin_rule + sys_operation_log)+ timestamp 規則 ✅
-- §4.6.5 sys_user 預設帳號(§11.1 拍板 `Super/Admin/User`)✅
-- §4.6.6 `graphify-out/` 落地時機(Phase 4 後)✅
-
-### 2.3 workspace-level 落地 ✅ 全完成+已歸檔 (2026-05-28)
-
-### 2.4 feature 001-dockerfile-rust-api spec doc follow-up ✅ 全完成+已歸檔 (2026-05-28)
-
-### 2.5 feature 002-dockerfile-base-web spec doc follow-up ✅ 全完成+已歸檔 (2026-05-28)
-
-### 2.6 superpowers 000-base-web-docker-bootstrap.md §3.2 corepack 範例同步 ✅ 全完成+已歸檔 (2026-05-28)
-
-### 2.7 feature 003-tls-dev-cert spec doc follow-up ✅ 全完成+已歸檔 (2026-05-28)
+> ### 2.2 ~ 2.7 全完成+已歸檔 (手動搬至 INTEGRATION-MILESTONES.md)
 
 ### 2.8 feature 004-compose-port-orchestration follow-up
 

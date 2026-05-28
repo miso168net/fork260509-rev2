@@ -379,7 +379,7 @@ rev2 整合的核心 docs 階層,內容由「研究歷史」→「設計權威�
 ### 7.4 其他相關文件
 
 - **`.specify/memory/constitution.md`** — v1.0.0 將從 DESIGN §11 拍板 + §7 軌道清單提取凍結為**不可違反的權威**(更高層、需 amendment 流程才能改)
-- **`docs/INTEGRATION-MILESTONES.md`** — commit 里程碑永久紀錄(append-only、不在 SOP 注入、避免 CHECKLIST 膨脹;歸檔流程見 §7.5)
+- **`docs/INTEGRATION-MILESTONES.md`** — 永久紀錄(append-only、不在 SOP 注入、避免 CHECKLIST 膨脹);**§1 commit 里程碑表 + §2「✅ 完成+歸檔」(從 CHECKLIST §2 搬來的已完成 follow-up 細節)**;歸檔流程見 §7.5
 - **`docs/superpowers/000-base-web-docker-bootstrap.md`** — base-web docker-compose 落地過程的持久記憶(暫定存放位置)
 - **`docs/superpowers/<NNN>-<feature-name>.md`** — 每個 spec-kit feature 的 Phase 0 brainstorm 決策(見 §3 階段 0、DESIGN §11.12 拍板)
 
@@ -403,6 +403,7 @@ feature 啟動  →  docs/superpowers/<NNN>-<feature-name>.md(brainstorm)
 1. **永久紀錄** — `docs/INTEGRATION-MILESTONES.md` 表尾 append 一行(commit hash + 日期 + 主題)
 2. **動態追蹤** — CHECKLIST §1「最新進展」加一條;若超過 **2 條**、刪最舊那條(滾動)
 3. **Phase 歸檔**(若該 commit 完成整個 Phase)— CHECKLIST §4 對應 Phase 改「✅ 全完成+已歸檔 (YYYY-MM-DD)」+ 拔細節 list;deliverable 詳細已在 DESIGN §10、不重複
+4. **§2 follow-up 歸檔** — CHECKLIST §2 follow-up 完成後標「✅ 全完成+已歸檔 (YYYY-MM-DD)」+ 清 body;累積數節後**批次搬到 MILESTONES §2「✅ 完成+歸檔」**、CHECKLIST §2 原處留 1 行收合指標(`> ### §X ~ §Y 全完成+已歸檔(手動搬至 MILESTONES)`)。仍 open 的 follow-up 與仍 active 的索引(如 §2.1 鐵紀律)續留 CHECKLIST
 
 **紀律**:**CHECKLIST 永遠不膨脹** — 歷史 commit 在 MILESTONES.md / `git log`;設計詳細在 DESIGN;當前狀態在 CHECKLIST。
 
