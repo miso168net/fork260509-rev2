@@ -94,7 +94,10 @@ done
 grep -E "POSTGRES_USER:|POSTGRES_DB:|pg_isready -U" docker-compose.yml
 # 預期: soybean / soybean_admin_rust / pg_isready -U soybean
 
-docker compose -f docker-compose.yml -f docker-compose.dev.yml down -v
+# [implementation 偏離 · 2026-05-28 · user 拍板]:不用 `down -v`(會連 rust-api cargo 快取 / base-web node_modules
+# 一起清,致冷重建超時假性失敗)。R9 只需清 postgres 資料卷,故 down(保留卷)+ 只移除 postgres 卷:
+docker compose -f docker-compose.yml -f docker-compose.dev.yml down --remove-orphans
+docker volume rm rev2_postgres_data        # 只清 postgres(保留 build 快取);"no such volume" 亦可
 docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --wait ; echo "exit: $?"
 # 預期: exit 0、5 service healthy(postgres 以新 user/db 重 init)
 docker compose -f docker-compose.yml -f docker-compose.dev.yml exec -T postgres psql -U soybean -d soybean_admin_rust -c '\conninfo'
