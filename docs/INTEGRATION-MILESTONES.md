@@ -73,3 +73,16 @@
 | `45b711f` | 2026-05-28 | chore(spec-kit): auto_commit 全 hook enabled 開啟(16 個 hook 全 true) |
 | `82cc95a` | 2026-05-28 | feat(deploy): 003-tls-dev-cert 落地 dev TLS cert 生成 skeleton(zero-arg + --force,Hybrid CA + self-signed-marker 機制,RSA 2048 + SAN localhost+127.0.0.1,CA 10 年 / leaf 1 年,全 docker 化 alpine/openssl) |
 | `cb5e1a1` | 2026-05-28 | Merge feature 003-tls-dev-cert 回 rev2-admin-root(--no-ff,feature branch 保留) |
+| `1825d5d` | 2026-05-28 | docs: 003-tls-dev-cert merge 收尾(CHECKLIST §1+§4+§2.3+§2.7 / MILESTONES) |
+| `78b7e75` | 2026-05-28 | docs(spec): 001+002+003 spec doc follow-up 小修(§2.4+§2.5+§2.7 全歸檔) |
+| `f2318d8` | 2026-05-28 | docs(spec): 004-compose-port-orchestration spec.md + quality checklist(階段 1 /speckit-specify) |
+| `8a576b4` | 2026-05-28 | docs(clarify): 004-compose-port-orchestration 補 §Clarifications(階段 1 /speckit-clarify) |
+| `0ced332` | 2026-05-28 | docs(plan): 004-compose-port-orchestration Phase 0/1 design artifacts(階段 1 /speckit-plan) |
+| `4b3bcfc` | 2026-05-28 | docs(tasks): 004-compose-port-orchestration tasks.md(階段 1 /speckit-tasks) |
+| `e882eb1` | 2026-05-28 | docs(analyze): 004 H1+M1 remediation(base-web base 層不放 build/image + build-arg location 明示) |
+| `21508a4` | 2026-05-28 | feat(deploy): 004-compose-port-orchestration 落地 master compose stack(3 檔分層 + nginx 反代 + postgres/redis + acme skeleton + 2 standalone DEPRECATED) |
+| `ecce4b8` | 2026-05-28 | fix(deploy): dev front-nginx healthcheck 改打 21080(dev 無 port 80 listener) |
+| `7d8c7f1` | 2026-05-28 | fix(deploy): dev rust-api healthcheck 改 bash /dev/tcp(dev image 無 http client)+ prod.conf /health 改 location-based(不被 server-level 301 吃掉) |
+| `e1fc88f` | 2026-05-28 | fix(deploy): healthcheck localhost → 127.0.0.1(alpine localhost 先解 ::1 IPv6、nginx/vite 只綁 IPv4) |
+| `b8edfa0` | 2026-05-28 | docs(spec): 004 polish — §8.2.1 named volume 微修 + 回填 3 處 as-built healthcheck/nginx 偏離 |
+| `b4294c7` | 2026-05-28 | Merge feature 004-compose-port-orchestration 回 rev2-admin-root(--no-ff,feature branch 保留)— dev/prod/acme 三模式 up --wait exit 0、SC-001~008 全 PASS |
