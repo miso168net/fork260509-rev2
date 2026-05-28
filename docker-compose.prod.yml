@@ -1,0 +1,54 @@
+# rev2-admin prod override
+#
+# 用法(配合 base):
+#   prod baseline(需先 seed cert 進 rev2_front_nginx_certs volume):
+#     docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --wait
+#   prod + acme skeleton:
+#     docker compose -f docker-compose.yml -f docker-compose.prod.yml --profile prod up -d --wait
+#
+# 特性:
+#   - front-nginx:0.0.0.0:80+443(prod 對外);80→443 強制 redirect(prod.conf)
+#   - base-web:multi-stage nginx build(Dockerfile.base-web.txt);internal only
+#   - rust-api:runtime target built image :latest;internal only
+#   - postgres/redis:127.0.0.1 loopback 直連 debug port(prod 環境按需關閉)
+#   - acme:profile=prod,idle skeleton,待設 DNS provider creds 後啟用 --issue
+
+services:
+  front-nginx:
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+    volumes:
+      - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./deploy/nginx/conf.d/_locations.inc:/etc/nginx/conf.d/_locations.inc:ro
+      - ./deploy/nginx/conf.d/prod.conf:/etc/nginx/conf.d/default.conf:ro
+      - front_nginx_certs:/etc/nginx/certs:ro
+    restart: unless-stopped
+
+  base-web:
+    build:
+      context: ./base-web
+      dockerfile: ../deploy/Dockerfile.base-web.txt
+      args:
+        VITE_SERVICE_BASE_URL: /api
+    image: rev2-admin-base-web:latest
+    restart: unless-stopped
+
+  rust-api:
+    image: rev2-admin-rust-api:latest
+    restart: unless-stopped
+
+  postgres:
+    ports:
+      - "127.0.0.1:25432:5432"
+    restart: unless-stopped
+
+  redis-stack:
+    ports:
+      - "127.0.0.1:26379:6379"
+    restart: unless-stopped
+
+  acme:
+    volumes:
+      - front_nginx_certs:/acme.sh
+    restart: unless-stopped
