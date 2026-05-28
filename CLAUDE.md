@@ -347,8 +347,8 @@ git commit -m "bump base-web: rebase on upstream <短 SHA>"
 <!-- SPECKIT START -->
 **Active Spec**: [`specs/006-docker-volume-naming/spec.md`](specs/006-docker-volume-naming/spec.md)
 **Active Plan**: [`specs/006-docker-volume-naming/plan.md`](specs/006-docker-volume-naming/plan.md)
-**Phase**: 階段 1 SDD 設計鏈進行中 — `/speckit-specify` ✅(spec.md + 16/16 checklist) / `/speckit-clarify` ✅(0 提問、全 taxonomy Clear) / `/speckit-plan` ✅(Constitution 7+7=14 ✅ Pass、6 research + 3 entity + 2 contract〔volume-catalog / verification-commands〕+ quickstart)；Phase 0 brainstorm 已凍結 5 決策(key+name 同改 / `rev2-admin_` auto-prefix 移除顯式 name: / 凍結 spec 加 superseded 註記 / 000 全面改寫 / 全 7 卷)
-**下一步**: `/speckit-tasks`(產 dependency-ordered tasks.md)
+**Phase**: 階段 1 SDD 設計鏈進行中 — `/speckit-specify` ✅(spec.md + 16/16 checklist) / `/speckit-clarify` ✅(0 提問、全 taxonomy Clear) / `/speckit-plan` ✅(Constitution 7+7=14 ✅ Pass、6 research + 3 entity + 2 contract + quickstart) / `/speckit-tasks` ✅(17 task / 6 phase、無單元測試)；Phase 0 brainstorm 已凍結 5 決策(key+name 同改 / `rev2-admin_` auto-prefix 移除顯式 name: / 凍結 spec 加 superseded 註記 / 000 全面改寫 / 全 7 卷)
+**下一步**: `/speckit-analyze`(spec/plan/tasks 跨檔 consistency)→ 後 `superpowers:executing-plans` 實作
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
