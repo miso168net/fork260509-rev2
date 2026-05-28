@@ -11,12 +11,11 @@
 **階段**:rev2 spec-kit 第五個 feature(005-secret-injection)已合回 `rev2-admin-root`;**Phase 1 P0 部署基建全數完成(#1~#5)**;準備啟動 Phase 2 P1 基礎設施(DB/Redis 連線層 wire)。
 
 **最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
-- **2026-05-28 005-secret-injection 完整實作 + 驗收 + merge**(outer merge `068b2a8`)— executing-plans → subagent-driven-development(US1/US2/US3 各 spec+quality 雙審 + final holistic review)/ `deploy/generate-secrets.sh` 一鍵生 7 必 secret(4 leaf + 3 URL,腳本同次同源保證 dual-write、idempotent + `--force`、docker 化 openssl、chmod 600 不印值)+ 3 URL 範本 + retrofit postgres/redis 範本 + `deploy/secrets/README.md` + docker-compose postgres 命名對齊 `soybean`/`soybean_admin_rust` / dev stack 5 service healthy、`psql -U soybean` 連線通 / 2 處 user 拍板偏離(postgres/redis 密碼 base64→hex 避免破 URL、T013 只清 postgres 卷不 down -v 避免冷重建假性失敗)已全面同步 spec docs / Constitution 7+7=14 ✅ / 純 workspace-level 單段(無 SHA pin)/ feature branch 保留;**已 push `origin/rev2-admin-root`(`9e5e7b4`)**(005 branch ref 仍本地)
+- **2026-05-28 005-secret-injection 完整實作 + 驗收 + merge**(outer merge `068b2a8`)— executing-plans → subagent-driven-development(US1/US2/US3 各 spec+quality 雙審 + final holistic review)/ `deploy/generate-secrets.sh` 一鍵生 7 必 secret(4 leaf + 3 URL,腳本同次同源保證 dual-write、idempotent + `--force`、docker 化 openssl、chmod 600 不印值)+ 3 URL 範本 + retrofit postgres/redis 範本 + `deploy/secrets/README.md` + docker-compose postgres 命名對齊 `soybean`/`soybean_admin_rust` / dev stack 5 service healthy、`psql -U soybean` 連線通 / 2 處 user 拍板偏離(postgres/redis 密碼 base64→hex 避免破 URL、T013 只清 postgres 卷不 down -v 避免冷重建假性失敗)已全面同步 spec docs / Constitution 7+7=14 ✅ / 純 workspace-level 單段(無 SHA pin)/ feature branch 保留;**已 push `origin/rev2-admin-root` + `origin/005-secret-injection`(`74819d0`)**
 - **2026-05-28 004-compose-port-orchestration 完整實作 + 驗收 + merge**(outer merge `b4294c7` / feature commit `21508a4`)— executing-plans → subagent-driven-development(2 unit + spec/quality 雙審)/ 3 檔分層 master compose(base + dev/prod override)+ front-nginx 反代(`/`→base-web、`/api/*` strip→rust-api)+ postgres17 + redis-stack + acme skeleton(profile=prod)+ TLS 三來源 + 2 standalone DEPRECATED / 3 runtime fix(dev front-nginx :21080、dev rust-api bash /dev/tcp readiness 因 image 無 http client、全 healthcheck localhost→127.0.0.1 因 alpine ::1 IPv6)/ dev+prod+acme 三模式 `up --wait` 全 exit 0、SC-001~008 全 PASS / Constitution 7+7=14 ✅ / 純 workspace-level 單段(無 SHA pin)/ feature branch 保留;未 push(待 user 下令)
 
-**下一步**(優先序):
+**下一步**:
 1. **啟動 Phase 2 P1 基礎設施** — rust-api 接 `database_url`/`redis_url`(config.rs 加 `[database]`/`[redis]` section + 掛 compose `secrets:` + `APP_DATABASE_URL_FILE`/`APP_REDIS_URL_FILE` env)+ db schema migration + Casbin adapter;005 已 provision-ahead 3 URL secret、留連線 wire
-2. (可選)`005-secret-injection` feature branch ref 仍本地未 push — 需上 origin 供他人 audit 時再 `git push origin 005-secret-injection`
 
 ---
 
