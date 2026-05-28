@@ -105,7 +105,9 @@
 
 ## R9 — postgres rename 需 `down -v` 重 init
 
-**Decision**:改 `POSTGRES_USER`/`POSTGRES_DB` 後須 `docker compose ... down -v` 清 `rev2_postgres_data` named volume,postgres 才會以新 user/db 重 init。
+**Decision**:改 `POSTGRES_USER`/`POSTGRES_DB` 後須清 `rev2_postgres_data` named volume,postgres 才會以新 user/db 重 init。
+
+> **[implementation 偏離 · 2026-05-28]**:本 R9 原以 `down -v` 為清卷手段,實作改為 `down --remove-orphans` + `docker volume rm rev2_postgres_data`(只清 postgres 卷)。原因:`down -v` 會連 rust-api cargo / base-web node_modules build 快取一起清,致冷重建超 healthcheck 視窗 `up --wait` 假性失敗。R9 核心結論(postgres data dir 須為空才重 init)不變,僅精準化清卷範圍。見 [plan §Implementation Deviations](./plan.md)。
 
 **Rationale**:postgres 官方 image 只在 data dir **為空**時跑 init(建 user/db);既有 `rev2_postgres_data`(004 acceptance 用 rev2admin/rev2 init 過)非空 → 改 env 不重 init、`psql -U soybean` 會認證失敗。dev 無真實資料(migration 尚未跑),`down -v` 重置零損失。
 

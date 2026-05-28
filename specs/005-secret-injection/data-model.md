@@ -91,7 +91,7 @@ redis_url.txt           內嵌 password 段  ≡  redis_password.txt 純值
 | `POSTGRES_DB` | `rev2` | `soybean_admin_rust` |
 | healthcheck | `pg_isready -U rev2admin` | `pg_isready -U soybean` |
 
-**落地前置**:`docker compose ... down -v` 清 `rev2_postgres_data`(R9:postgres 非空 data dir 不重 init)。`database_url` / `cleanup_database_url` 的 user/db 段與此一致(Entity 1)。
+**落地前置**:清 `rev2_postgres_data` 卷讓 postgres 重 init(R9:postgres 非空 data dir 不重 init)。實作用 `down --remove-orphans` + `docker volume rm rev2_postgres_data`(只清 postgres 卷),**非 `down -v`**(後者連 build 快取一起清致冷重建假性失敗,見 [plan §Implementation Deviations](./plan.md))。`database_url` / `cleanup_database_url` 的 user/db 段與此一致(Entity 1)。
 
 ---
 

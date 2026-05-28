@@ -45,7 +45,7 @@ description: "Task list for 005-secret-injection implementation"
 
 **Independent Test**:`rm -f deploy/secrets/*.txt && bash deploy/generate-secrets.sh` → 7 個 `.txt` + dual-write grep 通過,即驗。
 
-- [ ] T002 [US1] Create `rev2-root/deploy/generate-secrets.sh`:對齊 [contracts/generate-secrets-contract.md](./contracts/generate-secrets-contract.md) + [research R1-R6](./research.md)。`#!/usr/bin/env bash` + `set -euo pipefail` + `--force` 偵測 + `SCRIPT_DIR` via BASH_SOURCE + `SECRETS_DIR=$SCRIPT_DIR/secrets`。openssl 走 docker(`OPENSSL_IMG=alpine/openssl:latest`、`docker pull -q`、`gen_rand(){ docker run --rm alpine/openssl rand -base64 "$1"; }`)。① 生 4 葉子(缺 OR --force):jwt_secret/refresh_token_secret = `rand -base64 48`、postgres_password/redis_password = `rand -hex 24`(**hex 非 base64**:嵌 URL 須 URL-safe,見 [research R2 implementation 偏離](./research.md))(寫檔去尾換行)。② 組 3 URL(缺 OR --force,讀既有/剛生葉子):`database_url`=`postgres://soybean:$(cat postgres_password.txt)@postgres:5432/soybean_admin_rust`、`redis_url`=`redis://:$(cat redis_password.txt)@redis-stack:6379`、`cleanup_database_url`=同 database_url。③ `chmod 600 "$SECRETS_DIR"/*.txt`。④ 印 GENERATED/SKIPPED 摘要(**不印值**)。`chmod +x`。**★ dual-write 同次同源**(R6):URL 必用「剛生 OR 既有」的同一葉子 `.txt` 值組,不另生
+- [ ] T002 [US1] Create `rev2-root/deploy/generate-secrets.sh`:對齊 [contracts/generate-secrets-contract.md](./contracts/generate-secrets-contract.md) + [research R1-R6](./research.md)。`#!/usr/bin/env bash` + `set -euo pipefail` + `--force` 偵測 + `SCRIPT_DIR` via BASH_SOURCE + `SECRETS_DIR=$SCRIPT_DIR/secrets`。openssl 走 docker(`OPENSSL_IMG=alpine/openssl:latest`、`docker pull -q`、`gen_rand(){ docker run --rm alpine/openssl rand "$@"; }` — variadic 以支援 `-base64 48` 與 `-hex 24` 兩種)。① 生 4 葉子(缺 OR --force):jwt_secret/refresh_token_secret = `rand -base64 48`、postgres_password/redis_password = `rand -hex 24`(**hex 非 base64**:嵌 URL 須 URL-safe,見 [research R2 implementation 偏離](./research.md))(寫檔去尾換行)。② 組 3 URL(缺 OR --force,讀既有/剛生葉子):`database_url`=`postgres://soybean:$(cat postgres_password.txt)@postgres:5432/soybean_admin_rust`、`redis_url`=`redis://:$(cat redis_password.txt)@redis-stack:6379`、`cleanup_database_url`=同 database_url。③ `chmod 600 "$SECRETS_DIR"/*.txt`。④ 印 GENERATED/SKIPPED 摘要(**不印值**)。`chmod +x`。**★ dual-write 同次同源**(R6):URL 必用「剛生 OR 既有」的同一葉子 `.txt` 值組,不另生
 - [ ] T003 [US1] Acceptance:一鍵生成 + 數量(對應 spec US1 Acceptance 1 + SC-001;[verification-commands.md §1](./contracts/verification-commands.md)):`rm -f deploy/secrets/*.txt && bash deploy/generate-secrets.sh` exit 0、`ls deploy/secrets/*.txt | wc -l` = 7、輸出不含 secret 值
 - [ ] T004 [US1] Acceptance:dual-write 不變式(對應 spec US1 Acceptance 2 + SC-002;[verification-commands.md §2](./contracts/verification-commands.md)):`grep -qF $(cat postgres_password.txt) database_url.txt` + cleanup_database_url + redis_url(redis_password)三者皆通過;`cat database_url.txt` 形式 = `postgres://soybean:<pw>@postgres:5432/soybean_admin_rust`
 - [ ] T005 [US1] Acceptance:idempotent + --force(對應 spec US1 Acceptance 3-4 + SC-003;[verification-commands.md §3](./contracts/verification-commands.md)):zero-arg 重跑值不變;`--force` 後值改變且 dual-write 仍成立
@@ -64,7 +64,7 @@ description: "Task list for 005-secret-injection implementation"
 > 與 US1 不同檔、可獨立進行(但勿並行派 implementer)。
 
 - [ ] T007 [P] [US2] Create 3 URL 範本 `rev2-root/deploy/secrets/{database_url,redis_url,cleanup_database_url}.txt.example`:對齊 [contracts/secret-catalog.md](./contracts/secret-catalog.md) 豐富格式(`# 用途` + `# 跑 generate-secrets.sh` + `# 手動 fallback` + `# dual-write: 內嵌 password ≡ <葉子>.txt` + placeholder 值如 `postgres://soybean:CHANGE_ME@postgres:5432/soybean_admin_rust`);cleanup 範本加「最小權限 role Phase 5」註記
-- [ ] T008 [P] [US2] Retrofit `rev2-root/deploy/secrets/{postgres_password,redis_password}.txt.example`:從 004 極簡一行改為豐富格式(註解 + 手動 fallback `docker run --rm alpine/openssl rand -base64 24`);**只加註解、placeholder 值語義不變**(對齊 [data-model.md Entity 3](./data-model.md))
+- [ ] T008 [P] [US2] Retrofit `rev2-root/deploy/secrets/{postgres_password,redis_password}.txt.example`:從 004 極簡一行改為豐富格式(註解 + 手動 fallback `docker run --rm alpine/openssl rand -hex 24`,**hex 非 base64**:URL-safe,見 [research R2 偏離](./research.md));**只加註解、placeholder 值語義不變**(對齊 [data-model.md Entity 3](./data-model.md))
 - [ ] T009 [P] [US2] Create `rev2-root/deploy/secrets/README.md`:對齊 [data-model.md Entity 4](./data-model.md) — 7 必 secret 表(用途 + 消費者 service + 葉子/組合)+ 4 可選 obs secret(標 ⏳ Phase 5/6)+ dual-write 不變式 + `generate-secrets.sh` 用法 + 手動 fallback + `--force` 風險警示 + Phase 2 前瞻(`APP_DATABASE_URL_FILE`/`APP_REDIS_URL_FILE`)
 - [ ] T010 [US2] Acceptance:範本 + README 齊備(對應 spec US2 Acceptance 1-3 + SC-005;[verification-commands.md §5](./contracts/verification-commands.md)):`ls *.txt.example | wc -l` = 7、新增 3 + retrofit 2 首行皆 `^#`、README 存在且 grep 7 secret ≥ 7
 - [ ] T011 [US2] Acceptance:gitignore(對應 spec US2 Acceptance 4 + SC-004;[verification-commands.md §4](./contracts/verification-commands.md)):`git check-ignore deploy/secrets/database_url.txt`(回路徑=ignored)+ `git check-ignore ....txt.example`(exit≠0=tracked)
@@ -75,14 +75,14 @@ description: "Task list for 005-secret-injection implementation"
 
 ## Phase 5: User Story 3 — 004 DB 命名對齊 + stack 連線通 (Priority: P3)
 
-**Goal**:`docker-compose.yml` postgres 改 `soybean`/`soybean_admin_rust`;`down -v` 重 init 後 dev stack healthy + `psql -U soybean` 連線通。
+**Goal**:`docker-compose.yml` postgres 改 `soybean`/`soybean_admin_rust`;清 postgres 卷重 init 後 dev stack healthy + `psql -U soybean` 連線通。
 
-**Independent Test**:改命名 + `down -v` + `up --wait` 5 healthy + `psql -U soybean -d soybean_admin_rust` 連線成功,即驗。
+**Independent Test**:改命名 + 清 postgres 卷(`docker volume rm rev2_postgres_data`,**非 `down -v`** — 見下方 T013 偏離)+ `up --wait` 5 healthy + `psql -U soybean -d soybean_admin_rust` 連線成功,即驗。
 
 > 依賴 US1(stack 起動需 generate-secrets.sh 生的 postgres_password/redis_password)。
 
 - [ ] T012 [US3] Edit `rev2-root/docker-compose.yml` postgres service:`POSTGRES_USER: rev2admin` → `soybean`、`POSTGRES_DB: rev2` → `soybean_admin_rust`、healthcheck `pg_isready -U rev2admin` → `pg_isready -U soybean`(對齊 [research R4](./research.md) + [data-model.md Entity 6](./data-model.md))。**只改這 3 處**,不動其他 service / volume / secret 定義
-- [ ] T013 [US3] Acceptance:命名對齊 + 連線(對應 spec US3 Acceptance 1-4 + SC-006;[verification-commands.md §7](./contracts/verification-commands.md)):`grep POSTGRES_USER/DB/pg_isready` 顯 soybean;前置 US1 已生 secret → `docker compose -f docker-compose.yml -f docker-compose.dev.yml down -v` + `up -d --wait` exit 0、5 healthy;`exec -T postgres psql -U soybean -d soybean_admin_rust -c '\conninfo'` 連線成功。**★ 必 `down -v`**(R9:postgres 非空 data dir 跳 init)
+- [ ] T013 [US3] Acceptance:命名對齊 + 連線(對應 spec US3 Acceptance 1-4 + SC-006;[verification-commands.md §7](./contracts/verification-commands.md)):`grep POSTGRES_USER/DB/pg_isready` 顯 soybean;前置 US1 已生 secret → `down --remove-orphans` + `docker volume rm rev2_postgres_data` + `up -d --wait` exit 0、5 healthy;`exec -T postgres psql -U soybean -d soybean_admin_rust -c '\conninfo'` 連線成功。**★ 只清 postgres 卷,勿 `down -v`**(R9:postgres 非空 data dir 跳 init;但 `down -v` 會連 build 快取一起清致冷重建假性失敗 — 見 [plan §Implementation Deviations](./plan.md))
 
 **Checkpoint**: 三 user story 全 independently functional
 
@@ -153,7 +153,7 @@ description: "Task list for 005-secret-injection implementation"
 
 - US1 create(T002)→ acceptance(T003-T006):一個 implementer subagent;dual-write 邏輯需仔細(R6 同次同源)
 - US2 create(T007-T009)→ acceptance(T010-T011):同/另一 implementer(獨立於 US1)
-- US3 edit(T012)→ acceptance(T013):需 docker daemon + US1 secret + `down -v`(共享 docker 狀態、sequential)
+- US3 edit(T012)→ acceptance(T013):需 docker daemon + US1 secret + 清 postgres 卷(`docker volume rm rev2_postgres_data`,非 `down -v`)(共享 docker 狀態、sequential)
 - Polish(T014):查核
 
 ---
@@ -165,7 +165,7 @@ description: "Task list for 005-secret-injection implementation"
 - **.gitignore 不需改**:L68-69 `*.txt` ignore + `!*.txt.example` 已涵蓋 3 新 URL secret(R7)
 - **openssl docker 化**(R3):`docker run --rm alpine/openssl rand`,host 無需裝 openssl;沿用 003
 - **dual-write 同次同源**(R6):URL 必用同一葉子 `.txt` 值組,acceptance §2 grep 驗
-- **US3 必 `down -v`**(R9):改 postgres user/db 後不清卷 → postgres 不重 init、`psql -U soybean` 認證失敗
+- **US3 必清 postgres 卷**(R9):改 postgres user/db 後不清卷 → postgres 不重 init、`psql -U soybean` 認證失敗。**用 `docker volume rm rev2_postgres_data` 而非 `down -v`**(後者連 build 快取一起清致冷重建假性失敗;見 [plan §Implementation Deviations](./plan.md))
 - **scope 邊界**(FR-016/017/018):3 URL secret 不接 compose(Phase 2)、不生 obs 選4(Phase 5/6)、不動 config.rs / base-web / rust-api / Dockerfile / gitignore / jwt-refresh 範本值
 - 任何偏離 [plan.md](./plan.md) 的實作決策、須在對應 task 註明 + 更新 plan.md(Constitution v1.0.0 §V)
 - `superpowers:executing-plans` 階段把這 14 個 task 編成 execution unit + 派 fresh implementer subagent

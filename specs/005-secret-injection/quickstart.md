@@ -53,8 +53,11 @@ git check-ignore deploy/secrets/postgres_password.txt   # 回路徑 = ignored(�
 ## Path D — 004 DB 命名對齊 + stack 連線
 
 ```bash
-# docker-compose.yml postgres 已改 soybean/soybean_admin_rust;首次切換需清舊卷:
-docker compose -f docker-compose.yml -f docker-compose.dev.yml down -v
+# docker-compose.yml postgres 已改 soybean/soybean_admin_rust;首次切換需清 postgres 舊卷:
+# ★ 只清 postgres 卷,勿用 down -v —— down -v 會連 rust-api cargo / base-web node_modules
+#   build 快取一起清,冷重建超過 healthcheck 視窗致 up --wait 假性失敗(見 plan §Implementation Deviations)
+docker compose -f docker-compose.yml -f docker-compose.dev.yml down --remove-orphans
+docker volume rm rev2_postgres_data
 docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --wait
 # 預期: 5 service healthy(postgres 以 soybean/soybean_admin_rust 重 init)
 
@@ -63,7 +66,7 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml exec -T postgres 
 # 預期: connected to "soybean_admin_rust" as user "soybean"
 ```
 
-> ⚠️ 不 `down -v` 直接改 env → postgres 偵測非空 data dir 跳 init,新 user/db 不生效、`psql -U soybean` 認證失敗(見 [research R9](./research.md))。
+> ⚠️ 未清 postgres 卷(`docker volume rm rev2_postgres_data`)直接改 env → postgres 偵測非空 data dir 跳 init,新 user/db 不生效、`psql -U soybean` 認證失敗(見 [research R9](./research.md))。
 
 ---
 
@@ -71,7 +74,7 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml exec -T postgres 
 
 | 症狀 | 處置 |
 |---|---|
-| `psql -U soybean` 認證失敗 | 改命名後未 `down -v` 清舊卷;postgres 未重 init |
+| `psql -U soybean` 認證失敗 | 改命名後未清 postgres 卷(`docker volume rm rev2_postgres_data`);postgres 未重 init |
 | dual-write grep 不符 | 有人手改葉子未更新 URL;`generate-secrets.sh --force` 重生 |
 | rust-api boot panic「placeholder / length」 | jwt/refresh `.txt` 還是範本 placeholder;跑 generate-secrets.sh 生真值 |
 | `docker pull alpine/openssl` 失敗 | 確認 docker 可連 registry(同 003 cert 生成前置) |

@@ -19,6 +19,10 @@
 - 全 taxonomy 掃描結果:無 spec-level critical ambiguity 需正式 clarify(brainstorm 已做 3 輪澄清:scope / DB 命名 / 腳本行為;剩餘開放點已吸收進 Assumptions)。
 - Deferred 到 `/speckit-plan`:`generate-secrets.sh` 的 openssl 來源(host vs docker 化 alpine/openssl fallback)屬 plan-level 實作細節,預設沿用 003 `generate-dev-cert.sh` hybrid 模式(已記 Assumptions),不影響 spec 的 WHAT/驗收。
 
+> **[implementation 偏離 · 2026-05-28 · executing-plans 階段,user 拍板]**:凡本 spec 提及 `docker compose ... down -v` 重置 postgres 之處(US3 narrative / Independent Test / Acceptance / Edge Cases / FR-014 / SC-006 / Assumptions),實作改為 `down --remove-orphans` + `docker volume rm rev2_postgres_data`(只清 postgres 卷)。原因:`down -v` 會連 rust-api cargo / base-web node_modules build 快取一起清,致冷重建超過 healthcheck 視窗、`up --wait` 假性失敗;R9 的真正目標(postgres data dir 為空才重 init)不變。見 [plan §Implementation Deviations](./plan.md) + [verification-commands §7](./contracts/verification-commands.md)。
+>
+> **[implementation 偏離 · 2026-05-28]**:postgres_password / redis_password 生成由 `rand -base64 24` 改 `rand -hex 24`(URL-safe,避免嵌入連線 URL 後 `+` `/` 破壞解析);詳見 [research R2](./research.md)。
+
 ---
 
 ## User Scenarios & Testing *(mandatory)*
@@ -113,7 +117,7 @@ rev2 開發者在 workspace root 跑單一命令 `bash deploy/generate-secrets.s
 
 - **FR-012**:`docker-compose.yml` postgres service MUST 改用 `POSTGRES_USER=soybean`、`POSTGRES_DB=soybean_admin_rust`(對齊 DESIGN §8.4 權威,取代 004 暫用的 rev2admin/rev2),healthcheck `pg_isready -U soybean` 同步改
 - **FR-013**:`database_url` / `cleanup_database_url` 範本與生成值的 user/db 段 MUST 與 FR-012 的 postgres init 命名一致
-- **FR-014**:落地文件 MUST 明示改命名後需 `docker compose ... down -v` 清資料卷,讓 postgres 以新 user/db 重 init
+- **FR-014**:落地文件 MUST 明示改命名後需清 postgres 資料卷(實作 `down --remove-orphans` + `docker volume rm rev2_postgres_data`,見 Clarifications 偏離註),讓 postgres 以新 user/db 重 init
 
 **dual-write 不變式**
 
@@ -144,7 +148,7 @@ rev2 開發者在 workspace root 跑單一命令 `bash deploy/generate-secrets.s
 - **SC-003**:重跑腳本(無參數)既有 secret 值 0 變動(idempotent);`--force` 後全部 secret 值改變
 - **SC-004**:真實 `.txt` 100% 被 git ignore、`.txt.example` 範本 100% 可 track(`git check-ignore` 驗)
 - **SC-005**:7 個必須 secret 的 `.txt.example` 範本齊備,每個首行為註解;`deploy/secrets/README.md` 列出全 7 secret
-- **SC-006**:postgres 改 soybean/soybean_admin_rust 命名後,`down -v` + `up --wait` 5 service 全 healthy,且 `psql -U soybean -d soybean_admin_rust` 連線成功
+- **SC-006**:postgres 改 soybean/soybean_admin_rust 命名後,清 postgres 卷(`docker volume rm rev2_postgres_data`,見 Clarifications 偏離註)+ `up --wait` 5 service 全 healthy,且 `psql -U soybean -d soybean_admin_rust` 連線成功
 - **SC-007**:生成的 `jwt_secret` / `refresh_token_secret` 長度 ≥ 32 字元且非黑名單值(過 001 `config.rs` loader 驗證)
 
 ---
