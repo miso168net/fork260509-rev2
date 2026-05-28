@@ -228,9 +228,7 @@ services:
 
 volumes:
   base_web_node_modules:
-    name: rev2-admin_base_web_node_modules
   base_web_pnpm_store:                            # §2.7 新加
-    name: rev2-admin_base_web_pnpm_store
 ```
 
 注意:
