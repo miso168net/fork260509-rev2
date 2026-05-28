@@ -699,6 +699,8 @@ rev1 設計過 `/systemManage/*` 作為 thin wrapper 重用 `/user/*` `/role/*` 
 
 ### §6.1 JWT secret 機制(strict validation + `_FILE` pattern)
 
+> **✅ 已實作**(005 secret 注入 + 007 config,非獨立 feature):`rust-api/server/src/config.rs` `AppConfig::load()` + `load_secret`/`validate_secret` + `JwtConfig`,compose/secrets 接線齊、單測齊。下列為原始設計規格(實作忠實對齊)。
+
 - **單一 envvar** `JWT_SECRET` + `_FILE` precedence:
   ```
   if APP_JWT_JWT_SECRET_FILE set → read from file
@@ -1071,7 +1073,7 @@ deliverables(全部完成):
 
 ### Phase 2 — 後端基礎設施(無 app 相依,但 Phase 3 起點)
 
-1. **JWT 機密管理 feature** — strict validation + `_FILE` + refresh secret 分離
+1. **JWT 機密管理 feature** — strict validation + `_FILE` + refresh secret 分離（**✅ 已由 005 secret 注入 + 007 config 吸收,非獨立 feature**:`config.rs` `AppConfig::load()` 已載 `APP_JWT_JWT_SECRET`/`APP_JWT_REFRESH_TOKEN_SECRET`〔`load_secret` `_FILE`>envvar>panic + `validate_secret` 空/placeholder/≥32〕、`JwtConfig` 含 access/refresh TTL + 兩 secret、compose dev env 預設 + master `*_FILE`→`/run/secrets/` + docker secret `jwt_secret`/`refresh_token_secret` + `deploy/secrets/*.example` + `load_secret`×4/`validate_secret`×3 單測。實際 JWT 簽發/驗證留 Phase 3 login、`sys_tokens` rotation 留 Phase 5,見 §6.1/§6.2）
 2. **soft-delete 基礎設施 feature** — 7 entity + facade + CI lint(三重防護)
 3. **envelope 對齊 feature** — `Res<T>` + 業務 code 矩陣（**✅ 008 已交,2026-05-29 merge `7bdf5bb` / SHA pin `e1b0a6c` / rust-api `fac12f6`**:`Res<T>{data,code,msg}`〔`code`=string、無 `success` 欄、`data:None`→`null`、欄位序 data→code→msg〕+ `impl IntoResponse`〔回 HTTP200,業務錯誤未來也走 200〕;`BizCode` 完整 12-variant 矩陣〔`0000/1000/2222/3333/9998/9999/7777/7778/8888/8889/4040/5000`,`code()`+`default_msg()`,本 feature 只 wire `0000`/`4040`/`5000`,餘 9 variant 定義待 Phase 3+〕;`AppError`〔thiserror,最小 variant `NotFound`→404、`Internal(String)`→500;client msg 走 `BizCode::default_msg()`、thiserror Display 僅 log〕+ axum `.fallback()`〔不存在 path 回 `{data:null,code:"4040",msg:"接口不存在"}` live curl 驗〕;`/health` 維持純 `ok`。**拍板:camelCase rename 機制移出本 feature scope、留 Phase 4 各 DTO 自帶**〔信封欄名 data/code/msg 本就小寫無需轉換〕。21 單測鎖契約形狀；3 unit/13 task subagent-driven TDD,各 spec+quality 雙審 + final holistic review）
 4. **audit log 基礎設施 feature** — schema + `AuditEvent` + redact(依 soft-delete)
