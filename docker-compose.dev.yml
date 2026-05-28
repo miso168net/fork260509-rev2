@@ -20,6 +20,8 @@ services:
       - ./deploy/nginx/conf.d/_locations.inc:/etc/nginx/conf.d/_locations.inc:ro
       - ./deploy/nginx/conf.d/dev.conf:/etc/nginx/conf.d/default.conf:ro
       - ./deploy/dev-certs:/etc/nginx/certs:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:21080/health | grep -q ok"]
 
   base-web:
     image: node:20.19-alpine
