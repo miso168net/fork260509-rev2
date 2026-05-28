@@ -12,6 +12,15 @@
 
 ---
 
+## Clarifications
+
+### Session 2026-05-29
+
+- 全 taxonomy 掃描結果:**無 spec-level critical ambiguity 需正式 clarify**。Phase 0 brainstorm 已凍結全部 5 項設計決策(範圍＝連線層+proof migration / proof 表＝sys_user / 結構＝完整連線層+AppState / URL secret 走既有 `load_secret` / migration 獨立 binary),spec checklist 16/16 PASS、0 [NEEDS CLARIFICATION]。
+- Deferred 到 `/speckit-plan` Phase 0 research:`sys_user` 確切欄位 + argon2id seed hash(plaintext `123456`)—— 屬需 grep 真實來源(upstream / rev1)的 plan-level 細節,不影響 spec 的 WHAT 與驗收(見 Assumptions)。連線池大小 / connect timeout 等非機密 tuning 參數亦屬 plan-level。
+
+---
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 — rust-api 連得上 Postgres + Redis（連線層基礎，Priority: P1）🎯 MVP
