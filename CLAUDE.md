@@ -345,10 +345,10 @@ git commit -m "bump base-web: rebase on upstream <短 SHA>"
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/004-compose-port-orchestration/spec.md`](specs/004-compose-port-orchestration/spec.md)
-**Active Plan**: [`specs/004-compose-port-orchestration/plan.md`](specs/004-compose-port-orchestration/plan.md)
-**Phase**: ✅ 完成並 merge — 階段 1 SDD 設計鏈(specify/clarify/plan/tasks/analyze 全 ✅、Constitution 7+7=14 ✅ Pass)+ 階段 2 TDD 實作(executing-plans → subagent-driven-development;2 unit + spec/quality 雙審)+ acceptance(dev/prod/acme 三模式 `up --wait` exit 0、SC-001~008 全 PASS);merge `b4294c7` 回 `rev2-admin-root`(--no-ff,feature branch 保留)
-**下一步**: 啟動 Phase 1 #5 secret 注入機制(scope 縮小:其餘範本 + `deploy/generate-secrets.sh` + dual-write docs)
+**Active Spec**: [`specs/005-secret-injection/spec.md`](specs/005-secret-injection/spec.md)
+**Active Plan**: [`specs/005-secret-injection/plan.md`](specs/005-secret-injection/plan.md)
+**Phase**: 階段 1 SDD 設計鏈 ✅ 全完成 — Phase 0 brainstorm ✅(6 拍板)+ `/speckit-specify` ✅(spec.md + 16/16 checklist PASS、零 [NEEDS CLARIFICATION])+ `/speckit-clarify` ✅(0 提問、全 taxonomy Clear)+ `/speckit-plan` ✅(Constitution 7+7=14 ✅ Pass、9 research 全 grep 確認、openssl docker 化決議)+ `/speckit-tasks` ✅(14 task / 6 phase)+ `/speckit-analyze` ✅(coverage 100%、0 CRITICAL、僅 2 LOW)
+**下一步**: `superpowers:executing-plans`(階段 2 TDD 實作;C1 README down -v 於 T009 順手納入)
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
