@@ -70,7 +70,7 @@ fork260509-rev2/                            ← workspace root（傘狀 repo rev
 │   ├── cost.json               (gitignored, token 用量帳單，個人化)
 │   └── cache/                  (gitignored, LLM 擷取快取，可重產)
 ├── fork260509-soybean-admin-base/         ← Vue 3 starter，base-web worktree 源倉（gitignored，本機必留）
-├── fork260509-soybean-admin-docs/         ← 文件站（gitignored，整合不用，僅參考）
+├── fork260509-soybean-admin-docs/         ← 文件站（gitignored，整合不用、僅參考；定期 §4.6 upstream rebase 取官方最新到 main）
 ├── fork260509-rev2-anew-rust-api/         ← Rust axum + Casbin backend，rust-api worktree 源倉（gitignored，本機必留）
 ├── base-web/                              ← worktree + submodule（外層記 gitlink SHA）
 ├── rust-api/                              ← worktree + submodule（外層記 gitlink SHA）
@@ -291,33 +291,38 @@ git submodule update --init --recursive
 
 ### 4.6 升級 fork branch（拉 upstream rebase 後）
 
-> ⚠️ **前置設定**：fork 源倉需要設定 upstream remote 指向 soybeanjs 官方。補設步驟（每個源倉跑一次）：
+> ⚠️ **前置設定**：`fork260509-soybean-admin-*` 源倉（base + docs）需設定 upstream remote 指向 soybeanjs 官方（跑一次；rust-api 不適用、理由見本節末註）：
 > ```bash
 > cd fork260509-soybean-admin-base
 > git remote add upstream https://github.com/soybeanjs/soybean-admin.git
 > git remote set-url --push upstream no_push    # 保護：避免誤推到 upstream
-> cd ../fork260509-rev2-anew-rust-api
-> git remote add upstream https://github.com/soybeanjs/soybean-admin-rust.git
-> git remote set-url --push upstream no_push
+> cd ../fork260509-soybean-admin-docs
+> git remote add upstream https://github.com/soybeanjs/soybean-admin-docs.git
+> git remote set-url --push upstream no_push    # 保護：避免誤推到 upstream
 > cd ..
 > ```
 > （fetch 前用 `git remote -v` 確認：push 應顯示 `no_push`、fetch 應顯示 soybeanjs URL。）
 
 ```bash
+# === base-web（worktree + submodule；rebase 後要同步 outer pin）===
 cd base-web
 git fetch upstream                    # upstream 是原 soybeanjs 的 repo
 git rebase upstream/example           # 對 rev2-admin-base-web，base 是 example
 git push --force-with-lease           # 推自己的 fork（會改寫 history，push 前須 user 同意）
 cd ..
-
-# 同步 outer pin
-git add base-web
+git add base-web                      # 同步 outer pin（base-web 是 submodule）
 git commit -m "bump base-web: rebase on upstream <短 SHA>"
 
-# rust-api 同理但 base branch 不同：
-#   cd rust-api && git fetch upstream && git rebase upstream/main && git push --force-with-lease && cd ..
-#   git add rust-api && git commit -m "bump rust-api: rebase on upstream <短 SHA>"
+# === docs（純參考源倉、非 submodule；rebase 後無 outer pin 同步）===
+cd fork260509-soybean-admin-docs
+git fetch upstream
+git rebase upstream/main              # 取 soybeanjs 官方 docs 最新到 main
+git push --force-with-lease           # 推自己的 docs fork（push 前須 user 同意）
+cd ..
+
 ```
+
+> **僅 rust-api 不適用本節**：`rust-api`（`fork260509-rev2-anew-rust-api`）為 anew／自建後端、**無 soybeanjs upstream**，不做 upstream rebase。base-web（rebase `upstream/example`）與 docs（rebase `upstream/main`）兩個 `fork260509-soybean-admin-*` 源倉皆 fork 自 soybeanjs、適用本節;差別:base-web 是 submodule、rebase 後要同步 outer pin,docs 純參考源倉、無 pin 同步。
 
 ### 4.7 故障處理速查
 
