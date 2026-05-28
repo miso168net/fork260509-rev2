@@ -144,3 +144,12 @@ Phase 1 設計完成後重跑 Compliance Check 7 項。
 ## Complexity Tracking
 
 > Constitution Check 7 項全 PASS、無 violations、本段不需填。
+
+---
+
+## Implementation Deviations（Constitution v1.0.0 §V）
+
+實作階段(executing-plans / subagent-driven-development)出現、經 user 拍板的偏離,記錄於此:
+
+1. **SC-001/T007 卷數 6 vs 7（user 拍板 2026-05-28，接受 6）**:dev `up -d --wait` 實際只物化 6 個 named volume,非 spec 寫的 7。`front_nginx_certs` 是 prod-only —— dev 的 front-nginx 服務用 `./deploy/dev-certs` bind mount,named volume `front_nginx_certs` 只被 `profiles:[prod]` 的 `acme` 服務掛載,故 dev 不物化。pre-flight 看到的舊 `rev2_front_nginx_certs` 是先前 prod/seed-cert 步驟 out-of-band 建立的殘留,並非 dev `up` 產物 → spec 作者把混雜歷史的 7 個既存卷誤當 dev 會生成 7 個。該卷命名已用 `docker compose -f docker-compose.yml -f docker-compose.prod.yml --profile prod config` 驗證解析為 `rev2-admin_front_nginx_certs`。**判定**:全 7 key auto-prefix 一致、spec 意圖(統一 `rev2-admin_` 前綴、grep 友善)已達成;SC-001「=7」於 dev-only 讀作「dev 6 + front_nginx_certs prod-only(名稱驗證通過)」,無需重跑、無需起 prod profile。
+2. **prod.yml L4 陳舊註解修正（user 拍板 2026-05-28，同意修）**:`docker-compose.prod.yml` L4 註解仍寫舊卷名 `rev2_front_nginx_certs`,與已修正的 master compose L13 註解同類。user 同意一併修為 `rev2-admin_front_nginx_certs`(1 行註解,prod.yml 的實際 volume 引用用 key `front_nginx_certs`、本就正確、未動)。**連帶**:T017(d)「prod.yml 零改動」驗證放寬為「僅 1 行註解 diff、無 volume name:/結構改動」。

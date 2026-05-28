@@ -51,6 +51,7 @@ description: "Task list for 006-docker-volume-naming implementation"
 - [ ] T005 [US1] Edit `rev2-root/docker-compose.rust-api.yml`(DEPRECATED standalone):① 加頂層 `name: rev2-admin`;② `volumes:` 區塊移除 2 個 `name: rev2_rust_api_*` 行(key `rust_api_cargo_cache` / `rust_api_target` **不變**、mount 不變)。靠 auto-prefix 得 `rev2-admin_rust_api_*`
 - [ ] T006 [US1] Acceptance:語法 + 舊名清零(對應 spec US1 + SC-002;[verification-commands.md §1](./contracts/verification-commands.md)):`docker compose -f docker-compose.yml -f docker-compose.dev.yml config -q` OK;`grep -nE "name: rev2_|redis_data:|bw_node_modules|bw_pnpm_store" docker-compose*.yml` 為空;`grep -c "^name: rev2-admin"` master/base-web/rust-api 各 1
 - [ ] T007 [US1] Acceptance:卷遷移 + stack healthy + 新名(對應 spec US1 Acceptance 1-3 + SC-001/SC-003;[verification-commands.md §2](./contracts/verification-commands.md)):`docker volume rm` 7 個舊 `rev2_*` 卷 → `up -d --wait` exit 0、5 healthy;`docker volume ls | grep -c '^rev2-admin_'` = 7、`grep -c '^rev2_'` = 0。**★ 先 rm 舊卷再 up**(R6:否則舊卷殘留孤兒)
+>   **偏離澄清(user 拍板 2026-05-28)**:dev `up` 實際只物化 **6** 個卷,非 7。`front_nginx_certs` 是 prod-only(dev 的 front-nginx 用 `./deploy/dev-certs` bind mount,該卷只被 `profiles:[prod]` 的 acme 掛載),dev 不物化。其命名已用 `docker compose -f docker-compose.yml -f docker-compose.prod.yml --profile prod config` 驗證 = `rev2-admin_front_nginx_certs`。故 SC-001/T007 的「=7」於 dev-only `up` 下讀作「dev 6 + front_nginx_certs prod-only(名稱驗證通過)」;全 7 key auto-prefix 一致、spec 意圖(統一 `rev2-admin_` 前綴、grep 友善)達成,無需重跑。連帶:`docker-compose.prod.yml` L4 陳舊註解 `rev2_front_nginx_certs`→`rev2-admin_front_nginx_certs`(user 同意修、放寬 T017(d) prod.yml 零改動驗證)
 - [ ] T008 [US1] Acceptance:005 dual-write / 連線不變式(對應 spec US1 Acceptance 4 + SC-003;[verification-commands.md §3](./contracts/verification-commands.md)):`exec -T postgres psql -U soybean -d soybean_admin_rust -c '\conninfo'` 連線成功;`exec -T redis-stack redis-cli -a "$(cat deploy/secrets/redis_password.txt)" --no-auth-warning ping` 回 PONG(卷改名不影響 secret file-based)
 
 **Checkpoint**: User Story 1 fully functional;MVP 達成(7 卷統一 `rev2-admin_` + grep 友善 + stack 連線通)
@@ -99,7 +100,7 @@ description: "Task list for 006-docker-volume-naming implementation"
     * (a)`git -C base-web status --short` + `git -C rust-api status --short` 皆空(§I.1/§I.5 worktree 不動)
     * (b)`git diff --name-only <branch-base>..HEAD` 不含 `rust-api/` `base-web/` worktree 內檔、`rust-api/server/src/config.rs`、network 定義未動(FR-012:不改 network / worktree / config.rs)
     * (c)`grep -c "✅ Pass" specs/006-docker-volume-naming/plan.md` ≥ 14(Constitution Check 7 + Re-Check 7)
-    * (d)確認 `docker-compose.prod.yml` 未被改(`git diff --name-only <base>..HEAD docker-compose.prod.yml` 為空 — prod override 無 volume name:、本 feature 不需動)
+    * (d)確認 `docker-compose.prod.yml` 僅 **L4 陳舊註解** 1 行 diff(`rev2_front_nginx_certs`→`rev2-admin_front_nginx_certs`,user 拍板 2026-05-28),**無 volume `name:`/service/結構改動**(原「零改動」放寬;見 [plan.md Implementation Deviations](./plan.md))
     * (e)`grep -rn "rev2_net" docker-compose*.yml` 仍為舊 network key(未動 — FR-012 network out of scope)
 
 **Checkpoint**: feature 完整、可進 `superpowers:finishing-a-development-branch` 階段(outer commit + push 006 + merge 回 `rev2-admin-root` + 更新 CHECKLIST §1 + MILESTONES append + CLAUDE.md §6 SPECKIT marker 收尾)
