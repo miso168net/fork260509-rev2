@@ -418,15 +418,17 @@ feature 啟動  →  docs/superpowers/<NNN>-<feature-name>.md(brainstorm)
 
 ### 8.1 預設帳號（dev 用）
 
-依 `rust-api/migration/src/datas/m20241024_033005_insert_sys_user.rs`：
+由 `rust-api/migration/src/m20260529_000002_seed_sys_user.rs` seed（建表在 `m20260529_000001_create_sys_user.rs`；feature 007 落地）：
 
-| 帳號 | 角色 | 密碼 |
-|---|---|---|
-| `Soybean` | 超級管理員 | `123456` |
-| `Administrator` | admin | 同上 |
-| `GeneralUser` | 一般 | 同上 |
+| id | 帳號（`user_name`） | 對應角色（Phase 3 才接） | 密碼 |
+|---|---|---|---|
+| 1 | `Super` | 超級管理員（`R_SUPER`） | `123456` |
+| 2 | `Admin` | admin（`R_ADMIN`） | 同上 |
+| 3 | `User` | 一般（`R_USER_COMMON`） | 同上 |
 
-3 個 user 共用同一個 argon2id 雜湊；plaintext = `123456`（migration 檔案直接埋的測試帳號雜湊，逆推驗證過）。
+- **rev2 權威名 = `Super`/`Admin`/`User`**（對齊 base-web mock ground truth + DESIGN §11.1 拍板）。早期此節引用的 rev1 `Soybean`/`Administrator`/`GeneralUser`（及 `migration/src/datas/m20241024_*` 路徑）**在 rev2 不存在、已淘汰,勿再用**。
+- 3 個 user 共用同一個 **runtime 生成**的 argon2id 雜湊（random salt：每次重跑 migration 雜湊字串不同,但都驗得過 plaintext `123456`）— 非寫死固定 hash。
+- 目前 `sys_user` 僅最小欄位 `id` / `user_name` / `password`（007 proof）。**「對應角色」欄為設計意圖、尚非 DB 欄位**：role 由 `sys_role` join 在 Phase 3 組裝（含 `User → User01` 的 getUserInfo alias，亦 Phase 3）；完整 7-entity schema 屬 soft-delete(#2)。
 
 ### 8.2 容器 endpoint 與 port 配置
 
