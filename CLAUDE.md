@@ -345,10 +345,10 @@ git commit -m "bump base-web: rebase on upstream <短 SHA>"
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/005-secret-injection/spec.md`](specs/005-secret-injection/spec.md)
-**Active Plan**: [`specs/005-secret-injection/plan.md`](specs/005-secret-injection/plan.md)
-**Phase**: ✅ 完成並 merge — 階段 1 SDD 設計鏈(specify/clarify/plan/tasks/analyze 全 ✅、Constitution 7+7=14 ✅ Pass)+ 階段 2 TDD 實作(executing-plans → subagent-driven-development;US1/US2/US3 各 spec+quality 雙審 + final holistic review)+ acceptance(7 必 secret 一鍵生 dual-write、dev stack 5 service healthy、`psql -U soybean` 連線通);2 處 user 拍板偏離(postgres/redis 密碼改 hex URL-safe / T013 只清 postgres 卷不 down -v);merge `068b2a8` 回 `rev2-admin-root`(--no-ff,feature branch 保留)
-**下一步**: Phase 1 部署基建 #1~#5 全數完成;啟動 Phase 2 P1 基礎設施(rust-api 接 `database_url`/`redis_url`:config.rs 加 `[database]`/`[redis]` section + 掛 compose secret + `APP_*_FILE` env + db schema migration)
+**Active Spec**: [`specs/006-docker-volume-naming/spec.md`](specs/006-docker-volume-naming/spec.md)
+**Active Plan**: [`specs/006-docker-volume-naming/plan.md`](specs/006-docker-volume-naming/plan.md)
+**Phase**: 階段 1 SDD 設計鏈進行中 — `/speckit-specify` ✅(spec.md + 16/16 checklist PASS、0 [NEEDS CLARIFICATION];3 user story P1/P2/P3 + 12 FR + 5 SC)；Phase 0 brainstorm 已凍結 5 決策(key+name 同改 / `rev2-admin_` auto-prefix 移除顯式 name: / 凍結 spec 加 superseded 註記 / 000 全面改寫 / 全 7 卷)
+**下一步**: `/speckit-clarify`(預期 0 提問,brainstorm 已拍板)或直接 `/speckit-plan`
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
