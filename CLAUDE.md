@@ -350,10 +350,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/008-response-envelope/spec.md`](specs/008-response-envelope/spec.md)
-**Active Plan**: [`specs/008-response-envelope/plan.md`](specs/008-response-envelope/plan.md)
-**Phase**: ✅ 完整實作 + 驗收 + merge 回 `rev2-admin-root`(2026-05-29)— executing-plans → subagent-driven-development(3 unit / 13 task,各 spec+quality 雙審 + final holistic review = Ready)。`Res<T>`(`{data,code,msg}`、code=string、無 success、欄位序 data→code→msg)+ `IntoResponse`;`BizCode` 完整 12-variant 矩陣(只 wire 0000/4040/5000);`AppError`(thiserror;NotFound→404/Internal→500)+ axum `.fallback()`(404 live curl 驗)。21 單測 PASS / `/health` 不動 / 2 拍板(Internal=`5000` rev2 自訂 5xxx sentinel、不做 camelCase 機制)/ Constitution 7+7=14 ✅。兩段式 commit(rust-api worktree `091fe6a..fac12f6` push fork + 外層 SHA pin);008 branch 保留
-**下一步**: Phase 2 P1 續推 — JWT 機密管理 / soft-delete 7-entity 基礎設施 / audit log / sub-crate(Casbin)等 [DESIGN §10 Phase 2](docs/INTEGRATION-DESIGN.md) 餘 feature(envelope 已 ✅)
+**Active Spec**: [`specs/009-soft-delete-infra/spec.md`](specs/009-soft-delete-infra/spec.md)
+**Active Plan**: [`specs/009-soft-delete-infra/plan.md`](specs/009-soft-delete-infra/plan.md)
+**Phase**: 階段 1 SDD 設計鏈進行中 — specify ✅(16/16、0 NEEDS CLARIFICATION) / clarify ✅(11 類全 Clear/N-A、0 提問) / plan ✅(Constitution 7+7=14 ✅;research R1-R5 + 3 entity data-model + C-V contract + quickstart;新增 workspace member `entity` crate,無新外部 dep)。**Phase 2 P1「soft-delete 基礎設施」(DESIGN §6.5 / §10 #2)**:立機制 + 套既有 `sys_user` proof(6 entity 延後)。三重防護:`SoftDeletable` trait(`find_active` 過濾 deleted_at IS NULL)+ facade(`server/src/model/facade/`、唯一管道、不 re-export Entity、`soft_delete` 設標記)+ build-failing lint test(facade 外 `use entity::` → 測試 fail)。schema:`sys_user` 加 `deleted_at TIMESTAMPTZ` + `user_name` 改 partial unique index `WHERE deleted_at IS NULL`。新增共用 `entity` crate(首個 sea-orm model)。6 拍板 D1-D6 凍結
+**下一步**: `/speckit-tasks` → `/speckit-analyze` → `superpowers:executing-plans`(★ 本 feature 動 rust-api worktree → 兩段式 commit;走 RUSTAPI-SOURCE-ISOLATION 軌道)。feature branch `009-soft-delete-infra`(pre-hook 已建);spec docs 落此 branch,實作改 rust-api worktree(新 entity crate + migration + server/src/model + tests + Cargo.toml)
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
