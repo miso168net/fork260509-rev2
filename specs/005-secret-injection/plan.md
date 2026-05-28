@@ -154,3 +154,11 @@ Phase 1 設計完成後重跑 Compliance Check 7 項。
 ## Complexity Tracking
 
 > Constitution Check 7 項全 PASS、無 violations、本段不需填。
+
+---
+
+## Implementation Deviations(executing-plans 階段回填,Constitution v1.0.0 §V)
+
+| 日期 | 偏離 | 原訂 | 改為 | 原因 / 觸發 |
+|---|---|---|---|---|
+| 2026-05-28 | postgres_password / redis_password 編碼 | `openssl rand -base64 24` | `openssl rand -hex 24` | code review 發現 base64 字母表含 `+` `/` `=`,這兩值嵌入 `database_url` / `redis_url` 後,Phase 2 sqlx 解析 URL 會壞(`/`→路徑、`+`→空白)。hex 全 URL-safe、熵同 24 bytes、48 字元仍過 `validate_secret` len ≥ 32。jwt/refresh 不進 URL、維持 base64 48。user 拍板。詳見 [research R2](./research.md)、已同步 secret-catalog / generate-secrets-contract / data-model / tasks。 |

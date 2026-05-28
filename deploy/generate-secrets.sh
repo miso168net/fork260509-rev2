@@ -9,7 +9,8 @@
 #
 # 設計:
 #   - 全跑 alpine/openssl docker container,host 只需 docker
-#   - leaf: openssl rand -base64 48(64 chars)→ 通過 rust-api validate_secret(len ≥ 32)
+#   - jwt/refresh leaf: openssl rand -base64 48(64 chars)→ 通過 rust-api validate_secret(len ≥ 32)
+#   - postgres/redis leaf: openssl rand -hex 24(48 hex chars,URL-safe;熵同 base64 24)→ 嵌入 URL 不被 + / = 破壞
 #   - URL: 從 leaf cat 組合(R6 同次同源 dual-write,不重呼 gen_rand)
 #   - 不含 obs/optional secret(acme_email/grafana/exporter)
 #
@@ -29,9 +30,9 @@ mkdir -p "$SECRETS_DIR"
 OPENSSL_IMG="alpine/openssl:latest"
 docker pull -q "$OPENSSL_IMG" >/dev/null
 
-# gen_rand <bytes>:回傳 base64 編碼隨機值(command subst 已去尾換行)
+# gen_rand <openssl-rand-args...>:回傳隨機值(如 -base64 48 或 -hex 24;command subst 已去尾換行)
 gen_rand() {
-    docker run --rm "$OPENSSL_IMG" rand -base64 "$1"
+    docker run --rm "$OPENSSL_IMG" rand "$@"
 }
 
 # 追蹤各 secret 狀態(GENERATED / SKIPPED)
@@ -43,12 +44,11 @@ declare -A STATUS
 echo "=== Step 1: 生成 leaf secret ==="
 
 gen_leaf() {
-    local name="$1"
-    local bytes="$2"
+    local name="$1"; shift
     local file="$SECRETS_DIR/${name}.txt"
     if [ ! -f "$file" ] || [ "$FORCE" -eq 1 ]; then
         local val
-        val="$(gen_rand "$bytes")"
+        val="$(gen_rand "$@")"
         printf '%s' "$val" > "$file"
         STATUS["$name"]="GENERATED"
     else
@@ -56,10 +56,11 @@ gen_leaf() {
     fi
 }
 
-gen_leaf "jwt_secret"            48
-gen_leaf "refresh_token_secret"  48
-gen_leaf "postgres_password"     24
-gen_leaf "redis_password"        24
+# jwt/refresh 用 base64(不進 URL);postgres/redis 用 hex(URL-safe,避免 + / = 破壞連線 URL)
+gen_leaf "jwt_secret"            -base64 48
+gen_leaf "refresh_token_secret"  -base64 48
+gen_leaf "postgres_password"     -hex 24
+gen_leaf "redis_password"        -hex 24
 
 # ============================================================
 # Step 2: 3 個 URL secret(從 leaf cat,R6 同次同源 dual-write)

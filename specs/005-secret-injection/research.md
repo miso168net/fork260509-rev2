@@ -25,9 +25,13 @@
 
 **Decision**:jwt_secret / refresh_token_secret = `openssl rand -base64 48`。
 
-**Rationale**:`rand -base64 48`(48 bytes)→ 64 字元 base64 字串,遠超 length ≥ 32 門檻;隨機值不可能 case-insensitive 等於 6 個黑名單 placeholder;非空。三項驗證全過。postgres/redis password 用 `rand -base64 24`(32 字元,足夠強且不過長)。
+**Decision(postgres/redis,implementation 偏離)**:postgres_password / redis_password 改用 `openssl rand -hex 24`(原訂 `rand -base64 24`)。
 
-**Alternatives considered**:`rand -hex 32` — 可行但 base64 較短;`rand -base64 32` — 也過,但 48 更強。沿用 003 慣例風格(003 cert 用 RSA 2048,此處 secret 用 base64 高 entropy)。
+**Rationale**:`rand -base64 48`(48 bytes)→ 64 字元 base64 字串,遠超 length ≥ 32 門檻;隨機值不可能 case-insensitive 等於 6 個黑名單 placeholder;非空。三項驗證全過。
+
+> **[implementation 偏離 · 2026-05-28 · executing-plans 階段 code review 發現,user 拍板]**:postgres/redis password 從 `rand -base64 24` 改為 `rand -hex 24`(48 hex 字元)。原因:base64 字母表含 `+` `/` `=`,這兩個 password 會被嵌入 `database_url` / `redis_url`,Phase 2 用 sqlx 解析 URL 時 `/` 會被當路徑分隔、`+` 被當空白,致連線認證失敗。hex(`0-9a-f`)全 URL-safe、熵與 base64 24 相同(皆 24 bytes 隨機源)、長度 48 仍過 `validate_secret` len ≥ 32。jwt/refresh 不進 URL、維持 `rand -base64 48` 不變。
+
+**Alternatives considered**:URL-safe base64(`tr '+/' '-_' | tr -d '='`)— 可行但多一層轉換、字元集較雜;Phase 2 才 percent-encode — 把已知隱患推遲、provision-ahead 失去意義。hex 最簡且 host-independent(docker openssl 內建)。
 
 ---
 

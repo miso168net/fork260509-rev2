@@ -10,8 +10,8 @@
 |---|---|---|---|---|
 | `jwt_secret` | 葉子 | `openssl rand -base64 48` | rust-api `APP_JWT_JWT_SECRET_FILE`(001 已接) | 既有範本、本 feature 由腳本生 `.txt` |
 | `refresh_token_secret` | 葉子 | `openssl rand -base64 48` | rust-api `APP_JWT_REFRESH_TOKEN_SECRET_FILE`(001 已接) | 既有範本 |
-| `postgres_password` | 葉子 | `openssl rand -base64 24` | postgres `POSTGRES_PASSWORD_FILE`(004 已接) | 既有範本(retrofit 格式) |
-| `redis_password` | 葉子 | `openssl rand -base64 24` | redis-stack `command --requirepass "$(cat ...)"`(004 已接) | 既有範本(retrofit 格式) |
+| `postgres_password` | 葉子 | `openssl rand -hex 24`(URL-safe,見 research R2 偏離) | postgres `POSTGRES_PASSWORD_FILE`(004 已接) | 既有範本(retrofit 格式) |
+| `redis_password` | 葉子 | `openssl rand -hex 24`(URL-safe,見 research R2 偏離) | redis-stack `command --requirepass "$(cat ...)"`(004 已接) | 既有範本(retrofit 格式) |
 | `database_url` | 組合 | `postgres://soybean:<postgres_password>@postgres:5432/soybean_admin_rust` | migration + rust-api(Phase 2 接) | **本 feature 新增範本** |
 | `redis_url` | 組合 | `redis://:<redis_password>@redis-stack:6379` | rust-api(Phase 2 接) | **本 feature 新增範本** |
 | `cleanup_database_url` | 組合 | 暫 = `database_url` 同值(最小權限 role Phase 5) | cleanup-job(Phase 5 接) | **本 feature 新增範本** |

@@ -10,13 +10,15 @@
 |---|---|---|
 | `jwt_secret` | `openssl rand -base64 48`(64 字元) | `APP_JWT_JWT_SECRET_FILE`(001 已接) |
 | `refresh_token_secret` | `openssl rand -base64 48` | `APP_JWT_REFRESH_TOKEN_SECRET_FILE`(001 已接) |
-| `postgres_password` | `openssl rand -base64 24`(32 字元) | postgres `POSTGRES_PASSWORD_FILE`(004 已接) |
-| `redis_password` | `openssl rand -base64 24` | redis-stack `command --requirepass`(004 已接) |
+| `postgres_password` | `openssl rand -hex 24`(48 hex 字元,URL-safe) | postgres `POSTGRES_PASSWORD_FILE`(004 已接) |
+| `redis_password` | `openssl rand -hex 24`(48 hex 字元,URL-safe) | redis-stack `command --requirepass`(004 已接) |
 | `database_url` | `postgres://soybean:<postgres_password>@postgres:5432/soybean_admin_rust` | `APP_DATABASE_URL_FILE`(Phase 2) |
 | `redis_url` | `redis://:<redis_password>@redis-stack:6379` | `APP_REDIS_URL_FILE`(Phase 2) |
 | `cleanup_database_url` | = `database_url` 同值(最小權限 role Phase 5) | cleanup `_FILE`(Phase 5) |
 
 > jwt/refresh 須過 001 `validate_secret`:非空 + 非黑名單(`change-me`/`changeme`/`secret`/`xxx`/`<TO_BE_SET>`/`TODO`,case-insensitive 相等)+ len ≥ 32。`rand -base64 48`=64 字元、隨機 → 全過。
+>
+> **postgres/redis password 用 `rand -hex 24`(非 base64)**:這兩值會嵌入 `database_url` / `redis_url`,base64 的 `+` `/` `=` 非 URL-safe(Phase 2 sqlx 解析會壞);hex 全 URL-safe、熵同 24 bytes、48 字元仍過 len ≥ 32。詳見 [research R2 implementation 偏離](../research.md)。
 
 ---
 

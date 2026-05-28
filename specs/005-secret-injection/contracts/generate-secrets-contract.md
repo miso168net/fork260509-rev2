@@ -18,12 +18,12 @@ bash deploy/generate-secrets.sh --force   # 全部重生(覆寫既有 .txt)
 ```text
 set -euo pipefail;FORCE 偵測(--force);SCRIPT_DIR/secrets 定位
 OPENSSL_IMG=alpine/openssl;docker pull -q
-gen_leaf(name, bytes):
-    若 <name>.txt 缺 OR FORCE → docker run --rm alpine/openssl rand -base64 <bytes> > <name>.txt
-1. gen_leaf jwt_secret 48
-   gen_leaf refresh_token_secret 48
-   gen_leaf postgres_password 24
-   gen_leaf redis_password 24
+gen_leaf(name, rand-args...):
+    若 <name>.txt 缺 OR FORCE → docker run --rm alpine/openssl rand <rand-args...> > <name>.txt
+1. gen_leaf jwt_secret           -base64 48
+   gen_leaf refresh_token_secret -base64 48
+   gen_leaf postgres_password    -hex 24    # hex(非 base64):嵌 URL 須 URL-safe,見 research R2 偏離
+   gen_leaf redis_password       -hex 24
 2. 組 URL(缺 OR FORCE 時;讀既有/剛生的葉子):
    database_url.txt         = postgres://soybean:$(cat postgres_password.txt)@postgres:5432/soybean_admin_rust
    redis_url.txt            = redis://:$(cat redis_password.txt)@redis-stack:6379
