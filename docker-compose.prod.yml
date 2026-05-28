@@ -49,7 +49,6 @@ services:
     restart: unless-stopped
 
   acme:
-    profiles: [prod]
     volumes:
       - front_nginx_certs:/acme.sh
     restart: unless-stopped

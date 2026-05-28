@@ -66,11 +66,11 @@ services:
       APP_JWT_REFRESH_TOKEN_SECRET: "${APP_JWT_REFRESH_TOKEN_SECRET:-dev_refresh_secret_for_local_only_x32xx}"
       RUST_LOG: "info,tower_http=debug"
     healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://localhost:21081/health"]
+      test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/21081"]
       interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 90s
+      retries: 12
+      start_period: 120s
     init: true
 
   postgres:

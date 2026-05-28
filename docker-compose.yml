@@ -23,6 +23,7 @@ services:
       rust-api:
         condition: service_healthy
     healthcheck:
+      # dev override 改 :21080(dev.conf 無 :80);prod 直接用(prod.conf 在 :80 先回 200 再 redirect)
       test: ["CMD-SHELL", "wget -qO- http://localhost/health | grep -q ok"]
       interval: 10s
       timeout: 5s
