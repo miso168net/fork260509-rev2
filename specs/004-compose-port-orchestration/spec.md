@@ -12,6 +12,15 @@
 
 ---
 
+## Clarifications
+
+### Session 2026-05-28
+
+- Q: master compose dev profile 的 base-web / rust-api 用 hot-reload dev container 還是 built prod image? → A: **hot-reload dev container** — base-web 用 `node:20-alpine` + vite dev server、rust-api 用 dev build target + cargo-watch,bind mount source(對齊 001/002 standalone dev profile;dev 改 code 即時生效)。built `:latest` image 僅 prod profile 用。
+- Q: postgres / redis data 持久化策略? → A: **named volume 持久** — postgres data → `rev2_postgres_data`、redis → `rev2_redis_data`;`docker compose down` 保留資料、`down -v` 才清(Phase 2 migration / seed 不每次重跑,符合 db service 慣例)。
+
+---
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 — dev profile 一鍵拉起完整 stack (Priority: P1)
@@ -97,13 +106,14 @@ rev2 開發者在 workspace root 跑 `docker compose -f docker-compose.yml -f do
 **port 配置(對齊 CLAUDE.md §8.2)**
 
 - **FR-008**:dev profile MUST 綁 host port `127.0.0.1` loopback:front-nginx `21080`(HTTP)+ `21443`(HTTPS)、base-web `21079`、rust-api `21081`、postgres `25432`、redis-stack `26379`
+- **FR-008a**:dev profile 的 `base-web` / `rust-api` MUST 用 **hot-reload dev container**(對齊 001/002 standalone dev profile):base-web 走 `node:20-alpine` + vite dev server(`pnpm dev --host`)+ source bind mount;rust-api 走 dev build target + cargo-watch + source bind mount。built `:latest` image 僅 prod profile 用(prod profile base-web nginx serve / rust-api built binary)
 - **FR-009**:prod profile front-nginx MUST 對 `0.0.0.0:80,443`;port 80 server block MUST `return 301 https://$host$request_uri`(強制 redirect);base-web / rust-api prod **不**對 host expose(僅 internal,經 nginx proxy_pass)
 - **FR-010**:dev profile MUST **不**強制 80→443 redirect(雙開 HTTP `21080` + HTTPS `21443`,debug 友善)
 
 **底層 service:postgres + redis**
 
-- **FR-011**:`postgres` service MUST 用 image `postgres:17-alpine`,password 走官方 `POSTGRES_PASSWORD_FILE` env 指向 secret mount(對齊 001 `_FILE` pattern)
-- **FR-012**:`redis-stack` service MUST 用 image `redis/redis-stack-server:latest`,password 經 command wrap `--requirepass "$(cat <secret>)"` 注入(redis-stack-server 無原生 `_FILE`)
+- **FR-011**:`postgres` service MUST 用 image `postgres:17-alpine`,password 走官方 `POSTGRES_PASSWORD_FILE` env 指向 secret mount(對齊 001 `_FILE` pattern);data MUST 掛 named volume `rev2_postgres_data` 持久化(`docker compose down` 保留、`down -v` 才清)
+- **FR-012**:`redis-stack` service MUST 用 image `redis/redis-stack-server:latest`,password 經 command wrap `--requirepass "$(cat <secret>)"` 注入(redis-stack-server 無原生 `_FILE`);data MUST 掛 named volume `rev2_redis_data` 持久化
 - **FR-013**:`rust-api` service MUST `depends_on (service_healthy) postgres + redis-stack`(預留:現 `/health` stateless,Phase 2 連 db 時 zero 改動);本 feature **不** wire rust-api → db 實際連線
 
 **healthcheck**
@@ -135,11 +145,12 @@ rev2 開發者在 workspace root 跑 `docker compose -f docker-compose.yml -f do
 ### Key Entities
 
 - **`docker-compose.yml`**(base):5 service 共通定義;image / build / depends_on / healthcheck / volume / network
-- **`docker-compose.dev.yml`**(dev override):host port loopback binding + hot-reload mount + dev-certs bind mount + dev.conf mount
+- **`docker-compose.dev.yml`**(dev override):host port loopback binding + base-web/rust-api hot-reload dev container(node:20 vite / cargo-watch,source bind mount)+ dev-certs bind mount + dev.conf mount
 - **`docker-compose.prod.yml`**(prod override):0.0.0.0 binding + 80→443 redirect + named volume cert + acme service(profile gate)+ prod.conf mount
 - **`deploy/nginx/`**:nginx.conf(main)+ conf.d/{dev,prod}.conf + conf.d/_locations.inc(路由分流規則)
 - **`deploy/Dockerfile.acme.txt` + `deploy/acme-entrypoint.sh`**:acme.sh skeleton(profile=prod,sanity only)
 - **`front_nginx_certs`**(named volume):prod cert 共享給 front-nginx + acme
+- **`rev2_postgres_data` / `rev2_redis_data`**(named volume):postgres / redis data 持久化(`down` 保留、`down -v` 才清)
 - **`deploy/secrets/{postgres,redis}_password.txt`**(+ `.example`):db/redis password,gitignored secret + git-tracked 範本
 - **standalone compose**(`docker-compose.{base-web,rust-api}.yml`):保留 + DEPRECATED header,single-service debug 後備
 
