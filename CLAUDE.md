@@ -350,10 +350,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/006-docker-volume-naming/spec.md`](specs/006-docker-volume-naming/spec.md)
-**Active Plan**: [`specs/006-docker-volume-naming/plan.md`](specs/006-docker-volume-naming/plan.md)
-**Phase**: ✅ 完成並 merge — 階段 1 SDD 設計鏈(specify/clarify/plan/tasks ✅、Constitution 7+7=14 ✅;`/speckit-analyze` 未跑 — user 直接進實作、跨檔一致性由 final holistic review 覆蓋)+ 階段 2 TDD 實作(executing-plans → subagent-driven-development;US1/US2/US3 各 spec+quality 雙審 + final holistic review)+ acceptance(SC-001~005 全 PASS;dev stack 5 service healthy、6 卷〔dev〕皆 `rev2-admin_` 前綴〔`front_nginx_certs` prod-only、已用 --profile prod config 驗名〕、`psql -U soybean`/redis 連線通)；2 處 user 拍板偏離(接受 dev 6 卷 / `prod.yml` L4 註解修);merge `a12fd18` 回 `rev2-admin-root`(--no-ff,feature branch 保留)
-**下一步**: Phase 1 P0 部署基建已收尾(006 為其後 named volume 命名統一精修);啟動 Phase 2 P1 基礎設施(rust-api 接 `database_url`/`redis_url`:config.rs 加 `[database]`/`[redis]` section + 掛 compose secret + `APP_*_FILE` env + db schema migration)
+**Active Spec**: [`specs/007-db-redis-connection/spec.md`](specs/007-db-redis-connection/spec.md)
+**Active Plan**: [`specs/007-db-redis-connection/plan.md`](specs/007-db-redis-connection/plan.md)
+**Phase**: 階段 1 SDD 設計鏈 ✅ 全完成 — specify ✅(16/16) / clarify ✅(0 提問) / plan ✅(Constitution 7+7=14 ✅、research R1-R4 + 5 entity data-model + C-V contract + quickstart) / tasks ✅(18 task / 6 phase) / analyze ✅(coverage 100%、0 CRITICAL/HIGH、3 LOW remediation 已套)；**Phase 2 P1 基礎設施起點**:rust-api Postgres(sea-orm 1.1.20)+ Redis(1.2)連線層 + AppState + fail-fast + proof migration(sys_user[id/user_name/password] + seed `Super`/`Admin`/`User`、argon2 0.5.3 自生 hash);research 修正:§8.1 帳號名 `Soybean/...` 為 rev1 stale、rev2 權威用 `Super/Admin/User`(DESIGN §11.1 + mock)
+**下一步**: **階段 2 TDD 實作** → `superpowers:executing-plans`(讀 [tasks.md](specs/007-db-redis-connection/tasks.md) → subagent-driven-development、各 unit spec+quality 雙審)。★ 本 feature 動 **rust-api worktree** → §4.1 兩段式 commit(worktree commit+push fork → 外層 SHA pin);走 RUSTAPI-SOURCE-ISOLATION 軌道。**注意 §3 紀律(push/merge 不得早於 finishing)與兩段式 fork push 的張力 — 起 executing-plans 時先與 user 確認 commit/push 時機**。feature branch `007-db-redis-connection` 本地、未 push(收尾才 push origin)
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工

@@ -56,10 +56,14 @@ services:
     environment:
       APP_JWT_JWT_SECRET_FILE: /run/secrets/jwt_secret
       APP_JWT_REFRESH_TOKEN_SECRET_FILE: /run/secrets/refresh_token_secret
+      APP_DATABASE_URL_FILE: /run/secrets/database_url
+      APP_REDIS_URL_FILE: /run/secrets/redis_url
       RUST_LOG: "info"
     secrets:
       - jwt_secret
       - refresh_token_secret
+      - database_url
+      - redis_url
     networks:
       - rev2_net
 
@@ -132,3 +136,7 @@ secrets:
     file: ./deploy/secrets/jwt_secret.txt
   refresh_token_secret:
     file: ./deploy/secrets/refresh_token_secret.txt
+  database_url:
+    file: ./deploy/secrets/database_url.txt
+  redis_url:
+    file: ./deploy/secrets/redis_url.txt
