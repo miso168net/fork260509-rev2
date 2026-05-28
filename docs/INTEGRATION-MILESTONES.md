@@ -101,3 +101,12 @@
 | `cd86dd7` | 2026-05-28 | chore: 001~005 spec-compliance audit(5 feature 對 spec.md 全 PASS、偏離皆有書面紀錄)+ 3 minor 修正(002 standalone compose port 綁 127.0.0.1 / 003 .gitignore 冗餘行 / 005 README chmod drvfs 說明) |
 | `f506c66` | 2026-05-28 | docs: CLAUDE.md ⏳ 標記清理 + CHECKLIST §2.3 workspace-level 歸檔(Phase 1 完成後狀態同步) |
 | `cfa9707` | 2026-05-28 | docs(superpowers): 006-docker-volume-naming Phase 0 brainstorm spec-design(volume 命名統一 rev2_→rev2-admin_ auto-prefix、bw→base_web、redis→redis_stack) |
+| `c814cec` | 2026-05-28 | docs(spec): 006-docker-volume-naming spec.md + quality checklist(階段 1 /speckit-specify,16/16 PASS) |
+| `62ac7ee` | 2026-05-28 | docs(clarify): 006-docker-volume-naming 補 §Clarifications(階段 1 /speckit-clarify,0 提問全 Clear) |
+| `0872789` | 2026-05-28 | docs(plan): 006-docker-volume-naming Phase 0/1 design artifacts(階段 1 /speckit-plan,Constitution 7+7=14 ✅、6 research + 3 entity + 2 contract + quickstart) |
+| `cd65d0f` | 2026-05-28 | docs(tasks): 006-docker-volume-naming tasks.md(階段 1 /speckit-tasks,17 task / 6 phase、無單元測試) |
+| `6981378` | 2026-05-28 | docs(spec): 006 F1 remediation — SC-005/FR-010 cross-ref 範圍對齊 tasks(002/004,005 incidental) |
+| `1033d90` | 2026-05-28 | feat(deploy): 統一 named volume 命名為 rev2-admin_ auto-prefix(US1,4 compose 移除顯式 name: + 3 key/mount 更名 + 2 standalone 加 name: rev2-admin;+ afff69e 偏離澄清 + prod.yml L4 註解) |
+| `a2fefe9` | 2026-05-28 | docs(deploy): CLAUDE.md §8.2 文件化 named volume 命名規則 + §8.2.2 正典 7 卷(US2;+ c8db9ab 修正設 name: 檔列舉) |
+| `f0d2fd2` | 2026-05-28 | docs: US3 既有文件對齊 — DESIGN/000 改新卷名 + 002/004 superseded cross-ref(+ a5ee96e 連結深度修 + 7a7f659 §3.1 schema 移除 name:) |
+| `a12fd18` | 2026-05-28 | Merge feature 006-docker-volume-naming 回 rev2-admin-root(--no-ff,feature branch 保留)— named volume 命名統一精修;US1/US2/US3 各 spec+quality 雙審 + final holistic review、SC-001~005 全 PASS、2 處 user 拍板偏離(dev 6 卷 / prod.yml L4) |

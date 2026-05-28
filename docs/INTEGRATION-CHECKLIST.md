@@ -8,11 +8,11 @@
 
 ## 1. Current Focus
 
-**階段**:rev2 spec-kit 第五個 feature(005-secret-injection)已合回 `rev2-admin-root`;**Phase 1 P0 部署基建全數完成(#1~#5)**;準備啟動 Phase 2 P1 基礎設施(DB/Redis 連線層 wire)。
+**階段**:**Phase 1 P0 部署基建全數完成(#1~#5)**;其後第六個 feature(006-docker-volume-naming,named volume 命名統一)已合回 `rev2-admin-root`;準備啟動 Phase 2 P1 基礎設施(DB/Redis 連線層 wire)。
 
 **最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
+- **2026-05-28 006-docker-volume-naming 完整實作 + 驗收 + merge**(outer merge `a12fd18`)— executing-plans → subagent-driven-development(US1/US2/US3 各 spec+quality 雙審 + final holistic review)/ 7 named volume 統一 `rev2-admin_<service>_<purpose>`(auto-prefix、移除顯式 name:、3 key 更名 redis_data→redis_stack_data・bw_*→base_web_*)+ CLAUDE.md §8.2.2 規則文件化 + DESIGN/000 同步 + 002/004 superseded cross-ref / dev stack 5 service healthy、6 卷〔dev〕皆 `rev2-admin_` 前綴(front_nginx_certs prod-only、名稱已驗)、psql/redis 連線通 / 2 處 user 拍板偏離(接受 dev 6 卷 / prod.yml L4 註解修)/ Constitution 7+7=14 ✅(`/speckit-analyze` 未跑、final review 覆蓋)/ 純 workspace-level 單段(無 SHA pin)/ feature branch 保留;未 push(待 user 下令)
 - **2026-05-28 005-secret-injection 完整實作 + 驗收 + merge**(outer merge `068b2a8`)— executing-plans → subagent-driven-development(US1/US2/US3 各 spec+quality 雙審 + final holistic review)/ `deploy/generate-secrets.sh` 一鍵生 7 必 secret(4 leaf + 3 URL,腳本同次同源保證 dual-write、idempotent + `--force`、docker 化 openssl、chmod 600 不印值)+ 3 URL 範本 + retrofit postgres/redis 範本 + `deploy/secrets/README.md` + docker-compose postgres 命名對齊 `soybean`/`soybean_admin_rust` / dev stack 5 service healthy、`psql -U soybean` 連線通 / 2 處 user 拍板偏離(postgres/redis 密碼 base64→hex 避免破 URL、T013 只清 postgres 卷不 down -v 避免冷重建假性失敗)已全面同步 spec docs / Constitution 7+7=14 ✅ / 純 workspace-level 單段(無 SHA pin)/ feature branch 保留;**已 push `origin/rev2-admin-root` + `origin/005-secret-injection`(`74819d0`)**
-- **2026-05-28 004-compose-port-orchestration 完整實作 + 驗收 + merge**(outer merge `b4294c7` / feature commit `21508a4`)— executing-plans → subagent-driven-development(2 unit + spec/quality 雙審)/ 3 檔分層 master compose(base + dev/prod override)+ front-nginx 反代(`/`→base-web、`/api/*` strip→rust-api)+ postgres17 + redis-stack + acme skeleton(profile=prod)+ TLS 三來源 + 2 standalone DEPRECATED / 3 runtime fix(dev front-nginx :21080、dev rust-api bash /dev/tcp readiness 因 image 無 http client、全 healthcheck localhost→127.0.0.1 因 alpine ::1 IPv6)/ dev+prod+acme 三模式 `up --wait` 全 exit 0、SC-001~008 全 PASS / Constitution 7+7=14 ✅ / 純 workspace-level 單段(無 SHA pin)/ feature branch 保留;未 push(待 user 下令)
 
 **下一步**:
 1. **啟動 Phase 2 P1 基礎設施** — rust-api 接 `database_url`/`redis_url`(config.rs 加 `[database]`/`[redis]` section + 掛 compose `secrets:` + `APP_DATABASE_URL_FILE`/`APP_REDIS_URL_FILE` env)+ db schema migration + Casbin adapter;005 已 provision-ahead 3 URL secret、留連線 wire
@@ -55,6 +55,13 @@ baseline 規格回填於 [DESIGN §4.6](INTEGRATION-DESIGN.md);6 項實作驗收
 - [ ] `redis/redis-stack-server:latest` 未 pin tag(spec FR-012 明訂 latest;reproducibility 風險,日後可 pin 具體 semver)
 - [ ] base-web SPA 經 nginx 打 rust-api 端到端 CDP browser smoke(本 feature curl 直送驗 nginx 路由 ≠ browser 內 wire)— 已涵蓋於 Phase 4 wire feature + [§5.5](#55-base-web-環境配置)
 - [ ] prod base-web 真打 `/api` 前須重 build:現存 `rev2-admin-base-web:latest` 是 002 default build-arg(ApiFox mock),prod profile 雖宣告 `VITE_SERVICE_BASE_URL=/api` 但 `up` 不自動 rebuild 既有 image → 需 `docker compose -f docker-compose.yml -f docker-compose.prod.yml build base-web`(或 `up --build`)(與上一條 CDP smoke 連動)
+
+### 2.9 feature 006-docker-volume-naming follow-up
+
+> 皆為 code review 評定的 Minor、非阻斷(已 merge);純文件精修。
+- [ ] `docs/superpowers/000` §2.7 debug-era YAML 片段仍顯式 `name:`(史料、非操作範本)— 可加一行括註說明 006 已移除
+- [ ] `docs/superpowers/000` §2.4 標題用實際卷名、其下 YAML 用 compose key,兩形態無橋接說明(comprehension gap)
+- [ ] `docker-compose.base-web.yml` L16 `docker volume rm` 提示只列 `node_modules`、漏 `pnpm_store`(DEPRECATED 檔、pre-existing)
 
 ---
 

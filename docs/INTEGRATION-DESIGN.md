@@ -892,6 +892,8 @@ CREATE TABLE sys_operation_log (
 
 ### §8.2 容器編排(dev / prod 雙 compose)
 
+> **named volume 命名(006-docker-volume-naming,2026-05-28)**:7 卷統一 `rev2-admin_<service>_<purpose>`(docker auto-prefix、移除顯式 `name:`;3 key 更名 `redis_data`→`redis_stack_data`・`bw_*`→`base_web_*`)。正典 7 卷清單與規則見 CLAUDE.md §8.2.2。
+
 **檔案結構**:
 ```
 docker-compose.yml                          base 設定(不含 port、不含 profile-gate service)

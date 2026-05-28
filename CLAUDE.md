@@ -347,8 +347,8 @@ git commit -m "bump base-web: rebase on upstream <短 SHA>"
 <!-- SPECKIT START -->
 **Active Spec**: [`specs/006-docker-volume-naming/spec.md`](specs/006-docker-volume-naming/spec.md)
 **Active Plan**: [`specs/006-docker-volume-naming/plan.md`](specs/006-docker-volume-naming/plan.md)
-**Phase**: 階段 1 SDD 設計鏈進行中 — `/speckit-specify` ✅(spec.md + 16/16 checklist) / `/speckit-clarify` ✅(0 提問、全 taxonomy Clear) / `/speckit-plan` ✅(Constitution 7+7=14 ✅ Pass、6 research + 3 entity + 2 contract + quickstart) / `/speckit-tasks` ✅(17 task / 6 phase、無單元測試)；Phase 0 brainstorm 已凍結 5 決策(key+name 同改 / `rev2-admin_` auto-prefix 移除顯式 name: / 凍結 spec 加 superseded 註記 / 000 全面改寫 / 全 7 卷)
-**下一步**: `/speckit-analyze`(spec/plan/tasks 跨檔 consistency)→ 後 `superpowers:executing-plans` 實作
+**Phase**: ✅ 完成並 merge — 階段 1 SDD 設計鏈(specify/clarify/plan/tasks ✅、Constitution 7+7=14 ✅;`/speckit-analyze` 未跑 — user 直接進實作、跨檔一致性由 final holistic review 覆蓋)+ 階段 2 TDD 實作(executing-plans → subagent-driven-development;US1/US2/US3 各 spec+quality 雙審 + final holistic review)+ acceptance(SC-001~005 全 PASS;dev stack 5 service healthy、6 卷〔dev〕皆 `rev2-admin_` 前綴〔`front_nginx_certs` prod-only、已用 --profile prod config 驗名〕、`psql -U soybean`/redis 連線通)；2 處 user 拍板偏離(接受 dev 6 卷 / `prod.yml` L4 註解修);merge `a12fd18` 回 `rev2-admin-root`(--no-ff,feature branch 保留)
+**下一步**: Phase 1 P0 部署基建已收尾(006 為其後 named volume 命名統一精修);啟動 Phase 2 P1 基礎設施(rust-api 接 `database_url`/`redis_url`:config.rs 加 `[database]`/`[redis]` section + 掛 compose secret + `APP_*_FILE` env + db schema migration)
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
