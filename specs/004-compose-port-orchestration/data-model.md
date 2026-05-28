@@ -24,8 +24,10 @@
 | service | base image/build | dev override | prod override | profile |
 |---|---|---|---|---|
 | `front-nginx` | `nginx:1.31.0-alpine` | `127.0.0.1:21080,21443` + dev-certs `:ro` + dev.conf | `0.0.0.0:80,443` + named volume cert + prod.conf | always |
-| `base-web` | build prod(`:latest`,002 Dockerfile runtime)| image `node:20.19-alpine` + source bind mount + `pnpm dev --host` + `127.0.0.1:21079` | built `:latest`(internal only)| always |
-| `rust-api` | build prod(`:latest`,001 runtime target)| build dev target(`:dev`)+ source bind mount + cargo-watch + `127.0.0.1:21081` | built `:latest`(internal only)| always |
+| `base-web` | **僅共通**(healthcheck/depends/network;image/build/command 留 override)| image `node:20.19-alpine` + source bind mount + `pnpm dev --host` + `127.0.0.1:21079` | build nginx + image `:latest` + `build.args VITE_SERVICE_BASE_URL=/api`(internal only)| always |
+| `rust-api` | build target `runtime` + image `:latest`(共通)| 覆寫 `build.target=dev`(`:dev`)+ source bind mount + cargo-watch + `127.0.0.1:21081` | built `:latest`(internal only)| always |
+
+> **base-web vs rust-api base 層處理差異**(H1):rust-api dev/prod 同 Dockerfile 不同 target,override 覆寫 `build.target` 即可、故 base 放 build;base-web dev = `node:20` official(不 build)、prod = nginx build,異質無法靠 target 覆寫,故 **base 不放 base-web image/build/command**(否則 base build + dev override image=node:20 → docker 誤 build 並 tag 成 node:20)。
 | `postgres` | `postgres:17-alpine` | `127.0.0.1:25432` | `127.0.0.1:25432` | always |
 | `redis-stack` | `redis/redis-stack-server:latest` | `127.0.0.1:26379` | `127.0.0.1:26379` | always |
 | `acme` | build `deploy/Dockerfile.acme.txt`(FROM `neilpang/acme.sh:3.1.3`)| — | named volume cert mount + idle | `prod` only |

@@ -93,7 +93,7 @@ rev2 開發者在 workspace root 跑 `docker compose -f docker-compose.yml -f do
 **master compose 結構**
 
 - **FR-001**:系統 MUST 提供三檔分層的 master compose — `docker-compose.yml`(base,5 service 共通定義)+ `docker-compose.dev.yml`(dev override)+ `docker-compose.prod.yml`(prod override);啟動永遠顯式 `-f docker-compose.yml -f docker-compose.<env>.yml`(不依賴 `docker-compose.override.yml` auto-load)
-- **FR-002**:`docker-compose.yml` base MUST 定義 5 個 service:`front-nginx`、`base-web`、`rust-api`、`postgres`、`redis-stack`;base 層含 image / build / depends_on / healthcheck / named volume / network,**不**含 host port binding 與 dev/prod 專屬 mount(那些落 override 檔)
+- **FR-002**:`docker-compose.yml` base MUST 定義 5 個 service:`front-nginx`、`base-web`、`rust-api`、`postgres`、`redis-stack`;base 層含 depends_on / healthcheck / named volume / network 共通定義。**image/build 異質處理**:front-nginx / postgres / redis-stack 固定 image 放 base;rust-api base 放 build(target `runtime`)+ image,dev override 覆寫 `build.target=dev`;**base-web 因 dev(`node:20` 不 build)/ prod(build nginx)異質,base 層不放 image/build/command,由 dev/prod override 各自定義**(避免 base build + dev override image 衝突 → docker 誤 build 並 tag 成 node:20)。base 層**不**含 host port binding 與 dev/prod 專屬 mount(那些落 override 檔)
 - **FR-003**:`acme` service MUST 用 `profiles: [prod]` gate,只在 `--profile prod` 啟動時拉起;dev / prod baseline 模式不啟動 acme
 
 **front-nginx 反向代理**
