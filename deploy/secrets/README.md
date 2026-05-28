@@ -45,7 +45,7 @@ bash deploy/generate-secrets.sh --force
 | `redis_password` | Redis 存取密碼 | redis-stack `--requirepass`（透過 command 注入） | leaf |
 | `database_url` | rust-api 主連線字串 | Phase 2 wired（預期 `APP_DATABASE_URL_FILE`） | composite |
 | `redis_url` | rust-api Redis 連線字串 | Phase 2 wired（預期 `APP_REDIS_URL_FILE`） | composite |
-| `cleanup_database_url` | Cleanup job 專用連線字串 | Phase 2 wired；最小權限 role 留 Phase 5 | composite |
+| `cleanup_database_url` | Cleanup job 專用連線字串 | Phase 5 wired（cleanup-job）；最小權限 role 同留 Phase 5 | composite |
 
 ---
 
@@ -60,6 +60,8 @@ bash deploy/generate-secrets.sh --force
 | `database_url` | `echo "postgres://soybean:$(cat deploy/secrets/postgres_password.txt)@postgres:5432/soybean_admin_rust" > deploy/secrets/database_url.txt` | 依賴 `postgres_password.txt` |
 | `redis_url` | `echo "redis://:$(cat deploy/secrets/redis_password.txt)@redis-stack:6379" > deploy/secrets/redis_url.txt` | 依賴 `redis_password.txt` |
 | `cleanup_database_url` | `cp deploy/secrets/database_url.txt deploy/secrets/cleanup_database_url.txt` | 暫與 database_url 同值（Phase 5 再分離） |
+
+> 註：上述 `echo` / `>` 會帶尾換行，而 `generate-secrets.sh` 用 `printf '%s'` 不帶；runtime 消費端（rust-api `load_secret` 會 `.trim()`、postgres/redis 亦容忍）會忽略尾換行,行為不受影響,但 byte 內容與腳本產物略異——優先用腳本生成。
 
 ---
 
@@ -82,3 +84,5 @@ bash deploy/generate-secrets.sh --force
 
 - `APP_DATABASE_URL_FILE` → `/run/secrets/database_url`
 - `APP_REDIS_URL_FILE` → `/run/secrets/redis_url`
+
+`cleanup_database_url` 不在 Phase 2 接線範圍——它的消費者是 cleanup-job、連同最小權限 role 一起留待 Phase 5,屆時才定 env 名。
