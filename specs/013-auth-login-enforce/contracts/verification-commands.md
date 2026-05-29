@@ -73,7 +73,7 @@ TOKA=$(curl -fsS -X POST http://127.0.0.1:21081/auth/login -H 'content-type: app
 curl -fsS http://127.0.0.1:21081/systemManage/getUserList -H "Authorization: Bearer $TOKA"    # 200
 # User(R_USER_COMMON NOT seeded) → 403 deny
 curl -sS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:21081/systemManage/getUserList -H "Authorization: Bearer $TOKU"   # 預期: 403
-curl -sS http://127.0.0.1:21081/systemManage/getUserList -H "Authorization: Bearer $TOKU"     # envelope code=5xxx(權限不足)
+curl -sS http://127.0.0.1:21081/systemManage/getUserList -H "Authorization: Bearer $TOKU"     # envelope code=5003(權限不足、analyze C2 釘)
 ```
 
 ## §4 refresh（US3 / SC-003）

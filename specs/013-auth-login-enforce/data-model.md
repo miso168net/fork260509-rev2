@@ -57,6 +57,7 @@
 | **`RefreshReq`**（request body） | `refreshToken: String` | refresh `{refreshToken}` |
 
 - 全 wrap：成功 `Res::ok(dto)`（code `0000`）；錯誤 `Res::<DTO>::err(BizCode)`（§2.11 泛型化後可在 `Res<DTO>` 回 `data:null`）。
+- **error code（[research R6](./research.md) / mock §4.11）**：login 失敗 `1000`、token 無效/過期/缺 `3333`、refresh 失敗 `8888`（絕不 `3333/9999/9998`）—— 皆 008 既有 `BizCode` variant;**enforce deny `5003`「權限不足」= 新增 variant**（analyze C2 釘、`5001-5999` 業務區、不撞 `5000` sentinel）。
 
 ## 4. JWT Claims（內部、base-web 不 decode）
 
