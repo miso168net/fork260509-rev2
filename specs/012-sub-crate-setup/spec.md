@@ -20,6 +20,7 @@
 - 對齊 [DESIGN §11.6 sub-crate 拍板](../../docs/INTEGRATION-DESIGN.md)（本次 brainstorm 重定位：enforcement 中介層重寫 + 受管政策層〔軟刪可復原 / 不可刪保護政策 / 變更稽核 / 統一 CRUD〕整批移後續階段，本 feature 只引入兩個工具元件）。
 - 不變更 007 既有約束（系統啟動不自行套 schema）、不變更 009 資料存取邊界、不引入 enforcement 接線。
 - 兩個工具元件源自授權參考來源（治理例外、明文授權引入），其出處須被記錄；本 feature 不為系統的新設計掃描參考來源。
+- `/speckit-clarify` 正式掃描（11 taxonomy 類別）結果：**全部 Clear / N-A、0 提問**。Interaction&UX 為 N/A（後端 infra、無 UI）；Non-Functional 的 observability 屬後續階段（enforcement 中介層）、明確 out-of-scope，無延遲/吞吐目標屬 infra proof reasonable-default；Domain（casbin_rule stock schema 欄位）與 Constraints（執行環境/版本對齊）為**刻意延 plan/research 階段**的決策（非 spec-level 歧義），版本對齊依 [CLAUDE.md §6](../../CLAUDE.md) 於 plan surface 選項。無需正式 clarify，可直接進 `/speckit-plan`。
 
 ---
 
