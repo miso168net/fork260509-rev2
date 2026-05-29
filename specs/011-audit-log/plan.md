@@ -148,3 +148,22 @@ Phase 1 設計完成後重跑 7 項：
 ## Complexity Tracking
 
 > Constitution Check 7+7=14 全 PASS、無 violations、本段不需填。
+
+---
+
+## Deviation Log（Constitution v1.0.0 §V — 實作期偏離須記錄）
+
+**D-1（commit `484c3f7`）:live-DB 整合驗收 harness 偏離 [verification-commands.md §0.1](./contracts/verification-commands.md) route (a)。**
+
+- **背景**:契約 §0.1 原訂「route (a):`server/tests/` 整合測試連 `DATABASE_URL` 跑 soft_delete 後斷言」。實作期確認 `server` 為 **bin-only crate(無 `lib.rs`,`main.rs` 以私有 `mod model;` 宣告)** → `server/tests/` 整合測試**無法** `use server::model::...`(既有 `tests/entity_access_lint.rs` 只讀檔、不用 crate API,故不受限)。
+- **處置**:改用 **in-crate `#[cfg(test)] #[ignore]` + env-gate `DATABASE_URL`** 測試,放 `server/src/model/facade/sys_operation_log.rs`(facade/ 為 entity-access lint 豁免目錄、可直接查 `entity::sys_operation_log`/`entity::sys_user` 並呼 `facade::sys_user::soft_delete`)。預設 `cargo test` 跳過 `#[ignore]`、無 DB/CI 仍綠;`cargo test -p server -- --ignored --test-threads=1` 在 compose 網路內對 dev postgres 跑 3 個驗收。
+- **與契約精神調和**:§0.1 本就允許「DB 不可達時 `#[ignore]`/env-gate 跳過」,偏離僅在**位置**(src in-crate vs `tests/`),權威斷言(`sys_operation_log` 實際列 + `sys_user.deleted_at` 狀態)與覆蓋(SC-001~004)不變。不為 011 副帶引入 server lib target(屬更廣架構決策,§1 不過度建構)。
+- **驗證**:3 個 live 測試(1 筆 redact / 原子 rollback / 0-rows no-op)對 dev postgres 親驗通過;no-DB 25+3 ignored + entity_access_lint 17 全綠。final holistic review 認可此偏離。
+- **follow-up**:日後若要真正 `tests/` 整合 harness 驅動 crate API,需給 server 加 `lib.rs` lib target(登記 [CHECKLIST §2.14](../../docs/INTEGRATION-CHECKLIST.md))。
+
+**D-2（commit `484c3f7`）:`operator_ip` 寫入由 [data-model.md](./data-model.md) 的 `Set(operator.and_then(ip))` 改為 `None→NotSet`。**
+
+- **背景**:data-model 欄位對映訂 `operator_ip = operator.and_then(|o| o.ip)`(隱含 `Set(Option<String>)`)。live-DB 驗收抓到:對 `INET` 欄 `Set(None::<String>)` 會讓 sea-orm 送 `NULL::text`,postgres 以 code **42804**(inet vs text)拒絕 → 連寫 None 都失敗。
+- **處置**:`facade/sys_operation_log.rs` 改 `None→NotSet`(略過欄、DB 自填 native NULL)、`Some(ip)→Set(Some(ip))`。surgical、不動 schema(仍 INET、守 DESIGN §6.4)、不動 entity 型(仍 `Option<String>`)。
+- **殘留 gap**:`Some(ip)→Set(text)` 分支對 INET **仍會** 42804;本 feature `operator` 永遠 None、不觸,真值寫入留 Phase 3 middleware(code 內已註;登記 [CHECKLIST §2.14](../../docs/INTEGRATION-CHECKLIST.md))。
+- **驗證**:`write_in_txn` SQL-build 純單測斷言 `operator: None` 時 `operator_ip` 欄不出現於 INSERT;3 個 live 測試通過。
