@@ -26,7 +26,7 @@
 - **D7 來源地 = 原始字串**：以 IP→地理來源解析庫產出的原始字串保存，不解析成結構欄。
 - **D9 關聯碼**：每請求帶一關聯碼（生成，或沿用入站的請求識別 header），記於其審計記錄。
 - **D10 驗收**：純後端、無新前端行為 → 不需瀏覽器端到端；以對 dev stack 的活體 smoke（curl + 資料查驗）+ 純單元測試驗收。
-- `/speckit-clarify` 預判：brainstorm D1-D10 已凍結全部高影響決策；記錄範圍（D3）、登入歸屬（D4）、來源雙欄（D5）、best-effort（D6）皆已親決。技術手段（來源 IP 寫入型別、地理解析庫執行期路徑、關聯碼生成、攔截疊加順序）為 plan 階段 research grep 對象、非 spec-level 歧義。預期 0 提問。
+- `/speckit-clarify` 正式掃描（2026-05-30，11 taxonomy 類）：**結果 0 提問**。brainstorm D1-D10 已凍結全部高影響決策；記錄範圍（D3）、登入歸屬（D4）、來源雙欄（D5）、best-effort（D6）皆已親決。Functional/Domain/Edge/Constraints/Terminology/Completion/Integration/Observability/Security 全 Clear 或 N-A；唯 perf/scale 為 Partial 但**低影響**（最小機制 + best-effort 同步寫、async 明確 deferred、admin panel 低流量 reasonable-default、無需 latency 數字）。技術手段（來源 IP 寫入型別、地理解析庫執行期路徑、關聯碼生成、攔截疊加順序）為 plan 階段 research grep 對象、非 spec-level 歧義。可直接進 `/speckit-plan`。
 
 ---
 
