@@ -128,6 +128,13 @@
 | `1294bee` | 2026-05-29 | docs(tasks): 008-response-envelope tasks.md(階段 1 /speckit-tasks,13 task / 6 phase,test-first 純邏輯單測) |
 | `e1b0a6c` | 2026-05-29 | chore(submodule): bump rust-api 到 fac12f6(008 階段 2 兩段式第二段;worktree `091fe6a..fac12f6` 已 push fork:信封 Res<T>+BizCode 12-variant / AppError::NotFound+404 fallback / AppError::Internal+500/5000 三 commit) |
 | `7bdf5bb` | 2026-05-29 | Merge feature 008-response-envelope 回 rev2-admin-root(--no-ff,feature branch 保留)— rust-api 統一回應信封契約:Res<T>{data,code,msg}(code=string、無 success、欄位序 data→code→msg)+ IntoResponse;BizCode 完整 12-variant 矩陣(只 wire 0000/4040/5000);AppError(NotFound→404、Internal→500/5000)+ axum .fallback()(404 live curl 驗);/health 不動。3 unit/13 task subagent-driven TDD,各 spec+quality 雙審 + final holistic review = Ready;21 單測 PASS / 2 拍板(Internal=5000 rev2 自訂 5xxx、不做 camelCase 機制)/ Constitution 7+7=14 ✅ |
+| `4a1f9f9` | 2026-05-29 | docs(brainstorm): 009-soft-delete-infra Phase 0 spec-design(soft-delete 三重防護:類型 trait / facade / build-time lint;6 決策 D1-D6) |
+| `32a5a42` | 2026-05-29 | docs(spec): 009-soft-delete-infra spec.md + quality checklist(階段 1 /speckit-specify,16/16 PASS,0 NEEDS CLARIFICATION) |
+| `e0b81cc` | 2026-05-29 | docs(clarify): 009-soft-delete-infra §Clarifications 補 /speckit-clarify 掃描結果(11 類全 Clear/N-A、0 提問) |
+| `565d08b` | 2026-05-29 | docs(plan): 009-soft-delete-infra Phase 0/1 design artifacts(階段 1 /speckit-plan,Constitution 7+7=14 ✅;research R1-R5 + 3 entity data-model + C-V contract + quickstart;新增 workspace member entity crate) |
+| `03f8c12` | 2026-05-29 | docs(tasks): 009-soft-delete-infra tasks.md(階段 1 /speckit-tasks,13 task / 6 phase,test-first 純邏輯 + lint test + migration 套用驗收) |
+| `7fce19f` | 2026-05-29 | chore(submodule): bump rust-api 到 88ed11e(009 階段 2 兩段式第二段;worktree `fac12f6..88ed11e` 已 push fork:entity crate + sys_user model / SoftDeletable trait + facade / partial unique migration / build-failing lint test 四 commit) |
+| `88312b6` | 2026-05-29 | Merge feature 009-soft-delete-infra 回 rev2-admin-root(--no-ff,feature branch 保留)— soft-delete 三重防護立機制 + sys_user proof:①SoftDeletable trait(find_active 過濾 deleted_at IS NULL)②facade(server/src/model/facade/,唯一管道、soft_delete 設標記、不 re-export Entity)③build-failing lint test(facade 外 use entity:: → cargo test fail,兩階段 lexer 防註解/字串 false-negative);schema 加 deleted_at + partial unique index WHERE deleted_at IS NULL;新增 workspace member entity crate(首個 sea-orm model、無新外部 dep)。5 unit/13 task subagent-driven TDD,各 spec+quality 雙審 + final holistic review = Ready;40 tests + migration build clean / Constitution 7+7=14 ✅ / 6 entity rollout 延後 |
 
 
 ## 2. ✅ 完成+歸檔

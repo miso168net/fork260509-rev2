@@ -8,13 +8,13 @@
 
 ## 1. Current Focus
 
-**階段**:**Phase 1 P0 部署基建全數完成(#1~#5)**;**Phase 2 P1 進行中 — 007-db-redis-connection(DB/Redis 連線層 + migration proof)、008-response-envelope(統一回應信封 `Res<T>` + `BizCode` 矩陣 + `AppError` + 404 fallback)皆完整實作+驗收+merge 回 `rev2-admin-root`**。Phase 2 餘:soft-delete 7-entity / audit log(依 soft-delete)/ sub-crate(需 §11.6 拍板);**JWT 機密管理已由 005/007 吸收 ✅**(見 [§4 Phase 2](#phase-2--p1-基礎設施對齊-design-§10-phase-2integration-designmd已啟動))。
+**階段**:**Phase 1 P0 部署基建全數完成(#1~#5)**;**Phase 2 P1 進行中 — 007-db-redis-connection(DB/Redis 連線層 + migration proof)、008-response-envelope(統一回應信封 `Res<T>` + `BizCode` 矩陣 + `AppError` + 404 fallback)、009-soft-delete-infra(soft-delete 三重防護:trait / facade / build-time lint + `sys_user` proof)皆完整實作+驗收+merge 回 `rev2-admin-root`**。Phase 2 餘:soft-delete 6-entity rollout(各自被建時沿用 pattern)/ audit log(依 soft-delete)/ sub-crate(需 §11.6 拍板);**JWT 機密管理已由 005/007 吸收 ✅**(見 [§4 Phase 2](#phase-2--p1-基礎設施對齊-design-§10-phase-2integration-designmd已啟動))。
 
 **最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
+- **2026-05-29 009-soft-delete-infra 完整實作 + 驗收 + merge**(outer merge `88312b6` / SHA pin `7fce19f` / rust-api worktree `fac12f6..88ed11e` 已 push fork)— subagent-driven-development(5 unit / 13 task,各 spec+quality 雙審 + final holistic review = Ready)/ soft-delete 三重防護:`SoftDeletable` trait(`find_active` 過濾 deleted_at IS NULL、SQL-build 純單測鎖定)+ facade(`server/src/model/facade/`、唯一管道、`soft_delete` 設標記、不 re-export Entity)+ build-failing lint test(facade 外 `use entity::` → cargo test fail;**兩階段 lexer** 抹白註解/字串/char-literal 再偵測、修掉 brace-stack 被 `::{` poison 的 critical false-negative)/ schema:`sys_user` 加 `deleted_at TIMESTAMPTZ` + drop `sys_user_user_name_key` + partial unique index `WHERE deleted_at IS NULL`(active 唯一、deleted 同名可重用,dev stack live 驗)/ 新增 workspace member `entity` crate(首個 sea-orm model、無新外部 dep)/ 40 tests + migration build clean / **兩段式 commit** / Constitution 7+7=14 ✅ / 6 entity rollout 延後 / 009 branch 保留
 - **2026-05-29 008-response-envelope 完整實作 + 驗收 + merge**(outer merge `7bdf5bb` / SHA pin `e1b0a6c` / rust-api worktree `fac12f6` 已 push fork)— subagent-driven-development(3 unit / 13 task,各 spec+quality 雙審 + final holistic review = Ready)/ 統一回應信封 `Res<T>{data,code,msg}`(code=string、無 success、欄位序 data→code→msg)+ `IntoResponse`(HTTP200)/ `BizCode` 完整 12-variant 矩陣(只 wire `0000`/`4040`/`5000`,餘 9 variant 定義待 Phase 3+)/ `AppError`(thiserror;NotFound→404、Internal(String)→500/`5000`)+ axum `.fallback()`(404 live curl `{"data":null,"code":"4040","msg":"接口不存在"}`)/ `/health` 純 ok 不動 / 21 單測 PASS / 2 拍板(Internal=`5000` rev2 自訂 5xxx sentinel、不做 camelCase 機制留 Phase 4 DTO)/ Constitution 7+7=14 ✅ / 兩段式 commit / 008 branch 保留
-- **2026-05-29 007-db-redis-connection 完整實作 + 驗收 + merge**(outer merge `928949d` / rust-api worktree `091fe6a` 已 push fork)— subagent-driven-development(5 unit / 18 task,各 spec+quality 雙審 + final review)/ rust-api boot fail-fast 建 Postgres(sea-orm 1.1.20)+ Redis(redis 1.2 `ConnectionManager`)連線、握 `AppState`;migration runner + proof migration(`sys_user` id/user_name/password + seed Super/Admin/User、argon2id of `123456`、冪等)/ docker-compose 接 005 secret(`_FILE`)/ config 12 單測 PASS、dev stack 5 service healthy / 2 偏離回填 plan.md(Cargo.lock pin time0.3.37・home0.5.9 配 toolchain1.86 / migration `DATABASE_URL` bridge)/ **兩段式 commit**(worktree→fork `44d20fb..091fe6a` + 外層 SHA pin `39eb43d`)/ Constitution 7+7=14 ✅ / 007 branch 保留
 
-**下一步**: **Phase 2 P1 續推** — 連線層 + envelope + JWT 機密(005/007 吸收 ✅)已就緒;餘 soft-delete 7-entity 基礎設施(含 sys_user 完整欄 + `id` auto_increment,見 §2.10)/ audit log(依 soft-delete)/ sub-crate(需 §11.6 拍板)等 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md) feature
+**下一步**: **Phase 2 P1 續推** — 連線層 + envelope + JWT 機密(005/007 吸收 ✅)+ soft-delete 機制(009 立 trait/facade/lint + sys_user proof ✅)已就緒;餘 soft-delete 6-entity rollout(各 entity 建立時沿用 pattern,含 sys_user 完整欄 + `id` auto_increment,見 §2.10)/ audit log(依 soft-delete)/ sub-crate(需 §11.6 拍板)等 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md) feature
 
 ---
 
@@ -49,7 +49,10 @@
 
 - [ ] **`Res` err 建構子綁 `()` 型**:`Res::<()>::err`/`err_msg` 掛 `impl Res<()>`;Phase 3+ handler 若要在 `-> Res<SomeDto>` 成功型內提早回業務錯誤(`data:null` 但 `T≠()`)會型別對不上 → 屆時改 `impl<T> Res<T>`(回 `data:None`)。現無 caller、不改(final review Minor 標記)
 
----
+### 2.12 feature 009-soft-delete-infra follow-up
+
+- [ ] **dev stack 不自動套 migration**:009 acceptance 發現 `up -d --wait` 不會跑 migration runner(server binary 不呼叫 Migrator、compose 無 migration step);001/002/003 都靠手動 `cargo run --bin migration up`。verification-commands.md §3 假設「007 pipeline 自動套用」不符實況 → 與 §2.10「migration invocation prod path」連動,日後 dev/prod 須明確 migration 套用步驟(entrypoint dispatch 或 init container)
+- [ ] **`soft_delete` 0-rows 靜默**:`soft_delete(db,id)` 回 `UpdateResult` 但不檢 `rows_affected` → 軟刪不存在/已刪 id 靜默成功(0 rows)。infra 層 scope 內 acceptable;Phase 3+ 接業務 delete endpoint 時由 caller 決定語意(final review Minor 標記)
 
 ## 3. 已完成里程碑
 
@@ -74,7 +77,7 @@
 - [x] **DB/Redis 連線層 + migration pipeline proof feature(007)** ✅ (2026-05-29 merge `928949d`)— rust-api boot 連 Postgres+Redis(fail-fast)+ AppState + migration runner + sys_user proof seed
 - [x] **envelope 對齊 feature(008)** ✅ (2026-05-29 merge `7bdf5bb`)— `Res<T>{data,code,msg}` + `IntoResponse` + `BizCode` 12-variant 矩陣 + `AppError`(NotFound→404/Internal→500)+ axum 404 `.fallback()`;camelCase 留 Phase 4 DTO
 - [x] **JWT 機密管理** ✅ (已由 005 secret 注入 + 007 config 吸收,非獨立 feature)— `AppConfig::load()` 載 `APP_JWT_JWT_SECRET`/`APP_JWT_REFRESH_TOKEN_SECRET`(`_FILE` precedence + `validate_secret` 空/placeholder/≥32)+ `JwtConfig`(含 TTL)+ compose dev/prod 接線 + secrets `.example` + 單測(見 [DESIGN §6.1](INTEGRATION-DESIGN.md))
-- [ ] soft-delete 基礎設施 feature(7 entity + 三重防護)
+- [x] **soft-delete 基礎設施 feature(009)** ✅ (2026-05-29 merge `88312b6`)— 立三重防護機制(SoftDeletable trait / facade 唯一管道 / build-failing lint)+ 套 `sys_user` proof(`deleted_at` + partial unique index);新增 workspace member `entity` crate。6 entity rollout 延後(各自被建時沿用 pattern)
 - [ ] audit log 基礎設施 feature
 - [ ] sub-crate setup feature(`axum-casbin` 重寫 / `sea-orm-adapter` + `xdb` 拷貝)
 
