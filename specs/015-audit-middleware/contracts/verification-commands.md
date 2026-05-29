@@ -78,14 +78,16 @@ curl -fsS $B/auth/getUserInfo >/dev/null            # 無 Bearer → 3333、不�
 
 ## §4 US3 來源忠實擷取（SC-003）
 
+> **US3 獨立於 US2**：來源欄為 foundational（T008/T009）擷取、**同存於兩表**;此處對 **login**（US1 寫入路徑、無需 Bearer）驗 `sys_login_attempt` 列 → US3 只依 US1（P1）、與 US2 無關。
+
 ```bash
-# 帶 X-Forwarded-For → x_forwarded_for 存原始鏈 + client_ip(直連) + region
-curl -fsS $B/auth/getUserInfo -H "Authorization: Bearer $TOK" -H "X-Forwarded-For: 1.2.4.8, 10.0.0.1" >/dev/null
-$PSQL "SELECT client_ip, x_forwarded_for, region IS NOT NULL AS has_region FROM sys_access_log ORDER BY id DESC LIMIT 1;"
+# 帶 X-Forwarded-For → x_forwarded_for 存原始鏈 + client_ip(直連) + region（login 路徑、成敗皆寫 ctx）
+curl -fsS -X POST $B/auth/login -H 'content-type: application/json' -H "X-Forwarded-For: 1.2.4.8, 10.0.0.1" -d '{"userName":"Super","password":"123456"}' >/dev/null
+$PSQL "SELECT client_ip, x_forwarded_for, region IS NOT NULL AS has_region FROM sys_login_attempt ORDER BY id DESC LIMIT 1;"
 # 預期: <直連inet> | '1.2.4.8, 10.0.0.1' | t（x_forwarded_for 逐字保存;client_ip 仍是直連 peer、非 XFF 解析）
 # 不帶 XFF → x_forwarded_for NULL
-curl -fsS $B/auth/getUserInfo -H "Authorization: Bearer $TOK" >/dev/null
-$PSQL "SELECT x_forwarded_for IS NULL AS xff_null, client_ip FROM sys_access_log ORDER BY id DESC LIMIT 1;"  # t | <inet>
+curl -fsS -X POST $B/auth/login -H 'content-type: application/json' -d '{"userName":"Super","password":"123456"}' >/dev/null
+$PSQL "SELECT x_forwarded_for IS NULL AS xff_null, client_ip FROM sys_login_attempt ORDER BY id DESC LIMIT 1;"  # t | <inet>
 ```
 
 ## §5 best-effort（SC-004）

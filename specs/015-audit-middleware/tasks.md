@@ -39,7 +39,7 @@ description: "Task list for 015-audit-middleware implementation"
 
 **Purpose**：deps + 兩審計表 + 純型 + facade + request-context middleware 骨架 + main.rs 接線 + xdb runtime 打包。**必須先完成才進 user story**。
 
-- [ ] T002 Cargo deps：`Cargo.toml`（workspace）sea-orm features += `"with-ipnetwork"`;`server/Cargo.toml` += `uuid = { version = "<lock 既有版>", features = ["v4"] }`（uuid 已 transitive 於 `Cargo.lock`、取同版）。`docker run ... build -p server` 過（確認 with-ipnetwork 拉入 `ipnetwork` + uuid 解析）。（[research R5/R7](./research.md)）
+- [ ] T002 Cargo deps：`Cargo.toml`（workspace）sea-orm features += `"with-ipnetwork"`;`server/Cargo.toml` += `uuid = { version = "<lock 既有版>", features = ["v4"] }`（uuid 已 transitive 於 `Cargo.lock`、取同版）。`docker run ... build -p server` 過（確認 with-ipnetwork 拉入 `ipnetwork` + uuid 解析）。**（`with-ipnetwork` 為 workspace 級;既有 `sys_operation_log.operator_ip: Option<String>` 映射不受影響——由 T017(a) 既有 56+3〔含 011 audit SQL-build 測〕確認無回歸。）**（[research R5/R7](./research.md)）
 - [ ] T003 migrations + register：`migration/src/m20260529_000011_create_sys_access_log.rs` + `m20260529_000012_create_sys_login_attempt.rs`（沿 `m..004` 寫法:`Table::create().if_not_exists()`、INET `client_ip` `.custom(Alias::new("INET")).not_null()`、append-only 無 `deleted_at`;`m..012` 另 `create_index` 兩條 `(attempted_user_name,created_at)` / `(client_ip,created_at)`）+ `migration/src/lib.rs` 註冊 011/012（接 010 後）。`build -p migration` 過。（[data-model §1](./data-model.md)）
 - [ ] T004 entities：`entity/src/sys_access_log.rs` + `sys_login_attempt.rs`（`DeriveEntityModel`、`client_ip: IpNetwork`〔確認 import path:sea_orm re-export vs `ipnetwork` direct〕、欄對齊 data-model §2）+ `entity/src/lib.rs` 註冊 mod。`build -p entity` 過。（[data-model §2](./data-model.md)）
 - [ ] T005 純 event 型 + RequestContext：`server/src/audit_ctx.rs`（新）定義 `AccessLogEvent` / `LoginAttemptEvent`（**不含 `entity::` path**、`client_ip: IpAddr`）+ `RequestContext{operator_id:Option<i64>, client_ip:IpAddr, x_forwarded_for:Option<String>, region:Option<String>, trace_id:String}`。`build -p server` 過。（[data-model §3/§4](./data-model.md)）
@@ -85,7 +85,7 @@ description: "Task list for 015-audit-middleware implementation"
 
 **Independent Test**：帶 `X-Forwarded-For` 的請求 → `x_forwarded_for` 存原始鏈、`client_ip` 仍直連、region 非空;不帶 → `x_forwarded_for` NULL、client_ip 仍有值。
 
-- [ ] T015 [US3] curl acceptance（[verification §4](./contracts/verification-commands.md)）：`getUserInfo` Bearer + `-H "X-Forwarded-For: 1.2.4.8, 10.0.0.1"` → psql 最新 `sys_access_log`:`x_forwarded_for`='1.2.4.8, 10.0.0.1'（逐字）、`client_ip`=直連 peer INET（**非** XFF 解析）、region 非空;不帶 XFF → `x_forwarded_for` NULL、client_ip 仍 INET 真值。對應 spec US3 + SC-003。
+- [ ] T015 [US3] curl acceptance（[verification §4](./contracts/verification-commands.md)）：對 **login**（US1 寫入路徑、**不依賴 US2**、無需 Bearer）送 `-H "X-Forwarded-For: 1.2.4.8, 10.0.0.1"` → psql 最新 `sys_login_attempt`:`x_forwarded_for`='1.2.4.8, 10.0.0.1'（逐字）、`client_ip`=直連 peer INET（**非** XFF 解析）、region 非空;不帶 XFF → `x_forwarded_for` NULL、client_ip 仍 INET 真值。（來源欄為 foundational T008/T009 擷取、同存兩表;用 login-attempt 列使 US3 獨立於 US2）對應 spec US3 + SC-003。
 
 **Checkpoint**：三 US 活體達成（登入嘗試 / access-log / 來源忠實 client_ip+XFF+region）
 
@@ -115,7 +115,7 @@ description: "Task list for 015-audit-middleware implementation"
 - **Foundational(Phase 2)**：依 Setup;**阻斷所有 user story**（deps + 表 + facade + middleware 骨架 + main 接線 + xdb runtime）
 - **US1(Phase 3,P1)**：依 Foundational（T005 RequestContext + T007 facade + T009 middleware 建 ctx + T010 xdb runtime）;MVP
 - **US2(Phase 4,P2)**：依 Foundational（T006 facade + T009 middleware 骨架）;與 US1 獨立（不同寫入路徑:US1=login handler、US2=middleware）
-- **US3(Phase 5,P3)**：依 Foundational（T008/T009 來源擷取）+ 任一寫入路徑（驗 access-log 的來源欄、實務上接 US2 後驗最直接）
+- **US3(Phase 5,P3)**：依 Foundational（T008/T009 來源擷取）+ **US1**（`sys_login_attempt` 列已載來源欄）;經 US1 列驗 → **與 US2 獨立**
 - **Polish(Phase 6)**：依所有 user story
 
 ### Within / Cross Phases
