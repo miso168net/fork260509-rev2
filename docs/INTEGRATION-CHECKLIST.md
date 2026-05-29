@@ -57,13 +57,14 @@
 
 - [ ] **standalone `docker-compose.rust-api.yml` 無自動套 migration**:010 只在 master dev/prod stack 加 `migrate` service + 閘門;standalone 單服務 stack(niche dev aid)未加 → 拉起時 schema 不自動套。010 明確列 scope 外(spec「不在 scope」/ research R1)。優先級低,日後若常用 standalone 再補同款 migrate gate
 - [ ] **full prod stack 端到端 first-boot 未一起驗**:010 prod acceptance 用 subset(`up rust-api` 帶起 postgres/redis-stack/migrate,未起 base-web/front-nginx — prod base-web build 慢且與 migrate gate 無關)。migrate gate + prod migrate path 已親驗;但含 front-nginx(depends_on base-web+rust-api healthy)的完整 prod stack 首啟 + migrate 未一次跑通 → 與 [§2.8](#28-feature-004-compose-port-orchestration-follow-up)(prod base-web rebuild + CDP smoke)連動、屆時一併驗
-- [ ] **(跨 feature 守則)加 rust workspace member(新 crate)的 feature,acceptance 須含 runtime image build**:009 加 `entity` crate 只用 dev bind-mount 驗、漏 `deploy/Dockerfile.rust-api.txt` builder COPY,缺口拖到 010 prod build 才抓到(已修,plan Deviation D-1)。日後再加 crate 須同步 Dockerfile builder COPY + 把 runtime build 納入該 feature acceptance(僅加 entity 模組到既有 crate 不受影響)
+- [ ] **(跨 feature 守則)加 rust workspace member(新 crate)的 feature,acceptance 須含 runtime image build**:009 加 `entity` crate 只用 dev bind-mount 驗、漏 `deploy/Dockerfile.rust-api.txt` builder COPY,缺口拖到 010 prod build 才抓到(已修,plan Deviation D-1)。日後再加 crate 須同步 Dockerfile builder COPY + 把 runtime build 納入該 feature acceptance(僅加 entity 模組到既有 crate 不受影響)。**(2026-05-30 [006-013 review](REVIEW-006-013.md#4-跨-feature-主題比單點-issue-更有價值) 再確認為頭號系統性缺口:009/012 兩度被咬)→ 被動守則不夠,應主動固化:把 prod target build(`docker compose -f docker-compose.yml -f docker-compose.prod.yml build rust-api`)寫進 `contracts/verification-commands.md` 範本,而非靠下游 deploy commit 救火**
 
 ### 2.14 feature 011-audit-log follow-up
 
 - [ ] **「facade 內漏配 audit」build-failing lint defer**:011 D3/FR-008 明確延後 — audit 寫入正確性現靠 `mutate_in_txn`(唯一原子寫入入口)結構強綁 + 文件慣例,**無**像 009 entity-access 那樣的 build-failing lint 擋「facade 寫入路徑漏寫 audit」。Phase 3+ 多寫入路徑(其他 operation·entity 接線)時連同 rollout 立可靠 grep 規則(research R6 / [DESIGN §6.4](INTEGRATION-DESIGN.md))
 - [ ] **`operator_ip` 真實 INET 值寫入的 PG 42804 gap**:live-DB 抓到 `Set(None)` 對 INET 欄觸 42804(`NULL::text`),已改 `None→NotSet`;但 `Some(ip)→Set(text)` 分支**仍會**對 INET 觸 42804(text binding)。本 feature 永遠寫 None、不觸;Phase 3 middleware 帶入真實 `operator_ip` 時須改 sea_query `Expr` cast 或 sea-orm ipnetwork custom type(`facade/sys_operation_log.rs` 內已註;DESIGN §6.4 as-built)
 - [ ] **整合測試 harness 偏離 [verification §0.1](../specs/011-audit-log/contracts/verification-commands.md) route (a)**:`server` 為 bin-only crate(無 lib.rs)→ `server/tests/` 無法 `use server::...`,故 011 live-DB 驗收改用 **in-crate `#[cfg(test)] #[ignore]` + env-gate DATABASE_URL** 測試(放 `facade/sys_operation_log.rs`、lint 豁免目錄),非合約原訂 `server/tests/` harness。日後若要真正的 `tests/` 整合 harness 驅動 crate API,需給 server 加 lib target(lib.rs)— 屬更廣架構決策、未在 011 副帶引入(final review 認可此偏離)
+- [ ] **`data-model.md` 文件回填債(`Set(None)`→`NotSet`)**:011 為避 INET 42804 把實作改 `None→NotSet`,但 `specs/011-audit-log/data-model.md:59` 仍寫 `Set(None)`。回填以免日後讀者照舊文件重蹈 42804 坑([006-013 review §3/§4.5](REVIEW-006-013.md#4-跨-feature-主題比單點-issue-更有價值);CLAUDE.md §7.2 回填紀律)
 
 ### 2.15 feature 012-sub-crate-setup follow-up
 
@@ -71,6 +72,7 @@
 - [ ] **xdb 未用 deps**:`tracing`/`tracing-subscriber` 在 xdb crate 零引用(rev1 拷貝死 dep);動 xdb 時清(或保 rev1 一致)
 - [ ] **xdb runtime 資料檔路徑 + 打包(Phase 3)**:`default_detect_xdb_file` 找 `resources/ip2region.xdb`(相對 cwd),server 在 prod 容器 cwd=`/app` 解析不到 → Phase 3 server 真消費 xdb 時須設 `XDB_FILEPATH` env 或絕對路徑,且 **prod runtime stage 須 COPY `ip2region.xdb` 進 image**(現只 COPY binaries + application.yaml、無 11MB 資料檔)
 - [ ] **(trivial)** `sea-orm-adapter/src/action.rs` `remove_filtered_policy` 修正行的 `.iter()` 換行非 rustfmt-canonical(刻意保最小 diff、避免擾動 vendored 碼);動該檔時 `cargo fmt` 收
+- [ ] **`action.rs:78` 正確性修正未留 Deviation Log**:012 對 vendored `remove_filtered_policy` 去掉 rev1 的 `[index_of_match_start..]` 錯誤切片(已被 `test_adapter` field_index 案例覆蓋),但 plan 無 Deviation Log、檔內無 inline 註解 → 日後 rebase vendored 碼易被誤「修回」rev1 的 bug。補 inline 註解 + plan Deviation Log([006-013 review §3/§4.5](REVIEW-006-013.md#4-跨-feature-主題比單點-issue-更有價值))
 
 ### 2.16 feature 013-auth-login-enforce follow-up
 
