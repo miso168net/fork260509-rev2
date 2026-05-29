@@ -93,7 +93,7 @@ docker-compose.dev.yml      ← dev override:migrate(target dev / image :dev / b
 docker-compose.prod.yml     ← prod override:migrate(target runtime / image :latest / command ["migration","up"] 走 entrypoint dispatcher)
 ```
 
-**Structure Decision**:本 feature **outer-only** —— 只動 3 個外層 compose 檔,**不動 rust-api worktree**(不改 server/migration code、Dockerfile、entrypoint)。故**無兩段式 commit**,所有改動單段落在 `010-migration-auto-apply` feature branch。不屬任何 base-web ★ 軌道;連 RUSTAPI-SOURCE-ISOLATION(改 rust-api source)都不觸及,純 deploy/infra 編排。
+**Structure Decision**:本 feature **outer-only** —— 動 3 個外層 compose 檔 + 1 個外層 build 檔 `deploy/Dockerfile.rust-api.txt`(後者為實作期 user 授權的 scope 偏離,詳見下方 Complexity Tracking),**不動 rust-api worktree**(不改 server/migration code)。所有改動皆落外層追蹤檔(`deploy/` 由 `rev2-admin-root` 追蹤),故**無兩段式 commit**,單段落在 `010-migration-auto-apply` feature branch。不屬任何 base-web ★ 軌道;連 RUSTAPI-SOURCE-ISOLATION(改 rust-api source)都不觸及,純 deploy/infra 編排。
 
 ---
 
@@ -136,4 +136,14 @@ Phase 1 設計完成後重跑 7 項:
 
 ## Complexity Tracking
 
-> Constitution Check 7+7=14 全 PASS、無 violations、本段不需填。
+> Constitution Check 7+7=14 全 PASS、無 violations。
+
+### Deviation Log（Constitution v1.0.0 §V — 實作期偏離須記錄）
+
+**D-1（commit `99356a4`）:修 `deploy/Dockerfile.rust-api.txt` builder 段 — 與 FR-007「不改映像建置」字面牴觸,user 授權。**
+
+- **背景**:T007 prod acceptance 需 build runtime `:latest` image。實作期發現 prod runtime release build **完全無法 build**:feature 009(`1c6e0c5`)把 `entity` 加為 rust workspace 第 4 個 member,但 `deploy/Dockerfile.rust-api.txt`(009 之前最後改)builder 段從未 COPY `entity/`(亦未 COPY 已 commit 的 `Cargo.lock`)→ `cargo build --release --bins` 無法解析 workspace、`failed to read /app/entity/Cargo.toml`。這是 009 遺留缺口、擋住所有 prod build,非 010 引入。
+- **處置**:user 拍板「現在順手修 Dockerfile 補驗 prod」。修法 surgical:builder Manifest 段補 `COPY rust-api/Cargo.lock ./` + `COPY rust-api/entity/Cargo.toml ./entity/`、Source 段補 `COPY rust-api/entity/src ./entity/src`(共 3 行),不動 build command/cache mount/dev stage/runtime stage。
+- **與 FR-007 / outer-only 調和**:FR-007 字面「MUST NOT 改映像建置」未涵蓋此情境(009 缺口讓映像根本 unbuildable)。仍守 **outer-only 精神**:`deploy/` 由外層 `rev2-admin-root` 追蹤、**rust-api worktree 未碰**(entity crate source 早在 009 已 commit、此處僅 build context COPY),故無兩段式 commit。
+- **驗證**:修後 runtime image rebuild 成功(entity 編譯、release 1m10s)、prod migrate 經 dispatcher 套 001/002/003、rust-api healthy(T007 通過)。
+- **follow-up**:`docker-compose.rust-api.yml`(standalone)同引用此 Dockerfile、transitively 受益、無需再改;standalone migrate 仍列 follow-up(本 feature scope 外)。
