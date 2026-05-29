@@ -350,10 +350,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/010-migration-auto-apply/spec.md`](specs/010-migration-auto-apply/spec.md)
-**Active Plan**: [`specs/010-migration-auto-apply/plan.md`](specs/010-migration-auto-apply/plan.md)
-**Phase**: **✅ 完整實作+驗收+merge 回 `rev2-admin-root`(merge `e4ff2b2`,010 branch 保留)**。dev/prod stack `up` 自動套 sea-orm migration、API 起來前完成、失敗 fail-fast:一次性 `migrate` service(dev `cargo run --bin migration up` / prod entrypoint dispatcher `migration up`)+ `rust-api depends_on migrate: service_completed_successfully` 閘門。守 007 FR-009(server 不自動 migrate)。**outer-only**(3 外層 compose + `deploy/Dockerfile.rust-api.txt`〔009 entity workspace 缺口修補、Deviation D-1、user 授權〕,無兩段式 commit)。三向 acceptance(dev US1 自動套+冪等 / prod US2 對齊 001/002/003 / fail-fast US3)親驗 + Constitution 7+7=14 ✅ + final holistic review = Ready
-**下一步**: 已補掉 [CHECKLIST §2.10/§2.12](docs/INTEGRATION-CHECKLIST.md) migration 套用 gap。**audit log feature 前置已備(依 soft-delete + 自動 migration)、可接棒**;下個 feature `/speckit-specify` 起 `before_specify` pre-hook 會建新 feature branch
+**Active Spec**: [`specs/011-audit-log/spec.md`](specs/011-audit-log/spec.md)
+**Active Plan**: [`specs/011-audit-log/plan.md`](specs/011-audit-log/plan.md)
+**Phase**: 階段 1 SDD 設計鏈 — specify ✅(16/16、0 提問) / clarify ✅(11 類全 Clear/N-A、0 提問) / plan ✅(Constitution 7+7=14 ✅;research R1-R6;**有 data-model**〔新實體 `sys_operation_log`、與 010 不同〕;C-V contract §1-§5 + quickstart)。**Phase 2 P1 後端基礎設施 #4「audit log」**(DESIGN §1.4 第 2 支柱):`sys_operation_log` 表(§6.4、經 010 自動套)+ 統一原子寫入(`write_in_txn` / 唯一入口 `mutate_in_txn`、codebase 首個 transaction)+ redact(`AuditSerialize`),以 009 `sys_user soft_delete` 作活體 proof(軟刪+audit 同 transaction、原子)。守 007 FR-009 + 009 facade 邊界(audit 寫入經 facade、保 entity-access lint 續綠);**動 rust-api worktree → 兩段式 commit**(與 010 outer-only 不同)。3 拍板 D1-D3 + 子決策凍結
+**下一步**: `/speckit-tasks` →(`/speckit-analyze`)→ `superpowers:executing-plans`。feature branch `011-audit-log`(pre-hook 已建);spec docs 落此 branch、rust-api 改動走兩段式 commit(worktree commit + push fork + 外層 bump SHA pin)。完成後 merge 回 `rev2-admin-root`;後續 soft-delete 6-entity rollout / 其他 audit 接線沿用本 pattern
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
