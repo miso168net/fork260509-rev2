@@ -18,7 +18,7 @@
 
 - Phase 0 brainstorm 已凍結全部 5 項設計決策（D1 範圍=dev+prod 對齊 / D2 機制=專用一次性 migrate 步驟 + 完成閘門 / D3 fail-fast / D4 冪等每次跑 / D5 outer-only 無兩段式 commit），見 [`docs/superpowers/010-migration-auto-apply.md`](../../docs/superpowers/010-migration-auto-apply.md)。本 feature 忠實落地,非自由設計。spec 0 [NEEDS CLARIFICATION]。
 - 「應用 stack 啟動即自動套 migration」為補位 [CHECKLIST §2.12 / §2.10](../../docs/INTEGRATION-CHECKLIST.md) 的 migration 套用 gap;**不變更 007 已凍結契約**（FR-009:API server 與 migration runner 維持獨立、server 不自動跑 migration）。
-- 全 taxonomy 掃描:無 spec-level critical ambiguity 需正式 clarify。
+- `/speckit-clarify` 正式掃描(11 taxonomy 類別)結果:**全部 Clear / N-A、0 提問**。Domain/Data Model 為 N-A(不引入新資料實體);低影響項(migration log 觀測性、並發拉起 race)屬 plan 階段細節、非 spec-level critical ambiguity。無需正式 clarify,可直接進 `/speckit-plan`。
 
 ---
 
