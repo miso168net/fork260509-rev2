@@ -39,9 +39,9 @@ services:
     restart: unless-stopped
 
   migrate:
-    # ★ prod migrate:runtime image,經 entrypoint dispatcher 派發(entrypoint.rust-api.sh
-    #   case migration) → exec /usr/local/bin/migration up)。與 dev 不同:dev override entrypoint
-    #   (cargo-watch image),prod 不 override entrypoint(runtime dispatcher 即設計派發點)。
+    # ★ prod migrate:runtime image,command [migration, up] 經 entrypoint.rust-api.sh dispatcher
+    #   的 case "migration" 分支派發 → exec /usr/local/bin/migration up。與 dev 不同:dev override
+    #   entrypoint(cargo-watch image),prod 不 override entrypoint(runtime dispatcher 即設計派發點)。
     #   DATABASE_URL 由 base migrate 的 APP_DATABASE_URL_FILE + database_url secret 繼承,不重宣告。
     build:
       target: runtime

@@ -6,9 +6,8 @@
 #       + contracts/health-endpoint.md
 #       + plan.md research §2
 #
-# 注意:Cargo.lock 在 Unit A 階段尚未產生,builder 內 `cargo build` 會
-# 即時生成、留在 cache mount 內;若日後 commit lockfile 進 rust-api/,
-# 在「Manifest 段」加 `COPY rust-api/Cargo.lock ./` 一行即可。
+# 注意:Cargo.lock 已 commit 進 rust-api/(009 起),builder「Manifest 段」已
+# COPY rust-api/Cargo.lock ./、以鎖定 release build 的依賴版本(reproducible)。
 
 # =====================================================================
 # Stage 1: builder — 產出 3 個 release binary 到 /out/
