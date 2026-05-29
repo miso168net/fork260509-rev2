@@ -350,10 +350,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/011-audit-log/spec.md`](specs/011-audit-log/spec.md)
-**Active Plan**: [`specs/011-audit-log/plan.md`](specs/011-audit-log/plan.md)
-**Phase**: ✅ **011-audit-log 全完成**(階段 0 brainstorm → 階段 1 SDD specify/clarify/plan/tasks/analyze → 階段 2 TDD 實作 4 unit/15 task,各 spec+quality 雙審 + opus final holistic review = READY TO MERGE)。交付:`sys_operation_log` 表(migration 004、經 010 自動套、append-only 非 SoftDeletable)+ `audit.rs`(`AuditEvent`/`AuditSerialize` + **`mutate_in_txn` codebase 首個 transaction、唯一原子寫入入口**、不含 `entity::`)+ `facade/sys_operation_log::write_in_txn`(唯一 entity 寫入管道、保 009 lint route b);活體 proof:`sys_user::soft_delete` 接 `mutate_in_txn` 同 txn 原子寫 SOFT_DELETE + redact password→`"<redacted>"` + 回 `Result<bool>`(0-rows no-op)。live-DB 抓修真實 bug(`operator_ip` INET `Set(None)`→PG 42804、改 `None→NotSet`)。守 007 FR-009 + 009 facade 邊界(lint 續綠);**兩段式 commit**(rust-api worktree 7 commits 已 push fork、外層 SHA pin `5a72560`);Constitution 7+7=14 ✅。回填 DESIGN §6.4/§10、CHECKLIST、MILESTONES
-**下一步**: merge `--no-ff` 011-audit-log 回 `rev2-admin-root`(feature branch 保留)。Phase 2 P1 餘:soft-delete 6-entity rollout(沿用 009 pattern)/ audit 其他 operation·entity 接線(沿用 011 `mutate_in_txn` pattern)/ 「facade 內漏配 audit」build-failing lint(011 defer 的 follow-up)/ sub-crate(需 §11.6 拍板)
+**Active Spec**: [`specs/012-sub-crate-setup/spec.md`](specs/012-sub-crate-setup/spec.md)(✅ 完成+merge 回 `rev2-admin-root`)
+**Active Plan**: [`specs/012-sub-crate-setup/plan.md`](specs/012-sub-crate-setup/plan.md)
+**Phase**: **✅ 012-sub-crate-setup 完整實作+驗收+merge(Phase 2 P1 最後一個 feature、Phase 2 P1 全數完成)**。Casbin RBAC 工具層地基:`sea-orm-adapter`(Casbin↔Postgres policy 儲存)+ `xdb`(IP→地區)拷貝 rev1`@0b64a57`(§11.6 / §I.5 授權例外、首個拷貝 feature、標出處)、casbin **bump 2.10→2.20.0**(編譯閘門一次過、adapter Adapter trait 零 drift)、casbin_rule `migration 005`(委派 `sea_orm_adapter::up/down` 單一 schema 來源、`if_not_exists` no-op、FR-005 調和、經 010 自動套)、活體 smoke 親驗(adapter live round-trip `p,alice,data1,read` / xdb `1.2.4.8`→`中国|0|北京|北京市|0`)。附帶修 rev1 潛伏 bug `action.rs remove_filtered_policy` 索引重複偏移(Deviation D-1)。scope:未接 enforce / 未加 axum-casbin / casbin_rule 無 soft-delete(皆 Phase 3);守 007 FR-009 + 009 lint;Constitution 7+7=14 ✅。subagent-driven 5 unit/10 task、各 spec+quality 雙審 + opus final review。兩段式 commit(rust-api SHA pin `e193c47`)。012 branch 保留
+**下一步**: **Phase 3 RBAC**([DESIGN §10 Phase 3](docs/INTEGRATION-DESIGN.md))— axum-casbin enforce 中介層重寫 + 受管 RBAC policy 層(soft-delete/protected/audit/CRUD;需 fork sea-orm-adapter `load_policy`/`remove_*` + casbin_rule 加 deleted_at → specced 時評估 §11.6 Amendment)。下個 feature 啟動時 `/speckit-specify` 重置本 marker 區
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
