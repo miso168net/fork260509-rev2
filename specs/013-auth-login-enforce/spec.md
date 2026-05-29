@@ -26,6 +26,7 @@
 - **D7 error code 對齊 base-web mock 實機值**（[MOCK §4.11](../../docs/MOCK-COVERAGE-AUDIT.md)）：成功 `0000`；登入失敗統一 `1000`；存取憑證過期/無效/缺失 `3333`；換發失敗 `8888`（**絕不回 3333/9999/9998**）；授權拒絕為 rev2 自訂業務碼（toast、不登出）。
 - **D8-D11**：回應信封錯誤建構子泛型化（沿用 008 envelope）；示範受保護資源用前向相容的真實資源名；acceptance 含瀏覽器端到端登入驗證；授權攔截為 rev2 自家實作（非沿用參考來源中介層）。
 - 不變更既有約束：系統啟動不自行套 schema（守 007）、資料存取邊界（守 009）、回應信封（守 008）、健康檢查不破。
+- `/speckit-clarify` 正式掃描（11 taxonomy 類別）結果：**全部 Clear / N-A / 刻意延 plan，0 提問**。brainstorm D1-D11 已凍結全部高影響決策；Interaction UX 的 UI accessibility 為 N/A（後端、無 UI）；Non-Functional 的 observability＝登入/請求層 audit、明確 out-of-scope（後續 audit-middleware feature）、無延遲/吞吐目標屬 infra proof reasonable-default；唯二延後項（授權拒絕具體 `5xxx` 業務碼〔對 008 `BizCode` 矩陣釘〕、migration 編號）為 plan 階段細節、非 spec-level 歧義（原則已定、base-web 對非列舉碼一律 toast 不影響行為）。無需正式 clarify，可直接進 `/speckit-plan`。
 
 ---
 
