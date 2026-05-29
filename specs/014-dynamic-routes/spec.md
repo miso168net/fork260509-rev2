@@ -19,7 +19,7 @@
 - Phase 0 brainstorm 已凍結全部設計決策（D1-D8），見 [`docs/superpowers/014-dynamic-routes.md`](../../docs/superpowers/014-dynamic-routes.md)。本 feature 忠實落地、非自由設計。
 - **⚠️ 2026-05-30 re-scope（Constitution §I.2 對齊）**：`/speckit-plan` Constitution Check 抓到原「程式內 `role→route` map 過濾」**違反 §I.2**（業務 menu 必走 Casbin enforce 過濾）。user 拍板改:**選單可見性 seed 成授權政策（Casbin `p,role,route_name,menu`）+ 取選單/查存在性用既有授權引擎（013 enforcer）過濾**;route 定義仍程式內寫死、各角色可見範圍（D3）不變。下方 D1/D4 + FR/Entities 已反映。
 - **D1 範圍＝最小 wire 證明 + 選單走授權引擎過濾**：實作 3 個路由 endpoint + 把 base-web 翻 dynamic mode；route 定義程式內寫死,但**選單可見性走授權引擎（Casbin enforce）過濾**（§I.2）:選單可見性 seed 成授權政策（經既有自動結構機制套用）+ 取選單/查存在性用既有授權引擎過濾。**不**建選單資料表、**不**做選單 CRUD、**不**做全路由端點存取授權矩陣（後續、本 feature 只 seed 選單可見性政策）、**不**做政策治理（軟刪/CRUD）、**不**做政策失效通知（pub-sub）——皆後續階段。
-- **D2 route 涵蓋＝真實業務 menu**：鏡像 base-web 真實「系统管理」整棵（user/role/menu/user-detail）+ 首页；**不**含 demo menu。常數路由＝登入頁 + 403/404/500（對齊 mock）。
+- **D2 route 涵蓋＝真實業務 menu**：鏡像 base-web 真實「系统管理」整棵（user/role/menu/user-detail）+ 首页；**不**含 demo menu。常數路由＝登入頁 + 403/404/500 **+ iframe-page 工具路由**（共 **5 條**;plan 階段 research grep 確認 base-web `meta.constant:true` 集合含 `iframe-page`,補入以免前端缺 route——原 brainstorm「4 條」refine 為 5）。
 - **D3 角色↔menu 可見範圍**：Super＝全部；Admin＝首页 + 系统管理（僅用户管理 + 使用者明細）；User＝**只有首页**。父層「系统管理」若某角色無任何可見子項則整個不回。
 - **D4 角色來源＝即時查權威資料源**：getUserRoutes 的角色由後端即時查使用者-角色關聯（與 getUserInfo 一致），非僅讀憑證內快照 → 對每條候選選單以該使用者角色經授權引擎判斷可見性（任一角色允許即可見、父層無可見子項則略過）。撤權即時性（憑證快照 vs 即時查）之完整取捨留完整授權 rollout 階段。
 - **D5 endpoint 認證**：getConstantRoutes **公開**（無需憑證、應用啟動即觸發）；getUserRoutes / isRouteExist 需有效存取憑證（無效/過期/缺失回 `3333`）；三 endpoint 皆**不**做角色攔截（人人可呼叫拿「自己的」menu，過濾在端點內以角色 map 完成）。
@@ -51,15 +51,15 @@
 
 ### User Story 2 — 應用啟動取得常數路由（Priority: P2）
 
-未登入時，應用啟動即需取得一組「常數路由」（登入頁、錯誤頁），讓登入前的畫面（登入頁、403/404/500）可運作。此為 dynamic 模式啟動的前置。
+未登入時，應用啟動即需取得一組「常數路由」（登入頁、錯誤頁、iframe 工具路由），讓登入前的畫面（登入頁、403/404/500、iframe-page）可運作。此為 dynamic 模式啟動的前置。
 
 **Why this priority**：dynamic 模式下應用每次重載都會先取常數路由；沒有它，前端在 dynamic 模式下連登入頁都建不出來。為 US1 的瀏覽器端到端流程之前置。
 
-**Independent Test**：不帶憑證呼叫常數路由端點 → 取得常數路由清單（含登入頁 + 403/404/500）。即驗。
+**Independent Test**：不帶憑證呼叫常數路由端點 → 取得常數路由清單（含登入頁 + 403/404/500 + iframe-page,共 5 條）。即驗。
 
 **Acceptance Scenarios**：
 
-1. **Given** 未登入（無憑證），**When** 取得常數路由，**Then** 回常數路由清單（登入頁 + 403/404/500），且**不需**任何憑證
+1. **Given** 未登入（無憑證），**When** 取得常數路由，**Then** 回常數路由清單（登入頁 + 403/404/500 + iframe-page,共 5 條），且**不需**任何憑證
 2. **Given** dynamic 模式，**When** 應用於瀏覽器重載，**Then** 常數路由被取得、登入頁正常顯示
 
 ---
@@ -100,7 +100,7 @@
 
 **常數路由（公開）**
 
-- **FR-004**：系統 MUST 提供「取得常數路由」能力且**無需憑證**，回登入前可用的常數路由（登入頁 + 403/404/500）。
+- **FR-004**：系統 MUST 提供「取得常數路由」能力且**無需憑證**，回登入前可用的常數路由（登入頁 + 403/404/500 + iframe-page,共 5 條;對齊 base-web `meta.constant:true` 集合）。
 
 **路由存在性查驗**
 

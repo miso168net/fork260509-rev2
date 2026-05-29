@@ -18,7 +18,7 @@
 ## 2. 凍結決策（D1-D8，2026-05-30 user 親決）
 
 - **D1 範圍 = 最小 wire 證明 + menu 走 Casbin enforce**（user 選 A;2026-05-30 re-scope 對齊 §I.2）：實作 3 個 `/route/*` endpoint + 翻 base-web dynamic mode;route 定義**程式內寫死**,但 menu 可見性**走 Casbin enforce 過濾**(§I.2):seed menu-visibility policy 進 casbin_rule(`p,role,route_name,menu`、經 010 自動套)+ getUserRoutes/isRouteExist 用 013 enforcer 過濾。**不**建 `sys_menu` 表、**不**做 menu CRUD（Phase 4）、**不**做受管 policy 層〔soft-delete/CRUD〕(#6)、**不**做 redis pub-sub（#3）、**不**做全路由 endpoint-access enforce 矩陣(#4、本 feature 只做 menu-visibility policy)。
-- **D2 route 涵蓋 = 真實業務 menu**（user 選 A2）：鏡像 base-web 真實「系统管理」整棵（`manage`: user/role/menu/user-detail）+ `home`；**不**含 8 個 demo menu（function/plugin/alova/document 等）。constant routes = `login` + `403`/`404`/`500`（對齊 mock 4 條）。
+- **D2 route 涵蓋 = 真實業務 menu**（user 選 A2）：鏡像 base-web 真實「系统管理」整棵（`manage`: user/role/menu/user-detail）+ `home`；**不**含 8 個 demo menu（function/plugin/alova/document 等）。constant routes = `login` + `403`/`404`/`500` **+ `iframe-page`**（共 **5 條**;**2026-05-30 analyze C1 refine**:plan 階段 research grep 確認 base-web `meta.constant:true` 集合含 `iframe-page`,原寫「4 條」補為 5、以免前端缺 route）。
 - **D3 role→route map**（user 確認此三階梯）：
 
   | route（menu） | Super | Admin | User |
