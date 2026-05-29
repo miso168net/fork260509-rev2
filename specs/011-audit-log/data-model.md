@@ -57,6 +57,7 @@
 
 > `AuditEvent` 為**純資料**（不 import entity）—— 由 facade 層（持有 entity 寫入權）轉成 `sys_operation_log::ActiveModel`，保 009 entity-access lint 續綠（research R6 路線 b）。`write_in_txn` 收 `AuditEvent` + `&DatabaseTransaction`。
 > **欄位對映**（`AuditEvent` → `sys_operation_log` 兩欄）：`operator_id = operator.map(|o| o.id)`、`operator_ip = operator.and_then(|o| o.ip)`（本 feature `operator=None` → 兩欄皆 NULL）。
+> **⚠️ as-built 修正（避 INET PG 42804，2026-05-30 回填）**：`operator_ip`（INET 欄）在 `ActiveModel` 建構時 **`None → NotSet`（略過欄、由 DB native 落 NULL）**，**不可**用 `Set(None)` —— sea-orm 對 INET 欄 bind `NULL::text` 會觸 PG `42804`（datatype mismatch）。`operator_id`（BIGINT）無此問題、`Set(None)` 可。實作見 `server/src/model/facade/sys_operation_log.rs::write_in_txn`。`Some(ip) → Set(text)` 真值寫入（Phase 3 middleware）仍會觸 42804、屆時需 sea_query `Expr` cast 或 ipnetwork custom type（見 [CHECKLIST §2.14](../../docs/INTEGRATION-CHECKLIST.md#214-feature-011-audit-log-follow-up)）。
 
 ### `AuditSerialize`（trait）
 
