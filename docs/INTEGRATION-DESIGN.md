@@ -133,6 +133,8 @@ L4 是「禁區」— 任何 L4 改動需登記為單獨軌道,理由與生效�
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
+> **§2.1.1 migration 自動套用(feature 010 已落地,2026-05-29)**:上圖「一次性 jobs:migration(sea-orm CLI, restart: no)」於 010 接成 **dev/prod stack `up` 即自動套用**機制 —— compose 一次性 `migrate` service(dev override `cargo run --bin migration up`、prod override `command [migration,up]` 經 runtime entrypoint dispatcher,皆讀既有 `database_url` secret)+ `rust-api depends_on migrate: service_completed_successfully` 完成閘門:migration 在 API 起來前套完、**失敗則 `migrate` 非 0 退出令閘門不滿足、`rust-api` 不啟動、`up` 回非 0(fail-fast)**;冪等(`seaql_migrations` 追蹤,re-`up` no-op)。守 [007 FR-009](../specs/007-db-redis-connection/spec.md)(migrate 維持獨立 process、server 不自動 migrate)。**outer-only**(3 外層 compose + `deploy/Dockerfile.rust-api.txt` builder 補 `entity` workspace member 缺口〔009 遺留、Deviation D-1〕,無兩段式 commit)。設計與三向 acceptance 見 [`specs/010-migration-auto-apply/`](../specs/010-migration-auto-apply/)。
+
 ### §2.2 nginx 路由分流規則
 
 ```

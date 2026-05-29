@@ -352,8 +352,8 @@ cd ..
 <!-- SPECKIT START -->
 **Active Spec**: [`specs/010-migration-auto-apply/spec.md`](specs/010-migration-auto-apply/spec.md)
 **Active Plan**: [`specs/010-migration-auto-apply/plan.md`](specs/010-migration-auto-apply/plan.md)
-**Phase**: 階段 1 SDD 設計鏈進行中 — specify ✅(16/16、0 NEEDS CLARIFICATION) / clarify ✅(11 類全 Clear/N-A、0 提問) / plan ✅(Constitution 7+7=14 ✅;research R1-R5;**無 data-model**〔不引入新資料實體〕;C-V contract §1-§4 + quickstart)。**Phase 2 P1 補位「migration 自動套用」(補 CHECKLIST §2.12/§2.10 gap、audit log feature 前置)**:dev/prod stack `up` 時自動套 migration、API 起來前完成、失敗 fail-fast。機制:compose 新增一次性 `migrate` service(dev `cargo run --bin migration up` / prod entrypoint dispatcher `migration up`)+ `rust-api depends_on migrate: service_completed_successfully` 閘門。守 007 FR-009(server 不自動 migrate);**outer-only**(只動 3 個外層 compose 檔、不碰 rust-api worktree → 無兩段式 commit)。5 拍板 D1-D5 凍結
-**下一步**: `/speckit-tasks` →(`/speckit-analyze`)→ `superpowers:executing-plans`。feature branch `010-migration-auto-apply`(pre-hook 已建);spec docs + compose 改動皆落此 branch(outer 單段、無兩段式 commit)。完成後 merge 回 `rev2-admin-root`;後續 audit log feature 接棒(依 soft-delete + 本 feature 的自動 migration)
+**Phase**: **✅ 完整實作+驗收+merge 回 `rev2-admin-root`(merge `e4ff2b2`,010 branch 保留)**。dev/prod stack `up` 自動套 sea-orm migration、API 起來前完成、失敗 fail-fast:一次性 `migrate` service(dev `cargo run --bin migration up` / prod entrypoint dispatcher `migration up`)+ `rust-api depends_on migrate: service_completed_successfully` 閘門。守 007 FR-009(server 不自動 migrate)。**outer-only**(3 外層 compose + `deploy/Dockerfile.rust-api.txt`〔009 entity workspace 缺口修補、Deviation D-1、user 授權〕,無兩段式 commit)。三向 acceptance(dev US1 自動套+冪等 / prod US2 對齊 001/002/003 / fail-fast US3)親驗 + Constitution 7+7=14 ✅ + final holistic review = Ready
+**下一步**: 已補掉 [CHECKLIST §2.10/§2.12](docs/INTEGRATION-CHECKLIST.md) migration 套用 gap。**audit log feature 前置已備(依 soft-delete + 自動 migration)、可接棒**;下個 feature `/speckit-specify` 起 `before_specify` pre-hook 會建新 feature branch
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工

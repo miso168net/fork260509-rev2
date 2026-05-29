@@ -135,6 +135,20 @@
 | `03f8c12` | 2026-05-29 | docs(tasks): 009-soft-delete-infra tasks.md(階段 1 /speckit-tasks,13 task / 6 phase,test-first 純邏輯 + lint test + migration 套用驗收) |
 | `7fce19f` | 2026-05-29 | chore(submodule): bump rust-api 到 88ed11e(009 階段 2 兩段式第二段;worktree `fac12f6..88ed11e` 已 push fork:entity crate + sys_user model / SoftDeletable trait + facade / partial unique migration / build-failing lint test 四 commit) |
 | `88312b6` | 2026-05-29 | Merge feature 009-soft-delete-infra 回 rev2-admin-root(--no-ff,feature branch 保留)— soft-delete 三重防護立機制 + sys_user proof:①SoftDeletable trait(find_active 過濾 deleted_at IS NULL)②facade(server/src/model/facade/,唯一管道、soft_delete 設標記、不 re-export Entity)③build-failing lint test(facade 外 use entity:: → cargo test fail,兩階段 lexer 防註解/字串 false-negative);schema 加 deleted_at + partial unique index WHERE deleted_at IS NULL;新增 workspace member entity crate(首個 sea-orm model、無新外部 dep)。5 unit/13 task subagent-driven TDD,各 spec+quality 雙審 + final holistic review = Ready;40 tests + migration build clean / Constitution 7+7=14 ✅ / 6 entity rollout 延後 |
+| `4543aaf` | 2026-05-29 | docs(brainstorm): 010-migration-auto-apply Phase 0 spec-design(dev/prod 啟動即自動套 migration、fail-fast;5 決策 D1-D5) |
+| `6906f9c` | 2026-05-29 | docs(spec): 010-migration-auto-apply spec.md + quality checklist(階段 1 /speckit-specify,16/16 PASS,0 NEEDS CLARIFICATION) |
+| `8962f50` | 2026-05-29 | docs(clarify): 010-migration-auto-apply §Clarifications 補 /speckit-clarify 掃描結果(11 類全 Clear/N-A、0 提問) |
+| `eb2f27e` | 2026-05-29 | docs(plan): 010-migration-auto-apply Phase 0/1 design artifacts(階段 1 /speckit-plan,Constitution 7+7=14 ✅;research R1-R5;無 data-model〔不引入新資料實體〕;C-V contract §1-§4 + quickstart) |
+| `60fda79` | 2026-05-29 | docs(tasks): 010-migration-auto-apply tasks.md(階段 1 /speckit-tasks,9 task / 6 phase,outer-only 無單元測試、C-V acceptance) |
+| `6d5da7f` | 2026-05-29 | docs(tasks): 010 analyze 後 remediation 3 LOW(end-state 權威 / entrypoint 澄清 / 失敗注入) |
+| `a7aa457` | 2026-05-29 | feat(deploy): docker-compose 新增 migrate service 骨架 + rust-api service_completed_successfully 閘門 |
+| `8afc584` | 2026-05-29 | feat(deploy): docker-compose.dev 新增 migrate override(覆寫 entrypoint→cargo run --bin migration、command up) |
+| `4f14dcd` | 2026-05-29 | feat(deploy): docker-compose.prod 新增 migrate override(command [migration,up] 經 entrypoint dispatcher) |
+| `99356a4` | 2026-05-29 | fix(deploy): Dockerfile builder 補 entity crate + Cargo.lock COPY(009 加 entity workspace member 後遺漏、擋住 runtime release build;Deviation D-1、user 授權) |
+| `b9293db` | 2026-05-29 | docs(checklist): §5.10 新增 SQL injection 跨 feature 紀律(Phase 3+ 業務 query) |
+| `3cf3c12` | 2026-05-29 | docs(deploy): 清理 Unit3 review 指出的兩處過時/錯字註解(Dockerfile Cargo.lock 註解 + prod migrate paren) |
+| `4e4312c` | 2026-05-29 | docs(plan): 010 補 Deviation Log D-1(Dockerfile entity 缺口修補、FR-007 調和) |
+| `e4ff2b2` | 2026-05-29 | Merge feature 010-migration-auto-apply 回 rev2-admin-root(--no-ff,feature branch 保留)— dev/prod stack up 自動套 sea-orm migration、API 起來前完成、失敗 fail-fast:一次性 migrate service(dev cargo run --bin migration up / prod entrypoint dispatcher migration up)+ rust-api depends_on migrate: service_completed_successfully 閘門;守 007 FR-009(server 不自動 migrate)。附帶修 deploy/Dockerfile.rust-api.txt(009 entity 缺口、Deviation D-1、user 授權)。outer-only(3 compose + Dockerfile,無兩段式 commit)。dev US1(自動套+冪等)/ prod US2(對齊 001/002/003)/ fail-fast US3 三向 acceptance 親驗通過 / FR-009 regression 0 命中;subagent-driven 5 unit、各 spec+quality 雙審 + final review = Ready;Constitution 7+7=14 ✅ |
 
 
 ## 2. ✅ 完成+歸檔
