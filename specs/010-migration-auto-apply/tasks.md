@@ -50,7 +50,7 @@ description: "Task list for 010-migration-auto-apply implementation"
 **Independent Test**:`down -v` 後 `up -d --wait` exit 0、不跑任何手動 migration、`seaql_migrations` 含 001/002/003、`sys_user`+seed+009 schema 就緒、`/health` ok;再 `up` 一次仍 exit 0(冪等 no-op)。
 
 - [ ] T004 [US1] 在 `rev2-root/docker-compose.dev.yml` 新增 `migrate` override:`build: {target: dev}`;`image: rev2-admin-rust-api:dev`;`volumes: [./rust-api:/app, rust_api_cargo_cache:/usr/local/cargo, rust_api_target:/app/target]`;`entrypoint: ["cargo","run","--bin","migration"]`(覆寫 dev cargo-watch ENTRYPOINT);`command: ["up"]`(對齊 [research R2](./research.md);DATABASE_URL 繼承 base migrate 的 `APP_DATABASE_URL_FILE`+`database_url` secret)
-- [ ] T005 [US1] Acceptance:[verification-commands §1](./contracts/verification-commands.md) —— `down -v` → `up -d --wait` exit 0;`ps -a migrate` = Exited(0);`seaql_migrations` 含 `m20260529_000001/000002/000003`;`\d sys_user` 見 `deleted_at` + `sys_user_user_name_active_uniq` partial index;active seed ≥3;`/health`=ok;**冪等** re-`up --wait` exit 0、無新套用(對應 spec US1 + SC-001/SC-002)
+- [ ] T005 [US1] Acceptance:[verification-commands §1](./contracts/verification-commands.md) —— `down -v` → `up -d --wait`。**權威斷言用可觀察 end-state**(非僅看 `--wait` 回傳碼):`ps -a migrate` = Exited(0) **且** `rust-api` running + `/health`=ok(`up --wait` exit 0 為輔助確認;若該 compose 版本對一次性 service 的 `--wait` 回傳碼語意有差異,以 end-state 為準並於驗收紀錄註明 — research R5 fallback);`seaql_migrations` 含 `m20260529_000001/000002/000003`;`\d sys_user` 見 `deleted_at` + `sys_user_user_name_active_uniq` partial index;active seed ≥3;**冪等** re-`up` 後 migrate 無新套用、`rust-api` 仍 running(對應 spec US1 + SC-001/SC-002)
 
 **Checkpoint**:US1 達成(dev 啟動即自動套 + 冪等)= MVP
 
@@ -79,7 +79,7 @@ description: "Task list for 010-migration-auto-apply implementation"
 
 > 依 US1(用 dev override 的 migrate 注入失敗最直接)+ Foundational(閘門)。**無新實作** —— fail-fast 由 Foundational 閘門天然提供,本 phase 為 acceptance 驗證。
 
-- [ ] T008 [US3] Acceptance:[verification-commands §2](./contracts/verification-commands.md) —— 臨時令 migrate 失敗(壞 `DATABASE_URL` 或 bogus migrate command)→ `up -d --wait` exit≠0;`ps -a migrate` = Exited(非0);`rust-api` 未啟動(Created/未 running);驗畢**還原** + `down -v` + 正常 `up` 確認回綠(對應 spec US3 + SC-003 正反向)
+- [ ] T008 [US3] Acceptance:[verification-commands §2](./contracts/verification-commands.md) —— 令 migrate 失敗。**注入方式優先用「不改 tracked 檔」途徑**:臨時 env override(如 `APP_DATABASE_URL` 指向不可達 host)或臨時 compose override 把 migrate `command` 設成必失敗的 migration 子指令;**不要編輯已 commit 的 `deploy/secrets/database_url.txt`**(避免污染 tracked 檔 / 需還原)。**權威斷言用可觀察 end-state**:`ps -a migrate` = Exited(非0) **且** `rust-api` 未啟動(Created/未 running)(`up --wait` exit≠0 為輔助確認);驗畢移除 override + `down -v` + 正常 `up` 確認回綠(對應 spec US3 + SC-003 正反向)
 
 **Checkpoint**:三 user story 全 functional(dev 自動套 / prod 對齊 / fail-fast)
 
@@ -159,7 +159,7 @@ description: "Task list for 010-migration-auto-apply implementation"
 - **守 007 FR-009**:`migrate` 維持獨立 service/process,server 不自動 migrate(不改 server boot);T009(d) regression guard。
 - **fail-fast 由閘門天然提供**:`service_completed_successfully`(Foundational T003)即 fail-fast 機制;US3 為 acceptance 驗證、無新實作。
 - **`up --wait` 退出語意**([research R5](./research.md) 標記待驗):T005/T008 acceptance 須實測 migrate 成功→exit 0、失敗→exit≠0 且 rust-api 不起;若 compose 版本對一次性 service 的 `--wait` 行為有差異,以實測為準並在驗收紀錄註明(依賴鏈序列化仍正確)。
-- **dev override 必須覆寫 `entrypoint`**(非只 command)—— 否則 dev cargo-watch ENTRYPOINT 會把 `up` 當 watch 參數([research R2](./research.md))。
+- **dev override 必須覆寫 `entrypoint`**(非只 command)—— 否則 dev cargo-watch ENTRYPOINT 會把 `up` 當 watch 參數([research R2](./research.md))。**此為 compose-level `entrypoint:` 覆寫,不修改 image 的 Dockerfile `ENTRYPOINT` 或 `entrypoint.rust-api.sh`**(FR-007「不改 Dockerfile/entrypoint」仍滿足 — 兩者不同層)。
 - **scope 邊界**:只 `up`、無 rollback;standalone `docker-compose.rust-api.yml` 不在 scope(follow-up);不改 schema/seed/Dockerfile/entrypoint/migration code。
 - 任何偏離 [plan.md](./plan.md) 的實作決策、須在對應 task 註明 + 更新 plan.md(Constitution v1.0.0 §V)。
 - `superpowers:executing-plans` 階段把這 9 個 task 編成 execution unit + 派 fresh implementer subagent。

@@ -4,6 +4,8 @@
 
 > **§0 — [CLAUDE.md §3](../../../CLAUDE.md) 紀律**:本 feature 為 **compose wiring**、**無新純邏輯單元 → 無單元測試**;由 dev/prod stack up acceptance 覆蓋。無 HTTP 業務 endpoint、無 base-web modal → **無 CDP / curl 業務消費者**(只用 `/health` 與 psql 驗 stack 狀態)。
 > DB user `soybean` / db `soybean_admin_rust`(以 `deploy/secrets/database_url.txt` 為準)。
+> **§0.1 權威斷言 = 可觀察 end-state**:各 §的成敗以 `docker compose ps -a` 的 service 結束狀態 + `rust-api` 是否 running + `/health` 為**權威**;`up --wait` 回傳碼為**輔助確認**。原因:`--wait` 對「混長駐 + 一次性 service」的回傳碼語意可能因 compose 版本而異([research R5](../research.md) 待驗點 + fallback)。若回傳碼與 end-state 不一致,以 end-state 為準並於驗收紀錄註明。
+> **§0.2 失敗注入(§2 用)**:優先用「不改 tracked 檔」途徑(臨時 env override / 臨時 compose override 把 migrate `command` 設必失敗子指令);**勿編輯已 commit 的 `deploy/secrets/database_url.txt`**。
 
 ---
 
@@ -42,16 +44,20 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --wait ; ec
 
 ```bash
 # 反向驗(臨時、驗畢還原):令 migrate 失敗 → server 不啟動、up --wait 非 0
-# 方式 A(不改 code):暫時把 database_url secret 指到不存在的 DB / 壞憑證,
-#   或在 dev override 暫加一個必失敗的 migrate command(如 `["status","--bogus"]`)。
-# 此處示意用壞 DATABASE_URL 觸發 migrate 連線失敗:
+# 注入方式(§0.2:不改 tracked 檔):用臨時 compose override 把 migrate command 設必失敗子指令,
+#   或臨時 env override 把 APP_DATABASE_URL 指向不可達 host。**勿編輯 deploy/secrets/database_url.txt**。
+# 範例 — 臨時 override 檔(驗畢即刪):
+cat > /tmp/fail-migrate.yml <<'YML'
+services:
+  migrate:
+    command: ["status", "--bogus-flag-force-fail"]
+YML
 docker compose -f docker-compose.yml -f docker-compose.dev.yml down -v --remove-orphans
-# (臨時把 deploy/secrets/database_url.txt 改成壞密碼 — 或用 override env 蓋過)
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --wait ; echo "fail up exit: $?"
-# 預期: up exit ≠ 0(migrate exit≠0、service_completed_successfully 不滿足)
+docker compose -f docker-compose.yml -f docker-compose.dev.yml -f /tmp/fail-migrate.yml up -d --wait ; echo "fail up exit: $?"
+# 權威斷言(§0.1 end-state):
 docker compose -f docker-compose.yml -f docker-compose.dev.yml ps -a migrate rust-api
-# 預期: migrate Exited (非0);rust-api 未啟動(Created / 未 running)
-# 驗畢:還原 database_url.txt、down -v、正常 up 確認回綠
+# 預期: migrate Exited (非0);rust-api 未啟動(Created / 未 running)。up --wait exit≠0 為輔助確認
+# 驗畢:rm /tmp/fail-migrate.yml、down -v、正常 up(不帶 override)確認回綠
 
 # 正向對照(SC-003 反面):migrate 全成功 → rust-api 正常起(§1 已涵蓋)
 ```
