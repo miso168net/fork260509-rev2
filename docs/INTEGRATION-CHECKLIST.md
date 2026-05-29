@@ -65,6 +65,13 @@
 - [ ] **`operator_ip` 真實 INET 值寫入的 PG 42804 gap**:live-DB 抓到 `Set(None)` 對 INET 欄觸 42804(`NULL::text`),已改 `None→NotSet`;但 `Some(ip)→Set(text)` 分支**仍會**對 INET 觸 42804(text binding)。本 feature 永遠寫 None、不觸;Phase 3 middleware 帶入真實 `operator_ip` 時須改 sea_query `Expr` cast 或 sea-orm ipnetwork custom type(`facade/sys_operation_log.rs` 內已註;DESIGN §6.4 as-built)
 - [ ] **整合測試 harness 偏離 [verification §0.1](../specs/011-audit-log/contracts/verification-commands.md) route (a)**:`server` 為 bin-only crate(無 lib.rs)→ `server/tests/` 無法 `use server::...`,故 011 live-DB 驗收改用 **in-crate `#[cfg(test)] #[ignore]` + env-gate DATABASE_URL** 測試(放 `facade/sys_operation_log.rs`、lint 豁免目錄),非合約原訂 `server/tests/` harness。日後若要真正的 `tests/` 整合 harness 驅動 crate API,需給 server 加 lib target(lib.rs)— 屬更廣架構決策、未在 011 副帶引入(final review 認可此偏離)
 
+### 2.15 feature 012-sub-crate-setup follow-up
+
+- [x] **prod Dockerfile.rust-api.txt builder 漏 COPY sea-orm-adapter + xdb** ✅ (2026-05-29 發現+已修+prod build 驗綠)— builder stage 逐 crate 顯式 COPY,012 加的 2 個 workspace member 未補 → prod runtime image manifest 解析失敗(`cargo build --release --bins`)。**dev bind-mount 整個 `rust-api/` 遮住缺口、012 acceptance 只用 dev docker**,違反 [§2.13](#213-feature-010-migration-auto-apply-follow-up) 跨 feature 守則(加 crate 須驗 runtime image build)。同 010 D-1 class。修:builder 補 COPY sea-orm-adapter/{Cargo.toml,src} + xdb/{Cargo.toml,src,**benches**}(xdb `[[bench]] search` 宣告使 cargo manifest parse 階段需 `benches/search.rs` 存在、否則 parse error)、實跑 `--target runtime` build 驗綠(release 40.88s、image 生成)
+- [ ] **xdb 未用 deps**:`tracing`/`tracing-subscriber` 在 xdb crate 零引用(rev1 拷貝死 dep);動 xdb 時清(或保 rev1 一致)
+- [ ] **xdb runtime 資料檔路徑 + 打包(Phase 3)**:`default_detect_xdb_file` 找 `resources/ip2region.xdb`(相對 cwd),server 在 prod 容器 cwd=`/app` 解析不到 → Phase 3 server 真消費 xdb 時須設 `XDB_FILEPATH` env 或絕對路徑,且 **prod runtime stage 須 COPY `ip2region.xdb` 進 image**(現只 COPY binaries + application.yaml、無 11MB 資料檔)
+- [ ] **(trivial)** `sea-orm-adapter/src/action.rs` `remove_filtered_policy` 修正行的 `.iter()` 換行非 rustfmt-canonical(刻意保最小 diff、避免擾動 vendored 碼);動該檔時 `cargo fmt` 收
+
 ## 3. 已完成里程碑
 
 完整 commit 里程碑歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)(append-only、不在 SOP 注入,避免本檔膨脹)。
@@ -83,7 +90,7 @@
 
 > 5 feature 全交(001 rust-api Dockerfile `a21e932` / 002 base-web Dockerfile `a70fa5f` / 003 TLS cert `cb5e1a1` / 004 compose 編排 `b4294c7` / 005 secret 注入 `068b2a8`),各 feature branch 保留供 audit;詳細 deliverable 見 [DESIGN §10 Phase 1](INTEGRATION-DESIGN.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
 
-### Phase 2 — P1 基礎設施(對齊 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md);**6/7 完成,餘 sub-crate setup**)
+### Phase 2 — P1 基礎設施(對齊 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md);**7/7 全完成**)
 
 - [x] **DB/Redis 連線層 + migration pipeline proof feature(007)** ✅ (2026-05-29 merge `928949d`)— rust-api boot 連 Postgres+Redis(fail-fast)+ AppState + migration runner + sys_user proof seed
 - [x] **envelope 對齊 feature(008)** ✅ (2026-05-29 merge `7bdf5bb`)— `Res<T>{data,code,msg}` + `IntoResponse` + `BizCode` 12-variant 矩陣 + `AppError`(NotFound→404/Internal→500)+ axum 404 `.fallback()`;camelCase 留 Phase 4 DTO
@@ -91,7 +98,7 @@
 - [x] **soft-delete 基礎設施 feature(009)** ✅ (2026-05-29 merge `88312b6`)— 立三重防護機制(SoftDeletable trait / facade 唯一管道 / build-failing lint)+ 套 `sys_user` proof(`deleted_at` + partial unique index);新增 workspace member `entity` crate。6 entity rollout 延後(各自被建時沿用 pattern)
 - [x] **migration auto-apply feature(010)** ✅ (2026-05-29 merge `e4ff2b2`;outer-only)— dev/prod stack `up` 自動套 sea-orm migration:一次性 `migrate` service + `rust-api depends_on migrate: service_completed_successfully` 閘門、API 起來前完成、失敗 fail-fast;守 007 FR-009(server 不自動 migrate)。補掉手動 migration gap
 - [x] **audit log 基礎設施 feature(011)** ✅ (2026-05-29 merge `2be489f` / SHA pin `5a72560`)— 統一 audit:`sys_operation_log` 表(migration 004、經 010 自動套、append-only 非 SoftDeletable)+ `mutate_in_txn` 唯一原子寫入入口 + `AuditSerialize` redact;`sys_user soft_delete` 活體 proof(同 txn 原子寫 SOFT_DELETE + redact password)。守 007 FR-009 + 009 facade 邊界(lint 續綠)。其他 operation·entity 接線 / 漏-audit lint 延後(見 [§2.14](#214-feature-011-audit-log-follow-up))
-- [ ] **sub-crate setup feature(012)** — **只拷貝 `sea-orm-adapter` + `xdb`**(runtime async-std→tokio 對齊 + casbin_rule 建表 migration〔stock schema、無 soft-delete〕+ 兩 crate 活體 smoke);Phase 2 最後 P1 feature、首個觸 RUSTAPI-SOURCE-ISOLATION 例外的 rev1 拷貝(§11.6 授權)。**`axum-casbin` 重寫已重定位 Phase 3**(2026-05-29 012 brainstorm:需 enforce 點/observability 才驗得了)
+- [x] **sub-crate setup feature(012)** ✅ (2026-05-29 merge `774f7b3` / SHA pin `e193c47`)— 拷貝 `sea-orm-adapter` + `xdb`(rev1@0b64a57、§11.6/§I.5 授權例外、首個拷貝 feature)+ casbin **bump 2.10→2.20.0**(編譯閘門零 drift;research R2 修正 brainstorm 的「async-std→tokio」誤判 — adapter 既有 `runtime-tokio-rustls` default)+ casbin_rule 建表 migration 005(委派 adapter up/down 單一 schema 來源、stock schema 無 soft-delete、經 010 自動套)+ 兩 crate 活體 smoke(adapter round-trip / xdb 1.2.4.8)。附帶修 rev1 潛伏 bug `remove_filtered_policy` 索引重複偏移(Deviation D-1)。**`axum-casbin` 重寫 + 受管 policy 層重定位 Phase 3**(見 [§2.15](#215-feature-012-sub-crate-setup-follow-up) follow-up)
 
 ### Phase 3 — P2 認證 + 動態 menu(對齊 [DESIGN §10 Phase 3](INTEGRATION-DESIGN.md);尚未啟動)
 

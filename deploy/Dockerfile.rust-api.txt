@@ -28,12 +28,22 @@ COPY rust-api/server/Cargo.toml ./server/
 COPY rust-api/migration/Cargo.toml ./migration/
 COPY rust-api/cleanup-job/Cargo.toml ./cleanup-job/
 COPY rust-api/entity/Cargo.toml ./entity/
+COPY rust-api/sea-orm-adapter/Cargo.toml ./sea-orm-adapter/
+COPY rust-api/xdb/Cargo.toml ./xdb/
 
 # --- Source 段 ---
 COPY rust-api/server/src ./server/src
 COPY rust-api/migration/src ./migration/src
 COPY rust-api/cleanup-job/src ./cleanup-job/src
 COPY rust-api/entity/src ./entity/src
+# 012: sea-orm-adapter + xdb workspace member。--release --bins 不「建」examples/benches,
+#      但 xdb/Cargo.toml 宣告 [[bench]] search → cargo manifest parse 階段需 benches/search.rs 存在
+#      (否則 parse error),故必須 COPY benches(criterion dev-dep 不會被 --bins 編)。
+#      sea-orm-adapter/examples 為 .conf/.csv 資料檔(非 .rs example target)、不需 COPY。
+#      xdb 的 ip2region.xdb 資料檔屬 runtime、Phase 3 server 真消費時再處理路徑/打包。
+COPY rust-api/sea-orm-adapter/src ./sea-orm-adapter/src
+COPY rust-api/xdb/src ./xdb/src
+COPY rust-api/xdb/benches ./xdb/benches
 COPY rust-api/application.yaml ./
 
 # BuildKit cache mount: registry + git + target 三份持久化、跨 build 增量
