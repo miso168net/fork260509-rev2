@@ -25,7 +25,7 @@
 - **D6 isRouteExist＝依角色過濾**：回「該路由名是否存在於**該使用者可見的**路由集合」；不可見即回否（讓前端導向擋掉越權路由）。
 - **D7 home 欄＝固定首页路由鍵**；路由識別碼為字串型（對齊前端 typings）。
 - **D8 acceptance 含瀏覽器端到端驗證**：base-web 切 dynamic mode 後，於真實瀏覽器登入不同角色，側邊欄 menu 依角色不同（User 只首页、Super 完整系统管理）。
-- `/speckit-clarify` 預期：D1-D8 已凍結全部高影響決策；route 物件的精確 shape（component key / meta 欄）為 plan 階段 Phase 0 research（grep base-web 真實路由定義）細節、非 spec-level 歧義。無需正式 clarify、可直接進 `/speckit-plan`。
+- `/speckit-clarify` 正式掃描（11 taxonomy 類別）結果：**全部 Clear / N-A / 刻意延 plan，0 提問**。brainstorm D1-D8 已凍結全部高影響決策；Non-Functional 的 perf/scale/reliability 為最小機制證明 reasonable-default、observability（請求層 audit）明確 out-of-scope（後續 audit-middleware）；Constraints 的「角色來源 claims vs 即時查 DB」之撤權即時性完整取捨刻意延完整 enforce rollout（D4）；唯一延後項 = route 物件精確 shape（component key / meta 欄）為 plan 階段 Phase 0 research（grep base-web 真實路由定義）、非 spec-level 歧義（原則已定、形狀對齊由 plan 鎖）。無需正式 clarify、可直接進 `/speckit-plan`。
 
 ---
 
