@@ -24,14 +24,17 @@ WORKDIR /app
 
 # --- Manifest 段(先 COPY 利於 cargo deps layer cache hit)---
 COPY rust-api/Cargo.toml rust-api/rust-toolchain.toml ./
+COPY rust-api/Cargo.lock ./
 COPY rust-api/server/Cargo.toml ./server/
 COPY rust-api/migration/Cargo.toml ./migration/
 COPY rust-api/cleanup-job/Cargo.toml ./cleanup-job/
+COPY rust-api/entity/Cargo.toml ./entity/
 
 # --- Source 段 ---
 COPY rust-api/server/src ./server/src
 COPY rust-api/migration/src ./migration/src
 COPY rust-api/cleanup-job/src ./cleanup-job/src
+COPY rust-api/entity/src ./entity/src
 COPY rust-api/application.yaml ./
 
 # BuildKit cache mount: registry + git + target 三份持久化、跨 build 增量
