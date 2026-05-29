@@ -42,7 +42,7 @@
 
 ## 3. menu-visibility policy seed（migration `m20260529_000010_seed_menu_policy`、casbin_rule 012 stock、經 010 自動套）
 
-`p, <role>, <route_name>, menu`(v0=role、v1=route_name、v2=`menu`、v3-5='';共 8 rows):
+`p, <role>, <route_name>, menu`(v0=role、v1=route_name、v2=`menu`、v3-5='';共 9 rows = 下表 ✓ 數:Super 5 + Admin 3 + User 1):
 
 | route_name | R_SUPER | R_ADMIN | R_USER_COMMON |
 |---|---|---|---|

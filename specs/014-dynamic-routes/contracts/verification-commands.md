@@ -31,9 +31,9 @@ grep -rniE "Migrator|run_migration|cli::run_cli|migration::up" rust-api/server/s
 docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d postgres
 docker compose -f docker-compose.yml -f docker-compose.dev.yml run --rm migrate   # 套 001..010(含 014 menu policy seed)
 PSQL="docker compose -f docker-compose.yml -f docker-compose.dev.yml exec -T postgres psql -U soybean -d soybean_admin_rust -tAc"
-# 014 menu-visibility policy(act=menu)= 8 rows
+# 014 menu-visibility policy(act=menu)= 9 rows
 $PSQL "SELECT v0,v1 FROM casbin_rule WHERE v2='menu' ORDER BY v0,v1;"   # R_ADMIN:home/manage_user/manage_user-detail;R_SUPER:home/manage_*;R_USER_COMMON:home
-$PSQL "SELECT count(*) FROM casbin_rule WHERE v2='menu';"               # 8
+$PSQL "SELECT count(*) FROM casbin_rule WHERE v2='menu';"               # 9
 $PSQL "SELECT count(*) FROM casbin_rule WHERE v2='GET';"                # 2(013 endpoint policy 不受影響)
 ```
 
@@ -94,7 +94,7 @@ curl -fsS ":21081/route/isRouteExist?routeName=home" -H "Authorization: Bearer $
 ## 驗收紀律總結
 
 - §0 既有不破 + lint(--test)續綠 + prod build sanity + FR-009 regression
-- §1 menu policy seed 經 010 自動套(8 rows、act=menu)
+- §1 menu policy seed 經 010 自動套(9 rows、act=menu)
 - §2 getConstantRoutes 公開 5 條(US2/SC-002)
 - §3 getUserRoutes 三角色不同 + home(US1/SC-001)+ 3333
 - §4 isRouteExist allow(Super manage_role)+ **deny(User manage_role false)**(US3/SC-003)

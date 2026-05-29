@@ -55,7 +55,7 @@
 
 casbin_rule 維持 012 stock(v0=role,v1=route_name,v2="menu",v3-5='');**無 deleted_at**(治理留 #6)。
 
-**Rationale**：D3 三階梯 → 8 條 menu policy rows。seed migration(編號接 013 的 009 後 = **010**)。
+**Rationale**：D3 三階梯 → 9 條 menu policy rows(Super 5 + Admin 3 + User 1)。seed migration(編號接 013 的 009 後 = **010**)。
 
 ## R5. endpoint 認證
 

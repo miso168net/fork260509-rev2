@@ -39,7 +39,7 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d base-web
 ## 關鍵事實速查
 
 - **3 endpoint**:`/route/getConstantRoutes`(公開)/`/route/getUserRoutes`(JWT、enforce filter)/`/route/isRouteExist`(JWT、enforce)。
-- **menu 走 Casbin enforce**(§I.2):menu-visibility policy `p,role,route_name,menu`(8 rows seed、經 010)+ 013 enforcer;父層 tree-prune 算。
+- **menu 走 Casbin enforce**(§I.2):menu-visibility policy `p,role,route_name,menu`(9 rows seed、經 010)+ 013 enforcer;父層 tree-prune 算。
 - **route 定義程式內**(`server/src/route/menu.rs`),component 用 elegant-router `$` 複合格式(`layout.base$view.home`);**精確對齊 base-web `elegant/routes.ts`**(最高風險)。
 - **無新 dep / 無新表 / 無新 crate**;重用 013 enforcer/jwt/bearer/roles_for_user + 008 envelope。
 - **兩段式 commit**:rust-api worktree(route 模組 + migration 010)+ base-web `.env`。
