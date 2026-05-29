@@ -18,6 +18,7 @@
 
 - Phase 0 brainstorm 已凍結全部設計決策（D1 範圍＝機制 + sys_user 活體 proof、沿用 009 / D2 原子性＝audit 與資料變動同一交易 / D3 enforcement＝結構強綁唯一寫入入口、build-failing lint 留 follow-up）＋子決策（SOFT_DELETE payload_before=遮蔽後 row、payload_after=null / 0-rows 不寫 audit / operator·trace 現為空），見 [`docs/superpowers/011-audit-log.md`](../../docs/superpowers/011-audit-log.md)。本 feature 忠實落地，非自由設計。spec 0 [NEEDS CLARIFICATION]。
 - 對齊 [DESIGN §6.4 sys_operation_log](../../docs/INTEGRATION-DESIGN.md) schema 與 [§1.4 三方資料變動紀律](../../docs/INTEGRATION-DESIGN.md) 第 2 支柱；不變更 007 FR-009（server 不自動 migrate）、不變更 009 soft-delete facade 邊界。
+- `/speckit-clarify` 正式掃描（11 taxonomy 類別）結果：**全部 Clear / N-A、0 提問**。Interaction&UX / Integration 為 N-A（後端 infra、無 UI、無新外部依賴）；低影響項（audit data volume/scale、performance 目標、稽核保留期、同列並發軟刪 race）屬 ops/Phase 6 或 plan 階段細節，採 reasonable-default、非 spec-level critical ambiguity。無需正式 clarify，可直接進 `/speckit-plan`。
 
 ---
 
