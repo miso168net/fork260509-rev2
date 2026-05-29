@@ -57,6 +57,8 @@ fork260509-rev2/                            ← workspace root（傘狀 repo rev
 │   ├── INTEGRATION-DESIGN.md              ← ★ 設計權威 / 核心事實（rev2 架構與執行順序 §7.2）
 │   ├── INTEGRATION-CHECKLIST.md           ← 動態 todo（SOP 注入、不無限膨脹 §7.3）
 │   ├── INTEGRATION-MILESTONES.md          ← commit 里程碑永久紀錄（append-only，不在 SOP 注入 §7.4）
+│   ├── GRAPHIFY-NOTES.md                   ← graphify 圖譜現況統計 + 已知抽取限制（推論前必讀，§8.3）
+│   ├── REVIEW-<NNN>-<NNN>.md               ← Claude workflow review 彙整報告
 │   └── superpowers/                       ← 持久記憶 + brainstorm 決策（§7.4）
 │       └── <NNN>-<feature-name>.md        ← 每個 feature 的 Phase 0 brainstorm
 ├── specs/                                 ← spec-kit feature 規格目錄（每 feature 一個 <NNN>-<feature-name>/；工作流見 §3）
@@ -74,7 +76,7 @@ fork260509-rev2/                            ← workspace root（傘狀 repo rev
 ├── fork260509-rev2-anew-rust-api/         ← Rust axum + Casbin backend，rust-api worktree 源倉（gitignored，本機必留）
 ├── base-web/                              ← worktree + submodule（外層記 gitlink SHA）
 ├── rust-api/                              ← worktree + submodule（外層記 gitlink SHA）
-├── docker-compose.yml                     ← outer root compose；dev/prod override = docker-compose.{dev,prod}.yml（見 §8.2）
+├── docker-compose.yml                     ← outer root compose（service：front-nginx/base-web/rust-api/postgres/redis-stack + migrate〔010 自動套〕/acme〔prod profile〕）；override = docker-compose.{dev,prod}.yml；另有 docker-compose.{base-web,rust-api}.yml standalone（見 §8.2）
 └── deploy/                                ← 部署支援檔（nginx conf / secrets / dev-certs / cleanup 等；見 §8.2）
 ```
 
@@ -109,10 +111,14 @@ fork260509-rev2/                            ← workspace root（傘狀 repo rev
 
 **Phase 0 research 紀律**（`research.md` 必含以下 grep 結果、不信 brainstorm 階段的命名/抽象假設）：
 
-- **rust service trait 真實返回型 grep**：`grep "Result<" rust-api/server/service/src/admin/sys_*_service.rs` —— 不同 entity 的 service 設計可能不一致（有的返 sanitized DTO、有的返 raw model），spec 設計 wire DTO 前須對齊。
+- **rust facade/entity 真實返回型 grep**：`grep -rnE "pub (async )?fn|Result<" rust-api/server/src/model/facade/sys_*.rs`（再對照 `rust-api/entity/src/sys_*.rs` 的 SeaORM `Model` 欄位）—— rev2 **無 rev1 那種 `service` trait 層**，entity 存取唯一管道是 **facade**（009 build-time lint 強制、不 re-export `Entity`）。不同 entity 的 facade fn 可能返 raw `Model`、也可能返過濾/sanitized 形（如 `find_active_*` 濾 soft-deleted、redact password），spec 設計 wire DTO 前須對齊 facade 實際返回型。
 - **wire 鏈條 3 端對齊 grep**：對每條 wire endpoint，**同時** grep（a）rust handler 真實 return type / DTO field 型，（b）base-web `service/api/*.ts` 內 inline type 與 `typings/api/*.d.ts` 宣告型，（c）frontend component 對該 wire 的內部 state 型。3 端不對齊 = runtime bug 或 type lie。
 - **struct/function 命名對照 grep**：`data-model.md` 內每個 `file:line` 引用務必 grep 真實命名；spec 階段的 brainstorm 推測命名常與 actual code 不一致，implementer 須 act on actual code 而非盲信 spec naming。
 - **CDP smoke defer 風險自覺**：若 `contracts/verification-commands.md` 內 CDP browser smoke 計劃 defer、要在 spec 內明示「curl 直送 ≠ base-web modal 對齊」風險、並在 follow-up backlog 登記補測。
+
+**Phase 1 verification-commands.md 紀律**（`/speckit-plan` 產 `contracts/verification-commands.md` 時必守）：
+
+- **新增 workspace crate ⇒ acceptance 必含 prod image build**：凡 feature 新增 rust workspace member（新 crate；僅加模組到既有 crate 不受影響），`contracts/verification-commands.md` **必含一條 prod target image build**（`docker compose -f docker-compose.yml -f docker-compose.prod.yml build rust-api`，或 `--target builder/runtime`），**不得只靠 dev docker bind-mount 驗**。理由：dev bind-mount 整個 `rust-api/` 會遮住 prod multi-stage Dockerfile 逐 crate `COPY` 缺口，破口逃過 feature acceptance、拖到下游 deploy 才爆（009/010/012 三度被咬，見 [INTEGRATION-CHECKLIST §2.13](docs/INTEGRATION-CHECKLIST.md) + [REVIEW-006-013 §4.1](docs/REVIEW-006-013.md)）。
 
 **═══ 交棒物件：`specs/<NNN>-<feature-name>/tasks.md` ═══**
 
@@ -385,7 +391,7 @@ rev2 整合的核心 docs 階層,內容由「研究歷史」→「設計權威�
 
 - **`.specify/memory/constitution.md`** — v1.0.0 將從 DESIGN §11 拍板 + §7 軌道清單提取凍結為**不可違反的權威**(更高層、需 amendment 流程才能改)
 - **`docs/INTEGRATION-MILESTONES.md`** — 永久紀錄(append-only、不在 SOP 注入、避免 CHECKLIST 膨脹);**§1 commit 里程碑表 + §2「✅ 完成+歸檔」(從 CHECKLIST §2 搬來的已完成 follow-up 細節)**;歸檔流程見 §7.5
-- **`docs/superpowers/000-base-web-docker-bootstrap.md`** — base-web docker-compose 落地過程的持久記憶(暫定存放位置)
+- **`docs/superpowers/000-base-web-docker-bootstrap.md`** — 持久記憶 base-web docker bootstrap; **操作 CDP 的參考文件**(§5 CDP 9229 登入驗證 gotchas + Appendix A 可直接跑的 CDP node scripts)
 - **`docs/superpowers/<NNN>-<feature-name>.md`** — 每個 spec-kit feature 的 Phase 0 brainstorm 決策(見 §3 階段 0、DESIGN §11.12 拍板)
 
 ### 7.5 內容流向 + commit 歸檔流程
@@ -420,7 +426,7 @@ feature 啟動  →  docs/superpowers/<NNN>-<feature-name>.md(brainstorm)
 
 由 `rust-api/migration/src/m20260529_000002_seed_sys_user.rs` seed（建表在 `m20260529_000001_create_sys_user.rs`；feature 007 落地）：
 
-| id | 帳號（`user_name`） | 對應角色（Phase 3 才接） | 密碼 |
+| id | 帳號（`user_name`） | 對應角色（`sys_role.code`） | 密碼 |
 |---|---|---|---|
 | 1 | `Super` | 超級管理員（`R_SUPER`） | `123456` |
 | 2 | `Admin` | admin（`R_ADMIN`） | 同上 |
@@ -428,7 +434,7 @@ feature 啟動  →  docs/superpowers/<NNN>-<feature-name>.md(brainstorm)
 
 - **rev2 權威名 = `Super`/`Admin`/`User`**（對齊 base-web mock ground truth + DESIGN §11.1 拍板）。早期此節引用的 rev1 `Soybean`/`Administrator`/`GeneralUser`（及 `migration/src/datas/m20241024_*` 路徑）**在 rev2 不存在、已淘汰,勿再用**。
 - 3 個 user 共用同一個 **runtime 生成**的 argon2id 雜湊（random salt：每次重跑 migration 雜湊字串不同,但都驗得過 plaintext `123456`）— 非寫死固定 hash。
-- 目前 `sys_user` 僅最小欄位 `id` / `user_name` / `password`（007 proof）。**「對應角色」欄為設計意圖、尚非 DB 欄位**：role 由 `sys_role` join 在 Phase 3 組裝（含 `User → User01` 的 getUserInfo alias，亦 Phase 3）；完整 7-entity schema 屬 soft-delete(#2)。
+- `sys_user` 欄位現為 `id` / `user_name` / `password` / `nick_name`（013 加）/ `deleted_at`（009 soft-delete）。**「對應角色」已是實際 DB 資料**（非設計意圖）：`sys_role` / `sys_user_role` 已建表並 seed（013 migration 006/007，`1→R_SUPER`、`2→R_ADMIN`、`3→R_USER_COMMON`，role_id 以 `code` subquery 解析）；getUserInfo 即時 join 組裝 roles + `User → User01` alias（013 落地）。完整 7-entity schema 仍待 soft-delete(#2)。
 
 ### 8.2 容器 endpoint 與 port 配置
 
