@@ -350,10 +350,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/010-migration-auto-apply/spec.md`](specs/010-migration-auto-apply/spec.md)
-**Active Plan**: [`specs/010-migration-auto-apply/plan.md`](specs/010-migration-auto-apply/plan.md)
-**Phase**: **✅ 完整實作+驗收+merge 回 `rev2-admin-root`(merge `e4ff2b2`,010 branch 保留)**。dev/prod stack `up` 自動套 sea-orm migration、API 起來前完成、失敗 fail-fast:一次性 `migrate` service(dev `cargo run --bin migration up` / prod entrypoint dispatcher `migration up`)+ `rust-api depends_on migrate: service_completed_successfully` 閘門。守 007 FR-009(server 不自動 migrate)。**outer-only**(3 外層 compose + `deploy/Dockerfile.rust-api.txt`〔009 entity workspace 缺口修補、Deviation D-1、user 授權〕,無兩段式 commit)。三向 acceptance(dev US1 自動套+冪等 / prod US2 對齊 001/002/003 / fail-fast US3)親驗 + Constitution 7+7=14 ✅ + final holistic review = Ready
-**下一步**: 已補掉 [CHECKLIST §2.10/§2.12](docs/INTEGRATION-CHECKLIST.md) migration 套用 gap。**audit log feature 前置已備(依 soft-delete + 自動 migration)、可接棒**;下個 feature `/speckit-specify` 起 `before_specify` pre-hook 會建新 feature branch
+**Active Spec**: [`specs/011-audit-log/spec.md`](specs/011-audit-log/spec.md)
+**Active Plan**: [`specs/011-audit-log/plan.md`](specs/011-audit-log/plan.md)
+**Phase**: ✅ **011-audit-log 全完成**(階段 0 brainstorm → 階段 1 SDD specify/clarify/plan/tasks/analyze → 階段 2 TDD 實作 4 unit/15 task,各 spec+quality 雙審 + opus final holistic review = READY TO MERGE)。交付:`sys_operation_log` 表(migration 004、經 010 自動套、append-only 非 SoftDeletable)+ `audit.rs`(`AuditEvent`/`AuditSerialize` + **`mutate_in_txn` codebase 首個 transaction、唯一原子寫入入口**、不含 `entity::`)+ `facade/sys_operation_log::write_in_txn`(唯一 entity 寫入管道、保 009 lint route b);活體 proof:`sys_user::soft_delete` 接 `mutate_in_txn` 同 txn 原子寫 SOFT_DELETE + redact password→`"<redacted>"` + 回 `Result<bool>`(0-rows no-op)。live-DB 抓修真實 bug(`operator_ip` INET `Set(None)`→PG 42804、改 `None→NotSet`)。守 007 FR-009 + 009 facade 邊界(lint 續綠);**兩段式 commit**(rust-api worktree 7 commits 已 push fork、外層 SHA pin `5a72560`);Constitution 7+7=14 ✅。回填 DESIGN §6.4/§10、CHECKLIST、MILESTONES
+**下一步**: merge `--no-ff` 011-audit-log 回 `rev2-admin-root`(feature branch 保留)。Phase 2 P1 餘:soft-delete 6-entity rollout(沿用 009 pattern)/ audit 其他 operation·entity 接線(沿用 011 `mutate_in_txn` pattern)/ 「facade 內漏配 audit」build-failing lint(011 defer 的 follow-up)/ sub-crate(需 §11.6 拍板)
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
