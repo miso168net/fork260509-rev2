@@ -167,3 +167,13 @@ Phase 1 設計完成後重跑 7 項：
 > - **wire DTO camelCase 對齊**：rust serde `rename_all="camelCase"` 須精確對齊 base-web `auth.d.ts`（`refreshToken`/`userId`/`userName`）;3 端不一致 = runtime/type bug（活體 + CDP smoke 抓）。
 > - **CDP smoke 的 base-web 設定/build 相依**（R8）：vite build-time env、base-web 指向 rev2 需改 `.env` + 可能重 build（連動 §2.8/§5.5）;若阻礙致 CDP defer → 記 Deviation + Follow-up 補測（CLAUDE.md §3 風險自覺）。
 > - **enforce Enforcer 可變性**：`Arc<RwLock<Enforcer>>` 在 axum middleware 的並發 load/enforce;若遇鎖競爭/型別問題 → 評估 casbin `CachedEnforcer` 或調整,記 Deviation。
+
+---
+
+## Deviation Log（Constitution §V — implement 階段實際偏離 plan/data-model 處）
+
+> executing-plans（subagent-driven-development）實作期間記錄。皆非 Constitution violation,屬 data-model 未列盡的必要實作細節。
+
+- **D-001（T007）AppState 增 `jwt: JwtConfig` 欄**：data-model §6 僅列 `AppState { db, redis, enforcer }`,但 login/getUserInfo/refresh handler 需 JWT secret + TTL 才能簽/驗,而 `JwtConfig` 原僅存在 `main()` boot 的 local `AppConfig`。故 `state.rs` 的 `AppState` 增 `jwt: JwtConfig`(Clone、boot 時 `config.jwt.clone()` 注入);純函式 `auth::jwt::{sign,verify}` 仍以 param 收 secret/ttl(保持可測純度),handler 從 `state.jwt.*` 餵入。**理由**:最小且必要,不違反任何拍板;`enforcer` 仍於 T011 另加。
+- **D-002（T007）`argon2` 加入 server crate deps**：`argon2 = "0.5.3"` 原僅在 `[workspace.dependencies]` + `migration` crate 使用,`server` crate 未宣告。login 需 argon2 verify → `server/Cargo.toml` 加 `argon2.workspace = true`。**非新 lockfile dep**(argon2 已在 lock、無版本變動、無新 package),僅補 server crate 的 dep edge。
+- **D-003（T007,observation/defer）user-enumeration timing side-channel**：login 的 user-not-found 路徑跳過 argon2 verify(快),found-but-wrong-password 走 argon2(慢 ~數十 ms),為 username 列舉 timing oracle。此威脅模型(admin panel、固定 3 帳號 seed、最小機制證明、無公開註冊)下 **note-and-defer**,登記 [CHECKLIST Follow-up Backlog](../../docs/INTEGRATION-CHECKLIST.md);未來真用戶註冊流程落地時,標準緩解=not-found 路徑對固定 dummy hash 做一次 argon2 verify 以等化時序。
