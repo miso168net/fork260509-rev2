@@ -17,10 +17,11 @@
 ### Session 2026-05-30
 
 - Phase 0 brainstorm 已凍結全部設計決策（D1-D8），見 [`docs/superpowers/014-dynamic-routes.md`](../../docs/superpowers/014-dynamic-routes.md)。本 feature 忠實落地、非自由設計。
-- **D1 範圍＝最小 wire 證明**：實作 3 個路由 endpoint + 把 base-web 翻 dynamic mode；route 定義程式內寫死、角色過濾用程式內 `role→[route]` map。**不**建選單資料表、**不**做選單 CRUD、**不**走授權政策（Casbin）驅動路由、**不**做政策失效通知（redis pub-sub）——皆後續階段。
+- **⚠️ 2026-05-30 re-scope（Constitution §I.2 對齊）**：`/speckit-plan` Constitution Check 抓到原「程式內 `role→route` map 過濾」**違反 §I.2**（業務 menu 必走 Casbin enforce 過濾）。user 拍板改:**選單可見性 seed 成授權政策（Casbin `p,role,route_name,menu`）+ 取選單/查存在性用既有授權引擎（013 enforcer）過濾**;route 定義仍程式內寫死、各角色可見範圍（D3）不變。下方 D1/D4 + FR/Entities 已反映。
+- **D1 範圍＝最小 wire 證明 + 選單走授權引擎過濾**：實作 3 個路由 endpoint + 把 base-web 翻 dynamic mode；route 定義程式內寫死,但**選單可見性走授權引擎（Casbin enforce）過濾**（§I.2）:選單可見性 seed 成授權政策（經既有自動結構機制套用）+ 取選單/查存在性用既有授權引擎過濾。**不**建選單資料表、**不**做選單 CRUD、**不**做全路由端點存取授權矩陣（後續、本 feature 只 seed 選單可見性政策）、**不**做政策治理（軟刪/CRUD）、**不**做政策失效通知（pub-sub）——皆後續階段。
 - **D2 route 涵蓋＝真實業務 menu**：鏡像 base-web 真實「系统管理」整棵（user/role/menu/user-detail）+ 首页；**不**含 demo menu。常數路由＝登入頁 + 403/404/500（對齊 mock）。
 - **D3 角色↔menu 可見範圍**：Super＝全部；Admin＝首页 + 系统管理（僅用户管理 + 使用者明細）；User＝**只有首页**。父層「系统管理」若某角色無任何可見子項則整個不回。
-- **D4 角色來源＝即時查權威資料源**：getUserRoutes 的角色由後端即時查使用者-角色關聯（與 getUserInfo 一致），非僅讀憑證內快照。撤權即時性（憑證快照 vs 即時查）之完整取捨留完整授權 rollout 階段。
+- **D4 角色來源＝即時查權威資料源**：getUserRoutes 的角色由後端即時查使用者-角色關聯（與 getUserInfo 一致），非僅讀憑證內快照 → 對每條候選選單以該使用者角色經授權引擎判斷可見性（任一角色允許即可見、父層無可見子項則略過）。撤權即時性（憑證快照 vs 即時查）之完整取捨留完整授權 rollout 階段。
 - **D5 endpoint 認證**：getConstantRoutes **公開**（無需憑證、應用啟動即觸發）；getUserRoutes / isRouteExist 需有效存取憑證（無效/過期/缺失回 `3333`）；三 endpoint 皆**不**做角色攔截（人人可呼叫拿「自己的」menu，過濾在端點內以角色 map 完成）。
 - **D6 isRouteExist＝依角色過濾**：回「該路由名是否存在於**該使用者可見的**路由集合」；不可見即回否（讓前端導向擋掉越權路由）。
 - **D7 home 欄＝固定首页路由鍵**；路由識別碼為字串型（對齊前端 typings）。
@@ -92,8 +93,9 @@
 
 **依角色供應選單（核心）**
 
-- **FR-001**：系統 MUST 提供「取回當前使用者選單/路由」能力（需有效存取憑證），回一份依該使用者角色過濾的路由清單 + 首页鍵；角色 MUST 由系統權威資料源（使用者-角色關聯）即時導出。
+- **FR-001**：系統 MUST 提供「取回當前使用者選單/路由」能力（需有效存取憑證），回一份依該使用者角色過濾的路由清單 + 首页鍵；角色 MUST 由系統權威資料源（使用者-角色關聯）即時導出；**選單可見性過濾 MUST 經授權引擎（Casbin enforce）判斷**（§I.2 核心原則：業務選單走授權引擎過濾），非程式內寫死對應。
 - **FR-002**：選單可見範圍 MUST 依角色為：`Super`＝全部（首页 + 系统管理：用户管理/角色管理/菜单管理/使用者明細）；`Admin`＝首页 + 系统管理（僅用户管理 + 使用者明細）；`User`＝**只有首页**。父層群組若該角色無任何可見子項 MUST 整個略過。
+- **FR-002a**：選單可見性 MUST 以授權政策表達（角色×選單），且 MUST 由既有自動結構機制 seed（守「系統啟動不自行套結構」）；政策治理（軟刪/CRUD）out-of-scope。
 - **FR-003**：取使用者選單時存取憑證無效/過期/缺失 MUST 回 `3333`。
 
 **常數路由（公開）**
@@ -102,7 +104,7 @@
 
 **路由存在性查驗**
 
-- **FR-005**：系統 MUST 提供「查驗某路由名是否為當前使用者可見」能力（需有效存取憑證），依該使用者角色過濾——不可見即回否。
+- **FR-005**：系統 MUST 提供「查驗某路由名是否為當前使用者可見」能力（需有效存取憑證），經授權引擎依該使用者角色判斷——不可見即回否。
 
 **契約 / 形狀**
 
@@ -117,7 +119,7 @@
 ### Key Entities
 
 - **路由/選單項（route/menu item）**：一條可導向路由的描述（識別碼、名稱、路徑、元件、中繼資料、子項）；本 feature 以程式內定義（非資料表）。
-- **角色↔路由可見性對應（role→route map）**：以角色為主體的「可見路由名集合」；本 feature 以程式內 map 表達（非授權政策儲存）。
+- **選單可見性授權政策（menu-visibility policy）**：以「角色 × 選單路由名」表達的可見性規則；本 feature 以既有授權政策儲存 seed（角色為主體、判斷某角色是否可見某選單），由既有授權引擎於取選單時 enforce。
 - **常數路由集（constant routes）**：登入前可用的固定路由（登入頁 + 錯誤頁）。
 - **使用者選單（user route set）**：依當前使用者角色過濾後的路由清單 + 首页鍵。
 
@@ -134,11 +136,11 @@
 
 - **設計決策已凍結**：brainstorm D1-D8（2026-05-30 user 親決），見 [`docs/superpowers/014-dynamic-routes.md`](../../docs/superpowers/014-dynamic-routes.md)；本 feature 忠實落地。
 - **base-web wire 為權威**：三端點形狀對齊 base-web `typings/api/route.d.ts` + `service/api/route.ts` + mock（[MOCK §4.13](../../docs/MOCK-COVERAGE-AUDIT.md)）；路由物件精確 shape（元件鍵/中繼資料欄）於 plan 階段 grep base-web 真實路由定義取得。
-- **承接 013**：login/getUserInfo/JWT 驗證/bearer 解析/角色查詢（roles_for_user）皆 013 已備；base-web 已指向 rev2（013 `.env.test`），本 feature 加 dynamic 模式開關。
-- **角色過濾程式內**：以程式內 `role→[route]` map（沿用 013 buttons 矩陣模式），非授權政策儲存。
+- **承接 013**：login/getUserInfo/JWT 驗證/bearer 解析/角色查詢（roles_for_user）/**授權引擎（enforcer）+ 授權政策儲存** 皆 013 已備；base-web 已指向 rev2（013 `.env.test`），本 feature 加 dynamic 模式開關。
+- **選單可見性走授權引擎**：sed 選單可見性政策（角色×選單）+ 取選單/查存在性經既有授權引擎（013 enforcer）過濾（§I.2 核心原則），非程式內寫死對應；route 物件**定義**仍程式內寫死。
 - **活體驗收對 dev stack**：對真實服務做活體 smoke（curl）+ 瀏覽器端到端驗證。
 - **兩段式提交**：動到後端原始碼工作區（新增路由端點 + 路由定義）+ base-web `.env`（dynamic 模式開關），依工作區慣例走兩段式提交。
 
 ### 不在 scope
 
-選單資料表（sys_menu）/ 選單樹建構 / 選單 CRUD 表格化管理；授權政策（Casbin）驅動路由（route 也走 enforce）；政策/路由失效通知通道（redis pub-sub）；demo 選單（function/plugin/alova/document 等）；換發憑證快照 vs 即時查的撤權即時性完整拍板。
+選單資料表（sys_menu）/ 選單樹建構 / 選單 CRUD 表格化管理；**全路由端點存取授權矩陣**（對每個 HTTP 端點×動作掛授權攔截、三角色×全端點——本 feature 只 seed「選單可見性」政策、route 端點本身不掛存取攔截）；授權政策治理（軟刪可復原 / CRUD）；政策/路由失效通知通道（redis pub-sub）；demo 選單（function/plugin/alova/document 等）；換發憑證快照 vs 即時查的撤權即時性完整拍板。
