@@ -8,7 +8,7 @@
 
 ## 1. Current Focus
 
-**階段**:**Phase 1 P0 部署基建全數完成(#1~#5)**;**Phase 2 P1 進行中 — 007-db-redis-connection(DB/Redis 連線層 + migration proof)、008-response-envelope(統一回應信封 `Res<T>` + `BizCode` 矩陣 + `AppError` + 404 fallback)、009-soft-delete-infra(soft-delete 三重防護:trait / facade / build-time lint + `sys_user` proof)、010-migration-auto-apply(dev/prod stack `up` 自動套 migration + `service_completed_successfully` fail-fast 閘門)、011-audit-log(統一 audit 基礎設施:`sys_operation_log` 表 + `mutate_in_txn` 唯一原子寫入入口 + redact,以 `sys_user soft_delete` 作活體 proof)皆完整實作+驗收+merge 回 `rev2-admin-root`**。Phase 2 餘:soft-delete 6-entity rollout(各自被建時沿用 pattern)/ audit 其他 operation·entity 接線(沿用 011 `mutate_in_txn` pattern)/ sub-crate setup(§11.6 **已拍板**:sea-orm-adapter/xdb 拷貝 + axum-casbin 重寫;未啟動、Phase 3 RBAC 前置);**JWT 機密管理已由 005/007 吸收 ✅**(見 [§4 Phase 2](#phase-2--p1-基礎設施對齊-design-§10-phase-2integration-designmd已啟動))。
+**階段**:**Phase 1 P0 部署基建全數完成(#1~#5)**;**Phase 2 P1 進行中 — 007-db-redis-connection(DB/Redis 連線層 + migration proof)、008-response-envelope(統一回應信封 `Res<T>` + `BizCode` 矩陣 + `AppError` + 404 fallback)、009-soft-delete-infra(soft-delete 三重防護:trait / facade / build-time lint + `sys_user` proof)、010-migration-auto-apply(dev/prod stack `up` 自動套 migration + `service_completed_successfully` fail-fast 閘門)、011-audit-log(統一 audit 基礎設施:`sys_operation_log` 表 + `mutate_in_txn` 唯一原子寫入入口 + redact,以 `sys_user soft_delete` 作活體 proof)皆完整實作+驗收+merge 回 `rev2-admin-root`**。Phase 2 餘:soft-delete 6-entity rollout(各自被建時沿用 pattern)/ audit 其他 operation·entity 接線(沿用 011 `mutate_in_txn` pattern)/ sub-crate setup(§11.6 **已拍板**:sea-orm-adapter/xdb 拷貝 + axum-casbin 重寫;未啟動、Phase 3 RBAC 前置);**JWT 機密管理已由 005/007 吸收 ✅**(見 [§4 Roadmap Phase 2](#4-roadmap--phase-狀態))。
 
 **最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
 - **2026-05-29 011-audit-log 完整實作 + 驗收 + merge**(SHA pin `5a72560` / rust-api worktree 7 commits `8838579..5a72560` 已 push fork;**兩段式 commit**)— subagent-driven-development(4 unit / 15 task,各 spec+quality 雙審 + opus final holistic review = READY TO MERGE)/ 統一 audit 基礎設施:`sys_operation_log` 表(migration 004、經 010 自動套、append-only 非 SoftDeletable)+ `audit.rs` 純資料層(`AuditEvent`/`AuditOperation`/`AuditSerialize` + **`mutate_in_txn` codebase 首個 transaction、唯一原子寫入入口**、不含 `entity::`)+ `facade/sys_operation_log::write_in_txn`(唯一 entity 寫入管道、保 009 lint route b)/ 活體 proof:`sys_user::soft_delete` 接 `mutate_in_txn` 同 txn 原子寫 SOFT_DELETE + redact password→`"<redacted>"` + 回傳 `Result<bool>`(false=0-rows no-op)/ **live-DB 抓修真實 bug**:`operator_ip` INET 欄 `Set(None)` 觸 PG 42804 → 改 `None→NotSet`(Some-path Phase3 defer)/ 測試:redact + write_in_txn SQL-build 純單測 + 3 `#[ignore]` live 驗收(1筆redact / 原子rollback / 0-rows no-op)親驗 / 守 007 FR-009 + 009 facade 邊界(lint 續綠) / scope:只 SOFT_DELETE 接線、無 HTTP middleware、無其他 entity rollout、漏-audit build-lint defer follow-up / Constitution 7+7=14 ✅ / 011 branch 保留
@@ -83,14 +83,15 @@
 
 > 5 feature 全交(001 rust-api Dockerfile `a21e932` / 002 base-web Dockerfile `a70fa5f` / 003 TLS cert `cb5e1a1` / 004 compose 編排 `b4294c7` / 005 secret 注入 `068b2a8`),各 feature branch 保留供 audit;詳細 deliverable 見 [DESIGN §10 Phase 1](INTEGRATION-DESIGN.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
 
-### Phase 2 — P1 基礎設施(對齊 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md);已啟動)
+### Phase 2 — P1 基礎設施(對齊 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md);**6/7 完成,餘 sub-crate setup**)
 
 - [x] **DB/Redis 連線層 + migration pipeline proof feature(007)** ✅ (2026-05-29 merge `928949d`)— rust-api boot 連 Postgres+Redis(fail-fast)+ AppState + migration runner + sys_user proof seed
 - [x] **envelope 對齊 feature(008)** ✅ (2026-05-29 merge `7bdf5bb`)— `Res<T>{data,code,msg}` + `IntoResponse` + `BizCode` 12-variant 矩陣 + `AppError`(NotFound→404/Internal→500)+ axum 404 `.fallback()`;camelCase 留 Phase 4 DTO
 - [x] **JWT 機密管理** ✅ (已由 005 secret 注入 + 007 config 吸收,非獨立 feature)— `AppConfig::load()` 載 `APP_JWT_JWT_SECRET`/`APP_JWT_REFRESH_TOKEN_SECRET`(`_FILE` precedence + `validate_secret` 空/placeholder/≥32)+ `JwtConfig`(含 TTL)+ compose dev/prod 接線 + secrets `.example` + 單測(見 [DESIGN §6.1](INTEGRATION-DESIGN.md))
 - [x] **soft-delete 基礎設施 feature(009)** ✅ (2026-05-29 merge `88312b6`)— 立三重防護機制(SoftDeletable trait / facade 唯一管道 / build-failing lint)+ 套 `sys_user` proof(`deleted_at` + partial unique index);新增 workspace member `entity` crate。6 entity rollout 延後(各自被建時沿用 pattern)
-- [ ] audit log 基礎設施 feature
-- [ ] sub-crate setup feature(`axum-casbin` 重寫 / `sea-orm-adapter` + `xdb` 拷貝)
+- [x] **migration auto-apply feature(010)** ✅ (2026-05-29 merge `e4ff2b2`;outer-only)— dev/prod stack `up` 自動套 sea-orm migration:一次性 `migrate` service + `rust-api depends_on migrate: service_completed_successfully` 閘門、API 起來前完成、失敗 fail-fast;守 007 FR-009(server 不自動 migrate)。補掉手動 migration gap
+- [x] **audit log 基礎設施 feature(011)** ✅ (2026-05-29 merge `2be489f` / SHA pin `5a72560`)— 統一 audit:`sys_operation_log` 表(migration 004、經 010 自動套、append-only 非 SoftDeletable)+ `mutate_in_txn` 唯一原子寫入入口 + `AuditSerialize` redact;`sys_user soft_delete` 活體 proof(同 txn 原子寫 SOFT_DELETE + redact password)。守 007 FR-009 + 009 facade 邊界(lint 續綠)。其他 operation·entity 接線 / 漏-audit lint 延後(見 [§2.14](#214-feature-011-audit-log-follow-up))
+- [ ] **sub-crate setup feature**(§11.6 已拍板:`axum-casbin` 重寫 / `sea-orm-adapter` + `xdb` 拷貝)— Phase 2 最後 P1 feature、Phase 3 RBAC 前置、首個觸 RUSTAPI-SOURCE-ISOLATION ★ 軌道的 rev1 拷貝
 
 ### Phase 3 — P2 認證 + 動態 menu(對齊 [DESIGN §10 Phase 3](INTEGRATION-DESIGN.md);尚未啟動)
 
