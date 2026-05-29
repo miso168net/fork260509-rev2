@@ -125,6 +125,7 @@
 - **沿用 009 soft-delete 基礎設施**（facade / trait / 既有 build-failing entity-access lint）作為寫入邊界與模板；既有 entity-access lint 已使資料存取只能經 facade。
 - **沿用 010 自動 migration**：新稽核表經既有「stack `up` 自動套用」機制建立，無需手動 migration。
 - **唯一現存寫入路徑為軟刪 user**：其餘 entity / HTTP 請求層稽核 / 新增·更新·還原 的真實接線留後續（各業務 endpoint 建立時 rollout）。
+- **三 user story 共用同一寫入路徑（優先級＝價值順序、非可拆分交付順序）**：US1（原子留稽核）/ US2（redact）/ US3（0-rows）皆繞 `sys_user soft_delete` 一條路徑；US1 接線在編譯期呼叫 US2 的 redact（`audit_json`），故 US2 的 redact 實作為 US1 正確 proof 的前置。屬 cohesive infra feature 的刻意耦合（非缺陷）；實作以同一 implementer 連續處理（見 [tasks.md](./tasks.md) Dependencies），各 story 仍各有獨立可驗的性質（US1 原子性 / US2 遮蔽 / US3 no-op）。
 - **操作者/追蹤情境欄位現為空**：本階段尚無認證與請求中介層（Phase 3 才有），示範以系統動作（操作者為空）寫入；欄位預留以供日後填。
 - **enforcement 的建置期 lint（防 facade 內寫入漏配稽核）留 follow-up**：本階段以統一寫入入口的結構綁定 + 文件慣例保證；可靠的 grep 規則待 Phase 3+ 多寫入路徑時連同 rollout 立。
 - **兩段式 commit**：本 feature 動 rust-api worktree（稽核表 / 稽核模組 / 既有軟刪路徑），依 [CLAUDE.md §4.1](../../CLAUDE.md) 走兩段式 commit（與 010 outer-only 不同）。

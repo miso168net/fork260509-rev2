@@ -56,6 +56,7 @@
 | `trace_id` | `Option<String>` | 本 feature None |
 
 > `AuditEvent` 為**純資料**（不 import entity）—— 由 facade 層（持有 entity 寫入權）轉成 `sys_operation_log::ActiveModel`，保 009 entity-access lint 續綠（research R6 路線 b）。`write_in_txn` 收 `AuditEvent` + `&DatabaseTransaction`。
+> **欄位對映**（`AuditEvent` → `sys_operation_log` 兩欄）：`operator_id = operator.map(|o| o.id)`、`operator_ip = operator.and_then(|o| o.ip)`（本 feature `operator=None` → 兩欄皆 NULL）。
 
 ### `AuditSerialize`（trait）
 

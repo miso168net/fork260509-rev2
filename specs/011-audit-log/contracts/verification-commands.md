@@ -6,7 +6,7 @@
 > - **純邏輯單元 → test-first**：`AuditSerialize` redact、`write_in_txn` insert statement 形狀（純 SQL-build，仿 009 `soft_delete_query` 的 `QueryTrait::build` 斷言）。
 > - **原子性（rollback）/ 1-筆 / 0-rows 行為**需**真實 DB transaction** 才能證 → 整合驗證對 **dev stack live postgres**（`127.0.0.1:25432`、`soybean` / `soybean_admin_rust`，010 自動套表後）。
 > - **無 HTTP 業務 endpoint / 無 base-web modal → 無 CDP/curl 業務消費者**：soft_delete 為 facade fn，整合測試/驗證直接呼叫 facade（或 sea-orm 連 live DB），非經 HTTP。
-> **§0.1 整合測試харness**：implementer 擇一並於 tasks 註明 —— (a) `server/tests/` 整合測試連 `DATABASE_URL`（dev postgres）跑 soft_delete 後斷言;(b) 一次性 driver + psql 驗。**權威斷言 = `sys_operation_log` 實際列內容 + `sys_user.deleted_at` 狀態**。
+> **§0.1 整合測試 harness**：**採路線 (a)** —— `server/tests/` 整合測試連 `DATABASE_URL`（dev postgres `127.0.0.1:25432`）跑 soft_delete 後斷言（可重跑、CI 友善）；DB 不可達時以 `#[ignore]` 或 env-gate 跳過（純單測 §1 仍涵蓋 redact/SQL-build 邏輯）。**權威斷言 = `sys_operation_log` 實際列內容 + `sys_user.deleted_at` 狀態**。
 > DB user `soybean` / db `soybean_admin_rust`（以 `deploy/secrets/database_url.txt` 為準）。
 
 ---
