@@ -91,7 +91,7 @@
 - [x] **soft-delete 基礎設施 feature(009)** ✅ (2026-05-29 merge `88312b6`)— 立三重防護機制(SoftDeletable trait / facade 唯一管道 / build-failing lint)+ 套 `sys_user` proof(`deleted_at` + partial unique index);新增 workspace member `entity` crate。6 entity rollout 延後(各自被建時沿用 pattern)
 - [x] **migration auto-apply feature(010)** ✅ (2026-05-29 merge `e4ff2b2`;outer-only)— dev/prod stack `up` 自動套 sea-orm migration:一次性 `migrate` service + `rust-api depends_on migrate: service_completed_successfully` 閘門、API 起來前完成、失敗 fail-fast;守 007 FR-009(server 不自動 migrate)。補掉手動 migration gap
 - [x] **audit log 基礎設施 feature(011)** ✅ (2026-05-29 merge `2be489f` / SHA pin `5a72560`)— 統一 audit:`sys_operation_log` 表(migration 004、經 010 自動套、append-only 非 SoftDeletable)+ `mutate_in_txn` 唯一原子寫入入口 + `AuditSerialize` redact;`sys_user soft_delete` 活體 proof(同 txn 原子寫 SOFT_DELETE + redact password)。守 007 FR-009 + 009 facade 邊界(lint 續綠)。其他 operation·entity 接線 / 漏-audit lint 延後(見 [§2.14](#214-feature-011-audit-log-follow-up))
-- [ ] **sub-crate setup feature**(§11.6 已拍板:`axum-casbin` 重寫 / `sea-orm-adapter` + `xdb` 拷貝)— Phase 2 最後 P1 feature、Phase 3 RBAC 前置、首個觸 RUSTAPI-SOURCE-ISOLATION ★ 軌道的 rev1 拷貝
+- [ ] **sub-crate setup feature(012)** — **只拷貝 `sea-orm-adapter` + `xdb`**(runtime async-std→tokio 對齊 + casbin_rule 建表 migration〔stock schema、無 soft-delete〕+ 兩 crate 活體 smoke);Phase 2 最後 P1 feature、首個觸 RUSTAPI-SOURCE-ISOLATION 例外的 rev1 拷貝(§11.6 授權)。**`axum-casbin` 重寫已重定位 Phase 3**(2026-05-29 012 brainstorm:需 enforce 點/observability 才驗得了)
 
 ### Phase 3 — P2 認證 + 動態 menu(對齊 [DESIGN §10 Phase 3](INTEGRATION-DESIGN.md);尚未啟動)
 
@@ -99,6 +99,8 @@
 - [ ] dynamic mode 路由 feature(3 route endpoint:`getConstantRoutes` / `getUserRoutes` / `isRouteExist`)
 - [ ] Casbin redis pub-sub 啟用 feature(v1 即啟用)
 - [ ] policy seed feature(三 role × 主流 endpoint)
+- [ ] **axum-casbin 重寫 feature**(2026-05-29 從 Phase 2 §11.6 重定位:Casbin Axum enforce 中介層 + rev2 自家 metrics/error/observability;需真實受保護路由才驗得了)
+- [ ] **受管 RBAC policy 層 feature**(012 brainstorm 衍生:casbin policy 加 (a) soft-delete 可復原 (b) 不可刪 protected policy (c) policy 變更走 011 audit 記 operator (d) 統一 CRUD facade。需 fork sea-orm-adapter 的 load/remove → 動 §11.6「adapter=拷貝」前提、specced 時評估 Amendment;與 axum-casbin 重寫同期、因皆需 enforce/operator)
 
 ### Phase 4 — P3 主流業務(對齊 [DESIGN §10 Phase 4](INTEGRATION-DESIGN.md);尚未啟動)
 

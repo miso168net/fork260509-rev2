@@ -1087,7 +1087,7 @@ deliverables(全部完成):
 2. **soft-delete 基礎設施 feature** — 7 entity + facade + CI lint(三重防護)
 3. **envelope 對齊 feature** — `Res<T>` + 業務 code 矩陣（**✅ 008 已交,2026-05-29 merge `7bdf5bb` / SHA pin `e1b0a6c` / rust-api `fac12f6`**:`Res<T>{data,code,msg}`〔`code`=string、無 `success` 欄、`data:None`→`null`、欄位序 data→code→msg〕+ `impl IntoResponse`〔回 HTTP200,業務錯誤未來也走 200〕;`BizCode` 完整 12-variant 矩陣〔`0000/1000/2222/3333/9998/9999/7777/7778/8888/8889/4040/5000`,`code()`+`default_msg()`,本 feature 只 wire `0000`/`4040`/`5000`,餘 9 variant 定義待 Phase 3+〕;`AppError`〔thiserror,最小 variant `NotFound`→404、`Internal(String)`→500;client msg 走 `BizCode::default_msg()`、thiserror Display 僅 log〕+ axum `.fallback()`〔不存在 path 回 `{data:null,code:"4040",msg:"接口不存在"}` live curl 驗〕;`/health` 維持純 `ok`。**拍板:camelCase rename 機制移出本 feature scope、留 Phase 4 各 DTO 自帶**〔信封欄名 data/code/msg 本就小寫無需轉換〕。21 單測鎖契約形狀；3 unit/13 task subagent-driven TDD,各 spec+quality 雙審 + final holistic review）
 4. **audit log 基礎設施 feature** — schema + `AuditEvent` + redact(依 soft-delete)（**✅ 011 已交,2026-05-29 merge `--no-ff` 回 `rev2-admin-root` / SHA pin `5a72560`**:`sys_operation_log` 表〔migration 004,經 010 自動 migration 套用、非 server boot〕+ entity〔append-only、**無 `deleted_at`、不 impl SoftDeletable**、FR-003〕;`server/src/model/audit.rs` 純資料層〔`AuditOperation`〔Insert/Update/SoftDelete/Restore + `as_str()`,本 feature 只實際構造 `SoftDelete`〕/ `AuditEvent` / `AuditOperator` / `AuditSerialize` trait + **`mutate_in_txn`**〔codebase **首個 transaction pattern**、唯一寫入入口,把資料變動 closure + audit 寫入綁進同一 `DatabaseTransaction`、both-or-neither;**audit.rs 不含任何 `entity::` 路徑**〕〕;`facade/sys_operation_log.rs::write_in_txn`〔唯一能構造 `entity::sys_operation_log::ActiveModel` 之處、保 009 entity-access lint route (b)〕;`sys_user::soft_delete` 改接 `mutate_in_txn`〔同 txn 內 SELECT active row → redact `audit_json()`〔password→`"<redacted>"`〕→ UPDATE deleted_at → 寫 SOFT_DELETE audit〕,**回傳 `Result<bool,DbErr>`**〔true=軟刪+audit、false=0-rows no-op 不寫 audit〕。**operator_ip INET**:entity 模為 `Option<String>`、本 feature 永遠 None → `None→NotSet`〔略過欄、避 sea-orm `NULL::text` 對 INET 的 PG 42804 cast 錯〕;`Some(ip)→Set(text)` 真值寫入留 **Phase 3 middleware**〔需 sea_query Expr cast 或 ipnetwork custom type〕。**scope 邊界**:只 SOFT_DELETE 真實接線〔其餘 operation enum 先定義〕;無 HTTP 請求層 audit middleware;無其他 entity rollout;**「facade 內漏配 audit」build-failing lint 留 follow-up**〔本階段以 `mutate_in_txn` 結構強綁 + 文件慣例保證〕。守 **007 FR-009**〔server 不自動 migrate,grep regression 0 命中〕+ **009 facade 邊界**〔entity-access lint 續綠〕。測試:redact 純函式 + `write_in_txn` SQL-build〔`operator_ip` NotSet 缺欄斷言〕純單測 + **3 個 `#[ignore]` live-DB 驗收**〔對 dev postgres:軟刪→恰 1 筆 redact audit + user 已軟刪 / 注入 audit INSERT 失敗→UPDATE 與 audit 同 rollback / 0-rows no-op 不寫 audit〕。**兩段式 commit**〔動 rust-api worktree:7 worktree commits + 外層 bump SHA pin〕;subagent-driven 4 unit、各 spec+quality 雙審 + opus final holistic review = Ready;Constitution 7+7=14 ✅）
-5. **sub-crate setup feature** — 拷貝 `sea-orm-adapter` + `xdb`,重寫 `axum-casbin`
+5. **sub-crate setup feature(012)** — **只拷貝 `sea-orm-adapter` + `xdb`**(runtime `async-std`→`tokio` 對齊 rev2 + casbin_rule 建表 migration〔stock schema、無 soft-delete〕+ 兩 crate 活體 smoke);**`axum-casbin` 重寫改列 [Phase 3](#phase-3--認證--動態選單p2-完)**(2026-05-29 012 brainstorm 重定位)
 
 ### Phase 3 — 認證 + 動態選單(P2 完)
 
@@ -1095,6 +1095,8 @@ deliverables(全部完成):
 2. **dynamic mode 路由 feature** — `/route/getConstantRoutes` + `/route/getUserRoutes`(含 `home` 欄)+ `/route/isRouteExist`
 3. **Casbin redis pub-sub 啟用 feature** — `casbin:policy:invalidate` channel(即使單 instance,v1 啟用)
 4. **policy seed feature** — 三 role × 主流 endpoint 的 Casbin policy migration seed
+5. **axum-casbin 重寫 feature** — Casbin Axum enforce 中介層,rev2 自家 metrics / error / observability(**2026-05-29 012 brainstorm 從 Phase 2 §11.6 重定位至此**:中介層需真實受保護路由 + enforce 點 + observability 目標〔Phase 6〕才驗得了、整合得了,在 Phase 2 做會「無消費者、無法驗」)
+6. **受管 RBAC policy 層 feature** — 在 casbin policy 上加 rev2 治理:**(a)** soft-delete 可復原 **(b)** 不可刪 protected policy(remove 守衛 + 受保護標記)**(c)** policy 變更走 [011 audit](#§64-sys_operation_log統一-audit)(`mutate_in_txn`,記 operator/何時/加或移除哪條)**(d)** 統一 CRUD facade。**需 fork 拷貝進來的 `sea-orm-adapter`**(改 `load_policy` 過濾 `deleted_at IS NULL`、改 `remove_*` 設標記)+ casbin_rule 屆時加 `deleted_at` + partial unique index + protected 標記。**動到 §11.6「adapter=拷貝」前提** → specced 時須評估 constitution Amendment。(**2026-05-29 012 brainstorm 衍生**:user 要 recoverability + protected + 變更軌跡 + 一致 CRUD;但 soft-delete 的「刪掉不再 enforce」、audit 的「誰改的」皆依賴 Phase 3 的 enforce/operator/policy 入口才驗得了,故與 axum-casbin 重寫同期)
 
 ### Phase 4 — 主流業務(P3 完)
 
@@ -1236,6 +1238,11 @@ axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index
 >
 > **理由**:axum-casbin 是 Casbin enforce 中介層、rev2 觀察性都過此層;重寫可不繼承 rev1 metrics 客製包袱。sea-orm-adapter 與 xdb 是工具性 crate、拷貝即可。
 > **影響**:Phase 2 F1.1 + Phase 3 F5.1 / F6 / W-F11;**RUSTAPI-SOURCE-ISOLATION 軌道**(§7.6)
+>
+> **🔄 2026-05-29 012 brainstorm 重定位(不改本拍板的 crate 處置、只改時機與範圍)**:
+> - **`axum-casbin` 重寫 → 移至 [Phase 3](#phase-3--認證--動態選單p2-完)#5**:中介層需真實受保護路由 + enforce 點 + observability 目標(Phase 6)才驗得了/整合得了,Phase 2 做會無消費者、無法驗。**012(Phase 2 最後 feature)只做 sea-orm-adapter + xdb 兩個「拷貝」crate**(本拍板的拷貝處置不變)。
+> - **`sea-orm-adapter` 的「拷貝」前提可能被後續鬆動**:Phase 3 新增「受管 RBAC policy 層 feature」([Phase 3](#phase-3--認證--動態選單p2-完)#6)要為 casbin policy 加 soft-delete(可復原)+ 不可刪 protected policy + 變更走 011 audit + 統一 CRUD。soft-delete 需 **fork adapter 的 `load_policy`/`remove_*`**(stock adapter 物理 DELETE + load 全表、會繞過 soft-delete)→ adapter 從「拷貝」變「拷貝+客製」≈ 半重寫。**該 feature specced 時須評估 §11.6 Amendment**(本拍板現狀仍為「拷貝」、012 不觸此客製)。
+> - **rev1 缺陷不繼承**:stock casbin adapter 的 policy 增刪不經 app 層 audit/soft-delete(rev1 很可能未 audit policy 變更);rev2 經此 Phase 3 feature 修正(§1.5 精神)。
 
 | Sub-crate | followup 建議 | 替代選項 |
 |---|---|---|
