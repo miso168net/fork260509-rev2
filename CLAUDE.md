@@ -350,10 +350,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/011-audit-log/spec.md`](specs/011-audit-log/spec.md)
-**Active Plan**: [`specs/011-audit-log/plan.md`](specs/011-audit-log/plan.md)
-**Phase**: ✅ **011-audit-log 全完成**(階段 0 brainstorm → 階段 1 SDD specify/clarify/plan/tasks/analyze → 階段 2 TDD 實作 4 unit/15 task,各 spec+quality 雙審 + opus final holistic review = READY TO MERGE)。交付:`sys_operation_log` 表(migration 004、經 010 自動套、append-only 非 SoftDeletable)+ `audit.rs`(`AuditEvent`/`AuditSerialize` + **`mutate_in_txn` codebase 首個 transaction、唯一原子寫入入口**、不含 `entity::`)+ `facade/sys_operation_log::write_in_txn`(唯一 entity 寫入管道、保 009 lint route b);活體 proof:`sys_user::soft_delete` 接 `mutate_in_txn` 同 txn 原子寫 SOFT_DELETE + redact password→`"<redacted>"` + 回 `Result<bool>`(0-rows no-op)。live-DB 抓修真實 bug(`operator_ip` INET `Set(None)`→PG 42804、改 `None→NotSet`)。守 007 FR-009 + 009 facade 邊界(lint 續綠);**兩段式 commit**(rust-api worktree 7 commits 已 push fork、外層 SHA pin `5a72560`);Constitution 7+7=14 ✅。回填 DESIGN §6.4/§10、CHECKLIST、MILESTONES
-**下一步**: merge `--no-ff` 011-audit-log 回 `rev2-admin-root`(feature branch 保留)。Phase 2 P1 餘:soft-delete 6-entity rollout(沿用 009 pattern)/ audit 其他 operation·entity 接線(沿用 011 `mutate_in_txn` pattern)/ 「facade 內漏配 audit」build-failing lint(011 defer 的 follow-up)/ sub-crate(需 §11.6 拍板)
+**Active Spec**: [`specs/012-sub-crate-setup/spec.md`](specs/012-sub-crate-setup/spec.md)
+**Active Plan**: [`specs/012-sub-crate-setup/plan.md`](specs/012-sub-crate-setup/plan.md)
+**Phase**: 階段 1 SDD 設計鏈 — specify ✅(16/16、0 提問) / clarify ✅(11 類全 Clear/N-A、0 提問) / plan ✅(Constitution 7+7=14 ✅;research R1-R6;**有 data-model**〔`casbin_rule` stock schema、adapter 擁有、無 soft-delete〕;C-V contract §0-§4 + quickstart)。**Phase 2 P1 最後一個 feature「sub-crate setup」**:拷貝 `sea-orm-adapter`(Casbin↔Postgres policy 儲存)+ `xdb`(IP→地區) 兩工具 crate 進 rev2 workspace(**§11.6 / §I.5 授權拷貝、007 以來首個拷貝 rev1 feature**)、對齊 rev2 執行環境(adapter 既有 `runtime-tokio-rustls` default + **casbin bump 2.10→2.20** user 拍板 §6)、casbin_rule 建表 migration 005(經 010 自動套、呼 adapter `up()` 單一 schema 來源)、兩 crate 活體 smoke。**最高風險 = casbin 2.20 × adapter Adapter-trait 相容**(第一道閘門 `cargo build -p sea-orm-adapter`)。`axum-casbin` 重寫 + 受管 RBAC policy 層(soft-delete/protected/audit/CRUD)**移 Phase 3**(brainstorm 重定位);**動 rust-api worktree → 兩段式 commit**。D1-D3 凍結
+**下一步**: `/speckit-tasks` →(`/speckit-analyze`)→ `superpowers:executing-plans`。feature branch `012-sub-crate-setup`(pre-hook 已建);spec docs 落此 branch、rust-api 改動走兩段式 commit。完成後 merge 回 `rev2-admin-root`;後續 Phase 3 axum-casbin 重寫 + 受管 policy 層
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
