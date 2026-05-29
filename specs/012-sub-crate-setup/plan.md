@@ -147,3 +147,10 @@ Phase 1 設計完成後重跑 7 項：
 > Constitution Check 7+7=14 全 PASS、無 violations、本段不需填。
 
 > **已知風險（非 violation、implement 時若觸發記 Deviation Log）**：casbin 2.10→2.20 若致 adapter `Adapter` trait impl 不相容 → 需依 casbin 2.20 修 adapter 原碼（超出純拷貝、屬「拷貝+相容性修補」）。第一道閘門 `cargo build -p sea-orm-adapter` 先驗;若需修，於本檔補 Deviation Log（同 010 D-1 格式）。
+
+## Deviation Log
+
+### D-1 修正 sea-orm-adapter remove_filtered_policy 索引重複偏移 bug
+- **背景**:T006/T007 活體驗收跑拷貝來的 `test_adapter`(已改 env-gate DATABASE_URL)時,`adapter.rs:387` 的 `remove_filtered_policy("g", field_index=1, ...)` 斷言失敗。根因為 `action.rs` `remove_filtered_policy` 對已從 index 0 裝填的 `rule.values` 又切 `[index_of_match_start..]`,造成 field_values 重複偏移(field_index>=1 時錯位)。此為 rev1 潛伏 bug(test_adapter 需 live DB、rev1 未真跑),**與 casbin 2.10→2.20 無關**。
+- **處置**:單行修正 —— `rule.values[index_of_match_start..]` → `rule.values`(僅 COLUMNS 切片偏移)。屬 §I.5 授權拷貝範圍內的「拷貝+正確性修補」;user 2026-05-29 拍板現修。未動 remove_policy/load 等其他邏輯,未改 test 斷言。
+- **驗證**:`cargo test -p sea-orm-adapter -- --ignored` → test_adapter + round_trip_live 皆綠(2 passed);psql 確認 round-trip 後 casbin_rule 有 `p,alice,data1,read`。

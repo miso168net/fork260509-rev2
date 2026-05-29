@@ -1243,6 +1243,8 @@ axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index
 > - **`axum-casbin` 重寫 → 移至 [Phase 3](#phase-3--認證--動態選單p2-完)#5**:中介層需真實受保護路由 + enforce 點 + observability 目標(Phase 6)才驗得了/整合得了,Phase 2 做會無消費者、無法驗。**012(Phase 2 最後 feature)只做 sea-orm-adapter + xdb 兩個「拷貝」crate**(本拍板的拷貝處置不變)。
 > - **`sea-orm-adapter` 的「拷貝」前提可能被後續鬆動**:Phase 3 新增「受管 RBAC policy 層 feature」([Phase 3](#phase-3--認證--動態選單p2-完)#6)要為 casbin policy 加 soft-delete(可復原)+ 不可刪 protected policy + 變更走 011 audit + 統一 CRUD。soft-delete 需 **fork adapter 的 `load_policy`/`remove_*`**(stock adapter 物理 DELETE + load 全表、會繞過 soft-delete)→ adapter 從「拷貝」變「拷貝+客製」≈ 半重寫。**該 feature specced 時須評估 §11.6 Amendment**(本拍板現狀仍為「拷貝」、012 不觸此客製)。
 > - **rev1 缺陷不繼承**:stock casbin adapter 的 policy 增刪不經 app 層 audit/soft-delete(rev1 很可能未 audit policy 變更);rev2 經此 Phase 3 feature 修正(§1.5 精神)。
+>
+> **✅ 2026-05-29 012-sub-crate-setup 實作完成(本拍板的「拷貝」處置落地)**:`sea-orm-adapter` + `xdb` 已拷貝自 rev1 `@ 0b64a57`(§11.6 / constitution §I.5 授權例外、首個拷貝 feature、標出處)進 rust-api workspace;casbin **bump 2.10→2.20.0**(user 拍板、§6 surface、stable)— **編譯閘門一次過、adapter `Adapter` trait 零 drift**(最高風險點清除)。casbin_rule 經 `migration 005`(委派 `sea_orm_adapter::up/down` 單一 schema 來源、`if_not_exists` 使 adapter `new()` 自動建表為無害 no-op、FR-005 調和)、經 010 自動套。活體 smoke 親驗:adapter 對 live postgres policy round-trip(寫入→重載仍在 + casbin_rule 有列)綠、xdb 解析 `1.2.4.8`→`中国|0|北京|北京市|0`。**附帶修一個 rev1 潛伏 bug**:`action.rs` `remove_filtered_policy` 索引重複偏移(field_index≥1 錯位、與 casbin 2.20 無關)— 單行修正、user 拍板現修、plan Deviation D-1 記錄。**未接 enforce / 未加 axum-casbin / casbin_rule 無 soft-delete**(皆 Phase 3,見下 #5/#6)。守 007 FR-009 + 009 lint。
 
 | Sub-crate | followup 建議 | 替代選項 |
 |---|---|---|

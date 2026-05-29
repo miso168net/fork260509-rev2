@@ -350,10 +350,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/012-sub-crate-setup/spec.md`](specs/012-sub-crate-setup/spec.md)
+**Active Spec**: [`specs/012-sub-crate-setup/spec.md`](specs/012-sub-crate-setup/spec.md)(✅ 完成+merge 回 `rev2-admin-root`)
 **Active Plan**: [`specs/012-sub-crate-setup/plan.md`](specs/012-sub-crate-setup/plan.md)
-**Phase**: 階段 1 SDD 設計鏈 — specify ✅(16/16、0 提問) / clarify ✅(11 類全 Clear/N-A、0 提問) / plan ✅(Constitution 7+7=14 ✅;research R1-R6;**有 data-model**〔`casbin_rule` stock schema、adapter 擁有、無 soft-delete〕;C-V contract §0-§4 + quickstart)。**Phase 2 P1 最後一個 feature「sub-crate setup」**:拷貝 `sea-orm-adapter`(Casbin↔Postgres policy 儲存)+ `xdb`(IP→地區) 兩工具 crate 進 rev2 workspace(**§11.6 / §I.5 授權拷貝、007 以來首個拷貝 rev1 feature**)、對齊 rev2 執行環境(adapter 既有 `runtime-tokio-rustls` default + **casbin bump 2.10→2.20** user 拍板 §6)、casbin_rule 建表 migration 005(經 010 自動套、呼 adapter `up()` 單一 schema 來源)、兩 crate 活體 smoke。**最高風險 = casbin 2.20 × adapter Adapter-trait 相容**(第一道閘門 `cargo build -p sea-orm-adapter`)。`axum-casbin` 重寫 + 受管 RBAC policy 層(soft-delete/protected/audit/CRUD)**移 Phase 3**(brainstorm 重定位);**動 rust-api worktree → 兩段式 commit**。D1-D3 凍結
-**下一步**: `/speckit-tasks` →(`/speckit-analyze`)→ `superpowers:executing-plans`。feature branch `012-sub-crate-setup`(pre-hook 已建);spec docs 落此 branch、rust-api 改動走兩段式 commit。完成後 merge 回 `rev2-admin-root`;後續 Phase 3 axum-casbin 重寫 + 受管 policy 層
+**Phase**: **✅ 012-sub-crate-setup 完整實作+驗收+merge(Phase 2 P1 最後一個 feature、Phase 2 P1 全數完成)**。Casbin RBAC 工具層地基:`sea-orm-adapter`(Casbin↔Postgres policy 儲存)+ `xdb`(IP→地區)拷貝 rev1`@0b64a57`(§11.6 / §I.5 授權例外、首個拷貝 feature、標出處)、casbin **bump 2.10→2.20.0**(編譯閘門一次過、adapter Adapter trait 零 drift)、casbin_rule `migration 005`(委派 `sea_orm_adapter::up/down` 單一 schema 來源、`if_not_exists` no-op、FR-005 調和、經 010 自動套)、活體 smoke 親驗(adapter live round-trip `p,alice,data1,read` / xdb `1.2.4.8`→`中国|0|北京|北京市|0`)。附帶修 rev1 潛伏 bug `action.rs remove_filtered_policy` 索引重複偏移(Deviation D-1)。scope:未接 enforce / 未加 axum-casbin / casbin_rule 無 soft-delete(皆 Phase 3);守 007 FR-009 + 009 lint;Constitution 7+7=14 ✅。subagent-driven 5 unit/10 task、各 spec+quality 雙審 + opus final review。兩段式 commit(rust-api SHA pin `e193c47`)。012 branch 保留
+**下一步**: **Phase 3 RBAC**([DESIGN §10 Phase 3](docs/INTEGRATION-DESIGN.md))— axum-casbin enforce 中介層重寫 + 受管 RBAC policy 層(soft-delete/protected/audit/CRUD;需 fork sea-orm-adapter `load_policy`/`remove_*` + casbin_rule 加 deleted_at → specced 時評估 §11.6 Amendment)。下個 feature 啟動時 `/speckit-specify` 重置本 marker 區
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
