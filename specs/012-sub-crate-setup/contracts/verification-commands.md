@@ -42,6 +42,13 @@ docker run --rm --network rev2-admin_rev2_net -e DATABASE_URL="$(cat deploy/secr
 # psql 確認 casbin_rule 有對應列
 docker compose ... exec -T postgres psql -U soybean -d soybean_admin_rust -c \
   "SELECT ptype,v0,v1,v2 FROM casbin_rule ORDER BY id;"   # 預期: p,alice,data1,read
+
+# FR-005 idempotency: smoke 內 Adapter::new(conn) 於 migrate(005 已建 casbin_rule)後執行
+#   → 成功即證 new() 的 migration::up(if_not_exists) 為 no-op;
+#   若報 `relation "casbin_rule" already exists` 則 if_not_exists 漏加(回 T005 修)。
+# 另確認只有一張 casbin_rule(無重複建立):
+docker compose ... exec -T postgres psql -U soybean -d soybean_admin_rust -c \
+  "SELECT count(*) FROM pg_class WHERE relname='casbin_rule' AND relkind='r';"   # 預期: 1
 ```
 
 ## §2 xdb IP→地區解析（US2 / SC-002）
