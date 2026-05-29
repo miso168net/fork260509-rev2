@@ -53,6 +53,8 @@ services:
         condition: service_healthy
       redis-stack:
         condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
     environment:
       APP_JWT_JWT_SECRET_FILE: /run/secrets/jwt_secret
       APP_JWT_REFRESH_TOKEN_SECRET_FILE: /run/secrets/refresh_token_secret
@@ -64,6 +66,23 @@ services:
       - refresh_token_secret
       - database_url
       - redis_url
+    networks:
+      - rev2_net
+
+  migrate:
+    # ★ 一次性 migration service(007 FR-009:server 不自動 migrate)
+    #   dev/prod override 各自提供 target: + command:;base 層只定義共通結構
+    build:
+      context: ./
+      dockerfile: deploy/Dockerfile.rust-api.txt
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      APP_DATABASE_URL_FILE: /run/secrets/database_url
+    secrets:
+      - database_url
+    restart: "no"
     networks:
       - rev2_net
 

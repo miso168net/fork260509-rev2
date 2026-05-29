@@ -75,6 +75,21 @@ services:
       start_period: 120s
     init: true
 
+  migrate:
+    # ★ entrypoint 必須 override:dev image ENTRYPOINT 是 cargo-watch(跑 server),
+    #   只設 command 會被 cargo-watch 當 watch 參數;此處整段換成 cargo run --bin migration up
+    #   (compose-level entrypoint override 不改 Dockerfile ENTRYPOINT,FR-007 仍守住)
+    #   DATABASE_URL 由 base migrate 的 APP_DATABASE_URL_FILE + database_url secret 繼承
+    build:
+      target: dev
+    image: rev2-admin-rust-api:dev
+    volumes:
+      - ./rust-api:/app
+      - rust_api_cargo_cache:/usr/local/cargo
+      - rust_api_target:/app/target
+    entrypoint: ["cargo", "run", "--bin", "migration"]
+    command: ["up"]
+
   postgres:
     ports:
       - "127.0.0.1:25432:5432"

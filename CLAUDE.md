@@ -350,10 +350,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/009-soft-delete-infra/spec.md`](specs/009-soft-delete-infra/spec.md)
-**Active Plan**: [`specs/009-soft-delete-infra/plan.md`](specs/009-soft-delete-infra/plan.md)
-**Phase**: **階段 2 TDD 實作 ✅ 完整實作+驗收+merge(2026-05-29 merge `88312b6`、009 branch 保留)**。subagent-driven-development(5 unit / 13 task,各 spec+quality 雙審 + final holistic review = Ready)。soft-delete 三重防護立機制 + `sys_user` proof:`SoftDeletable` trait(`find_active` 過濾 `deleted_at IS NULL`、SQL-build 純單測)+ facade(`server/src/model/facade/`、唯一管道、`soft_delete` 設標記、不 re-export Entity)+ build-failing lint test(facade 外 `use entity::` → cargo test fail;兩階段 lexer 防註解/字串 poison false-negative)。schema:`sys_user` 加 `deleted_at TIMESTAMPTZ` + drop `sys_user_user_name_key` + partial unique index `WHERE deleted_at IS NULL`(dev stack live 驗)。新增 workspace member `entity` crate(首個 sea-orm model、無新外部 dep)。40 tests + migration build clean / Constitution 7+7=14 ✅ / 兩段式 commit(worktree→fork `fac12f6..88ed11e` + 外層 SHA pin `7fce19f`)。6 entity rollout 延後(各自被建時沿用 pattern)
-**下一步**: **Phase 2 P1 餘項**(見 [CHECKLIST §4 Phase 2](docs/INTEGRATION-CHECKLIST.md))— soft-delete 6-entity rollout / audit log(依 soft-delete)/ sub-crate(需 §11.6 拍板)。下個 feature 啟動時走階段 0 brainstorm → `/speckit-specify`(pre-hook 建新 feature branch)更新本 marker
+**Active Spec**: [`specs/010-migration-auto-apply/spec.md`](specs/010-migration-auto-apply/spec.md)
+**Active Plan**: [`specs/010-migration-auto-apply/plan.md`](specs/010-migration-auto-apply/plan.md)
+**Phase**: 階段 1 SDD 設計鏈進行中 — specify ✅(16/16、0 NEEDS CLARIFICATION) / clarify ✅(11 類全 Clear/N-A、0 提問) / plan ✅(Constitution 7+7=14 ✅;research R1-R5;**無 data-model**〔不引入新資料實體〕;C-V contract §1-§4 + quickstart)。**Phase 2 P1 補位「migration 自動套用」(補 CHECKLIST §2.12/§2.10 gap、audit log feature 前置)**:dev/prod stack `up` 時自動套 migration、API 起來前完成、失敗 fail-fast。機制:compose 新增一次性 `migrate` service(dev `cargo run --bin migration up` / prod entrypoint dispatcher `migration up`)+ `rust-api depends_on migrate: service_completed_successfully` 閘門。守 007 FR-009(server 不自動 migrate);**outer-only**(只動 3 個外層 compose 檔、不碰 rust-api worktree → 無兩段式 commit)。5 拍板 D1-D5 凍結
+**下一步**: `/speckit-tasks` →(`/speckit-analyze`)→ `superpowers:executing-plans`。feature branch `010-migration-auto-apply`(pre-hook 已建);spec docs + compose 改動皆落此 branch(outer 單段、無兩段式 commit)。完成後 merge 回 `rev2-admin-root`;後續 audit log feature 接棒(依 soft-delete + 本 feature 的自動 migration)
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
