@@ -46,12 +46,12 @@
 
 ### 2.11 feature 008-response-envelope follow-up
 
-- [ ] **`Res` err 建構子綁 `()` 型**:`Res::<()>::err`/`err_msg` 掛 `impl Res<()>`;Phase 3+ handler 若要在 `-> Res<SomeDto>` 成功型內提早回業務錯誤(`data:null` 但 `T≠()`)會型別對不上 → 屆時改 `impl<T> Res<T>`(回 `data:None`)。現無 caller、不改(final review Minor 標記)
+- [x] **`Res` err 建構子綁 `()` 型** ✅ (2026-05-30,013 收口):`err`/`err_msg` 已移到 `impl<T> Res<T>`(`envelope.rs:27/47/56`),013 handler(login/getUserInfo 在 `-> Res<Dto>` 成功型內提早回業務錯誤 `data:null`)即用;envelope.rs:178 測試註解標明、§2.16 亦記「§2.11 follow-up 收口」。
 
 ### 2.12 feature 009-soft-delete-infra follow-up
 
 - [x] **dev stack 不自動套 migration** ✅ (2026-05-29,010 補掉):010 新增一次性 `migrate` service + `rust-api depends_on migrate: service_completed_successfully` 閘門,dev/prod `up` 時自動套 migration、API 起來前完成、失敗 fail-fast;009 發現的手動 migration gap 已解(守 007 FR-009、server 仍不自動 migrate)
-- [ ] **`soft_delete` 0-rows 靜默**:`soft_delete(db,id)` 回 `UpdateResult` 但不檢 `rows_affected` → 軟刪不存在/已刪 id 靜默成功(0 rows)。infra 層 scope 內 acceptable;Phase 3+ 接業務 delete endpoint 時由 caller 決定語意(final review Minor 標記)
+- [x] **`soft_delete` 0-rows 靜默** ✅ (2026-05-29,011 收口):011 把 `soft_delete` 改回 `Result<bool, DbErr>`(`facade/sys_user.rs:70`),0-rows→`Ok(false)` 顯式 surfaced(不再靜默成功、不寫 audit),caller 可據以判斷;原「回 `UpdateResult` 不檢 `rows_affected`」前提已不成立。
 
 ### 2.13 feature 010-migration-auto-apply follow-up
 
@@ -82,6 +82,12 @@
 - [ ] **prod `/api` wire(§11.11)+ prod-stack CDP smoke**:013 的 CDP smoke 走 **dev 直連**(vite dev proxy `/proxy-default`→`rust-api:21081`、base-web `.env.test`)。§11.11 拍板 prod 主流為 front-nginx `/api/*` reverse proxy;prod base-web build(`VITE_SERVICE_BASE_URL=/api`)+ front-nginx 打 rust-api 的端到端 CDP 仍待驗,連動 [§2.8](#28-feature-004-compose-port-orchestration-follow-up)(prod base-web rebuild + CDP smoke)。
 - [x] **`bearer_token` 重複**(final review nit #1)✅ (2026-05-30):已抽到 `server/src/auth/bearer.rs` 共用(handler/auth.rs + enforce.rs 共用、4 單測移轉),消除 auth 解析碼 drift 風險。
 - [x] **JWT `iss` 未驗證註解**(final review nit #3)✅ (2026-05-30):`jwt.rs` verify 已加註解說明 iss 為 informational、不驗(base-web token opaque、僅 secret+aud 須一致、`JWT_ISS==JWT_AUD`);未加冗餘 set_issuer。
+
+### 2.17 feature 014-dynamic-routes follow-up
+
+- [ ] **auth handler 前導 DRY**(T010 quality review):`get_user_routes`/`is_route_exist`(014)+ `get_user_info`(013)+ `enforce_mw` 四處重複 bearer→`jwt::verify`(access+JWT_AUD)→roles 前導(+失敗收斂 3333)。非正確性風險(drift 會被 acceptance 抓),最小機制階段 inline 清楚 → defer,待 enforce 全路由 rollout(§4 #4)多 handler 出現時抽 `verify_and_load_roles(state,headers)` helper(與 [§2.16](#216-feature-013-auth-login-enforce-follow-up) token-簽發 DRY 同類)。
+- [ ] **tree-prune 父層偵測為結構性**(T004 quality review):`manage` 父層永不自身 enforce 判定、可見性純由子項衍生(現正確:manage 無自身 menu policy)。未來若 sys_menu 化 / 巢狀 menu 需「父層有自身可見性閘、獨立於子項」則須改寫(連動 [§4 Phase 3](#4-roadmap--phase-狀態) #4 全路由矩陣 / #6 受管 policy / Phase 4 菜單樹建構)。
+- [ ] **dynamic-mode CDP 僅 dev proxy + Admin 中階僅單測層**(final review):014 CDP smoke 走 dev vite proxy(`/proxy-default`、同 [§2.16](#216-feature-013-auth-login-enforce-follow-up)/[§2.8](#28-feature-004-compose-port-orchestration-follow-up)),瀏覽器只斷言 Super(全)vs User(只 home)、Admin 部分集由單測覆蓋。prod front-nginx `/api` + dynamic-mode 側欄渲染、Admin 中階瀏覽器斷言待補,連動上述 prod-stack CDP 條目。
 
 ## 3. 已完成里程碑
 
@@ -114,7 +120,7 @@
 ### Phase 3 — P2 認證 + 動態 menu(對齊 [DESIGN §10 Phase 3](INTEGRATION-DESIGN.md);進行中)
 
 - [x] **登入 + getUserInfo feature(013)** ✅ (2026-05-30 merge `ade723d` / SHA pin `bbabdbc`)— login/getUserInfo/refresh + JWT(HS256)+ **首個 Casbin enforce 點**(rev2 自家 axum middleware、allow+deny)+ sys_role/sys_user_role/nick_name + 首條真 base-web↔rev2 CDP wire;follow-up 見 [§2.16](#216-feature-013-auth-login-enforce-follow-up)
-- [ ] dynamic mode 路由 feature(3 route endpoint:`getConstantRoutes` / `getUserRoutes` / `isRouteExist`)
+- [x] **dynamic mode 路由 feature(014)** ✅ (2026-05-30 merge `9d06347` / SHA pin `8965c8a`)— 3 route endpoint(`getConstantRoutes` 公開 / `getUserRoutes`·`isRouteExist` JWT、過濾在 handler 內)+ base-web 翻 dynamic + **menu 走 Casbin enforce 過濾**(menu-visibility policy 9 rows + 013 enforcer + tree-prune)+ CDP menu deny 端到端;follow-up 見 [§2.17](#217-feature-014-dynamic-routes-follow-up)
 - [ ] Casbin redis pub-sub 啟用 feature(v1 即啟用)
 - [ ] policy seed feature(三 role × 主流 endpoint)(**013 已做第一刀**:migration 009 seed 示範路由 × {R_SUPER,R_ADMIN};本 feature = 完整矩陣)
 - [ ] **axum-casbin 重寫 feature**(2026-05-29 從 Phase 2 §11.6 重定位:Casbin Axum enforce 中介層 + rev2 自家 metrics/error/observability;需真實受保護路由才驗得了)(**013 已做第一刀**:`auth/enforce.rs` 最小機制 middleware + 單示範路由;本 feature = 全路由 rollout + observability)
@@ -159,7 +165,7 @@
 - [ ] **Role.id** 型(統一策略待 §11.10 拍板):mock string vs TS number
 - [ ] **MenuType enum**:1=directory / 2=menu(非舊推測「1=group / 2=page」)(§4.2.1)
 - [ ] **Status nullable**:`CommonRecord.status: EnableStatus | null` rust-api 須支援(§4.2.2)
-- [ ] **MenuRoute.id** 型:string;`getUserRoutes` 供應時帶 string id(§4.13.1)
+- [x] **MenuRoute.id** 型:string;`getUserRoutes` 供應時帶 string id(§4.13.1)— ✅ 014(`MenuRoute.id:String`=route name、serde camelCase、curl + CDP 驗)
 
 ### 5.2 role / 帳號 / token
 
@@ -176,11 +182,11 @@
 - [x] **logout 無 endpoint**:rust-api 不實作 `/auth/logout`,業務只走 frontend `resetStore()`(§4.12.4 已驗)
 - [x] **refresh critical 紀律**:`/auth/refreshToken` 絕對不回 `9999/9998/3333`(§4.11)— ✅ 013 失敗一律 `8888`(curl grep 驗無 3333/9999/9998)
 
-### 5.4 dynamic mode(若 §11.7 選 dynamic)
+### 5.4 dynamic mode(§11.7 已選 dynamic;✅ 014 落地)
 
-- [ ] `/route/getConstantRoutes` + `/route/getUserRoutes` + `/route/isRouteExist` 三 endpoint 完整實作
-- [ ] `getUserRoutes` 必含 `home` 欄(e.g. `"home"`)(§4.13)
-- [ ] `VITE_AUTH_ROUTE_MODE` 切換機制(預設 `static`)
+- [x] `/route/getConstantRoutes` + `/route/getUserRoutes` + `/route/isRouteExist` 三 endpoint 完整實作 — ✅ 014(curl + CDP 驗;menu 走 Casbin enforce 過濾)
+- [x] `getUserRoutes` 必含 `home` 欄(e.g. `"home"`)(§4.13)— ✅ 014(`UserRoute.home="home"`)
+- [x] `VITE_AUTH_ROUTE_MODE` 切換機制(預設 `static`)— ✅ 014 翻 `dynamic`(base-web `.env`、BASE-WEB-ADAPT、兩段式 commit)
 
 ### 5.5 base-web 環境配置
 
@@ -195,7 +201,7 @@
 
 - [ ] `BASE-WEB-WRAPPER`:新增 `src/service/api/rev2-system-manage.ts`(write wrapper)
 - [ ] `MODAL-WIRING`:6-10 檔 modal/drawer 內 `// request` 一行改為 `await fetchCreateXxx()`
-- [ ] `BASE-WEB-BUILD-CONFIG`(若 §11.5 b'-narrow):動 `build/plugins/router.ts` 加 `pageExcludePatterns`
+- [~] `BASE-WEB-BUILD-CONFIG`(若 §11.5 b'-narrow):動 `build/plugins/router.ts` 加 `pageExcludePatterns` — **014 dynamic mode 下 moot**(getUserRoutes 只送業務 route、demo menu 根本不送 → 不需隱藏;此 ★ 軌道在 dynamic 維持下不需動,見 [DESIGN §10 Phase 3 #2](INTEGRATION-DESIGN.md))
 
 ### 5.8 alova 7 endpoint(若 §11.2 選實作)
 
@@ -221,7 +227,7 @@
 > **完整 5 軌道定義**:[DESIGN §7 軌道](INTEGRATION-DESIGN.md#§7-base-web-受管例外軌道) + [§11.9 拍板表](INTEGRATION-DESIGN.md#§119-軌道清單最終確認)
 > **本節只列關鍵警示**,SOP hook 每次 session 注入時 Claude / user 快查用:
 
-- **BASE-WEB-BUILD-CONFIG ★**(DESIGN §7.3):允許動 `build/plugins/router.ts` 加 `pageExcludePatterns`,僅限「隱藏 demo menu」邊界
+- **BASE-WEB-BUILD-CONFIG ★**(DESIGN §7.3):允許動 `build/plugins/router.ts` 加 `pageExcludePatterns`,僅限「隱藏 demo menu」邊界(**014 dynamic mode 下 moot:demo menu 不送、不需隱藏**;此軌道在 dynamic 維持下未觸發)
 - **MODAL-WIRING ★**(DESIGN §7.4):允許動 `views/manage/*/modules/*-operate-{modal,drawer}.vue` 內 `// request` 一行,僅限「接 wrapper call」邊界
 
 ★ 兩條軌道**必須在 constitution v1.0.0 顯式授權**並寫明邊界、理由。其他 3 條軌道(BASE-WEB-ADAPT / BASE-WEB-WRAPPER / RUSTAPI-SOURCE-ISOLATION)為新增或全新寫、不違反直覺紀律。
