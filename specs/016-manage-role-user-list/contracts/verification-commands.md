@@ -55,8 +55,10 @@ TOK=$(curl -fsS -X POST $B/auth/login -H 'content-type: application/json' -d '{"
 # 預設分頁 → {records,current,size,total};id 為 number、status '1'/'2'
 curl -fsS "$B/systemManage/getRoleList" -H "Authorization: Bearer $TOK" | python3 -m json.tool
 # 預期 data:{records:[{id:<number>,roleName,roleCode,roleDesc,status,createTime,...}], current:1, size:10, total:3}
-# 搜尋 roleName 模糊
-curl -fsS "$B/systemManage/getRoleList?roleName=admin" -H "Authorization: Bearer $TOK" | python3 -c 'import sys,json;d=json.load(sys.stdin)["data"];print("records",len(d["records"]),"total",d["total"])'
+# 搜尋 roleName 模糊（注意:seed role.name 為中文「超级管理员/管理员/普通用户」,LIKE 對 `name` 欄;
+# 英文 `roleName=admin` 不命中中文名〔回 0,正確行為〕。用中文詞驗 LIKE,如 `roleName=管理` 命中 2〔超级管理员+管理员〕;
+# 或用 `roleCode=R_ADMIN` 驗 code 欄〔活體實證 2026-05-30〕。)
+curl -fsS "$B/systemManage/getRoleList?roleName=%E7%AE%A1%E7%90%86" -H "Authorization: Bearer $TOK" | python3 -c 'import sys,json;d=json.load(sys.stdin)["data"];print("records",len(d["records"]),"total",d["total"])'
 # status 篩選
 curl -fsS "$B/systemManage/getRoleList?status=1" -H "Authorization: Bearer $TOK" | python3 -c 'import sys,json;print(json.load(sys.stdin)["data"]["total"])'
 # id 確認為 JSON number（非 "1" string）

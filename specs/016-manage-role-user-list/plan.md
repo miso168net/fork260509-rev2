@@ -55,7 +55,7 @@ rev2 第 16 個 feature、**Phase 4 主流業務第一刀**。落地 base-web ma
 | 3 | menu 顯示走 Casbin enforce?(§I.2) | **N/A**（本 feature 無 menu;3 endpoint 走 endpoint-level enforce〔v2=method〕、非 menu domain） | ✅ Pass |
 | 4 | wire 對齊 §I.3 mock?(envelope/id 型/error code/enum) | **對齊** — envelope `Res<T>`、分頁 `{records,current,size,total}`、status/gender `'1'/'2'`、enforce deny `5003`、**id=number（§I.3 v1.1.0 amend、base-web typing 權威）** | ✅ Pass |
 | 5 | 從 rev1 source 拷貝 code? | **否** — facade/handler/migration **全新寫**;rev1 rust-api schema 僅**型/命名交叉參照**（**user 授權破 §I.5**、隔離抽純欄位事實、未拷 code、未讀 rev1 設計、見 Deviation D-2） | ⚠️ Pass（user 授權例外） |
-| 6 | 凍結到 §II 12 拍板?需 Amendment? | **§11.10 已 amend**（id string→number、v1.1.0、user 拍板 + 獨立 commit e2da9c3）;其餘拍板不撤回 | ✅ Pass（amend 完成） |
+| 6 | 凍結到 §II 12 拍板?需 Amendment? | **§11.10 已 amend**（id string→number、v1.1.0、user 拍板 + 獨立 commit 9f1452d〔constitution〕/ ace455f〔回填 DESIGN〕）;其餘拍板不撤回 | ✅ Pass（amend 完成） |
 | 7 | 觸及 §III ★ 軌道?授權邊界內? | 否 ★ — 不動 base-web → 不觸 MODAL-WIRING ★ / BASE-WEB-BUILD-CONFIG ★;僅 RUSTAPI-SOURCE-ISOLATION（§III.1 非★、全新寫對齊） | ✅ Pass |
 
 **結論**:7 項全 PASS（#5 為 user 授權 §I.5 例外、#6 amend 已完成）。Complexity Tracking 不需填。
@@ -157,6 +157,6 @@ Phase 1 設計完成後重跑（對照 v1.1.0）:
 
 ## Deviation Log（Constitution §V — implement/plan 階段實際偏離處）
 
-- **D-1（id wire 型 string→number、constitution amend v1.1.0）**:brainstorm D5 拍 number,與 constitution §I.3/§11.10 凍結 string 衝突。**處置**:依 §V.2 user 親決 + 獨立 amendment commit `e2da9c3`（§I.3 + §11.10 改 number、bump v1.1.0、回填 DESIGN §11.10）。理由:base-web TS typing（number）為 §I.1 權威、mock string 是 quirk、實測無硬依賴 string、改 number 更忠於 §I.1 且免動 base-web。`MenuRoute.id` 維持 string、`getUserInfo.userId` 維持 string（不受影響）。
+- **D-1（id wire 型 string→number、constitution amend v1.1.0）**:brainstorm D5 拍 number,與 constitution §I.3/§11.10 凍結 string 衝突。**處置**:依 §V.2 user 親決 + 獨立 amendment commit `9f1452d`（§I.3 + §11.10 改 number、bump v1.1.0）+ `ace455f`（回填 DESIGN §11.10）。理由:base-web TS typing（number）為 §I.1 權威、mock string 是 quirk、實測無硬依賴 string、改 number 更忠於 §I.1 且免動 base-web。`MenuRoute.id` 維持 string、`getUserInfo.userId` 維持 string（不受影響）。
 - **D-2（schema 補欄參照 rev1 rust-api、破 §I.5）**:constitution §I.5「spec phase 0 research 不准 grep rev1 source」。**處置**:2026-05-30 user 親授權參照 rev1 rust-api（rust-only 最終形）的 sys_role/sys_user schema 當型/命名交叉參照;以**隔離 subagent 抽純欄位事實**（未讀 rev1 設計文件、未拷 code、未污染 context）。base-web typings 仍為 wire 權威、rev2 自身 pattern 為建表權威、rev2 偏離 rev1（id i64 非 TEXT、status/gender VARCHAR 非 enum、不補 domain/operator 欄）。spec/plan 評估 §I.5 是否需 amendment 加「rev1 rust-api schema 交叉參照」carve-out（暫以 Deviation 記、未動 §I.5）。
 - **D-3（operator 欄 + status/gender DB 值域約束折 Phase 4 A）**:016 不補 `created_by`/`updated_by`（wire `createBy`/`updateBy` 回 null）、status/gender 用 VARCHAR 無 DB CHECK 約束（靠 default + app 保證）。**處置**:operator 歸屬與資料變動 audit（Phase 4 A、sys_operation_log operator）同期做;status/gender 的 DB 層 CHECK/enum 約束亦折該期（016 維持最小、對齊 wire 字串值）。

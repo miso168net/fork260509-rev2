@@ -85,7 +85,7 @@
 
 ## R8. id wire 型 = number（constitution v1.1.0 amend）
 
-**Decision**:Role/User id 序列化成 JSON **number**（i64 直序列化）。**已 amend constitution §I.3/§11.10 string→number（v1.1.0、commit e2da9c3）**。
+**Decision**:Role/User id 序列化成 JSON **number**（i64 直序列化）。**已 amend constitution §I.3/§11.10 string→number（v1.1.0、commit 9f1452d〔constitution〕/ ace455f〔回填 DESIGN〕）**。
 
 **Rationale**:base-web TS typing `CommonRecord.id:number` 為 §I.1 權威；mock getAllRoles 的 string id 是 mock 自身與 typing 打架的 quirk；subagent 實測 base-web 無處硬依賴 string（rowKey/edit(id)/delete(id) 吃 number、getAllRoles 下拉用 roleCode 非 id）。改 number 更忠於 §I.1、免動 base-web。**例外** getUserInfo.userId 維持 string（auth.d.ts typing 即 string、013 既有）。
 

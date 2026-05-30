@@ -1116,7 +1116,9 @@ deliverables(全部完成):
 ### Phase 4 — 主流業務(P3 完)
 
 1. **manage list endpoints feature** — `getRoleList` / `getAllRoles` / `getUserList` / `getMenuList/v2` / `getAllPages` / `getMenuTree`(全 read,對齊 mock)
+   - **as-built(016-manage-role-user-list,2026-05-30):Phase 4 第一刀 = role + user 3 endpoint 落地**(`getRoleList` 分頁+搜尋 / `getUserList` 分頁+搜尋+userRoles join+**無 password** / `getAllRoles` 不分頁輕量),3 條掛 Casbin `enforce_mw`(m..015 seed getRoleList/getAllRoles policy、getUserList 沿 009)。`sys_role` 補 4 欄 / `sys_user` 補 6 欄(VARCHAR status/gender '1'/'2'、3 alter+seed migration)、id wire=**number**(constitution v1.1.0 §11.10、9f1452d/ace455f)、取代 013 getUserList stub。**menu 三件(getMenuList/v2·getAllPages·getMenuTree)需建選單表 → 留 017**。三 US 活體 + server 92/3 + lint 17 + prod build 193MB。詳見 [specs/016](../specs/016-manage-role-user-list/spec.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
 2. **wire shape mapping feature** — output DTO + `From<Entity>` impl + pagination wrapper
+   - **as-built(016):pattern 已立供 017 沿用** — `PageResp<T>{records,current,size,total}`(serde camelCase)+ Output DTO(id=i64→JSON number、createBy/updateBy null〔operator 折 Phase 4 A〕)+ facade 分頁查詢 seam(`*_filtered`→`Select<Entity>` WHERE-build + `list_paged` count+limit/offset、SQL-build 純單測)+ **password 投影排除**(`select_only()` 顯式列舉、不含 Password 欄)+ `normalize_page`(current/size clamp max 100)。009 entity-access lint 守(handler 不碰 `entity::`、查詢只經 facade)。**注意 `From<Entity>` 因 entity-access lint 不可在 handler impl(會 `use entity::`)→ 改 handler 內 inline field-access map**(facade 返 row、handler 映 DTO)。
 3. **alova-only endpoint 處理 feature** — 依 §11.2 拍板實作 / stub / 不實作
 4. **菜單樹建構 feature** — tree builder(parent_id → nested children)
 
