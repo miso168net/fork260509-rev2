@@ -144,10 +144,10 @@
 - [ ] **axum-casbin 重寫 feature**(2026-05-29 從 Phase 2 §11.6 重定位:Casbin Axum enforce 中介層 + rev2 自家 metrics/error/observability;需真實受保護路由才驗得了)(**013 已做第一刀**:`auth/enforce.rs` 最小機制 middleware + 單示範路由;本 feature = 全路由 rollout + observability)
 - [ ] **受管 RBAC policy 層 feature**(012 brainstorm 衍生:casbin policy 加 (a) soft-delete 可復原 (b) 不可刪 protected policy (c) policy 變更走 011 audit 記 operator (d) 統一 CRUD facade。需 fork sea-orm-adapter 的 load/remove → 動 §11.6「adapter=拷貝」前提、specced 時評估 Amendment;與 axum-casbin 重寫同期、因皆需 enforce/operator)
 
-### Phase 4 — P3 主流業務(對齊 [DESIGN §10 Phase 4](INTEGRATION-DESIGN.md);尚未啟動)
+### Phase 4 — P3 主流業務(對齊 [DESIGN §10 Phase 4](INTEGRATION-DESIGN.md);**進行中 — 016 role+user 起手**)
 
-- [ ] manage list endpoints feature(6 read endpoint,對齊 mock)
-- [ ] wire shape mapping feature(Output DTO + `From<Entity>` + pagination wrapper)
+- [~] manage list endpoints feature(6 read endpoint,對齊 mock)— **016 已做 role+user 3 endpoint**(getRoleList/getUserList/getAllRoles、merge `6398906`);menu 三件(getMenuList/v2·getAllPages·getMenuTree、**需建選單表**)留 **017**
+- [~] wire shape mapping feature(Output DTO + pagination wrapper)— **016 已立 pattern**(`PageResp<T>` + Output DTO〔id=number/camelCase/createBy·updateBy null〕+ facade `*_filtered`/`list_paged` seam + `select_only` password 投影 + `normalize_page` clamp);**注意 `From<Entity>` 因 009 entity-access lint 不可用 → handler inline field-access map**,017 menu 沿用
 - [ ] alova-only endpoint 處理 feature(依 §11.2 拍板)
 - [ ] 菜單樹建構 feature(parent_id → nested children)
 
@@ -180,7 +180,7 @@
 
 - [x] **envelope**:`{data, code, msg}`(無 `success` bool);`code` 是 string `"0000"` not number(§4.1)— rust-api 側 ✅ 008 已實作(21 單測 + 404 curl 鎖形狀);**end-to-end base-web 消費 ✅ 013 CDP 證**(login/getUserInfo envelope unwrap + `code` 分流 + LS `SOY_token`,auth endpoint 端到端);其餘 endpoint 隨 Phase 3+/4 接線續驗
 - [x] **paginated**:`{current, size, total, records}`(無 `pages` 欄)(§4.9 已驗)
-- [ ] **Role.id** 型(統一策略待 §11.10 拍板):mock string vs TS number
+- [x] **Role.id / User.id** 型 ✅ (2026-05-30,016 解決):**id=number**(constitution **v1.1.0** §I.3/§11.10 amend `9f1452d`、base-web TS `CommonRecord.id:number` 為 §I.1 權威;mock getAllRoles string id 經 016 research 證實為 mock quirk、base-web 無硬依賴 string)— getRoleList/getUserList/getAllRoles 皆 i64 直序列化 JSON number(活體驗)。例外:`MenuRoute.id`(=route name)/ `getUserInfo.userId` 維持 string 不受影響
 - [ ] **MenuType enum**:1=directory / 2=menu(非舊推測「1=group / 2=page」)(§4.2.1)
 - [ ] **Status nullable**:`CommonRecord.status: EnableStatus | null` rust-api 須支援(§4.2.2)
 - [x] **MenuRoute.id** 型:string;`getUserRoutes` 供應時帶 string id(§4.13.1)— ✅ 014(`MenuRoute.id:String`=route name、serde camelCase、curl + CDP 驗)
@@ -237,6 +237,7 @@
 - [ ] **user input 一律走 sea-orm parameterized builder**(`.filter(Col.eq(x))` / `.col_expr` / `ActiveModel` → 自動 `$1` 綁定);**絕不** `execute_unprepared(format!("… {user_input} …"))`
 - [ ] **DDL / 識別字(表/欄/index 名)無法 bind param** → 若需動態名須自驗 / quote-identifier(現有 009/010 DDL 全靜態、無此風險)
 - 現況零注入面:009 facade `soft_delete` 已參數化(`WHERE "id"=$1`)、009/010 migration 全靜態 DDL;唯一內插 = 002 seed `{hash}`(靜態值 + argon2 字元集無單引號 + 已註解警告,安全例外)。注意:009 facade/lint 守的是 soft-delete 過濾不變式、**非** injection 防護(injection 防護靠參數化、非走 facade)
+- **016 首個業務搜尋 query 守 §5.10** ✅:role/user filter 全走 sea-orm parameterized builder(`.contains()` LIKE / `.eq()` 等值、空白 `.trim()` 略過),零 `execute_unprepared(format!())` 字串內插;SQL-build 純單測 + 活體驗(`%管理%`/`R_ADMIN` 等)。後續 017 menu / Phase 4 寫入沿用
 
 ---
 
