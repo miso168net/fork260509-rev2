@@ -1312,18 +1312,19 @@ axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index
 
 ### §11.10 wire 細節決策
 
-> **✅ 拍板**(全對齊 mock wire ground truth):
-> - `Role.id` 型:**string**(對齊 mock `getAllRoles`);BASE-WEB-ADAPT 軌道補正 base-web TS typing(rev2-extra.d.ts)
+> **✅ 拍板**(對齊 base-web wire 權威):
+> - `Role.id` / `User.id` 型:~~string~~ → **number**(**v1.1.0 amend、2026-05-30 / 016-manage-role-user-list**)。原拍 string 是「對齊 mock `getAllRoles`」,但 016 research 證實:base-web TS typing(`CommonRecord.id: number`)才是 §I.1 權威、mock `getAllRoles` 的 string id 是 mock 自身與 typing 打架的 quirk、base-web 實測無處硬依賴 string(rowKey/edit(id)/delete(id) 吃 number、`getAllRoles` 下拉用 `roleCode` 非 id)。改 number 更忠於 §I.1、且**免動 base-web**(不需 `rev2-extra.d.ts` 矯正)。constitution §I.3/§11.10 已同步 amend(v1.1.0、commit `9f1452d`)。
 > - User → User01 alias 機制:**模仿**(getUserInfo 回 `User01` alias)— 對應 §11.1 連動
 > - 業務驗證錯誤 code 區段:**`5xxx`**(對齊 mock 慣例)
-> - `MenuRoute.id` 型:**string**(對齊 TS 顯式宣告 + mock 行為)
+> - `MenuRoute.id` 型:**string**(= route name、014 已落地、**保持不變**;與 Role/User.id 不同源)
+> - `getUserInfo.userId` 型:**string**(`auth.d.ts` typing 即 string、013 既有、不受 id amend 影響)
 >
-> **理由**:全對齊 mock = wire ground truth、避免 audit §4.X 抓出的 base-web 內部不一致(typing vs mock)在 rev2 重演。
+> **理由**:對齊 base-web TS typing(§I.1 權威);id 由 string 改 number(amend v1.1.0)— mock 的 string id 是 mock 自身 quirk、非權威。其餘對齊 mock = wire ground truth、避免 audit §4.X 抓出的 base-web 內部不一致在 rev2 重演。
 > **影響**:Phase 2 F4 response-shape-alignment + DTO 設計;Phase 3 F5.1 alias 邏輯;BASE-WEB-ADAPT 軌道(§7.1)
 
 | 決策項 | 選項 | 來源 |
 |---|---|---|
-| `Role.id` 型 | (a) number(對齊 TS) / (b) string(對齊 mock `getAllRoles`) | audit §4.2 |
+| `Role.id` / `User.id` 型 | **✅ (a) number**(對齊 base-web TS typing、v1.1.0 amend;原 (b) string 已撤) | audit §4.2 |
 | User → User01 alias 機制 | (a) 模仿(getUserInfo 回 alias) / (b) 不模仿(getUserInfo 回 login userName) | followup §4.1 |
 | 業務驗證錯誤 code 區段 | `5xxx` / `4xxx` / 其他 | §3.3 |
 | `MenuRoute.id` 型 | string(對齊 TS 顯式宣告) | audit §4.2 |
