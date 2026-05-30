@@ -95,6 +95,8 @@
 - [ ] **deferred NITS(code review)**:trace_id 對入站 X-Request-Id 做 `.trim()`(判斷接受、whitespace-only→uuid fallback);magic `64` 未抽 const(audit_ctx trace_id / login attempted_user_name / VARCHAR(64) 三處);`tracing::warn!(... what ...)` 可改顯式 `what = what`;region 可加 IPv4 fast-path 省一次 alloc。皆非正確性、低優先。
 - [ ] **lockout / XFF-trust 解析 / async 寫入 = 後續 feature**:015 明確 scope 外,sys_login_attempt + 兩 index 已備 lockout 資料源。
 - [ ] **region 在 dev 為「内网IP」**:region 從直連 client_ip 解析(非 XFF);dev/docker 私有 IP → `内网IP`(非 NULL),真實地名需公網直連 client_ip。
+- [ ] **單測覆蓋缺口(code review)**:`extract_x_forwarded_for` 未測 non-UTF-8→None;trace_id 截斷測只 ASCII(未測多位元組 `chars().take(64)` 邊界);`sys_login_attempt` facade 只測 `operator_id: Some`、未測 `None` 分支。皆 minor、補測即可(同 §2.18 NITS 類)。
+- [ ] **prod-path 端到端未活體驗**:015 acceptance 全走 dev 直連(docker bridge IP)→ 真實 nginx XFF 鏈落 `x_forwarded_for` + 公網 client_ip→真實地名 region 未活體跑(prod 只驗 image build + xdb 在 image 內)。連動 [§2.8](#28-feature-004-compose-port-orchestration-follow-up) / [§2.16](#216-feature-013-auth-login-enforce-follow-up) prod-stack CDP cluster、屆時一併驗。
 
 ## 3. 已完成里程碑
 
