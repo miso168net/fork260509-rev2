@@ -67,6 +67,21 @@
 
 **process 紀律**:spec phase 0 research **不准 grep rev1 source**(避免「答案污染」;DESIGN §7.5)
 
+### I.6 業務表審計欄標準(SCHEMA-AUDIT-COLUMNS)
+
+**規則**:業務主表 create migration 時 MUST 含 6 審計欄 — `created_at` / `created_by` / `updated_at` / `updated_by` / `deleted_at` / `deleted_by`。
+
+**型與約束**:
+- `*_at`:`timestamptz`。`created_at` NOT NULL default `now()`;`updated_at` / `deleted_at` nullable。
+- `*_by`:operator `user_id`、`Option<i64>`(對齊 `sys_operation_log.operator_id` / `sys_login_attempt.operator_id` 的 `Option<i64>`;非 `user_name` 字串)。system seed / migration 建立 / 未認證情境無 operator → `null`。
+- 成對寫:`deleted_at`(何時刪)+ `deleted_by`(誰刪)、`updated_at` + `updated_by` 同理。
+
+**例外**:
+- **append-only 審計表**(`sys_operation_log` / `sys_access_log` / `sys_login_attempt`):整列即操作記錄、不可改不可刪 → 只 `created_at` + `operator_id`,MUST NOT 加 `updated_*` / `deleted_*`。
+- **join 表**(如 `sys_user_role`):依刪除策略,硬刪則免審計欄。
+
+**retrofit 紀律(forward-only)**:本標準對**新建表**生效。既有 `sys_user` / `sys_role` / `sys_menu` 的 `*_by` 缺口(三表均已有 `*_at` 三欄、缺 `*_by` 三欄)、016/017 `createBy`/`updateBy` wire 回 null、`sys_operation_log` INET retrofit,一併收攏於 [DESIGN §10 Phase 4 A「資料變動補 operator + 審計欄 retrofit」](../../docs/INTEGRATION-DESIGN.md) 補(需寫入路徑才有 operator 可填)。
+
 ---
 
 ## II. 設計拍板凍結
@@ -142,6 +157,7 @@
 5. **此 plan 是否從 rev1 source 拷貝 code?** 若是、屬 §I.5 例外清單嗎?
 6. **此 plan 是否凍結到 §II 12 拍板項?** 任一拍板需改變、必先走 Amendment 流程
 7. **此 plan 是否觸及 §III ★ 軌道?** 若是、在授權邊界內?
+8. **此 plan 若新建業務主表(create migration),是否含 §I.6 的 6 審計欄**(`created_at`/`created_by`/`updated_at`/`updated_by`/`deleted_at`/`deleted_by`)?屬豁免(append-only 審計表 / 硬刪 join 表)須在 plan 註明;既有表 `*_by` retrofit 折 Phase 4 A。
 
 任一檢查不通過 → plan 須回 brainstorm 或申請 Amendment(§V.2)。
 
@@ -172,7 +188,8 @@ DESIGN 仍為「核心事實」(設計研究歷史 + 拍板理由 + 詳細軌道
 
 ---
 
-**Version**: 1.1.0 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-05-30
+**Version**: 1.2.0 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-05-31
 
 > **Amendment 紀錄**:
+> - **v1.2.0**(2026-05-31):新增 §I.6 業務表審計欄標準(SCHEMA-AUDIT-COLUMNS)+ §IV Compliance Check #8。內容:業務主表 create migration MUST 含 6 審計欄(`created_at`/`created_by`/`updated_at`/`updated_by`/`deleted_at`/`deleted_by`);`*_by`=`Option<i64>`(operator user_id、對齊 `sys_operation_log`/`sys_login_attempt` 的 `operator_id`);append-only 審計表(`sys_operation_log`/`sys_access_log`/`sys_login_attempt`)與硬刪 join 表(`sys_user_role`)列豁免;forward-only,既有 `sys_user`/`sys_role`/`sys_menu` 的 `*_by` 缺口折 Phase 4 A retrofit。理由:統一「誰/何時 建·改·刪」可追溯性、提取為鐵紀律供 `/speckit-plan` 強制(新表建表即擋);標準凍結前只散落為 retrofit todo、未升格權威。MINOR bump(§V.3:新拍板項固化、純 additive forward-only、不撤回既有 §I.1~§I.5)。回填 DESIGN §11.14 + §10 Phase 4 A。
 > - **v1.1.0**(2026-05-30,016-manage-role-user-list):§I.3 + §11.10 `Role.id`/`User.id` 由 **string → number**。理由:base-web TS typing(`CommonRecord.id: number`)為 §I.1 權威,mock getAllRoles 的 string id 經 016 research 證實為 mock quirk、base-web 無處硬依賴 string(rowKey/edit/delete 吃 number、下拉用 roleCode);改 number 更忠於 §I.1、且免動 base-web。`MenuRoute.id`(=route name)維持 string、不變。MINOR bump(§V.3:拍板細節修正、非鐵紀律撤回)。

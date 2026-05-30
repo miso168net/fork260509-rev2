@@ -1123,6 +1123,7 @@ deliverables(全部完成):
 3. **alova-only endpoint 處理 feature** — 依 §11.2 拍板實作 / stub / 不實作
 4. **菜單樹建構 feature** — tree builder(parent_id → nested children)
    - **as-built(017,2026-05-31)**:純函式 `build_menu_tree`(parent_id→children map、遞迴巢狀、依 menu_order 升冪 null-last 穩定、**孤兒 promote 頂層不隱藏**、葉省略 children 欄)+ lite 版 `build_menu_tree_lite`(MenuTreeItem、無 order 欄保輸入序);getMenuList 套 + 頂層 slice 分頁、getMenuTree 套輕量版。純測鎖巢狀/排序/孤兒/邊界。
+5. **資料變動補 operator + 審計欄 retrofit feature(Phase 4 A)** — 既有 `sys_user`/`sys_role`/`sys_menu` 補 `*_by` 三欄(constitution **§I.6 SCHEMA-AUDIT-COLUMNS** retrofit、forward-only 緩補、§11.14)+ 016/017 `createBy`/`updateBy` 由 null 改填真實 operator + `sys_operation_log.operator_ip` INET retrofit(套 015 `IpNetwork` pattern、§2.18)+ status/gender DB CHECK 約束(D-3)。**需寫入路徑(menu/role/user CRUD)落地才有 operator 可填** → 與 manage 寫入 feature 同期。
 
 ### Phase 5 — 補位 + 抽離項(P4 完)
 
@@ -1394,6 +1395,15 @@ rev2 spec-kit feature 工作流前置 brainstorm 文件存哪?
 **Claude 中性建議**:rev2 v1 採 (a) 不實作(focus pwd-login 主流程 + manage 業務);若 rev2 後期業務需要(對外開放註冊 / 忘記密碼自助 / 微信登入),再升 (b)/(c)。
 
 **相關 §11.5 alova 處理策略連動**:若 §11.13 選 (a) 不實作,**建議**配合 §11.5 走 `(b'-narrow)` 用 `pageExcludePatterns` 隱藏 alova menu(避免 user 點進 reset-pwd / code-login / register 頁 form submit 報錯);或保留 sidebar 但接受點進去 form submit 走 toast error(`code:"1000"` 或自訂)。
+
+### §11.14 業務表審計欄標準(post-freeze amendment,constitution v1.2.0)
+
+> **✅ 凍結(2026-05-31):業務主表 create migration MUST 含 6 審計欄** — `created_at` / `created_by` / `updated_at` / `updated_by` / `deleted_at` / `deleted_by`。已提取為 [constitution §I.6 SCHEMA-AUDIT-COLUMNS](../.specify/memory/constitution.md) + §IV Compliance Check #8(`/speckit-plan` 新表建表時強制)。
+
+- **型**:`*_at`=`timestamptz`(`created_at` NOT NULL default `now()`、`updated_at`/`deleted_at` nullable);`*_by`=`Option<i64>`(operator user_id、對齊 `sys_operation_log.operator_id` / `sys_login_attempt.operator_id`,**非 user_name 字串**)。
+- **例外**:append-only 審計表(`sys_operation_log` / `sys_access_log` / `sys_login_attempt`)只 `created_at`+`operator_id`、MUST NOT 加 `updated_*`/`deleted_*`;join 表(`sys_user_role`)硬刪則免。
+- **retrofit(forward-only)**:既有 `sys_user` / `sys_role` / `sys_menu` 已有 `*_at` 三欄、缺 `*_by` 三欄;此缺口 + 016/017 `createBy`/`updateBy` wire null + `sys_operation_log` INET retrofit,一併折 Phase 4 A「資料變動補 operator + 審計欄 retrofit」(需寫入路徑才有 operator 可填)。
+- **理由**:統一「誰/何時 建·改·刪」可追溯性;標準凍結前只散落為 retrofit todo、未升格權威 → 提取為 §I.6 鐵紀律。MINOR bump(additive、不撤回 §I.1~§I.5)。
 
 ---
 
