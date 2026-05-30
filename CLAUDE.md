@@ -356,10 +356,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/017-manage-menu-list/spec.md`](specs/017-manage-menu-list/spec.md)
-**Active Plan**: [`specs/017-manage-menu-list/plan.md`](specs/017-manage-menu-list/plan.md)
-**Phase**: 階段 1 SDD 設計鏈 — specify ✅(3 US/FR-001..011/SC-001..007) / clarify ✅(11 類掃描、0 提問) / plan ✅(Constitution **v1.1.0** 7+7=14 ✅、**無 Amendment、無 §I.5 例外**〔未 grep rev1〕;research R1-R10;data-model sys_menu 21 欄+JSONB;C-V §0-§6 無 CDP)。**Phase 4 第二刀「manage-menu-list」**:base-web manage/menu 頁 3 read endpoint〔getMenuList/v2 分頁巢狀樹 / getMenuTree 輕量樹{id,label,pId,children} / getAllPages **role-aware** 頁名 catalog:Super real+demo·Admin 只 real〕+ **建 sys_menu 表**〔base-web `Menu` 全 21 欄、扁平 column + `route_ext`/`buttons` 兩 JSONB〔sea-orm Json/json_binary、011 先例〕、seed 6 節點對齊 014 in-code 樹〕+ 3 條 enforce_mw〔m..017 seed 6 policy〕。**id wire=number**;`route_name`=string、casbin `v2='menu'` 對齊鍵。getMenuList **取全 active+記憶體組樹+頂層 slice 分頁**〔非 016 DB 分頁、menu 巢狀且有界小、D-A〕。**唯讀;不動 014 getUserRoutes〔仍讀 in-code〕;可見性續住 casbin〔不建 sys_role_menu〕;demo 頁只進 getAllPages catalog 不 seed 成 menu〔Path A〕**。無新 crate/dep、不動 base-web、無外層 deploy 改動。Deviation D-A(非 016 DB 分頁)/D-B(getAllPages role-aware double-JWT、§2.17 defer)/D-C(in-code 頁名對齊 base-web、§I.5 友善)/D-D(sys_menu vs 014 雙源暫並存)/D-E(operator+demos-as-menus+CRUD 折期)。
-**下一步**: `/speckit-tasks` →(`/speckit-analyze`)→ `superpowers:executing-plans`。feature branch `017-manage-menu-list`(pre-hook 已建);spec docs + rust-api SHA pin 落此 branch、走兩段式 commit、完成後 merge 回 `rev2-admin-root`。016 已完成+merge(見 [CHECKLIST §1](docs/INTEGRATION-CHECKLIST.md))。
+**Active Spec**: [`specs/018-userroutes-sys-menu/spec.md`](specs/018-userroutes-sys-menu/spec.md)
+**Active Plan**: [`specs/018-userroutes-sys-menu/plan.md`](specs/018-userroutes-sys-menu/plan.md)
+**Phase**: 階段 2 TDD 實作 **✅ 完成+全驗證**(收尾中)。**Phase 4 第三刀「getUserRoutes 改讀 sys_menu」**(拆 D-D 單一真相源):純函式 `build_route_tree(Vec<MenuNode>)→MenuRoute`(parent_id 巢狀 + menu_order 升冪 null-last) + `filter_routes_for_roles` 純化吃 `(routes,roles,enforcer)`(Casbin 零變更) + 移除 in-code `business_routes()`;handler `all_active`→map `MenuNode`→build→filter,`{routes,home}`+DbErr→3333 不變。**Option C**:builder 吃本地 `MenuNode`、非 `entity::Model`(沿 017 慣例避 lint、不動 facade)。US2 前置:m..018 seed 修 manage_user-detail component+`{"props":true}`(forward-only)。**唯讀(FR-008)、wire 對 014 零差異(struct 未變)、可見性續住 casbin**。無新 crate/dep、不動 base-web。rust-api d4cb09e+85f95f1。server 119 測 + lint 17。
+**下一步**: 收尾 — 外層 bump rust-api pin(85f95f1)+ docs 回填 commit、push(rust-api + outer)、`merge --no-ff` 回 `rev2-admin-root`(保留 018 branch 供 audit)。017 已完成+merge。
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
