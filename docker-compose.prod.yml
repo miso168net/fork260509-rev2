@@ -37,6 +37,9 @@ services:
   rust-api:
     image: rev2-admin-rust-api:latest
     restart: unless-stopped
+    environment:
+      # 015 §2.15:xdb 資料檔路徑。prod runtime image COPY 至 /app/resources/(Dockerfile Stage 3)
+      XDB_FILEPATH: /app/resources/ip2region.xdb
 
   migrate:
     # ★ prod migrate:runtime image,command [migration, up] 經 entrypoint.rust-api.sh dispatcher

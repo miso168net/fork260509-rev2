@@ -67,6 +67,8 @@ services:
       APP_JWT_JWT_SECRET: "${APP_JWT_JWT_SECRET:-dev_jwt_secret_for_local_only_x32xxxxxx}"
       APP_JWT_REFRESH_TOKEN_SECRET: "${APP_JWT_REFRESH_TOKEN_SECRET:-dev_refresh_secret_for_local_only_x32xx}"
       RUST_LOG: "info,tower_http=debug"
+      # 015 §2.15:xdb 資料檔路徑。dev bind-mount ./rust-api:/app → 檔在 /app/xdb/resources/
+      XDB_FILEPATH: /app/xdb/resources/ip2region.xdb
     healthcheck:
       test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/21081"]
       interval: 10s
