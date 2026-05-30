@@ -120,19 +120,42 @@ struct MenuItem {
 struct MenuTreeItem { id: i64, label: String, p_id: i64, children: Vec<MenuTreeItem> }  // label←menu_name、pId←parent_id
 ```
 - **id: i64 → JSON number**（不 to_string）。`route_ext`/`buttons` 由 handler 從 `Option<Json>` 取值攤平/直送（明確 map，非 serde flatten）。
-- `children` 序列化:base-web `Menu.children?:Menu[]|null`;葉節點可送空 `[]` 或 `skip_serializing_if`（plan 階段二擇一、傾向葉省略 children 欄）。
+- `children` 序列化（**拍死**）:`#[serde(skip_serializing_if = "Vec::is_empty")]` —— **葉節點省略 `children` 欄、父節點送陣列**（對齊 base-web `Menu.children?:Menu[]\|null` optional、避免 tree-table 空 expand-arrow）。
 
 ## 5. 純查詢/邏輯函式（no-DB、純單測對象）
 
 ```
-fn build_menu_tree(rows: Vec<Model>) -> Vec<MenuItem>     // parent_id→children map、遞迴巢狀、依 menu_order 排序、頂層=parent_id 0/無父
-fn pages_for_roles(roles: &[String]) -> Vec<String>       // roles 含 "R_SUPER" → REAL_PAGES+DEMO_PAGES;else REAL_PAGES
+fn build_menu_tree(rows: Vec<Model>) -> Vec<MenuItem>     // parent_id→children map、遞迴巢狀、依 menu_order 排序
+fn pages_for_roles(roles: &[String]) -> Vec<String>
 const REAL_PAGES: &[&str] = &["home","manage_user","manage_role","manage_menu","manage_user-detail"];
-const DEMO_PAGES: &[&str] = &[/* base-web routes.ts demo 頁級 route key、排 layout 父+系統頁;impl grep 定案 */];
+const DEMO_PAGES: &[&str] = &[ /* 拍死、38 條、見下 */ ];
 // root 分頁:reuse 016 normalize_page(current,size) → slice 頂層 + total=頂層數
 ```
-- `build_menu_tree` 共用於 getMenuList（再 root-slice 分頁）+ getMenuTree（轉 MenuTreeItem、不分頁）。
-- `MenuItem→MenuTreeItem` 或各自從 Model 組（plan 階段定;傾向 getMenuTree 直接從 Model 組輕量樹、不經 MenuItem）。
+
+**`build_menu_tree` 拍死規則**:
+- 頂層 = `parent_id == 0`。
+- **孤兒處理（拍死）**:`parent_id != 0` 但該 parent 不在 active 集（已 soft-delete / 不存在）→ **視為頂層**（promote to root、**不隱藏**、標準 tree-build 行為、保管理視圖資料可見）。017 seed 無孤兒、此為防禦規則。
+- 排序:同層依 `menu_order`（null 排後 / 穩定）。
+- **共用**:`build_menu_tree` 的 parent_id→children nesting 為**共用 pure helper**;getMenuList 用它（→ root-slice 分頁）;**getMenuTree 套同一 nesting 演算法**直接從 Model 組 `MenuTreeItem` 輕量樹（不經 MenuItem）。→ I1 解:US2 reuse 此共用 nesting、仍獨立可測。
+
+**`pages_for_roles` 拍死**:`roles.contains("R_SUPER") → REAL_PAGES + DEMO_PAGES;else（R_ADMIN / R_USER_COMMON / 任何非 Super）→ REAL_PAGES`。（R_USER_COMMON 在 enforce 已 deny、不達 handler;else→real 為防禦）。
+
+**`DEMO_PAGES` 拍死（38 條）** —— base-web `routes.ts` 有 `view.X` component 的頁級 route key,排 REAL 5 頁 + 系統/常駐頁（403/404/500/login/iframe-page）+ layout 父（manage/alova/function/function_hide-child/multi-menu(+first/second/second_child)/plugin(+charts/editor/gantt/tables)/pro-naive(+form/table)）:
+```
+"about",
+"alova_request","alova_scenes",
+"function_hide-child_one","function_hide-child_two","function_hide-child_three",
+"function_multi-tab","function_request","function_super-page","function_tab","function_toggle-auth",
+"multi-menu_first_child","multi-menu_second_child_home",
+"plugin_barcode","plugin_charts_antv","plugin_charts_echarts","plugin_charts_vchart",
+"plugin_copy","plugin_editor_markdown","plugin_editor_quill","plugin_excel",
+"plugin_gantt_dhtmlx","plugin_gantt_vtable","plugin_icon","plugin_map","plugin_pdf",
+"plugin_pinyin","plugin_print","plugin_swiper","plugin_tables_vtable","plugin_typeit","plugin_video",
+"pro-naive_form_basic","pro-naive_form_query","pro-naive_form_step",
+"pro-naive_table_remote","pro-naive_table_row-edit",
+"user-center"
+```
+（about 1 + alova 2 + function 8 + multi-menu 2 + plugin 19 + pro-naive 5 + user-center 1 = 38。對齊 base-web elegant-router、§I.5 未 grep rev1。base-web 若增刪 demo 頁需同步此清單。）
 
 ## 6. handler / route 接線（`handler/system_manage.rs` 擴充 + main.rs）
 

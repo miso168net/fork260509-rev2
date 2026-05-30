@@ -40,13 +40,13 @@
 **Rationale**:rev2 既有 JSONB 先例（011）→ 零新 dep、pattern 確定。route_ext 攤平由 handler 手動 map（明確 > serde flatten 的隱晦）。
 
 ## R5. tree builder + 記憶體分頁（getMenuList/getMenuTree 共用、D5）
-**Decision**:facade `all_active(db)->Vec<Model>`（全 active、依 menu_order）→ handler 純函式 `build_menu_tree(Vec<Model>)->Vec<MenuItem>`（`parent_id→children` map、遞迴巢狀、依 menu_order 排序）→ getMenuList 頂層 slice 分頁（reuse 016 `normalize_page` 算 current/size、`total`=頂層數）;getMenuTree 回完整樹（不分頁、輕量 DTO）。
+**Decision**:facade `all_active(db)->Vec<Model>`（全 active、依 menu_order）→ handler 純函式 `build_menu_tree(Vec<Model>)->Vec<MenuItem>`（`parent_id→children` map、遞迴巢狀、依 menu_order 排序）→ getMenuList 頂層 slice 分頁（reuse 016 `normalize_page` 算 current/size、`total`=頂層數）;getMenuTree 回完整樹（不分頁、輕量 DTO）。**拍死**:頂層=`parent_id==0`;**孤兒（parent 不在 active 集）→ promote 為頂層、不隱藏**（標準 tree-build、保資料可見、017 無孤兒此為防禦）;nesting 為**共用 pure helper**、**getMenuTree 套同一演算法**從 Model 組 MenuTreeItem（→ I1 解:US2 reuse、獨立可測）。
 **Rationale**:menu 巢狀（children 隨 root）+ 任意深度 + 有界小 → 取全+記憶體組樹比 DB recursive CTE 簡單。**明確偏離 016 DB 分頁**（plan D-A）。
 **Alternatives**:DB 分頁 roots + recursive CTE 撈子樹（否決:raw SQL 破 facade seam、難測）;扁平分頁不組樹（否決:tree-table 斷裂、違 `Menu.children` 契約）。
 
 ## R6. getAllPages role-aware + 頁名源（D7、唯一 role-aware）
 **Decision**:`pages_for_roles(roles)->Vec<String>`:`roles 含 "R_SUPER" → REAL_PAGES + DEMO_PAGES;else → REAL_PAGES`。role 讀取:handler `bearer→jwt::verify→Claims.roles`（不查 DB）。in-code 兩清單:`REAL_PAGES`=[home, manage_user, manage_role, manage_menu, manage_user-detail];`DEMO_PAGES`=base-web routes.ts 的 demo 頁級 route key（about/alova_*/function_*/multi-menu_*_(leaf)/plugin_*(leaf)/pro-naive_*(leaf)/user-center;**排 layout 父**〔manage/alova/function/plugin/pro-naive/...〕**+ 系統頁**〔403/404/500/login/iframe-page〕）。
-**Rationale**:getAllPages = 可掛 menu 的頁面 catalog（含未指派）;Super 才見 demo（user 拍板）。`Claims.roles` 足夠（cosmetic catalog 過濾、非 routing 權威）。enforce_mw 仍掛（admin 閘）→ double JWT parse（§2.17 DRY debt、defer）。**精確 DEMO_PAGES 成員 impl 時 grep routes.ts 過濾 layout 父定案**。
+**Rationale**:getAllPages = 可掛 menu 的頁面 catalog（含未指派）;Super 才見 demo（user 拍板）。`Claims.roles` 足夠（cosmetic catalog 過濾、非 routing 權威）。enforce_mw 仍掛（admin 閘）→ double JWT parse（§2.17 DRY debt、defer）。**`pages_for_roles` 拍死**:含 R_SUPER→real+demo;else（R_ADMIN/R_USER_COMMON）→real。**`DEMO_PAGES` 已列定 38 條**（[data-model §5](./data-model.md);base-web routes.ts 有 `view.X` component 的頁級 key、排 REAL 5 + 系統頁〔403/404/500/login/iframe-page〕+ layout 父）。
 
 ## R7. enforce 接線 + policy seed（D9）
 **Decision**:3 route 皆 `route_layer(from_fn_with_state(state.clone(), enforce_mw))`（admin 級）;`m..017_seed_menu_endpoint_policy` seed 6 條（getMenuList/v2 + getAllPages + getMenuTree 各 R_SUPER/R_ADMIN、`ON CONFLICT DO NOTHING`、沿 m..009/m..015、經 010 自動套）。R_USER_COMMON 不放（deny）。
