@@ -133,19 +133,9 @@
 
 ### Phase 1 — P0 部署基建 ✅ 全完成+已歸檔 (2026-05-28)
 
-> 5 feature 全交(001 rust-api Dockerfile `a21e932` / 002 base-web Dockerfile `a70fa5f` / 003 TLS cert `cb5e1a1` / 004 compose 編排 `b4294c7` / 005 secret 注入 `068b2a8`),各 feature branch 保留供 audit;詳細 deliverable 見 [DESIGN §10 Phase 1](INTEGRATION-DESIGN.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
+### Phase 2 — P1 基礎設施 ✅ 全完成+已歸檔 (2026-05-29)
 
-### Phase 2 — P1 基礎設施 (對齊 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md);**7/7 全完成**) ✅ 全完成 (2026-05-29)
-
-- [x] **DB/Redis 連線層 + migration pipeline proof feature(007)** ✅ (2026-05-29 merge `928949d`)— rust-api boot 連 Postgres+Redis(fail-fast)+ AppState + migration runner + sys_user proof seed
-- [x] **envelope 對齊 feature(008)** ✅ (2026-05-29 merge `7bdf5bb`)— `Res<T>{data,code,msg}` + `IntoResponse` + `BizCode` 12-variant 矩陣 + `AppError`(NotFound→404/Internal→500)+ axum 404 `.fallback()`;camelCase 留 Phase 4 DTO
-- [x] **JWT 機密管理** ✅ (已由 005 secret 注入 + 007 config 吸收,非獨立 feature)— `AppConfig::load()` 載 `APP_JWT_JWT_SECRET`/`APP_JWT_REFRESH_TOKEN_SECRET`(`_FILE` precedence + `validate_secret` 空/placeholder/≥32)+ `JwtConfig`(含 TTL)+ compose dev/prod 接線 + secrets `.example` + 單測(見 [DESIGN §6.1](INTEGRATION-DESIGN.md))
-- [x] **soft-delete 基礎設施 feature(009)** ✅ (2026-05-29 merge `88312b6`)— 立三重防護機制(SoftDeletable trait / facade 唯一管道 / build-failing lint)+ 套 `sys_user` proof(`deleted_at` + partial unique index);新增 workspace member `entity` crate。6 entity rollout 延後(各自被建時沿用 pattern)
-- [x] **migration auto-apply feature(010)** ✅ (2026-05-29 merge `e4ff2b2`;outer-only)— dev/prod stack `up` 自動套 sea-orm migration:一次性 `migrate` service + `rust-api depends_on migrate: service_completed_successfully` 閘門、API 起來前完成、失敗 fail-fast;守 007 FR-009(server 不自動 migrate)。補掉手動 migration gap
-- [x] **audit log 基礎設施 feature(011)** ✅ (2026-05-29 merge `2be489f` / SHA pin `5a72560`)— 統一 audit:`sys_operation_log` 表(migration 004、經 010 自動套、append-only 非 SoftDeletable)+ `mutate_in_txn` 唯一原子寫入入口 + `AuditSerialize` redact;`sys_user soft_delete` 活體 proof(同 txn 原子寫 SOFT_DELETE + redact password)。守 007 FR-009 + 009 facade 邊界(lint 續綠)。其他 operation·entity 接線 / 漏-audit lint 延後(見 [§2.14](#214-feature-011-audit-log-follow-up))
-- [x] **sub-crate setup feature(012)** ✅ (2026-05-29 merge `774f7b3` / SHA pin `e193c47`)— 拷貝 `sea-orm-adapter` + `xdb`(rev1@0b64a57、§11.6/§I.5 授權例外、首個拷貝 feature)+ casbin **bump 2.10→2.20.0**(編譯閘門零 drift;research R2 修正 brainstorm 的「async-std→tokio」誤判 — adapter 既有 `runtime-tokio-rustls` default)+ casbin_rule 建表 migration 005(委派 adapter up/down 單一 schema 來源、stock schema 無 soft-delete、經 010 自動套)+ 兩 crate 活體 smoke(adapter round-trip / xdb 1.2.4.8)。附帶修 rev1 潛伏 bug `remove_filtered_policy` 索引重複偏移(Deviation D-1)。**`axum-casbin` 重寫 + 受管 policy 層重定位 Phase 3**(見 [§2.15](#215-feature-012-sub-crate-setup-follow-up) follow-up)
-
-### Phase 3 — P2 認證 + 動態 menu(對齊 [DESIGN §10 Phase 3](INTEGRATION-DESIGN.md);進行中)
+### Phase 3 — P2 認證 + 動態選單 (進行中)
 
 - [x] **登入 + getUserInfo feature(013)** ✅ (2026-05-30 merge `ade723d` / SHA pin `bbabdbc`)— login/getUserInfo/refresh + JWT(HS256)+ **首個 Casbin enforce 點**(rev2 自家 axum middleware、allow+deny)+ sys_role/sys_user_role/nick_name + 首條真 base-web↔rev2 CDP wire;follow-up 見 [§2.16](#216-feature-013-auth-login-enforce-follow-up)
 - [x] **dynamic mode 路由 feature(014)** ✅ (2026-05-30 merge `9d06347` / SHA pin `8965c8a`)— 3 route endpoint(`getConstantRoutes` 公開 / `getUserRoutes`·`isRouteExist` JWT、過濾在 handler 內)+ base-web 翻 dynamic + **menu 走 Casbin enforce 過濾**(menu-visibility policy 9 rows + 013 enforcer + tree-prune)+ CDP menu deny 端到端;follow-up 見 [§2.17](#217-feature-014-dynamic-routes-follow-up)
@@ -155,26 +145,27 @@
 - [ ] **axum-casbin 重寫 feature**(2026-05-29 從 Phase 2 §11.6 重定位:Casbin Axum enforce 中介層 + rev2 自家 metrics/error/observability;需真實受保護路由才驗得了)(**013 第一刀** `auth/enforce.rs` 最小機制 middleware + 單示範 stub 路由;**016 續** 3 條真實業務 enforce route〔getRoleList / getUserList〔取代 013 stub〕/ getAllRoles,**Phase 3 #5「真實受保護路由」首批**〕;本 feature = 全路由 rollout + observability + 016 兩端點 enforce 單測補〔§2.19〕)
 - [ ] **受管 RBAC policy 層 feature**(012 brainstorm 衍生:casbin policy 加 (a) soft-delete 可復原 (b) 不可刪 protected policy (c) policy 變更走 011 audit 記 operator (d) 統一 CRUD facade。需 fork sea-orm-adapter 的 load/remove → 動 §11.6「adapter=拷貝」前提、specced 時評估 Amendment;與 axum-casbin 重寫同期、因皆需 enforce/operator)
 
-### Phase 4 — P3 主流業務(對齊 [DESIGN §10 Phase 4](INTEGRATION-DESIGN.md);**進行中 — 016 role+user + 017 menu 已交,6 read endpoint 全交**)
+### Phase 4 — P3 主流業務 (**進行中 — 016 role+user + 017 menu 已交,6 read endpoint 全交**)
 
 - [x] manage list endpoints feature(6 read endpoint,對齊 mock)— **016 role+user 3 endpoint**(getRoleList/getUserList/getAllRoles、merge `6398906`)+ **017 menu 三件**(getMenuList/v2·getAllPages·getMenuTree、rust-api `841b6f5..d66b309`、建 sys_menu 表);全 6 read endpoint 落地。menu CRUD / role-menu 授權寫入留後續([§2.20](#220-feature-017-manage-menu-list-follow-up))
 - [x] wire shape mapping feature(Output DTO + pagination wrapper)— **016 立 pattern**(`PageResp<T>` + Output DTO〔id=number/camelCase/createBy·updateBy null〕+ facade `*_filtered`/`list_paged` seam + `select_only` password 投影 + `normalize_page` clamp);**注意 `From<Entity>` 因 009 entity-access lint 不可用 → handler inline field-access map**;**017 沿用 + 擴**(MenuItem 含巢狀 children + route_ext JSONB 攤平 + MenuTreeItem 輕量、getMenuList 記憶體組樹+頂層 slice 分頁)
 - [ ] alova-only endpoint 處理 feature(依 §11.2 拍板)
 - [x] 菜單樹建構 feature(parent_id → nested children)— **017 落地**:純函式 `build_menu_tree`(巢狀/menu_order 升冪 null-last/孤兒 promote/葉省略 children)+ lite 版 getMenuTree;純測鎖
+- [ ] **資料變動補 operator + 審計欄 retrofit feature(Phase 4 A)** — 既有 `sys_user`/`sys_role`/`sys_menu` 補 `*_by` 三欄(constitution **§I.6 SCHEMA-AUDIT-COLUMNS** retrofit、forward-only 緩補、§11.14)+ 016/017 `createBy`/`updateBy` 由 null 改填真實 operator + `sys_operation_log.operator_ip` INET retrofit(套 015 `IpNetwork` pattern、§2.18)+ status/gender DB CHECK 約束(D-3)。**需寫入路徑(menu/role/user CRUD)落地才有 operator 可填** → 與 manage 寫入 feature 同期。
 
-### Phase 5 — P4 補位 + 抽離項(對齊 [DESIGN §10 Phase 5](INTEGRATION-DESIGN.md);尚未啟動)
+### Phase 5 — P4 補位 + 抽離項(尚未啟動)
 
 - [ ] refresh token 完整實作 feature(`sys_tokens` rotation_chain)
 - [ ] 抽離項 stub feature(`/auth/error` / `/auth/sendCaptcha` / `/auth/verifyCaptcha`)
 - [ ] cleanup-job feature(dry-run 預設 + cron + 最小權 credential)
 
-### Phase 6 — 觀察性(對齊 [DESIGN §10 Phase 6](INTEGRATION-DESIGN.md);可選,生產 ready)
+### Phase 6 — 觀察性(可選,生產 ready)
 
 - [ ] obs-min feature(promtail + loki + grafana,純 log)
 - [ ] obs-full feature(+ prometheus + 3 exporter + pushgateway + grafana alerting)
 - [ ] dashboard provisioning feature(master overview / rust-api / postgres / redis / audit pipeline)
 
-### Phase 7 — 維護(對齊 [DESIGN §10 Phase 7](INTEGRATION-DESIGN.md);持續性)
+### Phase 7 — 維護(持續性)
 
 - [ ] wire 細節對齊 feature(status / gender 等,走 CDP 全功能巡檢)
 - [ ] upstream rebase feature(定期 `git rebase upstream/example`(base-web)+ `upstream/main`(rust-api))

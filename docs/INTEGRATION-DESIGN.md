@@ -1057,7 +1057,7 @@ BASE_WEB_TAG=rev2-admin-base-web
 
 > 不用 rev1 編號,改用語意 phase + feature 名稱。每個 phase 內順序可調整,跨 phase 順序為硬依賴。
 
-### Phase 0 — 設計拍板(prerequisite,2026-05-28 ✅ 完成)
+### Phase 0 — 設計拍板(prerequisite)
 
 > 整個 rev2 整合的設計基礎、所有後續 Phase 的硬依賴。**不寫 code**,只產出研究 / 設計 / 凍結文件。
 
@@ -1081,20 +1081,8 @@ deliverables(全部完成):
 4. **容器 port 與編排 feature** — docker-compose base + dev override(2XXXX port)
 5. **secret 注入機制 feature** — `_FILE` pattern + `deploy/secrets/*.txt.example` 範本
 
-### Phase 2 — 後端基礎設施(無 app 相依,但 Phase 3 起點)— ✅ 全完成 (2026-05-29)
+### Phase 2 — 後端基礎設施(無 app 相依,但 Phase 3 起點)
 
-> **as-built 完成紀錄(7/7;權威源 — `INTEGRATION-CHECKLIST.md §4` 之後會被清理,此處為準)**:下方「初版排序」5 項為 Phase 0 設計時規劃;實作中演化為 **7 個 as-built feature**(007-012 + JWT 吸收),各 merge 回 `rev2-admin-root`(`--no-ff`、feature branch 保留),完整 deliverable 見 [`INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md):
->
-> | as-built feature | merge / SHA pin | 一行 deliverable |
-> |---|---|---|
-> | **007 DB/Redis 連線層 + migration proof** | merge `928949d` | rust-api boot 連 Postgres+Redis(fail-fast)+ `AppState` + migration runner + `sys_user` proof seed(初版排序未獨立列、為後端基礎設施起點) |
-> | **008 envelope 對齊** | merge `7bdf5bb` | `Res<T>{data,code,msg}` + `BizCode` 12-variant 矩陣 + `AppError` + 404 fallback(下方 item 3) |
-> | **009 soft-delete 基礎設施** | merge `88312b6` | 三重防護(trait/facade/build-lint)+ `sys_user` proof;6-entity rollout 延後(下方 item 2) |
-> | **010 migration auto-apply** | merge `e4ff2b2`(outer-only) | dev/prod stack `up` 自動套 migration + `service_completed_successfully` fail-fast 閘門(初版排序未獨立列、實作中演化、守 007 FR-009) |
-> | **011 audit log 基礎設施** | merge `2be489f` / pin `5a72560` | `sys_operation_log` 表 + `mutate_in_txn` 唯一原子寫入入口 + redact;`sys_user soft_delete` 活體 proof(下方 item 4) |
-> | **012 sub-crate setup** | merge `774f7b3` / pin `e193c47` | `sea-orm-adapter` + `xdb` 拷貝 rev1 + casbin 2.20 + casbin_rule migration 005 + 活體 smoke(下方 item 5) |
-> | **JWT 機密管理** | 吸收於 005/007 | strict validation + `_FILE` + refresh secret 分離(非獨立 feature、下方 item 1) |
->
 > **Phase 2 餘**(非獨立 feature、隨各 entity / 寫入路徑建立時沿用 pattern):soft-delete 6-entity rollout / audit 其他 operation·entity 接線。**下一主軸 = [Phase 3 RBAC](#phase-3--認證--動態選單p2-完)**(axum-casbin enforce 重寫 + 受管 RBAC policy 層)。
 
 1. **JWT 機密管理 feature** — strict validation + `_FILE` + refresh secret 分離（**✅ 已由 005 secret 注入 + 007 config 吸收,非獨立 feature**:`config.rs` `AppConfig::load()` 已載 `APP_JWT_JWT_SECRET`/`APP_JWT_REFRESH_TOKEN_SECRET`〔`load_secret` `_FILE`>envvar>panic + `validate_secret` 空/placeholder/≥32〕、`JwtConfig` 含 access/refresh TTL + 兩 secret、compose dev env 預設 + master `*_FILE`→`/run/secrets/` + docker secret `jwt_secret`/`refresh_token_secret` + `deploy/secrets/*.example` + `load_secret`×4/`validate_secret`×3 單測。實際 JWT 簽發/驗證留 Phase 3 login、`sys_tokens` rotation 留 Phase 5,見 §6.1/§6.2）
