@@ -24,7 +24,7 @@
 - **D9 授權**:3 條 endpoint 都受授權保護(超管/admin allow、一般角色 deny);沿既有授權中介層。
 - **D10 對齊**:選單可見性續住既有授權引擎,靠路由名稱對齊;本 feature 不重造可見性關聯表。
 - **既有不動**:側欄動態路由(getUserRoutes,014)維持讀程式內定義、不改讀新表(單一真相源統一留後續)。
-- `/speckit-clarify` 正式掃描預期 **0 提問**(brainstorm D1-D14 已凍結全部高影響決策:切法/schema/分頁/role-aware/授權/對齊/scope)。技術手段(儲存型別、tree builder、JSONB、migration)為 plan 階段對象、非 spec-level 歧義。
+- `/speckit-clarify` 正式掃描(2026-05-30,11 taxonomy 類):**結果 0 提問**。brainstorm D1-D14 已凍結全部高影響決策(切法 D1、schema D2/D3、識別碼/對齊鍵 D4、清單分頁 D5、選單樹 D6、getAllPages role-aware D7/D8、授權 D9、casbin 對齊 D10、scope D11)。Functional/Domain/Interaction/Integration/Edge/Constraints/Terminology/Completion/Security 全 Clear;唯 Non-Functional(perf/scale)為 Partial 但**低影響**(admin panel 低流量、menu 本質有界小〔導覽設定、非交易資料〕、單頁筆數上限已設〔FR-008〕、無需 latency 數字),deferred to plan。技術手段(儲存型別、tree builder、JSONB、migration、分頁實作策略)為 plan 階段對象、非 spec-level 歧義。可直接進 `/speckit-plan`。
 
 ---
 
