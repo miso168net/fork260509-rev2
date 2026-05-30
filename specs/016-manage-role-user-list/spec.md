@@ -27,6 +27,7 @@
 - **D11 schema 參照**:補欄的型/命名經 user 授權交叉參照既有完整後端(隔離抽取純欄位事實、未污染設計);前端型別宣告為對外契約權威。
 - **D12/D13 後續**:操作者歸屬(誰建立/修改)折後續 Phase;頭像欄不補。
 - 技術手段(儲存型別、查詢建構、授權中介層接線、分頁實作)為 plan 階段對象、非 spec-level 歧義。可直接進 `/speckit-plan`。
+- `/speckit-clarify` 正式掃描(2026-05-30,11 taxonomy 類):**結果 0 提問**。brainstorm D1-D14 已凍結全部高影響決策(切法 D1、缺欄 D2/D3、狀態/性別值 D4、識別碼型 D5、授權 D6、查詢 D7-D9、只回 active D10、參照源 D11)。Functional/Domain/Interaction/Integration/Edge/Constraints/Terminology/Completion/Security 全 Clear;唯 Non-Functional(perf/scale)為 Partial 但**低影響**(admin panel 低流量、最小機制、單頁筆數上限已設〔FR-008〕、async 明確 out-of-scope〔FR-012〕、無需 latency 數字)。技術手段(儲存型別、查詢建構、授權中介層接線、分頁實作)為 plan 階段 research 對象、非 spec-level 歧義。可直接進 `/speckit-plan`。
 
 ---
 
