@@ -140,8 +140,8 @@
 - [x] **dynamic mode 路由 feature(014)** ✅ (2026-05-30 merge `9d06347` / SHA pin `8965c8a`)— 3 route endpoint(`getConstantRoutes` 公開 / `getUserRoutes`·`isRouteExist` JWT、過濾在 handler 內)+ base-web 翻 dynamic + **menu 走 Casbin enforce 過濾**(menu-visibility policy 9 rows + 013 enforcer + tree-prune)+ CDP menu deny 端到端;follow-up 見 [§2.17](#217-feature-014-dynamic-routes-follow-up)
 - [x] **audit-middleware 前半 feature(015)** ✅ (2026-05-30)— request-context middleware + 兩審計表(sys_access_log/sys_login_attempt)+ 只記已認證(R2 閘門)+ 登入嘗試自記 + best-effort;§2.14 INET 機制解 + §2.15 xdb 首消費;follow-up 見 [§2.18](#218-feature-015-audit-middleware-follow-up)
 - [ ] Casbin redis pub-sub 啟用 feature(v1 即啟用)
-- [ ] policy seed feature(三 role × 主流 endpoint)(**013 已做第一刀**:migration 009 seed 示範路由 × {R_SUPER,R_ADMIN};本 feature = 完整矩陣)
-- [ ] **axum-casbin 重寫 feature**(2026-05-29 從 Phase 2 §11.6 重定位:Casbin Axum enforce 中介層 + rev2 自家 metrics/error/observability;需真實受保護路由才驗得了)(**013 已做第一刀**:`auth/enforce.rs` 最小機制 middleware + 單示範路由;本 feature = 全路由 rollout + observability)
+- [ ] policy seed feature(三 role × 主流 endpoint)(**013 第一刀** migration 009 seed getUserList × {R_SUPER,R_ADMIN};**016 續** m..015 seed getRoleList/getAllRoles × {R_SUPER,R_ADMIN};本 feature = 完整矩陣)
+- [ ] **axum-casbin 重寫 feature**(2026-05-29 從 Phase 2 §11.6 重定位:Casbin Axum enforce 中介層 + rev2 自家 metrics/error/observability;需真實受保護路由才驗得了)(**013 第一刀** `auth/enforce.rs` 最小機制 middleware + 單示範 stub 路由;**016 續** 3 條真實業務 enforce route〔getRoleList / getUserList〔取代 013 stub〕/ getAllRoles,**Phase 3 #5「真實受保護路由」首批**〕;本 feature = 全路由 rollout + observability + 016 兩端點 enforce 單測補〔§2.19〕)
 - [ ] **受管 RBAC policy 層 feature**(012 brainstorm 衍生:casbin policy 加 (a) soft-delete 可復原 (b) 不可刪 protected policy (c) policy 變更走 011 audit 記 operator (d) 統一 CRUD facade。需 fork sea-orm-adapter 的 load/remove → 動 §11.6「adapter=拷貝」前提、specced 時評估 Amendment;與 axum-casbin 重寫同期、因皆需 enforce/operator)
 
 ### Phase 4 — P3 主流業務(對齊 [DESIGN §10 Phase 4](INTEGRATION-DESIGN.md);**進行中 — 016 role+user 起手**)
