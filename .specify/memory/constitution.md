@@ -37,7 +37,7 @@
 
 **鎖定不變式**:
 - envelope `{data, code, msg}`(無 `success` bool);`code` = string `"0000"` not number
-- `Role.id` / `MenuRoute.id` = **string**(對齊 mock,base-web TS 顯式宣告 number 由 BASE-WEB-ADAPT 軌道用 `rev2-extra.d.ts` 補正)
+- `Role.id` / `User.id` = **number**(對齊 base-web TS typing〔`CommonRecord.id: number`〕= §I.1 base-web 權威;mock getAllRoles 的 string id 為 mock quirk、實測 base-web 無處硬依賴 string〔rowKey/edit/delete 吃 number、getAllRoles 下拉用 roleCode〕。v1.1.0 amend、見 §11.10)。`MenuRoute.id` = **string**(路由名當 id、014 已落地、保持不變)。例外:`getUserInfo.userId` = string(`auth.d.ts` typing 即 string、013 既有約定、與此無關)
 - 業務驗證 error code 區段 = **`5xxx`**;refresh 類 critical code(`9999/9998/3333`)絕不用在業務驗證
 - `MenuType` enum:1 = directory / 2 = menu(非舊推測「1 = group / 2 = page」)
 - `Status` nullable:`CommonRecord.status: EnableStatus | null` rust-api 須支援
@@ -84,7 +84,7 @@
 | §11.7 | auth route mode | (b) dynamic(後端控 menu) |
 | §11.8 | obs stack | (a) 漸進 — Phase 5 obs-min / Phase 6 obs-full |
 | §11.9 | 軌道清單 | 5 軌道全啟用(2 ★ 詳見 §III) |
-| §11.10 | wire 細節 | Role.id / MenuRoute.id = string、User alias 模仿、business error `5xxx` |
+| §11.10 | wire 細節 | Role.id / User.id = **number**(v1.1.0 amend、原 string)、MenuRoute.id = string、User alias 模仿、business error `5xxx` |
 | §11.11 | prod 路徑前綴 | (a) `/api/*` 主流 |
 | §11.12 | brainstorm 位置 | (a) `docs/superpowers/<NNN>-<feature-name>.md` |
 | §11.13 | login 替代入口 | (c) 全實作雙模 + v1 啟 stub mode |
@@ -172,4 +172,7 @@ DESIGN 仍為「核心事實」(設計研究歷史 + 拍板理由 + 詳細軌道
 
 ---
 
-**Version**: 1.0.0 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-05-28
+**Version**: 1.1.0 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-05-30
+
+> **Amendment 紀錄**:
+> - **v1.1.0**(2026-05-30,016-manage-role-user-list):§I.3 + §11.10 `Role.id`/`User.id` 由 **string → number**。理由:base-web TS typing(`CommonRecord.id: number`)為 §I.1 權威,mock getAllRoles 的 string id 經 016 research 證實為 mock quirk、base-web 無處硬依賴 string(rowKey/edit/delete 吃 number、下拉用 roleCode);改 number 更忠於 §I.1、且免動 base-web。`MenuRoute.id`(=route name)維持 string、不變。MINOR bump(§V.3:拍板細節修正、非鐵紀律撤回)。

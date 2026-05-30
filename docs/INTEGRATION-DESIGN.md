@@ -1116,7 +1116,9 @@ deliverables(全部完成):
 ### Phase 4 — 主流業務(P3 完)
 
 1. **manage list endpoints feature** — `getRoleList` / `getAllRoles` / `getUserList` / `getMenuList/v2` / `getAllPages` / `getMenuTree`(全 read,對齊 mock)
+   - **as-built(016-manage-role-user-list,2026-05-30):Phase 4 第一刀 = role + user 3 endpoint 落地**(`getRoleList` 分頁+搜尋 / `getUserList` 分頁+搜尋+userRoles join+**無 password** / `getAllRoles` 不分頁輕量),3 條掛 Casbin `enforce_mw`(m..015 seed getRoleList/getAllRoles policy、getUserList 沿 009)。`sys_role` 補 4 欄 / `sys_user` 補 6 欄(VARCHAR status/gender '1'/'2'、3 alter+seed migration)、id wire=**number**(constitution v1.1.0 §11.10、9f1452d/ace455f)、取代 013 getUserList stub。**menu 三件(getMenuList/v2·getAllPages·getMenuTree)需建選單表 → 留 017**。三 US 活體 + server 92/3 + lint 17 + prod build 193MB。詳見 [specs/016](../specs/016-manage-role-user-list/spec.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
 2. **wire shape mapping feature** — output DTO + `From<Entity>` impl + pagination wrapper
+   - **as-built(016):pattern 已立供 017 沿用** — `PageResp<T>{records,current,size,total}`(serde camelCase)+ Output DTO(id=i64→JSON number、createBy/updateBy null〔operator 折 Phase 4 A〕)+ facade 分頁查詢 seam(`*_filtered`→`Select<Entity>` WHERE-build + `list_paged` count+limit/offset、SQL-build 純單測)+ **password 投影排除**(`select_only()` 顯式列舉、不含 Password 欄)+ `normalize_page`(current/size clamp max 100)。009 entity-access lint 守(handler 不碰 `entity::`、查詢只經 facade)。**注意 `From<Entity>` 因 entity-access lint 不可在 handler impl(會 `use entity::`)→ 改 handler 內 inline field-access map**(facade 返 row、handler 映 DTO)。
 3. **alova-only endpoint 處理 feature** — 依 §11.2 拍板實作 / stub / 不實作
 4. **菜單樹建構 feature** — tree builder(parent_id → nested children)
 
@@ -1312,18 +1314,19 @@ axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index
 
 ### §11.10 wire 細節決策
 
-> **✅ 拍板**(全對齊 mock wire ground truth):
-> - `Role.id` 型:**string**(對齊 mock `getAllRoles`);BASE-WEB-ADAPT 軌道補正 base-web TS typing(rev2-extra.d.ts)
+> **✅ 拍板**(對齊 base-web wire 權威):
+> - `Role.id` / `User.id` 型:~~string~~ → **number**(**v1.1.0 amend、2026-05-30 / 016-manage-role-user-list**)。原拍 string 是「對齊 mock `getAllRoles`」,但 016 research 證實:base-web TS typing(`CommonRecord.id: number`)才是 §I.1 權威、mock `getAllRoles` 的 string id 是 mock 自身與 typing 打架的 quirk、base-web 實測無處硬依賴 string(rowKey/edit(id)/delete(id) 吃 number、`getAllRoles` 下拉用 `roleCode` 非 id)。改 number 更忠於 §I.1、且**免動 base-web**(不需 `rev2-extra.d.ts` 矯正)。constitution §I.3/§11.10 已同步 amend(v1.1.0、commit `9f1452d`)。
 > - User → User01 alias 機制:**模仿**(getUserInfo 回 `User01` alias)— 對應 §11.1 連動
 > - 業務驗證錯誤 code 區段:**`5xxx`**(對齊 mock 慣例)
-> - `MenuRoute.id` 型:**string**(對齊 TS 顯式宣告 + mock 行為)
+> - `MenuRoute.id` 型:**string**(= route name、014 已落地、**保持不變**;與 Role/User.id 不同源)
+> - `getUserInfo.userId` 型:**string**(`auth.d.ts` typing 即 string、013 既有、不受 id amend 影響)
 >
-> **理由**:全對齊 mock = wire ground truth、避免 audit §4.X 抓出的 base-web 內部不一致(typing vs mock)在 rev2 重演。
+> **理由**:對齊 base-web TS typing(§I.1 權威);id 由 string 改 number(amend v1.1.0)— mock 的 string id 是 mock 自身 quirk、非權威。其餘對齊 mock = wire ground truth、避免 audit §4.X 抓出的 base-web 內部不一致在 rev2 重演。
 > **影響**:Phase 2 F4 response-shape-alignment + DTO 設計;Phase 3 F5.1 alias 邏輯;BASE-WEB-ADAPT 軌道(§7.1)
 
 | 決策項 | 選項 | 來源 |
 |---|---|---|
-| `Role.id` 型 | (a) number(對齊 TS) / (b) string(對齊 mock `getAllRoles`) | audit §4.2 |
+| `Role.id` / `User.id` 型 | **✅ (a) number**(對齊 base-web TS typing、v1.1.0 amend;原 (b) string 已撤) | audit §4.2 |
 | User → User01 alias 機制 | (a) 模仿(getUserInfo 回 alias) / (b) 不模仿(getUserInfo 回 login userName) | followup §4.1 |
 | 業務驗證錯誤 code 區段 | `5xxx` / `4xxx` / 其他 | §3.3 |
 | `MenuRoute.id` 型 | string(對齊 TS 顯式宣告) | audit §4.2 |
