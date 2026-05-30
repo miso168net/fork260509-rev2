@@ -356,9 +356,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/015-audit-middleware/spec.md`](specs/015-audit-middleware/spec.md)
-**Active Plan**: [`specs/015-audit-middleware/plan.md`](specs/015-audit-middleware/plan.md)
-**Phase**: 階段 2 TDD 實作 ✅ 完成 (2026-05-30) — 17 task/6 phase 全落地(subagent-driven + 逐單元 spec/quality 雙審 + final review = READY TO MERGE)。全域 request-context middleware + 兩審計表(sys_access_log 已認證 / sys_login_attempt 登入嘗試+2 lockout index);只記已認證(R2 閘門)+ 登入嘗試 login handler 自記;best-effort(best_effort_audit wrapper)。§2.14 INET 機制解(with-ipnetwork+IpNetwork)+ §2.15 xdb 首消費(XDB_FILEPATH+prod COPY)。三 US 活體 + server 69/3 + lint 17 + prod build + xdb 打包(~11MB)。worktree 825f52f→858f318。A/lockout/XFF-trust=scope 外。
+**Active Spec**: [`specs/016-manage-role-user-list/spec.md`](specs/016-manage-role-user-list/spec.md)
+**Active Plan**: [`specs/016-manage-role-user-list/plan.md`](specs/016-manage-role-user-list/plan.md)
+**Phase**: 階段 1 SDD 設計鏈 — specify ✅(3 US/FR-001..012/SC-001..007、0 提問) / clarify ✅(11 類掃描、0 提問) / plan ✅(Constitution **v1.1.0** 7+7=14 ✅;**Deviation D-1〔id wire string→number、已獨立 amend constitution v1.1.0 commit e2da9c3〕** / D-2〔schema 補欄參照 rev1 rust-api、user 授權破 §I.5、隔離 subagent 抽純欄位事實〕 / D-3〔operator 欄 + status/gender DB 約束折 Phase 4 A〕;research R1-R10;data-model 2 alter+1 seed migration+DTO;C-V §0-§6 無 CDP)。**Phase 4 第一刀「manage-role-user-list」**:3 read endpoint〔getRoleList 分頁 / getUserList 分頁+userRoles join 取代 013 stub / getAllRoles 不分頁〕+ sys_role/sys_user 補欄〔status/gender VARCHAR '1'/'2'、時間欄〕+ 3 條掛 enforce_mw〔Phase 3 #5 首批、m..015 seed getRoleList/getAllRoles policy〕。**id wire=number**(base-web typing 權威)。**只回 active** + 分頁{records,current,size,total} + 全搜尋參數 + size max 100 + **password 不洩漏**(list 投影排除)。**無新 crate/dep、不動 base-web、無外層 deploy 改動**。menu 三件留 017、operator/avatar/domain/寫入 = scope 外。**兩段式 commit**(rust-api worktree code + 外層 spec docs + constitution amend + SHA pin)
+**下一步**: `/speckit-tasks` →(`/speckit-analyze`)→ `superpowers:executing-plans`。feature branch `016-manage-role-user-list`(pre-hook 已建);spec docs 落此 branch、rust-api 改動走兩段式 commit、完成後 merge 回 `rev2-admin-root`(constitution amend 隨之回 root)。015 已完成(見 [CHECKLIST §1](docs/INTEGRATION-CHECKLIST.md))
 **下一步**: superpowers:finishing-a-development-branch — 兩段式 commit(rust-api worktree push fork + 外層 Dockerfile/compose/docs 回填 + SHA pin、不動 base-web)→ merge --no-ff 回 rev2-admin-root(保留 feature branch)。push/merge 須 user 同意。Phase 3 餘:redis pub-sub / 全路由 enforce 矩陣 / axum-casbin fuller rewrite / 受管 policy 層 / Phase 4 A(資料變動補 operator,含 sys_operation_log INET retrofit)。
 <!-- SPECKIT END -->
 
