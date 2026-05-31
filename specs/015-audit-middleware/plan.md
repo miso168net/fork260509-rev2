@@ -76,7 +76,7 @@ rust-api/
 │   ├── Cargo.toml               # 改:加 uuid / ipnetwork / xdb path-dep
 │   └── src/
 │       ├── main.rs              # 改:into_make_service_with_connect_info + 掛 global ctx layer + searcher_init
-│       ├── middleware/          # 新(或放 auth/):request-context middleware + RequestContext
+│       ├── audit_ctx.rs        # 新:RequestContext + ctx_mw(request-context middleware)+ region resolver
 │       ├── handler/auth.rs      # 改:login 寫 sys_login_attempt(讀 extension)
 │       └── model/facade/
 │           ├── sys_access_log.rs       # 新(active_model + write + SQL-build 單測)
@@ -88,7 +88,7 @@ deploy/
 docker-compose.{yml,dev,prod}.yml  # 改:XDB_FILEPATH env(dev bind-mount path / prod image path)
 ```
 
-**Structure Decision**:單一 rust-api worktree、無新 crate。middleware 進 `server`(放 `middleware/` 新模組或 `auth/`,tasks 階段定);兩表進既有 `entity`/`migration` crate。**兩段式 commit**(動 rust-api worktree → worktree commit+push fork + 外層 bump rust-api SHA pin;§4.1;不動 base-web、外層只 bump 一個 gitlink)。
+**Structure Decision**:單一 rust-api worktree、無新 crate。request-context middleware 進 `server`(`server/src/audit_ctx.rs`,對齊原 015 慣例,tasks 已定);兩表進既有 `entity`/`migration` crate。**兩段式 commit**(動 rust-api worktree → worktree commit+push fork + 外層 bump rust-api SHA pin;§4.1;不動 base-web、外層只 bump 一個 gitlink)。
 
 ## Design Notes(非 violation、供 implementer / review 對焦)
 
