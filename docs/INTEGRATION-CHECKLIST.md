@@ -91,7 +91,7 @@
 
 ### 2.18 constitution §I.6 SCHEMA-AUDIT-COLUMNS retrofit
 
-- [ ] 既有表(`sys_user`/`sys_role`/`sys_user_role` …)審計欄 `*_by` 缺口 retrofit — 標準已凍結 [constitution §I.6](../.specify/memory/constitution.md)(v1.1.0、forward-only);範圍/排程見 [DESIGN §10 Phase 4](INTEGRATION-DESIGN.md)。replay 015+ 建表時直接帶 6 欄、免 retrofit。
+- [ ] 既有**業務主表** retrofit 6 審計欄缺口 — 實際對象僅 **`sys_user` / `sys_role` 兩張**(各已有 `deleted_at`、缺 `created_at`/`created_by`/`updated_at`/`updated_by`/`deleted_by` 5 欄)。**`sys_user_role` 為 join 表、依 [§I.6 例外](../.specify/memory/constitution.md) 免**(append-only 三表 `sys_operation_log`/`sys_access_log`/`sys_login_attempt` + vendored `casbin_rule` 亦免)。標準已凍結 constitution §I.6(v1.1.0、forward-only);範圍/排程見 [DESIGN §10 Phase 4](INTEGRATION-DESIGN.md)。**`*_by` 須有寫入路徑帶入 operator 才填得了 → 綁 Phase 4 manage CRUD(write)那一波做**;replay 015+ 新建表直接帶 6 欄、免 retrofit。
 
 ### 2.19 feature 015-audit-middleware follow-up
 
