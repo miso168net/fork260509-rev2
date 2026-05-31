@@ -61,6 +61,9 @@ services:
       APP_DATABASE_URL_FILE: /run/secrets/database_url
       APP_REDIS_URL_FILE: /run/secrets/redis_url
       RUST_LOG: "info"
+      # 015: xdb 來源地解析資料檔路徑。dev/prod 同一字串(dev 由 ./rust-api:/app bind-mount 提供、
+      # prod 由 runtime stage COPY 進 WORKDIR /app),故於 base 層設一次即可
+      XDB_FILEPATH: /app/xdb/resources/ip2region.xdb
     secrets:
       - jwt_secret
       - refresh_token_secret

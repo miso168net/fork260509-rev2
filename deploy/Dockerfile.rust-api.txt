@@ -106,6 +106,9 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 # 非機密 config(secret 走 docker secret / env、不 bake 進 image)
 COPY --chown=rustapi:rustapi rust-api/application.yaml ./application.yaml
 
+# 015: xdb 來源地解析資料檔(11MB ip2region.xdb)— server 為首個消費者、runtime 須含此檔
+COPY --chown=rustapi:rustapi rust-api/xdb/resources/ip2region.xdb ./xdb/resources/ip2region.xdb
+
 USER rustapi
 EXPOSE 21081
 
