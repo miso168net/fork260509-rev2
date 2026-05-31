@@ -8,6 +8,12 @@
 
 **Input**: User description: "request-context middleware + access-log 兩審計表(已認證請求記 sys_access_log + 登入嘗試記 sys_login_attempt),首個 xdb 消費者,解 operator_ip INET + xdb runtime path" — 凍結設計來源:[`docs/superpowers/015-audit-middleware.md`](../../docs/superpowers/015-audit-middleware.md)(Phase 0 brainstorm,D1–D10 user 親決)
 
+## Clarifications
+
+### Session 2026-06-01
+
+無待澄清項(0 提問)。本 spec 源自已凍結的 Phase 0 brainstorm（[`docs/superpowers/015-audit-middleware.md`](../../docs/superpowers/015-audit-middleware.md),D1–D10 user 親決),11 類 taxonomy 模糊掃描全數 **Clear** —— 功能範圍 / 資料模型 / 互動 / 非功能品質 / 整合依賴 / 邊界 / 約束權衡 / 術語 / 完成訊號 皆明確,無關鍵模糊。技術 HOW（INET 真值寫入手段、xdb 接線、middleware 疊加順序、`uuid` 追蹤碼、runtime 打包 `ip2region.xdb`）與 **§I.6 審計欄例外處置** 刻意留待 `/speckit-plan`（後者走 Constitution Check **第 8 項**:兩 append-only 表 → 例外、不加 6 欄）。
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - 已認證請求留下存取軌跡 (Priority: P1)
