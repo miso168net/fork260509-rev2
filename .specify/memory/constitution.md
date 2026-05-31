@@ -67,6 +67,26 @@
 
 **process 紀律**:spec phase 0 research **不准 grep rev1 source**(避免「答案污染」;DESIGN §7.5)
 
+### I.6 業務表審計欄標準(SCHEMA-AUDIT-COLUMNS)
+
+**規則**:業務主表建表(create migration)時 MUST 含 6 審計欄 —
+`created_at` / `created_by` / `updated_at` / `updated_by` / `deleted_at` / `deleted_by`。
+
+**型與約束**:
+- `*_at`:`timestamptz`。`created_at` NOT NULL default `now()`;`updated_at` / `deleted_at` nullable。
+- `*_by`:operator 的 `user_id`(`bigint` nullable / `Option<i64>`,**非 `user_name` 字串**);
+  system seed / migration 建立 / 未認證情境無 operator → `null`。
+- **成對**:`deleted_at`(何時刪)必與 `deleted_by`(誰刪)同寫;`updated_at`+`updated_by` 同理,不可只寫其一。
+
+**例外**:
+- **append-only 審計表**(整列即一筆不可改不可刪的操作事件,如 `sys_operation_log`):
+  只 `created_at` + operator 欄,MUST NOT 加 `updated_*` / `deleted_*`。
+- **join / 關聯表**(多對多關係列,如 `sys_user_role`):依刪除策略;硬刪則免審計欄。
+
+**retrofit 紀律**:本標準 **forward-only**(對新建表即時生效)。既有表的審計欄缺口由獨立的
+「審計欄 retrofit」feature 補齊(需有寫入路徑帶入 operator 才填得了),不在本條即時要求 —
+排程與範圍見 DESIGN §10 / CHECKLIST。
+
 ---
 
 ## II. 設計拍板凍結
@@ -142,6 +162,7 @@
 5. **此 plan 是否從 rev1 source 拷貝 code?** 若是、屬 §I.5 例外清單嗎?
 6. **此 plan 是否凍結到 §II 12 拍板項?** 任一拍板需改變、必先走 Amendment 流程
 7. **此 plan 是否觸及 §III ★ 軌道?** 若是、在授權邊界內?
+8. **此 plan 是否新建業務表(create migration)?** 若是,是否含 §I.6 六審計欄?append-only / join 表是否依 §I.6 例外處理?
 
 任一檢查不通過 → plan 須回 brainstorm 或申請 Amendment(§V.2)。
 
@@ -159,7 +180,7 @@ DESIGN 仍為「核心事實」(設計研究歷史 + 拍板理由 + 詳細軌道
 
 任何改動本檔內容需走以下流程:
 
-1. **提案**:在 `docs/INTEGRATION-CHECKLIST.md` Backlog 開新項,註明改哪一節 / 為何改 / 改後影響
+1. **提案**:在 `docs/INTEGRATION-DESIGN.md` 的 §11 設計拍板項 開新項,註明改哪一節 / 為何改 / 改後影響
 2. **討論**:user 親決(本檔內容皆為 user 拍板項,Claude 不主動 amend)
 3. **凍結**:更新本檔對應段、bump version(規則見 §V.3)、回填 DESIGN §11
 4. **commit**:獨立 commit `docs(constitution): amend <條目>...`
@@ -172,4 +193,4 @@ DESIGN 仍為「核心事實」(設計研究歷史 + 拍板理由 + 詳細軌道
 
 ---
 
-**Version**: 1.0.0 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-05-28
+**Version**: 1.1.0 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-06-01
