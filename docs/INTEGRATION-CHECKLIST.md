@@ -8,7 +8,7 @@
 
 ## 1. Current Focus
 
-**階段**:**Phase 1 P0 部署基建全數完成(#1~#5)**;**Phase 2 P1 全數完成(007~012)— 007-db-redis-connection(DB/Redis 連線層 + migration proof)、008-response-envelope(統一回應信封 `Res<T>` + `BizCode` 矩陣 + `AppError` + 404 fallback)、009-soft-delete-infra(soft-delete 三重防護:trait / facade / build-time lint + `sys_user` proof)、010-migration-auto-apply(dev/prod stack `up` 自動套 migration + `service_completed_successfully` fail-fast 閘門)、011-audit-log(統一 audit 基礎設施:`sys_operation_log` 表 + `mutate_in_txn` 唯一原子寫入入口 + redact,以 `sys_user soft_delete` 作活體 proof)、012-sub-crate-setup(Casbin RBAC 工具層地基:sea-orm-adapter + xdb 拷貝 rev1、casbin 2.20、casbin_rule migration 005、活體 smoke)皆完整實作+驗收+merge 回 `rev2-admin-root`**。Phase 2 餘(非獨立 feature、隨各 entity / 寫入路徑建立時沿用 pattern):soft-delete 6-entity rollout / audit 其他 operation·entity 接線(沿用 011 `mutate_in_txn` pattern)。**Phase 3 RBAC 起手(013-auth-login-enforce)✅ + 014-dynamic-routes ✅ 皆已落地 + merge**(013=認證地基 login/getUserInfo/JWT/refresh + 首個 Casbin enforce 點 allow+deny + 首條真 base-web↔rev2 CDP wire;014=base-web 翻 dynamic auth route mode + 3 route endpoint〔getConstantRoutes 公開/getUserRoutes·isRouteExist JWT〕+ **業務 menu 可見性走 Casbin enforce 過濾**〔menu-visibility policy 9 rows + 013 enforcer + tree-prune,§I.2〕+ CDP Super-vs-User 側欄 menu deny 端到端);**Phase 3 續做** = enforce 全路由 rollout + 完整 policy 矩陣 / 受管 RBAC policy 層〔casbin_rule soft-delete/protected/audit/CRUD〕/ axum-casbin fuller rewrite / redis pub-sub policy 失效通知(見 §1 下一步)。**JWT 機密管理已由 005/007 吸收 ✅**(見 [§4 Roadmap Phase 2](#4-roadmap--phase-狀態))。
+**階段**:**Phase 1 部署基建 全數完成(001~006)**;**Phase 2 後端基礎設施 全數完成(007~012)**;**Phase 3 RBAC 起手(013-auth-login-enforce)✅ + 014-dynamic-routes ✅ 皆已落地 + merge**(013=認證地基 login/getUserInfo/JWT/refresh + 首個 Casbin enforce 點 allow+deny + 首條真 base-web↔rev2 CDP wire;014=base-web 翻 dynamic auth route mode + 3 route endpoint〔getConstantRoutes 公開/getUserRoutes·isRouteExist JWT〕+ **業務 menu 可見性走 Casbin enforce 過濾**〔menu-visibility policy 9 rows + 013 enforcer + tree-prune,§I.2〕+ CDP Super-vs-User 側欄 menu deny 端到端);**Phase 3 續做** = enforce 全路由 rollout + 完整 policy 矩陣 / 受管 RBAC policy 層〔casbin_rule soft-delete/protected/audit/CRUD〕/ axum-casbin fuller rewrite / redis pub-sub policy 失效通知(見 §1 下一步)。**JWT 機密管理已由 005/007 吸收 ✅**(見 [§4 Roadmap Phase 2](#4-roadmap--phase-狀態))。
 
 **最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
 - **2026-05-30 014-dynamic-routes 完整實作 + 驗收 + merge**(SHA pin `8965c8a` / rust-api worktree 7 commits `f65105e..c4b1d7e` push fork + base-web `.env` dynamic `41f44b18` push fork;**兩段式 commit**)— **Phase 3 #2:base-web 翻 dynamic auth route mode + 業務 menu 走 Casbin enforce 過濾(§I.2)**。subagent-driven-development(13 task,各 spec+quality 雙審 + opus final holistic review = READY TO MERGE)/ 3 endpoint:getConstantRoutes(公開、constant 5 條)/ getUserRoutes(JWT、handler 內過濾:roles_for_user→`filter_routes_for_roles`〔enforcer + tree-prune〕→{routes,home})/ isRouteExist(JWT、依角色 allow+deny);route 定義程式內(對齊 base-web elegant-router `$` 複合格式、§I.5 未 grep rev1)/ menu-visibility policy `p,role,route_name,menu` migration 010 seed **9 rows**(D3:Super5+Admin3+User1、父層 manage tree-prune 不 seed、經 010 自動套)/ enforce 決策 + tree-prune test-first 6 新單測(MemoryAdapter)/ **acceptance 全綠**:三 endpoint curl(三角色不同 menu + 3333 + isRouteExist **User manage_role deny**)+ **CDP dynamic-mode 瀏覽器 smoke(Super 側欄「系统管理」vs User 只「首页」= menu deny 端到端)**/ dynamic mode 副作用:demo menu 不送→§11.5 moot / 守 007 FR-009 + 009 lint(17)+ 008 / 無新 dep/表/crate / prod build 驗綠 / 既有不破(server 56+3〔+6 filter 測試〕+ xdb 9)/ Constitution 7+7=14 ✅ + Deviation D-001(§I.2 re-scope)/D-002(menu row 8→9 文件修正)/ 014 branch 保留
@@ -25,7 +25,7 @@
 > 1. **base-web 為權威** — base-web 有的功能、rust-api 都要實作(設計範圍嚴格)
 > 2. **menu 權限 Casbin enforce** — rev2 核心突破,即使動 base-web 也要做
 
-完整 12 拍板項與軌道授權細節見 [DESIGN §11](INTEGRATION-DESIGN.md);spec-kit `/speckit-plan` 將自動對照 constitution v1.0.0 跑 Compliance Check。
+完整 12 拍板項與軌道授權細節見 [DESIGN §11](INTEGRATION-DESIGN.md);spec-kit `/speckit-plan` 將自動對照 constitution 跑 Compliance Check。
 
 > ### 2.2 ~ 2.7 全完成+已歸檔 (手動搬至 INTEGRATION-MILESTONES.md)
 
@@ -89,6 +89,10 @@
 - [ ] **tree-prune 父層偵測為結構性**(T004 quality review):`manage` 父層永不自身 enforce 判定、可見性純由子項衍生(現正確:manage 無自身 menu policy)。未來若 sys_menu 化 / 巢狀 menu 需「父層有自身可見性閘、獨立於子項」則須改寫(連動 [§4 Phase 3](#4-roadmap--phase-狀態) #4 全路由矩陣 / #6 受管 policy / Phase 4 菜單樹建構)。
 - [ ] **dynamic-mode CDP 僅 dev proxy + Admin 中階僅單測層**(final review):014 CDP smoke 走 dev vite proxy(`/proxy-default`、同 [§2.16](#216-feature-013-auth-login-enforce-follow-up)/[§2.8](#28-feature-004-compose-port-orchestration-follow-up)),瀏覽器只斷言 Super(全)vs User(只 home)、Admin 部分集由單測覆蓋。prod front-nginx `/api` + dynamic-mode 側欄渲染、Admin 中階瀏覽器斷言待補,連動上述 prod-stack CDP 條目。
 
+### 2.18 constitution §I.6 SCHEMA-AUDIT-COLUMNS retrofit
+
+- [ ] 既有表(`sys_user`/`sys_role`/`sys_user_role` …)審計欄 `*_by` 缺口 retrofit — 標準已凍結 [constitution §I.6](../.specify/memory/constitution.md)(v1.1.0、forward-only);範圍/排程見 [DESIGN §10 Phase 4](INTEGRATION-DESIGN.md)。replay 015+ 建表時直接帶 6 欄、免 retrofit。
+
 ## 3. 已完成里程碑
 
 完整 commit 里程碑歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)(append-only、不在 SOP 注入,避免本檔膨脹)。
@@ -103,11 +107,11 @@
 
 ### Phase 0 — 設計拍板 ✅ 全完成+已歸檔 (2026-05-28)
 
-### Phase 1 — P0 部署基建 ✅ 全完成+已歸檔 (2026-05-28)
+### Phase 1 — 部署基建 ✅ 全完成+已歸檔 (2026-05-28)
 
 > 5 feature 全交(001 rust-api Dockerfile `a21e932` / 002 base-web Dockerfile `a70fa5f` / 003 TLS cert `cb5e1a1` / 004 compose 編排 `b4294c7` / 005 secret 注入 `068b2a8`),各 feature branch 保留供 audit;詳細 deliverable 見 [DESIGN §10 Phase 1](INTEGRATION-DESIGN.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
 
-### Phase 2 — P1 基礎設施 (對齊 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md);**7/7 全完成**) ✅ 全完成 (2026-05-29)
+### Phase 2 — 後端基礎設施 (**7/7 全完成**) ✅ 全完成 (2026-05-29)
 
 - [x] **DB/Redis 連線層 + migration pipeline proof feature(007)** ✅ (2026-05-29 merge `928949d`)— rust-api boot 連 Postgres+Redis(fail-fast)+ AppState + migration runner + sys_user proof seed
 - [x] **envelope 對齊 feature(008)** ✅ (2026-05-29 merge `7bdf5bb`)— `Res<T>{data,code,msg}` + `IntoResponse` + `BizCode` 12-variant 矩陣 + `AppError`(NotFound→404/Internal→500)+ axum 404 `.fallback()`;camelCase 留 Phase 4 DTO
@@ -117,7 +121,7 @@
 - [x] **audit log 基礎設施 feature(011)** ✅ (2026-05-29 merge `2be489f` / SHA pin `5a72560`)— 統一 audit:`sys_operation_log` 表(migration 004、經 010 自動套、append-only 非 SoftDeletable)+ `mutate_in_txn` 唯一原子寫入入口 + `AuditSerialize` redact;`sys_user soft_delete` 活體 proof(同 txn 原子寫 SOFT_DELETE + redact password)。守 007 FR-009 + 009 facade 邊界(lint 續綠)。其他 operation·entity 接線 / 漏-audit lint 延後(見 [§2.14](#214-feature-011-audit-log-follow-up))
 - [x] **sub-crate setup feature(012)** ✅ (2026-05-29 merge `774f7b3` / SHA pin `e193c47`)— 拷貝 `sea-orm-adapter` + `xdb`(rev1@0b64a57、§11.6/§I.5 授權例外、首個拷貝 feature)+ casbin **bump 2.10→2.20.0**(編譯閘門零 drift;research R2 修正 brainstorm 的「async-std→tokio」誤判 — adapter 既有 `runtime-tokio-rustls` default)+ casbin_rule 建表 migration 005(委派 adapter up/down 單一 schema 來源、stock schema 無 soft-delete、經 010 自動套)+ 兩 crate 活體 smoke(adapter round-trip / xdb 1.2.4.8)。附帶修 rev1 潛伏 bug `remove_filtered_policy` 索引重複偏移(Deviation D-1)。**`axum-casbin` 重寫 + 受管 policy 層重定位 Phase 3**(見 [§2.15](#215-feature-012-sub-crate-setup-follow-up) follow-up)
 
-### Phase 3 — P2 認證 + 動態 menu(對齊 [DESIGN §10 Phase 3](INTEGRATION-DESIGN.md);進行中)
+### Phase 3 — 認證 + 動態選單(進行中)
 
 - [x] **登入 + getUserInfo feature(013)** ✅ (2026-05-30 merge `ade723d` / SHA pin `bbabdbc`)— login/getUserInfo/refresh + JWT(HS256)+ **首個 Casbin enforce 點**(rev2 自家 axum middleware、allow+deny)+ sys_role/sys_user_role/nick_name + 首條真 base-web↔rev2 CDP wire;follow-up 見 [§2.16](#216-feature-013-auth-login-enforce-follow-up)
 - [x] **dynamic mode 路由 feature(014)** ✅ (2026-05-30 merge `9d06347` / SHA pin `8965c8a`)— 3 route endpoint(`getConstantRoutes` 公開 / `getUserRoutes`·`isRouteExist` JWT、過濾在 handler 內)+ base-web 翻 dynamic + **menu 走 Casbin enforce 過濾**(menu-visibility policy 9 rows + 013 enforcer + tree-prune)+ CDP menu deny 端到端;follow-up 見 [§2.17](#217-feature-014-dynamic-routes-follow-up)
@@ -126,26 +130,26 @@
 - [ ] **axum-casbin 重寫 feature**(2026-05-29 從 Phase 2 §11.6 重定位:Casbin Axum enforce 中介層 + rev2 自家 metrics/error/observability;需真實受保護路由才驗得了)(**013 已做第一刀**:`auth/enforce.rs` 最小機制 middleware + 單示範路由;本 feature = 全路由 rollout + observability)
 - [ ] **受管 RBAC policy 層 feature**(012 brainstorm 衍生:casbin policy 加 (a) soft-delete 可復原 (b) 不可刪 protected policy (c) policy 變更走 011 audit 記 operator (d) 統一 CRUD facade。需 fork sea-orm-adapter 的 load/remove → 動 §11.6「adapter=拷貝」前提、specced 時評估 Amendment;與 axum-casbin 重寫同期、因皆需 enforce/operator)
 
-### Phase 4 — P3 主流業務(對齊 [DESIGN §10 Phase 4](INTEGRATION-DESIGN.md);尚未啟動)
+### Phase 4 — 主流業務(尚未啟動)
 
 - [ ] manage list endpoints feature(6 read endpoint,對齊 mock)
 - [ ] wire shape mapping feature(Output DTO + `From<Entity>` + pagination wrapper)
 - [ ] alova-only endpoint 處理 feature(依 §11.2 拍板)
 - [ ] 菜單樹建構 feature(parent_id → nested children)
 
-### Phase 5 — P4 補位 + 抽離項(對齊 [DESIGN §10 Phase 5](INTEGRATION-DESIGN.md);尚未啟動)
+### Phase 5 — 補位 + 抽離項(尚未啟動)
 
 - [ ] refresh token 完整實作 feature(`sys_tokens` rotation_chain)
 - [ ] 抽離項 stub feature(`/auth/error` / `/auth/sendCaptcha` / `/auth/verifyCaptcha`)
 - [ ] cleanup-job feature(dry-run 預設 + cron + 最小權 credential)
 
-### Phase 6 — 觀察性(對齊 [DESIGN §10 Phase 6](INTEGRATION-DESIGN.md);可選,生產 ready)
+### Phase 6 — 觀察性(可選,生產 ready)
 
 - [ ] obs-min feature(promtail + loki + grafana,純 log)
 - [ ] obs-full feature(+ prometheus + 3 exporter + pushgateway + grafana alerting)
 - [ ] dashboard provisioning feature(master overview / rust-api / postgres / redis / audit pipeline)
 
-### Phase 7 — 維護(對齊 [DESIGN §10 Phase 7](INTEGRATION-DESIGN.md);持續性)
+### Phase 7 — 維護(持續性)
 
 - [ ] wire 細節對齊 feature(status / gender 等,走 CDP 全功能巡檢)
 - [ ] upstream rebase feature(定期 `git rebase upstream/example`(base-web)+ `upstream/main`(rust-api))
