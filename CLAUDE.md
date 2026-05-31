@@ -358,7 +358,7 @@ cd ..
 <!-- SPECKIT START -->
 **Active Spec**: [`specs/015-audit-middleware/spec.md`](specs/015-audit-middleware/spec.md)
 **Active Plan**: [`specs/015-audit-middleware/plan.md`](specs/015-audit-middleware/plan.md)
-**Phase**: 階段 2 TDD 實作 ✅ **全完成+merged**(2026-06-01,merge `2f3a1c9`)。subagent-driven-development 19 task/3 US:request-context middleware(client_ip 直連/x_forwarded_for 原始/region xdb/trace_id uuid/operator_id JWT)+ 兩 **append-only** 審計表(`sys_access_log` 已認證請求 / `sys_login_attempt` 登入成敗,migration 011/012,2 index)。**首個 xdb 消費者**(解 §2.15:`XDB_FILEPATH` + prod Dockerfile COPY 11MB ip2region.xdb)+ **首個真值 INET client_ip**(解 §2.14 解法:sea-orm `with-ipnetwork` / `ipnetwork 0.20`)。best-effort 不破業務(FR-003)、operator 閘門實現 FR-001/FR-002。驗:server 65 + entity_access_lint 17 + xdb 9 全綠;dev/prod acceptance 全綠(prod image build region 非 NULL)。
+**Phase**: 階段 2 TDD 實作 ✅ **全完成+merged**(2026-06-01,merge `589a553`)。subagent-driven-development 19 task/3 US:request-context middleware(client_ip 直連/x_forwarded_for 原始/region xdb/trace_id uuid/operator_id JWT)+ 兩 **append-only** 審計表(`sys_access_log` 已認證請求 / `sys_login_attempt` 登入成敗,migration 011/012,2 index)。**首個 xdb 消費者**(解 §2.15:`XDB_FILEPATH` + prod Dockerfile COPY 11MB ip2region.xdb)+ **首個真值 INET client_ip**(解 §2.14 解法:sea-orm `with-ipnetwork` / `ipnetwork 0.20`)。best-effort 不破業務(FR-003)、operator 閘門實現 FR-001/FR-002。驗:server 65 + entity_access_lint 17 + xdb 9 全綠;dev/prod acceptance 全綠(prod image build region 非 NULL)。
 **下一步**: 015 已 `merge --no-ff` 回 rev2-admin-root(保留 015 branch 供 audit);rust-api worktree pin **cff9785**。下一 feature 待定。
 <!-- SPECKIT END -->
 
