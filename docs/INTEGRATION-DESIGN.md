@@ -1308,7 +1308,7 @@ axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index
 ### §11.10 wire 細節決策
 
 > **✅ 拍板**(全對齊 mock wire ground truth):
-> - `Role.id` 型:**string**(對齊 mock `getAllRoles`);BASE-WEB-ADAPT 軌道補正 base-web TS typing(rev2-extra.d.ts)
+> - `Role.id` 型:**string**(對齊 mock `getAllRoles`);base-web TS 宣告 `number` 與之不符但 **runtime 安全、決定不修**(`CommonRecord` 為 `type` alias、rev2-extra.d.ts override 不可行;見 [CHECKLIST §2.20](INTEGRATION-CHECKLIST.md))
 > - User → User01 alias 機制:**模仿**(getUserInfo 回 `User01` alias)— 對應 §11.1 連動
 > - 業務驗證錯誤 code 區段:**`5xxx`**(對齊 mock 慣例)
 > - `MenuRoute.id` 型:**string**(對齊 TS 顯式宣告 + mock 行為)

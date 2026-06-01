@@ -13,6 +13,7 @@
 **最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
 - **2026-06-02 017-manage-user-write 完整實作 + 驗收 + 本地 merge(未推)**(merge `617136d` / SHA-pin `7bfb353` / pins base-web `4c33895` rust-api `deb6abe`;**兩段式 commit、本地 merge --no-ff 回 rev2-admin-root、017 branch 保留**)— **Phase 4 user 寫端 CRUD**:4 條 Super-only 寫 endpoint(addUser/updateUser/deleteUser/batchDeleteUser)+ sys_user schema 補完(業務欄 + **§I.6 6 審計欄 retrofit**〔成對寫、operator 由 015 ctx〕 + **id BIGSERIAL**〔R2〕)+ 預設密碼 hash_password + 停用拒登統一 1000(Q2=B、僅 login 入口) + base-web MODAL-WIRING ★+WRAPPER(rev2-system-manage.ts + 3 placeholder)。subagent-driven 28 task/3 US + 登入 gate,各兩階段 review + opus final = Ready;US1-3 + 登入 gate + 守恆 + **真 CDP 7/7(front-nginx :21080)** + prod image build 全綠 / server 119+lint 17+xdb 9 / 無新 dep·crate / Constitution v1.2.0 §IV 8/8 ✅ / 017 branch 保留;follow-up 見 [§2.21](#221-feature-017-manage-user-write-follow-up)
 - **2026-06-01 016-manage-role-user-list 完整實作 + 驗收 + merge**(merge `5969d08` / SHA pin `81c56ef` / rust-api worktree 5 commits `7e5ce0b..81c56ef` push fork;**兩段式 commit**)— **Phase 4 主流業務第一刀:3 條唯讀 systemManage endpoint**(getUserList 分頁取代 013 stub / getRoleList 分頁 / getAllRoles 全量)。不動業務表(缺欄回 null,D2)+ id wire=string(§I.3)+ `PageRes` 分頁外殼(無 pages/success)+ roles 批次避 N+1(SC-006)+ 三條掛 013 enforce_mw + seed migration 013 補 policy(**逐條無 wildcard**;getRoleList×{SUPER,ADMIN}/getAllRoles×{SUPER,ADMIN,USER_COMMON}、getUserList 009 已有)。subagent-driven 各單元 spec+quality 雙審 + **6-lens 對抗審查 confirmed=0** / **acceptance 47/47 活體**(三 endpoint 分頁·搜尋·超範圍·授權〔User list 403+5003、getAllRoles 含 User〕·無 password·null 欄)+ **CDP 經 front-nginx 真 `/api` 路徑顯 3 user/3 role**(R5 null 不 crash、順帶 de-risk [§2.8](#28-feature-004-compose-port-orchestration-follow-up))/ server 96+lint 17+xdb 9 全綠 / 無新 dep/crate / Constitution v1.1.0 §IV 8/8 ✅ / 016 branch 保留;follow-up 見 [§2.20](#220-feature-016-manage-role-user-list-follow-up)
+
 **下一步**: **017-manage-user-write 已本地 merge、未推** → 待 user 同意推送(rust-api/base-web fork 兩 worktree branch + outer `rev2-admin-root`)。**Phase 4 續做**([DESIGN §10 Phase 4](INTEGRATION-DESIGN.md)):manage 另 3 read endpoint(getMenuList/v2·getAllPages·getMenuTree,需 sys_menu 表)/ **sys_role §I.6 審計欄 retrofit**(綁 role 寫端、§2.18)/ **role 寫端 CRUD**(addRole/updateRole/deleteRole)/ alova stub(sendCaptcha/verifyCaptcha/getLastTime,Phase 5)/ 菜單樹建構。**Phase 3 續做**([DESIGN §10 Phase 3](INTEGRATION-DESIGN.md)):#3 redis pub-sub(policy/route 失效通知)/ #4 完整 policy 矩陣 + 全路由 endpoint enforce rollout / #5 axum-casbin fuller rewrite(metrics/error/observability)/ #6 受管 RBAC policy 層(casbin_rule soft-delete 可復原 / protected / 走 011 audit / CRUD;**需 fork sea-orm-adapter 的 `load_policy`/`remove_*` + casbin_rule 加 deleted_at → 須評估 §11.6 Amendment**)。Phase 2 餘(非獨立 feature):soft-delete 6-entity rollout(sys_user 完整欄 + id auto_increment **✅ 017 補完**,餘 entity 待建,見 §2.10)/ audit 其他 operation·entity 接線(沿用 011 `mutate_in_txn` pattern)
 
 ---
@@ -28,6 +29,8 @@
 完整 12 拍板項與軌道授權細節見 [DESIGN §11](INTEGRATION-DESIGN.md);spec-kit `/speckit-plan` 將自動對照 constitution 跑 Compliance Check。
 
 > ### 2.2 ~ 2.7 全完成+已歸檔 (手動搬至 INTEGRATION-MILESTONES.md)
+> ### 2.9 全完成+已歸檔
+> ### 2.11 ~ 2.12 全完成+已歸檔 (手動搬至 INTEGRATION-MILESTONES.md)
 
 ### 2.8 feature 004-compose-port-orchestration follow-up
 
@@ -35,23 +38,12 @@
 - [~] base-web SPA 經 nginx 打 rust-api 端到端 CDP browser smoke(本 feature curl 直送驗 nginx 路由 ≠ browser 內 wire)— **dev read-list 經 front-nginx :21080 ✅ 016**、**dev 寫端(add/edit/delete modal-wiring)經 front-nginx :21080 ✅ 017**(CDP 7/7);**prod base-web build(`VITE_SERVICE_BASE_URL=/api`)+ prod nginx `/api` strip 端到端仍待**(見 [§5.5](#55-base-web-環境配置) / [§2.20](#220-feature-016-manage-role-user-list-follow-up))
 - [ ] prod base-web 真打 `/api` 前須重 build:現存 `rev2-admin-base-web:latest` 是 002 default build-arg(ApiFox mock),prod profile 雖宣告 `VITE_SERVICE_BASE_URL=/api` 但 `up` 不自動 rebuild 既有 image → 需 `docker compose -f docker-compose.yml -f docker-compose.prod.yml build base-web`(或 `up --build`)(與上一條 CDP smoke 連動)
 
-### 2.9 feature 006-docker-volume-naming follow-up ✅ 全完成+已歸檔 (2026-05-29)
-
 ### 2.10 feature 007-db-redis-connection follow-up
 
 - [x] **`sys_user.id` 無 auto_increment** ✅ (2026-06-02,017 補完):007 proof migration 用顯式 seed id 1/2/3、無 sequence;017 migration 014 補 `BIGSERIAL`(raw SQL `CREATE SEQUENCE`+`SET DEFAULT`+`setval` 對齊 seed→next=4)、entity `auto_increment=true` 成對,addUser 動態建列可用(R2、見 [§2.20](#220-feature-016-manage-role-user-list-follow-up))
 - [x] **CLAUDE.md §8.1 帳號名 stale** ✅ (2026-05-29):§8.1 已改為 rev2 權威 `Super/Admin/User`(id 1/2/3、runtime argon2id of `123456`)+ 修正 stale `m20241024_*` 路徑 → 真實 `m20260529_*` seed 檔 + 標明 role 為 Phase 3、sys_user 現僅 id/user_name/password
 - [x] **migration invocation prod path** ✅ (2026-05-29,010 補掉):dev migrate override `cargo run --bin migration up`、prod migrate override `command [migration,up]` 經 entrypoint dispatcher,兩路徑皆於 010 stack up 時自動套用、prod acceptance 親驗(Phase 5 cleanup-job / CI migration step 沿用 prod path)
 - [ ] **URL secret 驗證邊界**(`validate_secret` 為 opaque token 設計、套用到連線 URL 的已知 gap;research R4 知情、決定不另造 URL validator):(a) `.example` 的 `CHANGE_ME` 內嵌於 URL,而 `validate_secret` 是 case-insensitive **全等**比對(非 substring)+ URL >32 → 誤用 `.example` 會過 boot、拖到 connect 才以隱晦 auth error 失敗(⚠️ Unit 1 review「加 `CHANGE_ME` 進 `PLACEHOLDER_SECRETS`」**無效**,全等語意擋不住內嵌 substring);(b) 未來若用無密碼 redis(短 URL <32)會以 `length<32` 失敗、訊息與 URL 無關;(c) migration `main.rs` 讀 URL 為 raw(不過 validate),與 server `load_secret` 有意分流。日後若要強化:URL 專屬 validator 或 substring placeholder 偵測
-
-### 2.11 feature 008-response-envelope follow-up
-
-- [x] **`Res` err 建構子綁 `()` 型** ✅ (2026-05-30,013 收口):`err`/`err_msg` 已移到 `impl<T> Res<T>`(`envelope.rs:27/47/56`),013 handler(login/getUserInfo 在 `-> Res<Dto>` 成功型內提早回業務錯誤 `data:null`)即用;envelope.rs:178 測試註解標明、§2.16 亦記「§2.11 follow-up 收口」。
-
-### 2.12 feature 009-soft-delete-infra follow-up
-
-- [x] **dev stack 不自動套 migration** ✅ (2026-05-29,010 補掉):010 新增一次性 `migrate` service + `rust-api depends_on migrate: service_completed_successfully` 閘門,dev/prod `up` 時自動套 migration、API 起來前完成、失敗 fail-fast;009 發現的手動 migration gap 已解(守 007 FR-009、server 仍不自動 migrate)
-- [x] **`soft_delete` 0-rows 靜默** ✅ (2026-05-29,011 收口):011 把 `soft_delete` 改回 `Result<bool, DbErr>`(`facade/sys_user.rs:70`),0-rows→`Ok(false)` 顯式 surfaced(不再靜默成功、不寫 audit),caller 可據以判斷;原「回 `UpdateResult` 不檢 `rows_affected`」前提已不成立。
 
 ### 2.13 feature 010-migration-auto-apply follow-up
 
@@ -101,14 +93,14 @@
 
 ### 2.20 feature 016-manage-role-user-list follow-up
 
-- [ ] **base-web id 型補正(BASE-WEB-ADAPT 軌道)**:016 對外 id=string(§I.3 凍結),但 base-web typings `CommonRecord.id:number`。runtime 安全(R5 grep 無對 id 做 `Number()`/算術、NDataTable rowKey 容 string|number、CDP 顯示正常),僅 TS 宣告型不符 → 型補正(rev2-extra.d.ts override 或等)列 follow-up、非 016。**017 wrapper 接線各 param 對齊 call-site 實型、未改 typings(FR-012)→ 型補正仍 pending,承接於 [§2.21](#221-feature-017-manage-user-write-follow-up)**。
+- [x] **base-web id 型 number vs wire string:決定不修(accepted)** ✅ (2026-06-02):typings `Api.Common.CommonRecord.id: number` 與凍結 wire string 不符,但 **runtime 安全**(R5 grep 無 `Number()`/算術、NDataTable rowKey 容 string|number、016/017 CDP 證)。**乾淨 override 不可行** —— `CommonRecord` 是 `type` alias,TS declaration merging 只合併 `interface`/`namespace`、**不能 override `type` member 型**;真正修需動 upstream `common.d.ts`(`id:number→string`)+ ripple ~6 處 view 簽名(`handleDelete`/`edit`/auth-modal prop,user/role/menu)= 跨 BASE-WEB-ADAPT(改既有 typings)/ MODAL-WIRING(改 inline 簽名)邊界 + rebase 風險。→ **決定接受此宣告層 cosmetic 不一致、不修**;rev2 wrapper 沿對齊 call-site 實型(016/017 已證、零 runtime 影響)。(constitution §I.3 / DESIGN §11.10 殘留「rev2-extra.d.ts 補正」機制句屬同議題、見群 D:constitution 需 PATCH amendment 才改、本批不動。)
 - [x] **`sys_user.id` 補 BIGSERIAL** ✅ (2026-06-02,017):migration 014 raw SQL `CREATE SEQUENCE`+`SET DEFAULT nextval`+`setval` 對齊既有 seed 1/2/3→next=4、entity `auto_increment=true` 成對,addUser 動態建列已可用、up→down→up 可逆驗(R2);**`sys_role.id` auto_increment=true 早已成立**,Phase 4 role 寫端(addRole)沿同 sequence 策略即可(此前 016 R10 標的 sys_user.id 缺 sequence 已解,解 [§2.10](#210-feature-007-db-redis-connection-follow-up))。
 - [ ] **manage 另 3 read endpoint 留 Phase 4 續做**:getMenuList/v2 · getAllPages · getMenuTree 需先建 sys_menu 表(menu 目前走 014 程式內 route + Casbin menu policy、無 sys_menu 業務表);見 [§4 Phase 4](#4-roadmap--phase-狀態)。
 - [x] **list 顯示經 front-nginx :21080 dev 入口 CDP 已驗**(部分解 [§2.8](#28-feature-004-compose-port-orchestration-follow-up)):016 CDP 經 front-nginx :21080(dev stack)瀏覽器顯 3 user/3 role + null 欄不 crash(R5),**§2.8「base-web SPA 經 nginx 端到端 CDP」的 dev read-list 已證**。⚠️ **未逐一 network-inspect** 確認 API 子路徑走 `/api`(nginx `_locations.inc` strip → rust:21081)抑或 `location /`→base-web vite dev-proxy→rust(兩條 conf 皆通、結果都成功);prod base-web build(`VITE_SERVICE_BASE_URL=/api`)+ prod nginx `/api` strip 端到端 + 寫端/modal-wiring 仍待(§2.8 餘項續留)。
 
 ### 2.21 feature 017-manage-user-write follow-up
 
-- [ ] **base-web id 型 number vs wire string 補正**(承 [§2.20](#220-feature-016-manage-role-user-list-follow-up)):017 wrapper 各 param 對齊 call-site 實型(`fetchDeleteUser` `id:number` / `fetchBatchDeleteUser` `ids:string[]` = `checkedRowKeys` 實型),FR-012 禁改 typings → wire string vs typings number 的型補正仍 follow-up(rev2-extra.d.ts override 或等)。
+- [x] **base-web id 型 number vs wire string:決定不修(accepted)** ✅ (2026-06-02):見 [§2.20](#220-feature-016-manage-role-user-list-follow-up) 完整理由 —— 乾淨 override 不可行(CommonRecord 為 `type` alias)、runtime 安全;017 wrapper 已沿對齊 call-site 實型。
 - [ ] **edit drawer `userName` 欄未在 DOM disabled**:immutability 由 server 端強制(UpdateReq 省 `user_name`、不動該欄)+ CDP 確認 userName 從不變;Q1 clarification 明示「前端唯讀屬 plan 接線細節」可選 + MODAL-WIRING ★ 不得改 form 結構 → **不 disabled 為正確**(非缺陷)。日後若做 base-web form 微調可順帶加 readonly UI 提示。
 - [ ] **`batchDeleteUser` 空 `ids` → `0000` no-op**:UI 不可達(disabled-delete gate、無勾選時按鈕禁用)、benign;日後若新增可達路徑須補空陣列守衛。
 - [ ] **`sys_role` §I.6 審計欄 retrofit + role 寫端 CRUD**(承 [§2.18](#218-constitution-i6-schema-audit-columns-retrofit)):sys_user 6 審計欄已 017 落地,sys_role 同模式綁 role 寫端(addRole/updateRole/deleteRole,`*_by`=operator 由 015 ctx)那一波做。
@@ -135,15 +127,7 @@
 
 > 5 feature 全交(001 rust-api Dockerfile `a21e932` / 002 base-web Dockerfile `a70fa5f` / 003 TLS cert `cb5e1a1` / 004 compose 編排 `b4294c7` / 005 secret 注入 `068b2a8`),各 feature branch 保留供 audit;詳細 deliverable 見 [DESIGN §10 Phase 1](INTEGRATION-DESIGN.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
 
-### Phase 2 — 後端基礎設施 (**7/7 全完成**) ✅ 全完成 (2026-05-29)
-
-- [x] **DB/Redis 連線層 + migration pipeline proof feature(007)** ✅ (2026-05-29 merge `928949d`)— rust-api boot 連 Postgres+Redis(fail-fast)+ AppState + migration runner + sys_user proof seed
-- [x] **envelope 對齊 feature(008)** ✅ (2026-05-29 merge `7bdf5bb`)— `Res<T>{data,code,msg}` + `IntoResponse` + `BizCode` 12-variant 矩陣 + `AppError`(NotFound→404/Internal→500)+ axum 404 `.fallback()`;camelCase 留 Phase 4 DTO
-- [x] **JWT 機密管理** ✅ (已由 005 secret 注入 + 007 config 吸收,非獨立 feature)— `AppConfig::load()` 載 `APP_JWT_JWT_SECRET`/`APP_JWT_REFRESH_TOKEN_SECRET`(`_FILE` precedence + `validate_secret` 空/placeholder/≥32)+ `JwtConfig`(含 TTL)+ compose dev/prod 接線 + secrets `.example` + 單測(見 [DESIGN §6.1](INTEGRATION-DESIGN.md))
-- [x] **soft-delete 基礎設施 feature(009)** ✅ (2026-05-29 merge `88312b6`)— 立三重防護機制(SoftDeletable trait / facade 唯一管道 / build-failing lint)+ 套 `sys_user` proof(`deleted_at` + partial unique index);新增 workspace member `entity` crate。6 entity rollout 延後(各自被建時沿用 pattern)
-- [x] **migration auto-apply feature(010)** ✅ (2026-05-29 merge `e4ff2b2`;outer-only)— dev/prod stack `up` 自動套 sea-orm migration:一次性 `migrate` service + `rust-api depends_on migrate: service_completed_successfully` 閘門、API 起來前完成、失敗 fail-fast;守 007 FR-009(server 不自動 migrate)。補掉手動 migration gap
-- [x] **audit log 基礎設施 feature(011)** ✅ (2026-05-29 merge `2be489f` / SHA pin `5a72560`)— 統一 audit:`sys_operation_log` 表(migration 004、經 010 自動套、append-only 非 SoftDeletable)+ `mutate_in_txn` 唯一原子寫入入口 + `AuditSerialize` redact;`sys_user soft_delete` 活體 proof(同 txn 原子寫 SOFT_DELETE + redact password)。守 007 FR-009 + 009 facade 邊界(lint 續綠)。其他 operation·entity 接線 / 漏-audit lint 延後(見 [§2.14](#214-feature-011-audit-log-follow-up))
-- [x] **sub-crate setup feature(012)** ✅ (2026-05-29 merge `774f7b3` / SHA pin `e193c47`)— 拷貝 `sea-orm-adapter` + `xdb`(rev1@0b64a57、§11.6/§I.5 授權例外、首個拷貝 feature)+ casbin **bump 2.10→2.20.0**(編譯閘門零 drift;research R2 修正 brainstorm 的「async-std→tokio」誤判 — adapter 既有 `runtime-tokio-rustls` default)+ casbin_rule 建表 migration 005(委派 adapter up/down 單一 schema 來源、stock schema 無 soft-delete、經 010 自動套)+ 兩 crate 活體 smoke(adapter round-trip / xdb 1.2.4.8)。附帶修 rev1 潛伏 bug `remove_filtered_policy` 索引重複偏移(Deviation D-1)。**`axum-casbin` 重寫 + 受管 policy 層重定位 Phase 3**(見 [§2.15](#215-feature-012-sub-crate-setup-follow-up) follow-up)
+### Phase 2 — 後端基礎設施 ✅ 全完成+已歸檔 (2026-05-29)
 
 ### Phase 3 — 認證 + 動態選單(進行中)
 
@@ -193,7 +177,7 @@
 
 - [x] **envelope**:`{data, code, msg}`(無 `success` bool);`code` 是 string `"0000"` not number(§4.1)— rust-api 側 ✅ 008 已實作(21 單測 + 404 curl 鎖形狀);**end-to-end base-web 消費 ✅ 013 CDP 證**(login/getUserInfo envelope unwrap + `code` 分流 + LS `SOY_token`,auth endpoint 端到端);其餘 endpoint 隨 Phase 3+/4 接線續驗
 - [x] **paginated**:`{current, size, total, records}`(無 `pages` 欄)(§4.9 已驗)
-- [x] **Role.id** 型:**rev2 對外 = string**(§I.3 凍結、§11.10)— ✅ 016 落地(RoleItem/AllRoleItem/UserItem `id` 皆 i64→`.to_string()`、curl + CDP 驗;base-web typings `number` 屬另案型補正 [§2.20](#220-feature-016-manage-role-user-list-follow-up))
+- [x] **Role.id** 型:**rev2 對外 = string**(§I.3 凍結、§11.10)— ✅ 016 落地(RoleItem/AllRoleItem/UserItem `id` 皆 i64→`.to_string()`、curl + CDP 驗;base-web typings `number` 與之不符但 **runtime 安全、決定不修**,見 [§2.20](#220-feature-016-manage-role-user-list-follow-up))
 - [ ] **MenuType enum**:1=directory / 2=menu(非舊推測「1=group / 2=page」)(§4.2.1)
 - [x] **Status nullable**:`CommonRecord.status: EnableStatus | null` rust-api 須支援(§4.2.2)— ✅ 016 落地(UserItem/RoleItem `status: Option<String>`=None → 序列化顯式 `null`、缺欄回 null D2、CDP 確認 base-web render 不 crash R5)
 - [x] **MenuRoute.id** 型:string;`getUserRoutes` 供應時帶 string id(§4.13.1)— ✅ 014(`MenuRoute.id:String`=route name、serde camelCase、curl + CDP 驗)

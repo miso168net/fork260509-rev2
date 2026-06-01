@@ -184,3 +184,14 @@ baseline 規格回填於 [DESIGN §4.6](INTEGRATION-DESIGN.md);6 項實作驗收
 ### 2.6 superpowers 000-base-web-docker-bootstrap.md §3.2 corepack 範例同步 ✅ 全完成+已歸檔 (2026-05-28)
 
 ### 2.7 feature 003-tls-dev-cert spec doc follow-up ✅ 全完成+已歸檔 (2026-05-28)
+
+### 2.9 feature 006-docker-volume-naming follow-up ✅ 全完成+已歸檔 (2026-05-29)
+
+### 2.11 feature 008-response-envelope follow-up
+
+- [x] **`Res` err 建構子綁 `()` 型** ✅ (2026-05-30,013 收口):`err`/`err_msg` 已移到 `impl<T> Res<T>`(`envelope.rs:27/47/56`),013 handler(login/getUserInfo 在 `-> Res<Dto>` 成功型內提早回業務錯誤 `data:null`)即用;envelope.rs:178 測試註解標明、§2.16 亦記「§2.11 follow-up 收口」。
+
+### 2.12 feature 009-soft-delete-infra follow-up
+
+- [x] **dev stack 不自動套 migration** ✅ (2026-05-29,010 補掉):010 新增一次性 `migrate` service + `rust-api depends_on migrate: service_completed_successfully` 閘門,dev/prod `up` 時自動套 migration、API 起來前完成、失敗 fail-fast;009 發現的手動 migration gap 已解(守 007 FR-009、server 仍不自動 migrate)
+- [x] **`soft_delete` 0-rows 靜默** ✅ (2026-05-29,011 收口):011 把 `soft_delete` 改回 `Result<bool, DbErr>`(`facade/sys_user.rs:70`),0-rows→`Ok(false)` 顯式 surfaced(不再靜默成功、不寫 audit),caller 可據以判斷;原「回 `UpdateResult` 不檢 `rows_affected`」前提已不成立。
