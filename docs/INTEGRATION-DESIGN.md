@@ -1404,6 +1404,16 @@ rev2 spec-kit feature 工作流前置 brainstorm 文件存哪?
 >
 > **🔄 2026-06-01 amend(v1.1.0→v1.2.0,依 §V.2 step1 提案落 DESIGN §11)**:本節為提案 of record;constitution §III.2 + version 同輪凍結(user 親改),CHECKLIST §6 軌道快查 + MILESTONES §1 同步 backfill。
 
+### §11.16 v1.2.1 amend — §I.3 id 型機制句校正(2026-06-02)
+
+> **改哪節**:constitution §I.3 鎖定不變式「`Role.id`/`MenuRoute.id`=string」的機制子句,由「由 BASE-WEB-ADAPT 軌道用 `rev2-extra.d.ts` 補正」改為「與此不符但 runtime 安全、決定不修」。
+>
+> **為何**:原機制句屬規劃錯誤假設、從未實作 —— `Api.Common.CommonRecord<T>` 是 `type` alias(`base-web/src/typings/api/common.d.ts`,`id: number`),TS declaration merging 只能擴 interface、**不能 override `type` alias 的 member 型**,故 `rev2-extra.d.ts` 補 `id: number→string` 不可行。真修需動 upstream `common.d.ts` + ripple ~6 個 view 簽名(跨 BASE-WEB-ADAPT / MODAL-WIRING 邊界 + upstream rebase 風險);而宣告層不一致 **runtime 早已安全**(016/017 經 front-nginx CDP 證 list/CRUD 正常)→ 取 Option B「決定不修、接受 type-lie」。
+>
+> **改後影響**:`Role.id`=string 拍板(§11.10)**不變**,僅校正達成機制的描述;BASE-WEB-ADAPT 軌道仍可加新檔。純文字校正/釐清 = **PATCH**(§V.3),version 1.2.0 → 1.2.1。
+>
+> **觸發**:017 收尾 + role 寫端 brainstorm 時發現 override `type` alias 不可行。
+
 ---
 
 ## §12 文件交叉引用

@@ -37,7 +37,7 @@
 
 **鎖定不變式**:
 - envelope `{data, code, msg}`(無 `success` bool);`code` = string `"0000"` not number
-- `Role.id` / `MenuRoute.id` = **string**(對齊 mock,base-web TS 顯式宣告 number 由 BASE-WEB-ADAPT 軌道用 `rev2-extra.d.ts` 補正)
+- `Role.id` / `MenuRoute.id` = **string**(對齊 mock;base-web TS 顯式宣告 number 與此不符但 runtime 安全、**決定不修** —— `Api.Common.CommonRecord` 為 `type` alias、TS declaration merging 無法 override member 型,`rev2-extra.d.ts` 補正不可行)
 - 業務驗證 error code 區段 = **`5xxx`**;refresh 類 critical code(`9999/9998/3333`)絕不用在業務驗證
 - `MenuType` enum:1 = directory / 2 = menu(非舊推測「1 = group / 2 = page」)
 - `Status` nullable:`CommonRecord.status: EnableStatus | null` rust-api 須支援
@@ -193,4 +193,4 @@ DESIGN 仍為「核心事實」(設計研究歷史 + 拍板理由 + 詳細軌道
 
 ---
 
-**Version**: 1.2.0 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-06-01
+**Version**: 1.2.1 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-06-02
