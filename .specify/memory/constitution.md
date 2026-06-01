@@ -129,14 +129,14 @@
 
 #### MODAL-WIRING ★(§7.4)— **本檔授權**
 
-**邊界**:`base-web/src/views/manage/*/modules/*-operate-{modal,drawer}.vue` 內 `// request` placeholder 一行。
+**邊界**:`base-web/src/views/manage/**` 內的 `// request` placeholder 一行 —— 含 `modules/*-operate-{modal,drawer}.vue`(create/update)**與** `index.vue` 的 delete/batchDelete handler(如 `handleDelete`/`handleBatchDelete`)。
 
 **授權內容**:把 `// request; console.log(...)` 改為 `await fetchCreateXxx(formData)`。
 
 **紀律**:
 - **嚴格限「只動 `// request` placeholder 處」**,絕不擴張到其他 inline
 - 每改一處在 spec 內紀錄(file:line + 改動內容 + upstream 衝突風險評估)
-- 影響 feature:Phase 4 F7 manage-crud-alignment(範圍 6-10 檔、每檔 1-3 行)
+- 影響 §10 Phase 4 中所涉及 CRUD 功能(原 manage-crud-alignment 範圍 6-10 檔、每檔 1-3 行, 擴大至 CRUD 所需改動)
 
 #### BASE-WEB-BUILD-CONFIG ★(§7.3)— **本檔授權**
 
@@ -193,4 +193,4 @@ DESIGN 仍為「核心事實」(設計研究歷史 + 拍板理由 + 詳細軌道
 
 ---
 
-**Version**: 1.1.0 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-06-01
+**Version**: 1.2.0 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-06-01

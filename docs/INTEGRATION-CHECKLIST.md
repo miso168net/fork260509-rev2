@@ -246,6 +246,6 @@
 > **本節只列關鍵警示**,SOP hook 每次 session 注入時 Claude / user 快查用:
 
 - **BASE-WEB-BUILD-CONFIG ★**(DESIGN §7.3):允許動 `build/plugins/router.ts` 加 `pageExcludePatterns`,僅限「隱藏 demo menu」邊界(**014 dynamic mode 下 moot:demo menu 不送、不需隱藏**;此軌道在 dynamic 維持下未觸發)
-- **MODAL-WIRING ★**(DESIGN §7.4):允許動 `views/manage/*/modules/*-operate-{modal,drawer}.vue` 內 `// request` 一行,僅限「接 wrapper call」邊界
+- **MODAL-WIRING ★**(DESIGN §7.4;**邊界 v1.2.0 擴**):允許動 `views/manage/**` 內 `// request` 一行(含 `modules/*-operate-{modal,drawer}.vue` create/update **+** `index.vue` 的 delete/batchDelete handler),僅限「接 wrapper call」邊界(017 user CRUD 起用)
 
 ★ 兩條軌道**必須在 constitution v1.0.0 顯式授權**並寫明邊界、理由。其他 3 條軌道(BASE-WEB-ADAPT / BASE-WEB-WRAPPER / RUSTAPI-SOURCE-ISOLATION)為新增或全新寫、不違反直覺紀律。

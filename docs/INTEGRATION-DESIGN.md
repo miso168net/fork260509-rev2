@@ -1386,6 +1386,16 @@ rev2 spec-kit feature 工作流前置 brainstorm 文件存哪?
 >
 > **🔄 2026-06-01 amend 提案紀錄(依新 §V.2 step1:提案落 DESIGN §11)**:本條即 v1.0.0→v1.1.0 amendment 的設計依據。**bootstrap 過渡**:本批同時把 §V.2 step1 提案位置由 CHECKLIST 改為 DESIGN §11,故此提案紀錄與 constitution 凍結同輪 backfill(commit `e1fa3db` 為 interim 提案 of record);此後 amendment 先落本節再凍 constitution。
 
+### §11.15 MODAL-WIRING ★ 邊界擴展(`views/manage/**`,含 list-page delete)
+
+> **改哪節**:constitution §III.2 MODAL-WIRING「邊界」(`base-web/src/views/manage/*/modules/*-operate-{modal,drawer}.vue` → **`base-web/src/views/manage/**`**,含 `index.vue` 的 `handleDelete`/`handleBatchDelete`);「紀律」影響行保留 manage-crud-alignment 6-10 檔 baseline、擴註「§10 Phase 4 中所涉及 CRUD 功能、擴大至 CRUD 所需改動」(上限由「只改 `// request` 一行」紀律約束、非固定數字);version 1.1.0 → 1.2.0。
+>
+> **為何**:Phase 4 CRUD 的 delete/batchDelete `// request` placeholder 落在 `views/manage/*/index.vue`(`handleDelete`/`handleBatchDelete`),不在原邊界 `modules/*-operate-{modal,drawer}.vue`;同屬「`// request` 一行接 wrapper call」紀律、僅 file 位置不同。**017-manage-user-write 為觸發 feature**(user CRUD 的 delete)。原 §11.3 拍板(啟用 MODAL-WIRING)未變,僅軌道 file 邊界放寬。
+>
+> **改後影響**:Phase 4 各 CRUD feature 可在授權內接 `index.vue` delete;紀律不變(只改 `// request` 一行、每處 spec 記 file:line + upstream 衝突風險);§IV Compliance Check #2/#7 連動(觸 ★ 軌道、須在授權邊界內)。§II §11.3 拍板摘要不變(精確邊界於 §III)。§V.3「軌道授權邊界擴展」= **MINOR**(v1.1.0 → v1.2.0)。
+>
+> **🔄 2026-06-01 amend(v1.1.0→v1.2.0,依 §V.2 step1 提案落 DESIGN §11)**:本節為提案 of record;constitution §III.2 + version 同輪凍結(user 親改),CHECKLIST §6 軌道快查 + MILESTONES §1 同步 backfill。
+
 ---
 
 ## §12 文件交叉引用
