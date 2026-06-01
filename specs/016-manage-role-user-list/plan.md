@@ -83,7 +83,7 @@ rust-api/
 
 ## Design Notes(非 violation、供 implementer / review 對焦)
 
-- **N-1 route path 無 `/api`(★ 親讀駁回幻覺,R3)**:main.rs route 全部無 `/api` 前綴(`grep -c '"/api/'`=0);三 endpoint 用 `/systemManage/getXxx`,seed policy v1 同樣無 /api,與 009 既有 getUserList policy 一致、**無 enforce mismatch bug**。`/api` 是 base-web→front-nginx proxy 層概念、rust 內部不帶。(plan research subagent 曾誤報「/api 前綴 → policy 對不上 403」,經親讀 + grep 駁回。)
+- **N-1 route path 無 `/api`(R3,親讀 + grep 確認)**:main.rs route 全部無 `/api` 前綴(`grep -c '"/api/'`=0,research workflow 並行確認一致);三 endpoint 用 `/systemManage/getXxx`,seed policy v1 同樣無 /api,與 009 既有 getUserList policy 一致、**無 enforce mismatch**。`/api` 僅是 base-web→front-nginx reverse proxy 層前綴(§11.11、nginx strip 後到 rust),rust 內部 route 一律不帶。
 - **N-2 policy seed 分工(D7)**:016 隨 endpoint 補對應 policy(getRoleList×{SUPER,ADMIN}、getAllRoles×{SUPER,ADMIN,USER_COMMON});getUserList 009 已 seed、不重複(`ON CONFLICT DO NOTHING` 冪等)。Phase 3 #4 policy seed feature 退為「全路由 rollout + 矩陣治理」。R_SUPER 逐條(無 wildcard,沿 009)。
 - **N-3 缺欄回 null 的 render 風險(R5)**:status/gender base-web typing 本就 `\|null` → 回 null 零型別風險;純文字欄 null 顯空、不 crash。CDP 驗收確認;若某欄令 base-web crash(預期不會)該欄改 `""`。
 - **N-4 id i64→string 在 DTO 邊界(R6)**:entity/facade 全 i64,DTO `id.to_string()`(沿 013 `getUserInfo.userId` 先例)。DESIGN §1.5/§3.6 殘留 number = 待掃清矛盾,act on 凍結 string、不走 amendment。

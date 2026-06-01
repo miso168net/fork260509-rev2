@@ -26,18 +26,19 @@
   - getUserList filter:`user_name` `.contains(kw)` / `nick_name` `.contains(kw)`(entity 有對應欄者)。
   - getRoleList filter:`name` `.contains(kw)`(=roleName)/ `code` `.contains(kw)`(=roleCode)。
   - 空字串 / `None` → 不加該 `.filter()`(D6/D8)。base-web 送的其餘 search 欄(userGender/userPhone/userEmail/status/roleDesc)**entity 無對應欄 → 忽略**(不報錯,一致於缺欄策略 D2)。
+- **註**:sea-orm `.contains()` / `.like()` 對 user 輸入的 `%`/`_` wildcard **不 escape**(會被當 LIKE 萬用字元);admin panel 低風險、可接受,implementer 知情即可(日後若需精確比對再自行 escape)。值本身仍參數化綁定(無 injection)。
 - **多條件**:鏈式 `.filter().filter()`(AND);抽純 fn `*_list_query(filter) -> Select<Entity>` 作 no-DB SQL-build 單測 seam(沿 011/015 模式)。
 
-## R3. route path 無 `/api` 前綴 + 009 policy 一致(★ 親讀駁回 research 幻覺)
+## R3. route path 無 `/api` 前綴 + 009 policy 一致
 
-**現況事實**(親讀 `server/src/main.rs` @ cff9785 + grep 證實):
-- main.rs route path **全部無 `/api` 前綴**:`/auth/login` / `/auth/getUserInfo` / `/route/*` / `/systemManage/getUserList`(line 86)。`grep -c '"/api/' main.rs` = **0**。
-- getUserList 已掛 per-route `enforce_mw`(`route_layer(from_fn_with_state(state.clone(), enforce::enforce_mw))`,line 86-93)= 016 三條 endpoint 照抄的 pattern。
-- 015 全域 ctx_mw layer + `into_make_service_with_connect_info` 在 fallback 之後(grep 證實在,不動)。
+**現況事實**(親讀 `server/src/main.rs` @ cff9785 + grep 證實;research workflow 並行確認一致):
+- main.rs route path **全部無 `/api` 前綴**:`/auth/login` / `/auth/getUserInfo` / `/route/*` / `/systemManage/getUserList`(line 98)。`grep -c '"/api/' main.rs` = **0**。
+- getUserList 已掛 per-route `enforce_mw`(`route_layer(from_fn_with_state(state.clone(), crate::auth::enforce::enforce_mw))`,line 97-105)= 016 三條 endpoint 照抄的 pattern。
+- 015 全域 ctx_mw layer(`.layer(from_fn_with_state(state.clone(), audit_ctx::ctx_mw))`,line 107-114)在 `.fallback()` 之後、`.with_state()` 之前(OUTERMOST,不動);serve 用 `into_make_service_with_connect_info::<SocketAddr>()`(015,016 不需動)。
 - migration 009 seed `('p','R_SUPER','/systemManage/getUserList','GET',...)` + R_ADMIN 同 → **path 與 route 一致(皆無 /api)、無 mismatch**。`enforce_mw` 取 `req.uri().path()` = `/systemManage/getUserList` 正好 match seed v1。
 
 - **Decision**:016 三 endpoint route path 用 `/systemManage/getRoleList`、`/systemManage/getAllRoles`、`/systemManage/getUserList`(**無 /api**);seed policy v1 同樣無 /api。getUserList route 從 `handler::auth::get_user_list`(013 stub)改指 `handler::system_manage::get_user_list`,enforce_mw 保留。
-- **駁回紀錄**:plan Phase 0 research subagent 曾宣稱「main.rs route 帶 /api 前綴 → 009 policy 對不上 → Super/Admin 也 403(既存 bug)」。**經親讀 main.rs + `grep -c '"/api/'`=0 雙重證實為幻覺**(subagent 把 base-web `VITE_SERVICE_BASE_URL=/api` 概念誤植進 rust route)。rust route 無 /api、009 policy 正確、**無 bug**。`/api` 是 base-web→front-nginx→rust 的 nginx-strip 層概念,rust 內部 route 不帶。(act on actual code 駁回二手 subagent 假 bug。)
+- **註**:`/api` 僅是 base-web→front-nginx reverse proxy 層的前綴(§11.11,nginx strip 後才到 rust);rust 內部 route 一律不帶 `/api`。016 route path + seed policy v1 全程用無 `/api` 的 `/systemManage/*`,與 009 既有 getUserList policy 一致,enforce 正常、無 mismatch。
 
 ## R4. casbin policy seed 手段(沿 009/010)
 
@@ -85,12 +86,18 @@
 - **無 sea-orm relation**:三 entity Relation 皆空 → roles 批次自己兩步查(非靠 relation),沿 roles_for_user 模式。
 - **D 無 CDP-only**:純後端 read,但本 feature 的價值是「管理頁第一次看到資料」→ acceptance 含一條 CDP 列表顯示驗收(dev vite proxy,沿 013/014)+ curl/psql + 純單測。
 
-## R9. 排序
+## R9. 排序 + 分頁邊界
 
-**現況事實**:entity **無 `created_at` 欄**(D2 不補)→ 無法 `created_at DESC`。
+**現況事實**:entity **無 `created_at` 欄**(D2 不補)→ 無法 `created_at DESC`。sea-orm `.paginate(db, page_size)` 的 `page_size` 為 `u64` 且 **不可為 0**(0 → DbErr/panic)。
 
-- **Decision**:list 排序用 `id DESC`(seed id 1/2/3,穩定、新→舊)。`.order_by_desc(Column::Id)`。
-- **Rationale**:無時間欄下 id DESC 是穩定且語意合理的預設(後建者 id 較大);日後補 created_at(write 那一波)可改。
+- **Decision**:list 排序用 `id DESC`(seed id 1/2/3,穩定、新→舊)`.order_by_desc(Column::Id)`(`use sea_orm::QueryOrder;`)。分頁:`size` clamp 至 `[1, 100]`(下限 1 防 paginate panic、上限 100 防撈爆,D5);`current` → `fetch_page(current.saturating_sub(1))`(1-based→0-based,`saturating_sub` 防 current=0 underflow)。
+- **Rationale**:無時間欄下 id DESC 是穩定且語意合理的預設(後建者 id 較大);日後補 created_at(write 那一波)可改。size 下限 1 是 paginate API 硬約束(workflow R1 證實)。
+
+## R10. sys_role.id auto_increment 不一致(read-only 不受影響,記錄供 write 那一波)
+
+**現況事實**(workflow grep):`sys_role.id` entity `auto_increment` 預設 true、`sys_user.id` 為 `auto_increment=false`(007 seed 顯式 id 1/2/3,§2.10 follow-up 已記 sys_user.id 無 sequence)。
+
+- **Decision**:016 read-only **不受影響**(只讀不建列)。記錄此不一致供 Phase 4 write 那一波(addUser 動態建 user 時 sys_user.id 須改 BIGSERIAL,見 CHECKLIST §2.10)。本 feature 不動。
 
 ---
 
