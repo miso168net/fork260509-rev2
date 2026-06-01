@@ -47,33 +47,47 @@ DELETE FROM casbin_rule WHERE ptype='p' AND v2='GET'
 ```
 // sys_user.rs(新增)
 pub struct UserListFilter { pub user_name: Option<String>, pub nick_name: Option<String> }
-pub async fn list_active_paginated(db, filter: UserListFilter, current: u64, size: u64)
+pub async fn list_active_paginated(db, filter: UserListFilter, page_idx: u64, size: u64)
     -> Result<(Vec<sys_user::Model>, u64 /*total*/), DbErr>
 //   find_active() + 條件 .filter(contains) + .order_by_desc(Id) + .paginate(db,size)
-//   → (fetch_page(current-1), num_items())   ── R1/R2/R9
+//   → (fetch_page(page_idx), num_items())   ── R1/R2/R9
+//   ★ page_idx 已是 0-based(由 handler 的 normalize_page 從 current 轉好);facade 不再 -1,避免雙重減一。
 
 // sys_role.rs(新增)
 pub struct RoleListFilter { pub name: Option<String>, pub code: Option<String> }
-pub async fn list_active_paginated(db, filter: RoleListFilter, current: u64, size: u64)
+pub async fn list_active_paginated(db, filter: RoleListFilter, page_idx: u64, size: u64)
     -> Result<(Vec<sys_role::Model>, u64), DbErr>
-pub async fn list_active_all(db) -> Result<Vec<sys_role::Model>, DbErr>   // getAllRoles,只 active、不分頁
+pub async fn list_active_all(db) -> Result<Vec<sys_role::Model>, DbErr>   // getAllRoles,只 active、不分頁、id DESC
 
 // sys_user_role.rs(新增,R7 批次避 N+1)
-pub async fn roles_for_users(db, user_ids: &[i64]) -> Result<HashMap<i64, Vec<String>>, DbErr>
+pub async fn roles_for_users(db, user_ids: &[i64])
+    -> Result<std::collections::HashMap<i64, Vec<String>>, DbErr>
 //   sys_user_role WHERE user_id IN (ids) → role_id pairs
 //   → sys_role::find_active filter id IN (role_ids) 取 (id, code)
-//   → 組 user_id → [code...](2 query 固定)
+//   → 組 user_id → [code...](2 query 固定);ids 空 → 早返空 map
 ```
+
+- **0-based 轉換責任唯一歸 handler `normalize_page`**(T003):`current`(1-based wire)→ `page_idx`(0-based)只在此轉一次;facade 收 `page_idx` 直接 `fetch_page(page_idx)`,**不重複 -1**。`size` clamp `[1,100]` 亦在 `normalize_page`(下限 1 防 sea-orm `paginate` size=0 panic,R9)。
 - **SQL-build seam**:`user_list_query(filter) -> Select<Entity>` / `role_list_query(filter) -> Select<Entity>` 抽純 fn(no-DB 單測:contains/eq/空略過/id DESC)。
 - **既有不動**:`find_active` / `find_active_by_*` / `soft_delete` / `roles_for_user`(單筆,login/getUserInfo 續用)。
 - 全落 facade、handler 不碰 `entity::`(009 lint)。
 
-## 4. Output DTO(`server/src/handler/system_manage.rs`,serde camelCase、id=string、無 password)
+## 4. Output DTO
+
+### 4.0 分頁 wrapper `PageRes<T>` —— 放 `server/src/envelope.rs`(與 008 `Res<T>` 同層)
 
 ```
-// 分頁 wrapper(泛型,4 欄)
-struct PageRes<T> { current: u64, size: u64, total: u64, records: Vec<T> }   // 無 pages/success
+// server/src/envelope.rs(新增,緊鄰 Res<T>)
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PageRes<T> { pub current: u64, pub size: u64, pub total: u64, pub records: Vec<T> }
+// 4 欄、無 pages/success;current/size/total 序列化為 JSON number(非 string),records: Vec<T>
+```
+> **placement**:`PageRes<T>` 是泛型分頁外殼、語意與 008 `Res<T>` 同層 → 放 `envelope.rs`(**非** `handler/system_manage.rs`)。三 endpoint 的 record DTO(UserItem/RoleItem/AllRoleItem)才放 `system_manage.rs`。
 
+### 4.1 record DTO(`server/src/handler/system_manage.rs`,serde camelCase、id=string、無 password)
+
+```
 // UserItem(getUserList records;無 password)
 struct UserItem {
   id: String,                  // ← i64.to_string()(R6)
@@ -133,7 +147,7 @@ main.rs:
   - 新增 .route("/systemManage/getAllRoles", get(system_manage::get_all_roles).route_layer(enforce_mw))
   - 移除 handler::auth::get_user_list + UserListStub(orphan)
 ```
-- enforce 在 middleware 判(handler 不判);三 route 照抄 getUserList 的 `route_layer(from_fn_with_state(state.clone(), enforce::enforce_mw))`(R3)。
+- enforce 在 middleware 判(handler 不判);三 route 照抄 getUserList 的 `route_layer(from_fn_with_state(state.clone(), enforce::enforce_mw))`(R3)。`PageRes<T>` 從 `crate::envelope` import(§4.0)。
 - 015 全域 ctx_mw layer 仍包所有 route(不動)。
 
 ## 7. 與既有關係 / 不變式
