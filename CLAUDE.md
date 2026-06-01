@@ -356,10 +356,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/016-manage-role-user-list/spec.md`](specs/016-manage-role-user-list/spec.md)
-**Active Plan**: [`specs/016-manage-role-user-list/plan.md`](specs/016-manage-role-user-list/plan.md)
-**Phase**: 階段 2 TDD 實作 + 收尾 ✅ 完成 — 3 條唯讀 systemManage endpoint(`getUserList`/`getRoleList` 分頁 + `getAllRoles` 全量)落地、merge `--no-ff` 回 `rev2-admin-root`(016 branch 保留)。`superpowers:executing-plans`→`subagent-driven-development`:T001~T019 全落地,各單元 spec+quality 雙審 + **6-lens 全 diff 對抗審查 confirmed=0** + **47/47 活體 curl/psql acceptance** + **CDP 經 front-nginx 真 `/api` 路徑顯 3 user/3 role**(null 欄不 crash R5)。**不動業務表、缺欄回 null**(D2)+ **id wire=string**(§I.3)+ **PageRes 無 pages/success** + **roles 批次避 N+1**(SC-006)+ 3 條掛 013 `enforce_mw` + seed migration 013 補 policy(**逐條無 wildcard**;getRoleList×{SUPER,ADMIN}/getAllRoles×{SUPER,ADMIN,USER_COMMON})。**無新 crate/dep**、server 96+lint 17+xdb 9 全綠、**Constitution v1.1.0 §IV 8/8 PASS**。**不參照 rev1**(§I.5)。
-**下一步**: **Phase 4 續做** — manage 另 3 read endpoint(`getMenuList/v2`·`getAllPages`·`getMenuTree`,需 sys_menu 表)/ wire mapping / 菜單樹建構 / 審計欄 retrofit(綁 write 那一波);或 Phase 3 續做(redis pub-sub / 全路由 enforce 矩陣 / axum-casbin rewrite / 受管 policy 層)。rust-api worktree 在 `81c56ef`(=016);outer 016 merge 回 `rev2-admin-root`。
+**Active Spec**: [`specs/017-manage-user-write/spec.md`](specs/017-manage-user-write/spec.md)
+**Active Plan**: [`specs/017-manage-user-write/plan.md`](specs/017-manage-user-write/plan.md)
+**Phase**: 階段 1 SDD 設計鏈 — specify(0 提問)→ clarify(2 提問:Q1 userName 編輯不可改 / **Q2=B 停用 status enforce 擋登入**)→ **plan ✅**(research 5-lens 平行 grep/data-model/contracts/quickstart 全產)。**Constitution v1.2.0 §IV 8/8 PASS**(#2 menu N/A、#8 §I.6 N/A create-time + retrofit 落地)。017 = Phase 4 user 寫端 CRUD(addUser/updateUser/deleteUser/batchDeleteUser,**Super-only**)+ 補完 `sys_user` schema(業務欄 + §I.6 審計欄 + **id BIGSERIAL**〔R2 ★最高 risk〕)。**預設密碼**(D2、新 hash_password fn)/ **id wire=string**(R7、寫端收 String parse)/ enum smallint↔string(D5)/ **停用拒登 1000 守 no-enum**(Q2=B/親決 A,僅登入入口、不改 enforce_mw)/ **不可刪自己整批拒**(D7)/ 業務錯誤 2222(D8)/ role replace-all / 011 audit(operator 由 ctx)/ 016 讀 DTO 改吃真值(R10)/ 接 base-web **MODAL-WIRING ★ v1.2.0**(含 index.vue delete)+ BASE-WEB-WRAPPER。**無新 crate/dep**(argon2/sea-orm 既有)。
+**下一步**: `/speckit-tasks` → `/speckit-analyze` → `superpowers:executing-plans` 實作。rust-api worktree 在 `81c56ef`(=016);outer 在 `017-manage-user-write` feature branch。
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
