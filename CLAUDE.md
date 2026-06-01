@@ -358,8 +358,8 @@ cd ..
 <!-- SPECKIT START -->
 **Active Spec**: [`specs/016-manage-role-user-list/spec.md`](specs/016-manage-role-user-list/spec.md)
 **Active Plan**: [`specs/016-manage-role-user-list/plan.md`](specs/016-manage-role-user-list/plan.md)
-**Phase**: 階段 1 SDD 設計鏈 — specify(0 提問)→ clarify(0 提問)→ **plan ✅**(research/data-model/contracts/quickstart 全產)。**Constitution Check v1.1.0 §IV 8/8 PASS**(#2 menu N/A、#8 §I.6 N/A:不建/alter 業務表)。016 = Phase 4 主流業務第一刀,3 條唯讀 systemManage endpoint:`getUserList`/`getRoleList`(分頁)+ `getAllRoles`(全量),對齊 base-web mock wire。**不動業務表、缺欄回 null**(D2)+ **id wire=string**(對齊凍結 §I.3,R6)+ **roles 批次避 N+1**(`roles_for_users`,R7)+ 3 條掛 013 `enforce_mw` + seed migration 013 補 policy(Super/Admin list、User deny、getAllRoles 含 User)。**無新 crate/dep**;唯一 migration = casbin policy seed(非業務表)。**不參照 rev1**(§I.5,不重蹈 rebase260531-016 備份的補欄+number+破例路)。
-**下一步**: `/speckit-tasks` → `/speckit-analyze` → `superpowers:executing-plans` 實作。rust-api worktree 在 `cff9785`(=015);outer 在 `016-manage-role-user-list` feature branch。
+**Phase**: 階段 2 TDD 實作 + 收尾 ✅ 完成 — 3 條唯讀 systemManage endpoint(`getUserList`/`getRoleList` 分頁 + `getAllRoles` 全量)落地、merge `--no-ff` 回 `rev2-admin-root`(016 branch 保留)。`superpowers:executing-plans`→`subagent-driven-development`:T001~T019 全落地,各單元 spec+quality 雙審 + **6-lens 全 diff 對抗審查 confirmed=0** + **47/47 活體 curl/psql acceptance** + **CDP 經 front-nginx 真 `/api` 路徑顯 3 user/3 role**(null 欄不 crash R5)。**不動業務表、缺欄回 null**(D2)+ **id wire=string**(§I.3)+ **PageRes 無 pages/success** + **roles 批次避 N+1**(SC-006)+ 3 條掛 013 `enforce_mw` + seed migration 013 補 policy(**逐條無 wildcard**;getRoleList×{SUPER,ADMIN}/getAllRoles×{SUPER,ADMIN,USER_COMMON})。**無新 crate/dep**、server 96+lint 17+xdb 9 全綠、**Constitution v1.1.0 §IV 8/8 PASS**。**不參照 rev1**(§I.5)。
+**下一步**: **Phase 4 續做** — manage 另 3 read endpoint(`getMenuList/v2`·`getAllPages`·`getMenuTree`,需 sys_menu 表)/ wire mapping / 菜單樹建構 / 審計欄 retrofit(綁 write 那一波);或 Phase 3 續做(redis pub-sub / 全路由 enforce 矩陣 / axum-casbin rewrite / 受管 policy 層)。rust-api worktree 在 `81c56ef`(=016);outer 016 merge 回 `rev2-admin-root`。
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工

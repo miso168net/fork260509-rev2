@@ -20,7 +20,7 @@
 
 ## R2. filter builder(LIKE 模糊 + eq,參數化)
 
-**現況事實**:`ColumnTrait::contains(s)` → `LIKE '%s%'`(sea-orm 自動 bind `$1` + escape LIKE 特殊字元);`.eq(v)` → `= $1`。皆參數化(守 CHECKLIST §5.10、絕不字串內插)。
+**現況事實**:`ColumnTrait::contains(s)` → `LIKE '%s%'`(sea-orm 把值**參數化綁定**為 `$1`,**但不** escape 值內的 `%`/`_` LIKE 萬用字元 — 見下方註,與此處對齊);`.eq(v)` → `= $1`。皆參數化(守 CHECKLIST §5.10、絕不字串內插)。
 
 - **Decision**:
   - getUserList filter:`user_name` `.contains(kw)` / `nick_name` `.contains(kw)`(entity 有對應欄者)。
