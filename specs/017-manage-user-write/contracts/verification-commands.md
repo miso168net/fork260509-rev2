@@ -66,7 +66,12 @@ AID=$(curl -s "$RA/systemManage/getUserList?userName=alice" -H "Authorization: B
 curl -s "$RA/systemManage/updateUser" -H "Authorization: Bearer $TS" -H 'Content-Type: application/json' \
  -d "{\"id\":\"$AID\",\"userName\":\"alice\",\"nickName\":\"Alice2\",\"userGender\":\"1\",\"userPhone\":\"0911\",\"userEmail\":\"a2@x.co\",\"userRoles\":[\"R_ADMIN\",\"R_USER_COMMON\"],\"status\":\"1\"}" | python3 -c "import sys,json;print(json.load(sys.stdin)['code'])"  # 0000
 curl -s "$RA/systemManage/getUserList?userName=alice" -H "Authorization: Bearer $TS"  # nickName=Alice2、userRoles 兩碼、userName 仍 alice
-$PSQL -c "SELECT operation FROM sys_operation_log WHERE entity_table='sys_user' ORDER BY id DESC LIMIT 1;"  # UPDATE
+$PSQL -c "SELECT operation, updated_by FROM sys_operation_log WHERE entity_table='sys_user' ORDER BY id DESC LIMIT 1;"  # UPDATE
+$PSQL -c "SELECT updated_at IS NOT NULL, updated_by FROM sys_user WHERE id=$AID;"  # t, <Super id>(C1:updated_at/by 成對)
+# (C3 / US2 AS-2)含無效 + 有效 roleCode → 只採有效、不崩潰(0000)
+curl -s "$RA/systemManage/updateUser" -H "Authorization: Bearer $TS" -H 'Content-Type: application/json' \
+ -d "{\"id\":\"$AID\",\"userName\":\"alice\",\"userRoles\":[\"R_NOSUCH\",\"R_USER_COMMON\"],\"status\":\"1\"}" | python3 -c "import sys,json;print(json.load(sys.stdin)['code'])"  # 0000(不崩潰)
+curl -s "$RA/systemManage/getUserList?userName=alice" -H "Authorization: Bearer $TS" | python3 -c "import sys,json;print(json.load(sys.stdin)['data']['records'][0]['userRoles'])"  # ['R_USER_COMMON'](無效 R_NOSUCH 被略過)
 curl -s -o /dev/null -w '%{http_code}\n' "$RA/systemManage/updateUser" -H "Authorization: Bearer $TA" -H 'Content-Type: application/json' -d "{\"id\":\"$AID\",\"userName\":\"alice\",\"userRoles\":[],\"status\":\"1\"}"  # 403
 ```
 

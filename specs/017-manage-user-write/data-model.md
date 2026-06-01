@@ -43,8 +43,9 @@
   SELECT setval('sys_user_id_seq', GREATEST((SELECT COALESCE(MAX(id),0) FROM sys_user), 1));
   ```
 - **raw `execute_unprepared`(seed 回填,D6)**:`UPDATE sys_user SET status = 1 WHERE id IN (1,2,3);`(created_at 由 column default 自動填;created_by/updated_*/deleted_by 對 seed 維持 NULL)
+- **raw `execute_unprepared`(C2:user_name 唯一性 DB 兜底)**:**先 `\d sys_user` 確認無既有 user_name unique index**,若無則 `CREATE UNIQUE INDEX IF NOT EXISTS uq_sys_user_user_name_active ON sys_user (user_name) WHERE deleted_at IS NULL;`(沿 009 `sys_role.code` partial unique 先例;FR-006 並發 race 兜底,app 層 `find_active_by_name` 仍給友善 2222)
 
-**down()**(對稱、可逆):`ALTER TABLE sys_user ALTER COLUMN id DROP DEFAULT; DROP SEQUENCE IF EXISTS sys_user_id_seq;` + drop_column ×9。
+**down()**(對稱、可逆):`DROP INDEX IF EXISTS uq_sys_user_user_name_active;`(若本 migration 建)+ `ALTER TABLE sys_user ALTER COLUMN id DROP DEFAULT; DROP SEQUENCE IF EXISTS sys_user_id_seq;` + drop_column ×9。
 
 ### 2.2 `m20260529_000015_seed_write_policy`(casbin、沿 009/013/016 raw SQL)
 
@@ -72,7 +73,7 @@ pub async fn create_user(db, req: CreateUserData, operator: i64) -> Result<i64 /
 //       operator=Some(AuditOperator{id:operator, ip:None}))
 pub async fn update_user(db, id: i64, req: UpdateUserData, operator: i64) -> Result<bool, DbErr>
 //   mutate_in_txn:load active by id(無→Ok(false));payload_before=audit_json;
-//     update business 欄 + updated_by=Some(operator)(updated_at 可 Set(now) 或 DB;**不動 user_name/password**)
+//     update business 欄 + updated_at=Set(now()) 與 updated_by=Set(Some(operator)) **成對**(§I.6;updated_at 無 DB default/trigger→須顯式 set,**非『或 DB』**;**不動 user_name/password**)
 //     → replace_roles_in_txn → audit Update(before+after 皆 Some, operator)
 pub async fn soft_delete(db, id: i64, operator: i64) -> Result<bool, DbErr>  // 擴簽名加 operator
 //   soft_delete_query(id) 同設 deleted_by=operator;AuditEvent operator=Some(...)(取代現 None)
