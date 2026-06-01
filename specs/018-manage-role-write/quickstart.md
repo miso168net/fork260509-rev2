@@ -8,7 +8,7 @@
 2. **facade `sys_role`**:`find_active_by_id` / `find_active_enabled` / `create_role` / `update_role` / `soft_delete`(走 011 `mutate_in_txn` + audit;D5 col_expr+重查)。
 3. **effective-role-set ripple**:`roles_for_user(s)` + `roles_by_codes_query` → `find_active_enabled`;**`enforce_mw` 改讀 `roles_for_user`(B)**。
 4. **D5 校正 017**:`update_user` 的 updated_at/updated_by 改 col_expr + 重查(DB-side)。
-5. **handler**:4 role handler + `is_seed_role_id` 種子保護 + `role_item` 改吃真值;router 4 route(enforce_mw)+ `seed_write_role_policy` migration。
+5. **handler**:4 role handler + `is_seed_role_code` 種子保護 + `role_item` 改吃真值;router 4 route(enforce_mw)+ `seed_write_role_policy` migration。
 6. **base-web**(server 通後):`rev2-system-manage.ts` +4 fetch fn + 接 3 placeholder。
 
 ## 跑與驗(dev stack)
@@ -16,7 +16,7 @@
 # build + restart(WSL2 inotify 不可靠)
 dcargo build -p server && docker compose -f docker-compose.yml -f docker-compose.dev.yml restart rust-api
 # 驗收:見 contracts/verification-commands.md(US1-3 + status enforce 即時 + 種子保護 + 013/014/016/017 回歸 + migration up→down→up + CDP :21080 + prod image build)
-cargo test -p server   # 單元:is_seed_role_id / find_active_enabled SQL / enum / facade SQL-build
+cargo test -p server   # 單元:is_seed_role_code / find_active_enabled SQL / enum / facade SQL-build
 ```
 
 ## 關鍵紀律

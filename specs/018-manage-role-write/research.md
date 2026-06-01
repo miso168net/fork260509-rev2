@@ -81,7 +81,7 @@
 
 **Decision**(`handler/system_manage.rs` 直接 mirror add_user/update_user/delete_user/batch_delete_users 骨架):
 - 4 handler `add_role`/`update_role`(POST)+ `delete_role`/`batch_delete_roles`(DELETE):三 extractor(`State`/`Extension<RequestContext>`/`Json<Req>`)→ operator `ctx.operator_id`(None→`Res::err(Internal)` 5000)→ id parse(失敗 2222「无效的角色 id」)→ facade match(Ok(true)→ok / Ok(false)→2222「角色不存在」/ Err→5000+log)。`RoleCreateReq{roleName,roleCode,roleDesc?,status?}`、`RoleUpdateReq{id:String, roleName, roleDesc?, status?}`(**省 roleCode**,D2 immutable)、`DeleteReq{id:String}`、`BatchDeleteReq{ids:Vec<String>}`(camelCase serde)。status enum 用既有 `enum_str_to_i16`(1/2,非法→2222「状态取值无效」)。DuplicateCode→2222「角色代码已存在」。
-- **種子保護(017 沒有的新需求)**:純函式 `fn is_seed_role_id(id:i64)->bool { (1..=3).contains(&id) }`(seed id 1/2/3 已知;單元測試覆蓋)。`delete_role`/`batch_delete_roles`:刪前 guard 含種子 id → 2222「不可删除系统内置角色」**整批拒**(鏡像 017 D7 atomic)。`update_role`:若 `status` 解析為停用(2)且 `is_seed_role_id(id)` → 2222「不可停用系统内置角色」(放行改 name/role_desc)。
+- **種子保護(017 沒有的新需求,analyze I1 親決 code-based)**:純函式 `fn is_seed_role_code(code:&str)->bool { matches!(code,"R_SUPER"|"R_ADMIN"|"R_USER_COMMON") }`(以 roleCode 識別,貼 spec「code 為穩定鍵」;handler 經 `find_active_by_id` 解析 id→`row.code` 再判;單元測試覆蓋)。`delete_role`/`batch_delete_roles`:刪前 guard 解析 code 含種子 → 2222「不可删除系统内置角色」**整批拒**(批次先全載入 code 檢查;鏡像 017 D7 atomic)。`update_role`:若 `status` 解析為停用(2)且 `is_seed_role_code(&row.code)` → 2222「不可停用系统内置角色」(放行改 name/role_desc)。
 - **016 `role_item` 改吃真值(R10-equiv)**:alter 後 sys_role 有 status/role_desc/audit → `role_item`(`system_manage.rs:117-146`)改吃真實欄(status i16→wire str、role_desc、create/update time rfc3339、*_by i64→str;缺值仍 null),不再恆 None。`getRoleList`/`getAllRoles` DTO 同步。
 - migration:`alter_sys_role_business_audit`(R2)+ `seed_write_role_policy`(鏡像 015:raw SQL INSERT casbin_rule 4 行 `p,R_SUPER,/systemManage/{addRole,updateRole}=POST · {deleteRole,batchDeleteRole}=DELETE`,ON CONFLICT DO NOTHING;down `DELETE WHERE ptype='p' AND v1 IN (4 paths)` 精準不踩 009/013/015)。**lib.rs** 兩處(mod + migrations() vec)按序 append(alter 在 seed 之前)。
 - router(`main.rs:126-165`):4 條 `.route("/systemManage/addRole", post(add_role).route_layer(enforce_mw))` 等(delete 用 `delete(...)`);ctx_mw 最外層已注入 RequestContext。
@@ -103,4 +103,4 @@
 ## 待 plan/tasks 落實的明示項
 
 - **C-V acceptance**(contracts/verification-commands.md):US1-3 + 種子保護(刪/停用拒 2222)+ roleCode immutable + **status enforce 即時**(停用角色→新請求 enforce 拒、不可指派、選單消失)+ **013 enforce 回歸**(allow/deny + B 改後)+ 014 menu + 016 list + **017 回歸(US1-3 + 時間源校正)** + migration up→down→up + 真 CDP(front-nginx :21080)+ **prod image build**(無新 crate 故非 §3 強制,但沿 016/017 de-risk 列入)。
-- 單元測試:`is_seed_role_id` 純函式、enum 解析、`find_active_enabled` SQL 含 `status` filter、facade SQL-build。wiring 類由 C-V 覆蓋。
+- 單元測試:`is_seed_role_code` 純函式(三碼 true/其他 false)、enum 解析、`find_active_enabled` SQL 含 `status` filter、facade SQL-build。wiring 類由 C-V 覆蓋。

@@ -6,7 +6,7 @@
 
 ## Summary
 
-角色管理頁寫端 CRUD(addRole/updateRole/deleteRole/batchDeleteRole,Super-only),把 016 唯讀 list 閉成完整 CRUD。鏡像 017 user 寫端骨架(facade `mutate_in_txn` + audit、handler Res、casbin Super-only seed、base-web MODAL-WIRING 接線)。**新增 / 偏離 017 之處**:① sys_role schema retrofit(業務欄 role_desc/status + §I.6 審計 5 欄,無 BIGSERIAL retrofit)② 種子角色保護(id 1-3 不可刪/停用、可改 name·desc)③ **status enforce 即時** —— 經 plan research 發現 `enforce_mw` 讀 token `claims.roles`(非 DB),為達 clarify Q1/Q3「即時不授權」,**改 enforce_mw 走 `roles_for_user` DB-fresh 有效角色(B 決策)**,realizes「有效角色集一處 filter 處處生效」④ D5 審計時間源全 DB-side(`update_*` 改 col_expr + 重查,順帶校正 017 `update_user`)。技術途徑:roles 取用共同來源新增 `find_active_enabled`(deleted_at IS NULL AND status=1),enforce/getUserInfo/menu/getAllRoles/replace_roles 改吃之;getRoleList 維持 find_active(顯停用)。
+角色管理頁寫端 CRUD(addRole/updateRole/deleteRole/batchDeleteRole,Super-only),把 016 唯讀 list 閉成完整 CRUD。鏡像 017 user 寫端骨架(facade `mutate_in_txn` + audit、handler Res、casbin Super-only seed、base-web MODAL-WIRING 接線)。**新增 / 偏離 017 之處**:① sys_role schema retrofit(業務欄 role_desc/status + §I.6 審計 5 欄,無 BIGSERIAL retrofit)② 種子角色保護(**以 roleCode R_SUPER/R_ADMIN/R_USER_COMMON 識別**、不可刪/停用、可改 name·desc;analyze I1 親決 code-based)③ **status enforce 即時** —— 經 plan research 發現 `enforce_mw` 讀 token `claims.roles`(非 DB),為達 clarify Q1/Q3「即時不授權」,**改 enforce_mw 走 `roles_for_user` DB-fresh 有效角色(B 決策)**,realizes「有效角色集一處 filter 處處生效」④ D5 審計時間源全 DB-side(`update_*` 改 col_expr + 重查,順帶校正 017 `update_user`)。技術途徑:roles 取用共同來源新增 `find_active_enabled`(deleted_at IS NULL AND status=1),enforce/getUserInfo/menu/getAllRoles/replace_roles 改吃之;getRoleList 維持 find_active(顯停用)。
 
 ## Technical Context
 
@@ -16,7 +16,7 @@
 
 **Storage**: PostgreSQL(`sys_role` ALTER +7 欄;`casbin_rule` seed 4 行;`sys_operation_log` 審計)
 
-**Testing**: `cargo test -p server`(純函式單測:`is_seed_role_id` / `find_active_enabled` SQL / enum / facade SQL-build)+ entity_access_lint + xdb;wiring/形狀類由 `contracts/verification-commands.md` C-V(CDP `:21080` + curl + psql)覆蓋
+**Testing**: `cargo test -p server`(純函式單測:`is_seed_role_code` / `find_active_enabled` SQL / enum / facade SQL-build)+ entity_access_lint + xdb;wiring/形狀類由 `contracts/verification-commands.md` C-V(CDP `:21080` + curl + psql)覆蓋
 
 **Target Platform**: Linux docker(dev/prod compose);base-web 經 front-nginx `/api`
 
@@ -72,7 +72,7 @@ rust-api/                                   (worktree rev2-admin-rust-api)
     ├── model/facade/sys_user_role.rs       # roles_for_user(s)/roles_by_codes_query → find_active_enabled
     ├── model/facade/sys_user.rs            # update_user updated_at/by 改 col_expr+重查(D5)
     ├── auth/enforce.rs                      # ★ enforce_mw:claims.roles → roles_for_user DB-fresh(B)
-    ├── handler/system_manage.rs            # +4 role handler + is_seed_role_id;role_item 吃真值
+    ├── handler/system_manage.rs            # +4 role handler + is_seed_role_code(find_active_by_id 解析 id→code);role_item 吃真值
     └── main.rs                              # +4 route(enforce_mw)
 
 base-web/                                   (worktree rev2-admin-base-web)

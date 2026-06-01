@@ -68,7 +68,10 @@ curl -s :21081/systemManage/batchDeleteRole -X DELETE -H "Authorization: Bearer 
 # (c) 該 user 【用同一張舊 token $U、不重新登入】再打同端點 → **403 + 5003(即時失效,B 生效)**
 #     getUserRoutes(同 token) → R_X menu 消失;getUserInfo → roles 不含 R_X
 # (d) Super 重新啟用 R_X(status=1)→ 同 token 再打 → 恢復 200
-# 對照(回歸):若改前(claims),(c) 會錯誤地仍 200 → 本條證明 enforce_mw 已改 DB-fresh
+# (e) ★ refresh-then-enforce(G1):停用 R_X → 待/強制 access 過期 → 用舊 refresh 換新 access
+#     (refresh 不回 DB、新 token 的 claims.roles 仍含 R_X)→ 新 access 打 R_X 端點 → 仍 403+5003
+#     (證 enforce_mw 吃 DB 有效角色、claims.roles 對 enforce vestigial、即時性不被 refresh 重簽復活)
+# 對照(回歸):若改前(claims),(c)/(e) 會錯誤地仍 200 → 本條證明 enforce_mw 已改 DB-fresh
 ```
 
 > 此條是 B 決策的關鍵驗收:**舊 token 不換、停用即時於 enforce 失效**。若 CDP 端到端較難構造,至少 curl 直送證明 enforce_mw 已 DB-fresh(curl≠modal 風險低,因 enforce 是 server 層)。
@@ -89,7 +92,7 @@ psql ... -c "SELECT role_id FROM sys_user_role WHERE user_id=3;"  # 無 R_X 的 
 - **014 menu**:三角色 getUserRoutes 階梯不破(Super 全/Admin 部分/User 只 home)。
 - **016 list**:getUserList/getRoleList/getAllRoles 不破;getRoleList **roleDesc/status/audit 改吃真值**(R10,非全 null);分頁/搜尋/授權同 016。
 - **017 sys_user 寫端**:US1-3 全綠 + **update_user 的 updated_at 改 DB-side col_expr 後**:updated_at/updated_by 成對非 null、與 audit payload_after 一致、US2 不破。
-- **守恆**:server 單測全綠(新增:`is_seed_role_id` / `find_active_enabled` SQL 含 status / enum / facade SQL-build)+ entity_access_lint(handler 零 `entity::`)+ xdb;`Migrator::up` grep 0(server 不自動 migrate)。
+- **守恆**:server 單測全綠(新增:`is_seed_role_code` / `find_active_enabled` SQL 含 status / enum / facade SQL-build)+ entity_access_lint(handler 零 `entity::`)+ xdb;`Migrator::up` grep 0(server 不自動 migrate)。
 
 ## 7. migration 可逆 + prod image build
 

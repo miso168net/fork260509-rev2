@@ -61,7 +61,7 @@ Super-only(無 wildcard、不 seed R_ADMIN/R_USER_COMMON)→ 非 Super 寫操作
 
 ## 5. 種子保護資料
 
-seed 3 角色(migration 006:`id` 1/2/3):`R_SUPER`/超级管理员、`R_ADMIN`/管理员、`R_USER_COMMON`/普通用户。**判定以 id ∈ {1,2,3}**(`fn is_seed_role_id(id:i64)->bool`,純函式單測);種子**不可刪、不可停用(status→2)**,可改 name/role_desc。
+seed 3 角色(migration 006:`id` 1/2/3):`R_SUPER`/超级管理员、`R_ADMIN`/管理员、`R_USER_COMMON`/普通用户。**判定以 roleCode ∈ {R_SUPER,R_ADMIN,R_USER_COMMON}**(`fn is_seed_role_code(code:&str)`,純函式單測;handler 經 `find_active_by_id` 解析 id→`row.code` 再判 —— analyze I1 親決 code-based,貼 spec「code 為穩定鍵」、避 id 脆弱;id 1/2/3 僅 fresh-seed 對照、非判準);種子**不可刪、不可停用(status→2)**,可改 name/role_desc。
 
 ## 6. Wire DTO(三端對齊)
 
@@ -92,5 +92,5 @@ seed 3 角色(migration 006:`id` 1/2/3):`R_SUPER`/超级管理员、`R_ADMIN`/�
 | `model/facade/sys_user_role.rs` | `roles_for_user(s)` + `roles_by_codes_query` → `find_active_enabled` | 013/014/016/017 角色取用 |
 | `model/facade/sys_role.rs` | +`find_active_by_id`/`find_active_enabled`/`create_role`/`update_role`/`soft_delete` | — |
 | `model/facade/sys_user.rs` | `update_user`:updated_at/by 改 col_expr + 重查(D5) | **017 US1-3 + 守恆** |
-| `handler/system_manage.rs` | +4 role handler + `is_seed_role_id`;`role_item` 吃真值 | 016 list |
+| `handler/system_manage.rs` | +4 role handler + `is_seed_role_code`(經 find_active_by_id 解析 id→code);`role_item` 吃真值 | 016 list |
 | entity/migration/lib.rs/main.rs | sys_role entity +7 欄 / alter migration / seed_write_role_policy / 4 route | migration up→down→up |
