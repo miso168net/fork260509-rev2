@@ -68,13 +68,14 @@ rust-api/
 │   ├── m20260529_000013_seed_manage_policy.rs   # 新(只 seed casbin policy、非業務表)
 │   └── lib.rs                                    # 改:mod + migrations() 加 013
 ├── server/src/
+│   ├── envelope.rs            # 改:加泛型分頁外殼 PageRes<T>(與 008 Res<T> 同層;current/size/total=number、4 欄無 pages/success)
 │   ├── handler/
-│   │   ├── system_manage.rs   # 新:get_user_list/get_role_list/get_all_roles + DTO(PageRes/UserItem/RoleItem/AllRoleItem)+ From<Model> 映射
+│   │   ├── system_manage.rs   # 新:get_user_list/get_role_list/get_all_roles + normalize_page + record DTO(UserItem/RoleItem/AllRoleItem)+ From<Model> 映射
 │   │   ├── mod.rs             # 改:pub mod system_manage
-│   │   └── auth.rs            # 改:移除 get_user_list stub + UserListStub(orphan)
+│   │   └── auth.rs            # 改:移除 get_user_list stub + UserListStub(orphan,符號定位)
 │   ├── model/facade/
-│   │   ├── sys_user.rs        # 改:加 list_active_paginated + UserListFilter
-│   │   ├── sys_role.rs        # 改:加 list_active_paginated + list_active_all + RoleListFilter
+│   │   ├── sys_user.rs        # 改:加 list_active_paginated(收 page_idx 0-based)+ UserListFilter
+│   │   ├── sys_role.rs        # 改:加 list_active_paginated(收 page_idx)+ list_active_all(重用 role_list_query)+ RoleListFilter
 │   │   └── sys_user_role.rs   # 改:加 roles_for_users(批次 IN,避 N+1)
 │   └── main.rs                # 改:getUserList 改指 system_manage + 加 getRoleList/getAllRoles route(各掛 enforce_mw)
 ```
