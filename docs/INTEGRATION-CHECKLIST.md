@@ -113,6 +113,9 @@
 - [ ] **`batchDeleteUser` 空 `ids` → `0000` no-op**:UI 不可達(disabled-delete gate、無勾選時按鈕禁用)、benign;日後若新增可達路徑須補空陣列守衛。
 - [ ] **`sys_role` §I.6 審計欄 retrofit + role 寫端 CRUD**(承 [§2.18](#218-constitution-i6-schema-audit-columns-retrofit)):sys_user 6 審計欄已 017 落地,sys_role 同模式綁 role 寫端(addRole/updateRole/deleteRole,`*_by`=operator 由 015 ctx)那一波做。
 - [ ] **prod-stack CDP via front-nginx `/api`**(承 [§2.8](#28-feature-004-compose-port-orchestration-follow-up)):017 dev 寫端 CDP 已經 front-nginx :21080 整合路徑(部分解);prod base-web build(`VITE_SERVICE_BASE_URL=/api`)+ prod nginx `/api` strip 端到端仍待。
+- [ ] **§I.6 審計時間源不一致**:`update_user` 的 `updated_at` 用 **app-side** 時間(`SystemTime::now()`→sea_orm `DateTimeUtc` re-export、因 chrono 非 server 直接 dep),但 `created_at`(DB default)/ `deleted_at`(`soft_delete_query` col_expr `current_timestamp()`)為 **DB-side**。T014 review 認可為 principled tradeoff(`update_user` 需 RETURNING Model 餵 `audit_json` 故不走 col_expr);日後若要審計時間嚴格同源可評估統一。
+- [ ] **017 spec doc as-built 回填債(user_name unique index)**:tasks T002(d) / data-model §2.1 描述建 `uq_sys_user_user_name_active` partial unique index,但 as-built **跳過**(migration 003 已有同義 `sys_user_user_name_active_uniq`、避重複索引、C2 條件式「若無則建」條件為假)。spec doc 可補 as-built 註(同 [§2.14](#214-feature-011-audit-log-follow-up) `operator_ip` 回填債 pattern)。
+- [ ] **用戶名重複的並發 race 回 5000 非 2222**:app 層 `find_active_by_name` pre-check 擋**順序**重複→2222「用户名已存在」;但兩請求**並發**時 DB partial unique 擋下者回 `DbErr`→handler 映 **5000(Internal)**(罕見、資料完整性保住、research C2 已知接受)。日後若要 race 也回 2222,可在 `create_user` 偵測 PG 23505 unique-violation 映 `DuplicateUserName`。
 
 ## 3. 已完成里程碑
 
@@ -157,9 +160,9 @@
 - [~] manage list endpoints feature(6 read endpoint,對齊 mock)— **016 第一刀已交**(user/role 三條:getUserList/getRoleList 分頁 + getAllRoles 全量,2026-06-01 merge `5969d08` / SHA pin `81c56ef`);**menu 三條(getMenuList/v2、getAllPages、getMenuTree)留後續**(需 sys_menu 表)
 - [x] **user 寫端 CRUD feature(017)** ✅ (2026-06-02 merge `617136d` / SHA pin `7bfb353`)— 4 條 Super-only 寫 endpoint(addUser/updateUser/deleteUser/batchDeleteUser)+ sys_user schema 完補(業務欄 + §I.6 審計欄 retrofit + id BIGSERIAL)+ 預設密碼 + 停用拒登 1000 + base-web MODAL-WIRING;管理頁閉成完整 user CRUD(詳見 [DESIGN §10 Phase 4](INTEGRATION-DESIGN.md);follow-up [§2.21](#221-feature-017-manage-user-write-follow-up))。**role 寫端 CRUD(addRole/updateRole/deleteRole)留後續**
 - [~] wire shape mapping feature(Output DTO + `From<Entity>` + pagination wrapper)— **016 已立骨架**(PageRes<T> 分頁外殼 + UserItem/RoleItem/AllRoleItem DTO + lint-safe primitive 映射 seam);**017 user_item 改吃 sys_user 真值**(gender/status i16→string、時間 rfc3339、operator i64→string,缺值仍 null);其餘 entity 隨各 endpoint 接線
-- [ ] alova-only endpoint 處理 feature(依 §11.2 拍板)— **017 已實作 alova 7 中的 4 寫端**(addUser/updateUser/deleteUser/batchDeleteUser,經 BASE-WEB-WRAPPER);餘 3 stub(sendCaptcha/verifyCaptcha/getLastTime)留 Phase 5
+- [~] alova-only endpoint 處理 feature(依 §11.2 拍板)— **017 已實作 alova 7 中的 4 寫端**(addUser/updateUser/deleteUser/batchDeleteUser,經 BASE-WEB-WRAPPER);餘 3 stub(sendCaptcha/verifyCaptcha/getLastTime)留 Phase 5
 - [ ] 菜單樹建構 feature(parent_id → nested children)
-- [ ] 審計欄 retrofit feature(既有業務表補 §I.6 6 審計欄,綁 write 那一波,見 [§2.18](#218-constitution-i6-schema-audit-columns-retrofit))
+- [~] 審計欄 retrofit feature(既有業務表補 §I.6 6 審計欄,綁 write 那一波,見 [§2.18](#218-constitution-i6-schema-audit-columns-retrofit))— **sys_user ✅ 017**(5 審計欄 + 寫入路徑帶 operator);**sys_role 待 role 寫端**
 
 ### Phase 5 — 補位 + 抽離項(尚未啟動)
 
