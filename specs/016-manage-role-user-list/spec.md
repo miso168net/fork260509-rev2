@@ -8,6 +8,12 @@
 
 **Input**: User description: "Phase 4 主流業務第一刀 — 落地 base-web 系統管理頁實際呼叫的 3 條 read endpoint(getUserList 分頁 / getRoleList 分頁 / getAllRoles 全量),讓管理頁第一次看到真實 user/role 資料。凍結設計來源:[`docs/superpowers/016-manage-role-user-list.md`](../../docs/superpowers/016-manage-role-user-list.md)(Phase 0 brainstorm,D1–D12 user 親決)"
 
+## Clarifications
+
+### Session 2026-06-01
+
+無待澄清項(0 提問)。本 spec 源自已凍結的 Phase 0 brainstorm（[`docs/superpowers/016-manage-role-user-list.md`](../../docs/superpowers/016-manage-role-user-list.md),D1–D12 user 親決),11 類 taxonomy 模糊掃描全數 **Clear / N/A** —— 功能範圍 / 資料模型 / 互動 / 非功能品質 / 整合依賴 / 邊界 / 約束權衡 / 術語 / 完成訊號 皆明確,無關鍵模糊。所有原會成為澄清項的決策(scope 邊界 = user+role 三 endpoint、缺欄回空值不動表、對外識別碼字串、roles 批次避 N+1、授權範圍、policy seed 歸屬)已於 brainstorm 親決並寫入 **Assumptions**。技術 HOW（分頁查詢手段、`From<Model>` 輸出映射、批次取角色實作、Casbin policy seed 寫法、識別碼 i64→string 轉換點、router enforce 接法)刻意留待 `/speckit-plan`。
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - 使用者列表分頁查詢 (Priority: P1)
