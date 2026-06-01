@@ -103,7 +103,7 @@
 - [ ] **base-web id 型補正(BASE-WEB-ADAPT 軌道)**:016 對外 id=string(§I.3 凍結),但 base-web typings `CommonRecord.id:number`。runtime 安全(R5 grep 無對 id 做 `Number()`/算術、NDataTable rowKey 容 string|number、CDP 顯示正常),僅 TS 宣告型不符 → 型補正(rev2-extra.d.ts override 或等)列 follow-up、非 016(唯讀不動 base-web,FR-012)。
 - [ ] **`sys_role.id` auto_increment=true vs `sys_user.id`=false 不一致**(R10):016 唯讀不受影響;Phase 4 write 那一波(addRole/addUser 動態建列)須對齊 sequence 策略(sys_user.id 補 BIGSERIAL 見 [§2.10](#210-feature-007-db-redis-connection-follow-up))。
 - [ ] **manage 另 3 read endpoint 留 Phase 4 續做**:getMenuList/v2 · getAllPages · getMenuTree 需先建 sys_menu 表(menu 目前走 014 程式內 route + Casbin menu policy、無 sys_menu 業務表);見 [§4 Phase 4](#4-roadmap--phase-狀態)。
-- [x] **list 顯示經 front-nginx `/api` CDP 已驗**(部分解 [§2.8](#28-feature-004-compose-port-orchestration-follow-up)):016 CDP 走 front-nginx :21080 真實 `/api` 路徑(nginx strip → rust)顯 3 user/3 role + null 欄不 crash,**§2.8「base-web SPA 經 nginx 打 rust-api 端到端 CDP」的 read-list 路徑已證**;寫端/modal-wiring + prod base-web rebuild 仍待(§2.8 餘項續留)。
+- [x] **list 顯示經 front-nginx :21080 dev 入口 CDP 已驗**(部分解 [§2.8](#28-feature-004-compose-port-orchestration-follow-up)):016 CDP 經 front-nginx :21080(dev stack)瀏覽器顯 3 user/3 role + null 欄不 crash(R5),**§2.8「base-web SPA 經 nginx 端到端 CDP」的 dev read-list 已證**。⚠️ **未逐一 network-inspect** 確認 API 子路徑走 `/api`(nginx `_locations.inc` strip → rust:21081)抑或 `location /`→base-web vite dev-proxy→rust(兩條 conf 皆通、結果都成功);prod base-web build(`VITE_SERVICE_BASE_URL=/api`)+ prod nginx `/api` strip 端到端 + 寫端/modal-wiring 仍待(§2.8 餘項續留)。
 
 ## 3. 已完成里程碑
 
