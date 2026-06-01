@@ -356,10 +356,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/015-audit-middleware/spec.md`](specs/015-audit-middleware/spec.md)
-**Active Plan**: [`specs/015-audit-middleware/plan.md`](specs/015-audit-middleware/plan.md)
-**Phase**: 階段 2 TDD 實作 ✅ **全完成+merged**(2026-06-01,merge `589a553`)。subagent-driven-development 19 task/3 US:request-context middleware(client_ip 直連/x_forwarded_for 原始/region xdb/trace_id uuid/operator_id JWT)+ 兩 **append-only** 審計表(`sys_access_log` 已認證請求 / `sys_login_attempt` 登入成敗,migration 011/012,2 index)。**首個 xdb 消費者**(解 §2.15:`XDB_FILEPATH` + prod Dockerfile COPY 11MB ip2region.xdb)+ **首個真值 INET client_ip**(解 §2.14 解法:sea-orm `with-ipnetwork` / `ipnetwork 0.20`)。best-effort 不破業務(FR-003)、operator 閘門實現 FR-001/FR-002。驗:server 65 + entity_access_lint 17 + xdb 9 全綠;dev/prod acceptance 全綠(prod image build region 非 NULL)。
-**下一步**: 015 已 `merge --no-ff` 回 rev2-admin-root(保留 015 branch 供 audit);rust-api worktree pin **cff9785**。下一 feature 待定。
+**Active Spec**: [`specs/016-manage-role-user-list/spec.md`](specs/016-manage-role-user-list/spec.md)
+**Active Plan**: [`specs/016-manage-role-user-list/plan.md`](specs/016-manage-role-user-list/plan.md)
+**Phase**: 階段 1 SDD 設計鏈 — specify(0 提問)→ clarify(0 提問)→ **plan ✅**(research/data-model/contracts/quickstart 全產)。**Constitution Check v1.1.0 §IV 8/8 PASS**(#2 menu N/A、#8 §I.6 N/A:不建/alter 業務表)。016 = Phase 4 主流業務第一刀,3 條唯讀 systemManage endpoint:`getUserList`/`getRoleList`(分頁)+ `getAllRoles`(全量),對齊 base-web mock wire。**不動業務表、缺欄回 null**(D2)+ **id wire=string**(對齊凍結 §I.3,R6)+ **roles 批次避 N+1**(`roles_for_users`,R7)+ 3 條掛 013 `enforce_mw` + seed migration 013 補 policy(Super/Admin list、User deny、getAllRoles 含 User)。**無新 crate/dep**;唯一 migration = casbin policy seed(非業務表)。**不參照 rev1**(§I.5,不重蹈 rebase260531-016 備份的補欄+number+破例路)。
+**下一步**: `/speckit-tasks` → `/speckit-analyze` → `superpowers:executing-plans` 實作。rust-api worktree 在 `cff9785`(=015);outer 在 `016-manage-role-user-list` feature branch。
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
