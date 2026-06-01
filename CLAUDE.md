@@ -356,10 +356,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/017-manage-user-write/spec.md`](specs/017-manage-user-write/spec.md)
-**Active Plan**: [`specs/017-manage-user-write/plan.md`](specs/017-manage-user-write/plan.md)
-**Phase**: **017 完整實作 + 驗收 + 本地 merge(未推)✅**(階段 2 TDD subagent-driven-development 28 task/3 US + 登入 gate,各兩階段 review + opus final = Ready to merge)。017 = Phase 4 user 寫端 CRUD(addUser/updateUser/deleteUser/batchDeleteUser,**Super-only**)+ 補完 `sys_user` schema(業務欄 + **§I.6 審計欄 retrofit DONE** + **id BIGSERIAL**〔R2〕)。預設密碼 hash_password / id wire=string(R7)/ enum smallint↔string(D5)/ **停用拒登 1000 守 no-enum**(Q2=B,僅 login 入口、不改 enforce_mw)/ 不可刪自己整批拒(D7)/ 業務錯誤 2222(D8)/ role replace-all / 011 audit(operator 由 015 ctx)/ 016 讀 DTO 改吃真值(R10)/ base-web **MODAL-WIRING ★ v1.2.0 + BASE-WEB-WRAPPER**(rev2-system-manage.ts + 3 placeholder)。acceptance:US1-3 + 登入 gate + 守恆 + **真 CDP 7/7(front-nginx :21080)** + prod image build 全綠 / server 119+lint 17+xdb 9 / **無新 crate/dep**(argon2/sea-orm 既有)/ **Constitution v1.2.0 §IV 8/8 PASS**(#2 menu N/A、#8 §I.6 N/A create-time + retrofit 落地)。
-**下一步**: **推送(待 user 同意:rust-api/base-web fork 兩 worktree branch + outer `rev2-admin-root`)**。Phase 4 續做:menu 3 read endpoint(需 sys_menu)/ sys_role §I.6 retrofit / role 寫端 CRUD / alova 3 stub(Phase 5)。rust-api worktree 在 `deb6abee` / base-web 在 `4c33895`;outer 在 `rev2-admin-root`(本地 merge `617136d`、SHA-pin `7bfb353`、017 branch 保留)。
+**Active Spec**: [`specs/018-manage-role-write/spec.md`](specs/018-manage-role-write/spec.md)
+**Active Plan**: [`specs/018-manage-role-write/plan.md`](specs/018-manage-role-write/plan.md)
+**Phase**: **018 階段 1 SDD 設計鏈**(specify + clarify〔2 親決〕+ plan + research〔5-cluster grep〕+ data-model + contracts + quickstart 已產,待 `/speckit-tasks`)。018 = Phase 4 role 寫端 CRUD(addRole/updateRole/deleteRole/batchDeleteRole,**Super-only**),鏡像 017 + 5 親決:D1 擋種子角色(id 1-3 不可刪/停用、可改 name·desc,回 2222)/ D2 roleCode immutable / D3+D4 **有效角色集**(`deleted_at IS NULL AND status=1`)統一 enforce·getUserInfo·menu·getAllRoles·replace_roles、getRoleList 仍顯停用 / D5 審計時間源全 DB-side(col_expr+重查、順帶校正 017 update_user)。**★ plan research 抓 re-scope:enforce_mw 讀 token `claims.roles` 非 DB → clarify Q1「即時不授權」改 enforce_mw 走 `roles_for_user` DB-fresh(B,user 親決)**。sys_role schema retrofit(+role_desc/status/§I.6 5 欄,**無 BIGSERIAL retrofit**)。跨 feature ripple 013/014/015/016/017。Constitution v1.2.1 §IV 8/8 PASS(無 amendment,B 記 Complexity Tracking)。**無新 crate/dep**。
+**下一步**: `/speckit-tasks`(產 tasks.md,server-first)→ /speckit-analyze → 階段 2 `superpowers:executing-plans`。outer 在 `018-manage-role-write` feature branch(spec `32144b9` / clarify `14334b9` / plan 待 commit);rust-api·base-web worktree 未動(實作階段才改)。
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
