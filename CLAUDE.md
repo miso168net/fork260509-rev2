@@ -118,7 +118,7 @@ fork260509-rev2/                            ← workspace root（傘狀 repo rev
 
 **Phase 1 verification-commands.md 紀律**（`/speckit-plan` 產 `contracts/verification-commands.md` 時必守）：
 
-- **新增 workspace crate ⇒ acceptance 必含 prod image build**：凡 feature 新增 rust workspace member（新 crate；僅加模組到既有 crate 不受影響），`contracts/verification-commands.md` **必含一條 prod target image build**（`docker compose -f docker-compose.yml -f docker-compose.prod.yml build rust-api`，或 `--target builder/runtime`），**不得只靠 dev docker bind-mount 驗**。理由：dev bind-mount 整個 `rust-api/` 會遮住 prod multi-stage Dockerfile 逐 crate `COPY` 缺口，破口逃過 feature acceptance、拖到下游 deploy 才爆（009/010/012 三度被咬，見 [INTEGRATION-CHECKLIST §2.13](docs/INTEGRATION-CHECKLIST.md) + [REVIEW-006-013 §4.1](docs/REVIEW-006-013.md)）。
+- **新增 workspace crate ⇒ acceptance 必含 prod image build**：凡 feature 新增 rust workspace member（新 crate；僅加模組到既有 crate 不受影響），`contracts/verification-commands.md` **必含一條 prod target image build**（`docker compose -f docker-compose.yml -f docker-compose.prod.yml build rust-api`，或 `--target builder/runtime`），**不得只靠 dev docker bind-mount 驗**。理由：dev bind-mount 整個 `rust-api/` 會遮住 prod multi-stage Dockerfile 逐 crate `COPY` 缺口，破口逃過 feature acceptance、拖到下游 deploy 才爆（009/010/012 三度被咬，見 [REVIEW-006-013 §4.1](docs/REVIEW-006-013.md)）。
 
 **═══ 交棒物件：`specs/<NNN>-<feature-name>/tasks.md` ═══**
 
@@ -381,6 +381,8 @@ rev2 整合的核心 docs 階層,內容由「研究歷史」→「設計權威�
 ### 7.3 動態 todo — `docs/INTEGRATION-CHECKLIST.md`
 
 由 `INTEGRATION-DESIGN.md` 與其它文件未完成事項、或 feature 實作階段發現新問題列到此檔。`.claude/hook-git-submodule-SOP.sh` SessionStart hook **每次 session 開頭 cat 全檔注入**(見 §4.3、§6),作為 Claude 跨 session 進度延續錨。
+
+**引用紀律**:其他文件(DESIGN / MILESTONES / constitution / spec / superpowers 等)**不得跨檔深連結本檔的揮發章節**(`見 CHECKLIST §2.X`、指向某 follow-up)—— 本檔內容會滾動清理/歸檔、§ 錨會 rot;需 cross-ref 時改指 DESIGN(權威)/ MILESTONES(永久)/ spec。例外(結構性、非 rot):§6 與 SOP hook 把本檔當「當前進度活檔」整檔指向、本檔內部 §X↔§Y 互引。
 
 **清理紀律**:
 - **檔案不能無限膨脹**,要簡寫摘要或定期清理

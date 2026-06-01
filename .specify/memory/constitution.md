@@ -85,7 +85,7 @@
 
 **retrofit 紀律**:本標準 **forward-only**(對新建表即時生效)。既有表的審計欄缺口由獨立的
 「審計欄 retrofit」feature 補齊(需有寫入路徑帶入 operator 才填得了),不在本條即時要求 —
-排程與範圍見 DESIGN §10 / CHECKLIST。
+排程與範圍見 DESIGN §10。
 
 ---
 
