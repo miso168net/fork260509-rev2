@@ -356,10 +356,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/015-audit-middleware/spec.md`](specs/015-audit-middleware/spec.md)
-**Active Plan**: [`specs/015-audit-middleware/plan.md`](specs/015-audit-middleware/plan.md)
-**Phase**: 階段 2 TDD 實作 ✅ **全完成+merged**(2026-06-01,merge `589a553`)。subagent-driven-development 19 task/3 US:request-context middleware(client_ip 直連/x_forwarded_for 原始/region xdb/trace_id uuid/operator_id JWT)+ 兩 **append-only** 審計表(`sys_access_log` 已認證請求 / `sys_login_attempt` 登入成敗,migration 011/012,2 index)。**首個 xdb 消費者**(解 §2.15:`XDB_FILEPATH` + prod Dockerfile COPY 11MB ip2region.xdb)+ **首個真值 INET client_ip**(解 §2.14 解法:sea-orm `with-ipnetwork` / `ipnetwork 0.20`)。best-effort 不破業務(FR-003)、operator 閘門實現 FR-001/FR-002。驗:server 65 + entity_access_lint 17 + xdb 9 全綠;dev/prod acceptance 全綠(prod image build region 非 NULL)。
-**下一步**: 015 已 `merge --no-ff` 回 rev2-admin-root(保留 015 branch 供 audit);rust-api worktree pin **cff9785**。下一 feature 待定。
+**Active Spec**: [`specs/016-manage-role-user-list/spec.md`](specs/016-manage-role-user-list/spec.md)
+**Active Plan**: [`specs/016-manage-role-user-list/plan.md`](specs/016-manage-role-user-list/plan.md)
+**Phase**: 階段 2 TDD 實作 + 收尾 ✅ 完成 — 3 條唯讀 systemManage endpoint(`getUserList`/`getRoleList` 分頁 + `getAllRoles` 全量)落地、merge `--no-ff` 回 `rev2-admin-root`(016 branch 保留)。`superpowers:executing-plans`→`subagent-driven-development`:T001~T019 全落地,各單元 spec+quality 雙審 + **6-lens 全 diff 對抗審查 confirmed=0** + **47/47 活體 curl/psql acceptance** + **CDP 經 front-nginx 真 `/api` 路徑顯 3 user/3 role**(null 欄不 crash R5)。**不動業務表、缺欄回 null**(D2)+ **id wire=string**(§I.3)+ **PageRes 無 pages/success** + **roles 批次避 N+1**(SC-006)+ 3 條掛 013 `enforce_mw` + seed migration 013 補 policy(**逐條無 wildcard**;getRoleList×{SUPER,ADMIN}/getAllRoles×{SUPER,ADMIN,USER_COMMON})。**無新 crate/dep**、server 96+lint 17+xdb 9 全綠、**Constitution v1.1.0 §IV 8/8 PASS**。**不參照 rev1**(§I.5)。
+**下一步**: **Phase 4 續做** — manage 另 3 read endpoint(`getMenuList/v2`·`getAllPages`·`getMenuTree`,需 sys_menu 表)/ wire mapping / 菜單樹建構 / 審計欄 retrofit(綁 write 那一波);或 Phase 3 續做(redis pub-sub / 全路由 enforce 矩陣 / axum-casbin rewrite / 受管 policy 層)。rust-api worktree 在 `81c56ef`(=016);outer 016 merge 回 `rev2-admin-root`。
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
