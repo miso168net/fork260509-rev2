@@ -22,6 +22,8 @@ curl -s :21081/systemManage/addMenu -H "Authorization: Bearer $SUPER" -H 'Conten
 # (d) Admin → 5003 / 無 token → 3333
 curl -s :21081/systemManage/addMenu -H "Authorization: Bearer $ADMIN" -d '{}' | grep -o '"code":"[0-9]*"'   # 5003
 curl -s :21081/systemManage/addMenu -d '{}' | grep -o '"code":"[0-9]*"'   # 3333
+# (e) ★ SC-006(D3 不碰 casbin):新增選單後對所有角色不顯於 runtime 導覽(無可見性 policy)
+curl -s :21081/route/getUserRoutes -H "Authorization: Bearer $SUPER" | grep -c '"report"' || true   # 期 0(新選單 report 不在 getUserRoutes,須等 MenuAuth 指派可見性)
 ```
 psql:`SELECT route_name,parent_id,menu_type,menu_name,"order",buttons,created_by FROM sys_menu WHERE route_name IN('report','report_sub');`(真值 + created_by=1〔Super〕+ buttons jsonb round-trip);audit:`SELECT operation FROM sys_operation_log WHERE entity_table='sys_menu' AND operation='INSERT';`
 
