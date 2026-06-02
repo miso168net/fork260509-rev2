@@ -501,7 +501,7 @@ router 設計**直接符合 §3 base-web 期望 API 全集**,不引入 alias / r
 | `R_ADMIN` | `Admin` | 部分(逐個列) |
 | `R_USER_COMMON` | `User`(displayName `User01`) | 僅自身相關 |
 
-**seed 矩陣**(§5.1 endpoint × 3 role,Phase 3 F5.1 落地時固化):
+**seed 矩陣**(§5.1 endpoint × 3 role,認證登入 feature〔013〕落地時固化):
 
 | Endpoint | R_SUPER | R_ADMIN | R_USER_COMMON | 備註 |
 |---|---|---|---|---|

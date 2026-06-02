@@ -29,7 +29,7 @@
 - demo menu(`document` / `exception` / `multi-menu` / `iframe` 等 8 個 customRoutes)不在 Casbin enforce 範圍 → 由 BASE-WEB-BUILD-CONFIG ★ 軌道用 `pageExcludePatterns` 隱藏
 - constantRoutes(login / 404 / 403)前端寫死、與 menu 無關 → 不動
 
-**核心 feature**:Phase 3 F5.1 auth-login + F6 route-guard + W-F11 Casbin redis pub-sub
+**核心 feature**:Phase 3 的認證登入(enforce 起手)+ 動態選單路由守衛(menu Casbin enforce 過濾)+ Casbin policy 失效通知(redis pub-sub);各 feature 排程與 rev2 編號見 [DESIGN §10 Phase 3](../../docs/INTEGRATION-DESIGN.md)。
 
 ### I.3 wire ground truth 對齊 mock(NON-NEGOTIABLE)
 
@@ -193,4 +193,4 @@ DESIGN 仍為「核心事實」(設計研究歷史 + 拍板理由 + 詳細軌道
 
 ---
 
-**Version**: 1.2.1 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-06-02
+**Version**: 1.2.2 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-06-02
