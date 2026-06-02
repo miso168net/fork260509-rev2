@@ -1113,7 +1113,7 @@ BASE_WEB_TAG=rev2-admin-base-web
 2. **wire shape mapping feature** — output DTO + `From<Entity>` impl + pagination wrapper
 3. **alova-only endpoint 處理 feature** — 依 §11.2 拍板實作 / stub / 不實作
 4. **菜單樹建構 feature** — tree builder(parent_id → nested children)
-5. **審計欄 retrofit feature** — 既有業務表補 [constitution §I.6](../.specify/memory/constitution.md) 6 審計欄(尤其 `*_by` 缺口);forward-only 標準對新建表即時生效,本 feature 收攏既有表缺口(需寫入路徑帶入 operator 才填得了)。（**部分落地**:**`sys_user` 6 審計欄 retrofit ✅ 由 017-manage-user-write 完成**〔2026-06-02 merge `617136d`〕 — migration 014 補 `created_at`/`created_by`/`updated_at`/`updated_by`/`deleted_by`〔`deleted_at` 009 已有〕,寫入路徑落實:`created_by` on insert / `updated_at`+`updated_by` **成對** on update / `deleted_at`+`deleted_by` **成對** on soft-delete,**`*_by`=operator `i64` 由 015 request-context ctx 帶入**〔對齊 §I.6「`*_by`=operator user_id 非 user_name」〕。**`sys_role` 6 審計欄 retrofit 仍 pending** — 同模式綁 **role 寫端那一波**〔addRole/updateRole/deleteRole;`*_by` 須有寫入路徑帶 operator 才填得了〕。`sys_user_role`（join）+ append-only 三表 + vendored `casbin_rule` 依 §I.6 例外免。標準見 [constitution §I.6](../.specify/memory/constitution.md) + 本檔 §11.14;retrofit 編排見 §10 Phase 4「審計欄 retrofit feature」。）
+5. **審計欄 retrofit feature** — 既有業務表補 [constitution §I.6](../.specify/memory/constitution.md) 6 審計欄(尤其 `*_by` 缺口);forward-only 標準對新建表即時生效,本 feature 收攏既有表缺口(需寫入路徑帶入 operator 才填得了)。（**部分落地**:**`sys_user` 6 審計欄 retrofit ✅ 由 017-manage-user-write 完成**〔2026-06-02 merge `617136d`〕 — migration 014 補 `created_at`/`created_by`/`updated_at`/`updated_by`/`deleted_by`〔`deleted_at` 009 已有〕,寫入路徑落實:`created_by` on insert / `updated_at`+`updated_by` **成對** on update / `deleted_at`+`deleted_by` **成對** on soft-delete,**`*_by`=operator `i64` 由 015 request-context ctx 帶入**〔對齊 §I.6「`*_by`=operator user_id 非 user_name」〕。**`sys_role` 6 審計欄 retrofit ✅ 由 018-manage-role-write 完成**〔2026-06-02,本地未推未 merge,SHA-pin `77c1fd6`〕 — migration 016 補 `role_desc`/`status`/`created_at`/`created_by`/`updated_at`/`updated_by`/`deleted_by`〔`deleted_at` 006 已有;**無 BIGSERIAL retrofit**——006 已 auto_increment〕,寫入路徑落實:`created_by` on insert / `updated_at`+`updated_by` **成對** col_expr DB-side on update / `deleted_at`+`deleted_by` **成對** on soft-delete,`*_by`=operator i64 由 015 ctx。兩張業務主表(sys_user/sys_role)審計欄 retrofit 皆完成。`sys_user_role`（join）+ append-only 三表 + vendored `casbin_rule` 依 §I.6 例外免。標準見 [constitution §I.6](../.specify/memory/constitution.md) + 本檔 §11.14;retrofit 編排見 §10 Phase 4「審計欄 retrofit feature」。）
 
 ### Phase 5 — 補位 + 抽離項
 
@@ -1393,6 +1393,8 @@ rev2 spec-kit feature 工作流前置 brainstorm 文件存哪?
 > **影響**:§IV Compliance Check 第 8 條;§10 Phase 4「審計欄 retrofit feature」;Phase 4+ 所有 create migration。
 >
 > **🔄 2026-06-01 amend 提案紀錄(依新 §V.2 step1:提案落 DESIGN §11)**:本條即 v1.0.0→v1.1.0 amendment 的設計依據。**bootstrap 過渡**:本批同時把 §V.2 step1 提案位置由 CHECKLIST 改為 DESIGN §11,故此提案紀錄與 constitution 凍結同輪 backfill(commit `e1fa3db` 為 interim 提案 of record);此後 amendment 先落本節再凍 constitution。
+>
+> **🔄 2026-06-02 as-built(018 D5,審計時間源 convention)**:018 brainstorm D5 親決 **審計時間源 = DB `current_timestamp()`(非 trigger)** —— `created_at` 用 DB default、`updated_at`/`deleted_at` 經 `col_expr(Expr::current_timestamp())` + UPDATE 後重查讀回 Model(因 `update_many` 無 RETURNING),一律 **DB-side**,不用 app-side `SystemTime::now()`、不用 DB trigger(保 §I.6 explicit 成對可見性 + 可審)。018 順帶校正 017 `update_user`(原 app-side `now()` → col_expr+重查)。constitution §I.6 是否補述「時間源=DB now()」留後續評估、本 feature 不開 amendment(brainstorm 已預告)。
 
 ### §11.15 MODAL-WIRING ★ 邊界擴展(`views/manage/**`,含 list-page delete)
 
@@ -1413,6 +1415,16 @@ rev2 spec-kit feature 工作流前置 brainstorm 文件存哪?
 > **改後影響**:`Role.id`=string 拍板(§11.10)**不變**,僅校正達成機制的描述;BASE-WEB-ADAPT 軌道仍可加新檔。純文字校正/釐清 = **PATCH**(§V.3),version 1.2.0 → 1.2.1。
 >
 > **觸發**:017 收尾 + role 寫端 brainstorm 時發現 override `type` alias 不可行。
+
+### §11.17 enforce_mw 取角色源 claims→DB-fresh(B 決策,018,跨 013)
+
+> **決策(user 親決,2026-06-02,018-manage-role-write)**:`enforce_mw` 由讀 JWT `claims.roles`(login 簽入的快照)改為**每請求查 DB 有效角色** `roles_for_user(db, claims.user_id)`(= `find_active_enabled`:`deleted_at IS NULL AND status=1`),使停用/軟刪角色於**下次授權檢查即時失效**(舊 token 不重登)。realizes 018 D3+D4「有效角色集一處 filter、處處生效」—— enforce 現亦 governed by effective-set,與 getUserInfo/menu(014)/getAllRoles/replace_roles 同源。
+>
+> **不需 amendment**:§II/§11 凍結拍板無「enforce 取角色源=claims」項(§11.6 只定 axum-casbin 中介層存在、§11.7 dynamic route mode);013 D4「stateless refresh」屬 feature-level deviation —— 本 feature 將 enforce 部分改 DB-fresh,refresh 仍可 stateless(因 `claims.roles` 對 enforce 已 **vestigial**)。**G1 驗證**:舊 refresh 換新 access、新 access 的 `claims.roles` 仍含已停用角色(refresh 不回 DB),但新 access 打受保護端點 enforce 仍 **403+5003** —— 證 enforce 吃 DB 有效角色、claims.roles 不被 refresh 復活。記入 [018 plan Complexity Tracking](../specs/018-manage-role-write/plan.md)。
+>
+> **代價**:每受保護請求 +1 次角色查詢(2 個 indexed query:`sys_user_role` by user_id + `sys_role` by id IN);棄 013 D4 stateless-enforce 優化。小型 admin RBAC 廉價可接受;高流量優化(短 TTL per-user 角色 cache)會重引入 staleness、與即時性目標衝突 → 不做。DB 查詢失敗 **fail-closed**(deny 403+5003、log,對齊既有 casbin-error fail-closed,非 5000——enforce 是硬授權閘、不誤導 client re-auth)。**回歸驗 013 enforce allow/deny 不破**(SC-011,acceptance 全綠)。
+>
+> **觸發**:018 plan research grep 發現 `enforce_mw` 讀 token 快照(非 DB)→ clarify Q1/Q3「停用/刪角色即時不授權」改 B(user 親決)。
 
 ---
 
