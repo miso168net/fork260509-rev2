@@ -55,7 +55,7 @@ migration 018 seed 6 筆(raw SQL,parent_id 自我參照);**欄值逐字對齊 re
 | `manage_user-detail` | (manage) | 2 | manage_user-detail | /manage/user-detail/:id | view.manage_user-detail | null | null | route.manage_user-detail | hide_in_menu=true, active_menu=manage_user, (props=true → 見下), status=1 |
 
 - `menu_type`:`home` 是葉(實質 menu)→ 2;`manage` 是父(目錄)→ 1;manage 子皆葉 → 2。(對齊 base-web MenuType 1=dir/2=menu;`home` 在 014 是葉 route 故 2。)
-- **`props`**:014 MenuRoute 有 `props:Option<bool>`(manage_user-detail=true)。sys_menu 無 `props` 欄(base-web Menu typing 無 props 欄、props 屬 route-level)。getUserRoutes 樹組裝時:**`props` 由 component/route 規則衍生**(有路徑參數 `:id` → props=true),或 sys_menu 加一 `props` bool 欄。**plan/tasks 定**(建議:樹組裝時 `props = route_path.contains(':')` 衍生,免加欄;或 sys_menu 加 `props` bool 欄最穩 round-trip)。← ★ 影響逐字重現,plan 釘。
+- **`props`**:014 MenuRoute 有 `props:Option<bool>`(manage_user-detail=true)。sys_menu 無 `props` 欄(base-web Menu typing 無 props 欄、props 屬 route-level)。getUserRoutes 樹組裝時:**`props` 由 component/route 規則衍生**(有路徑參數 `:id` → props=true),或 sys_menu 加一 `props` bool 欄。**已釘(tasks T006):樹組裝時 `props = route_path.contains(':')` 衍生**(免加欄;對當前 seed 樹正確 —— 僅 `manage_user-detail`〔`/manage/user-detail/:id`〕→ props=true,餘 home/manage/manage_user/role/menu 無 `:` → props 省略,逐字對齊 014)。**★ 020 follow-up(analyze U1)**:寫端若出現「有 `:` 路徑但非 props」或「props=true 但路徑無 `:`」之 menu,heuristic 會破 → 020 評估 sys_menu 加顯式 `props` bool 欄。
 - seed parent_id:先 INSERT `home`/`manage`(parent_id null)→ 子 INSERT 用 `parent_id=(SELECT id FROM sys_menu WHERE route_name='manage' AND deleted_at IS NULL)`(subquery)。created_by=null(system seed)。
 
 ## 3. 樹組裝(純函式 seam,getUserRoutes + getMenuTree 共用基礎)
@@ -75,7 +75,7 @@ migration 018 seed 6 筆(raw SQL,parent_id 自我參照);**欄值逐字對齊 re
 
 ### 4.2 getMenuList/v2(US2,新)
 - 回 `Res<PageRes<MenuItem>>`(分頁外殼 `{current,size,total,records}`、沿 016 `PageRes`)。
-- `MenuItem`(`#[serde camelCase]`,鏡像 016 RoleItem 真值映射):`id:String`(i64→str)、`parentId:String?`(i64→str;或 number — 見 §6 id 決策)、`menuType:Option<String>`(i16→"1"/"2")、`menuName`、`routeName`、`routePath:Option<String>`、`component:Option<String>`、`icon:Option<String>`、`iconType:Option<String>`、`i18nKey/href/activeMenu:Option<String>`、`order/fixedIndexInTab:Option<i32>`(wire number)、`status:Option<String>`、`hideInMenu/keepAlive/constant/multiTab:Option<bool>`、`query:Option<Json>`、`buttons:Option<Json>`(`[{code,desc}]`)、`createBy/createTime/updateBy/updateTime:Option<String>`(§I.6 真值,rfc3339/str)、`children:null`(flat、前端不用)。
+- `MenuItem`(`#[serde camelCase]`,鏡像 016 RoleItem 真值映射):`id:String`(i64→str)、**`parentId:String`(top-level〔home/manage〕`parent_id` NULL → wire `parentId="0"`;非 top → 父 id `.to_string()` —— 見 §6,base-web `Menu.parentId:number` 非 nullable、root 慣例 0)**、`menuType:Option<String>`(i16→"1"/"2")、`menuName`、`routeName`、`routePath:Option<String>`、`component:Option<String>`、`icon:Option<String>`、`iconType:Option<String>`、`i18nKey/href/activeMenu:Option<String>`、`order/fixedIndexInTab:Option<i32>`(wire number)、`status:Option<String>`、`hideInMenu/keepAlive/constant/multiTab:Option<bool>`、`query:Option<Json>`、`buttons:Option<Json>`(`[{code,desc}]`)、`createBy/createTime/updateBy/updateTime:Option<String>`(§I.6 真值,rfc3339/str)、`children:null`(flat、前端不用)。
 - **flat 分頁**(records 平鋪;前端表格非 tree、由 parentId 表樹)。本波 records = 6 seed 筆。
 
 ### 4.3 getMenuTree(US2,新)
@@ -85,7 +85,7 @@ migration 018 seed 6 筆(raw SQL,parent_id 自我參照);**欄值逐字對齊 re
 
 ### 4.4 getAllPages(US2,新)
 - 回 `Res<Vec<String>>`(頁面 component 名集)。
-- 本波:**靜態集**(已知可路由頁面,對齊 base example getAllPages 範例:`home`/`manage_user`/`manage_role`/`manage_menu`/`manage_user-detail`/`about`/...;或由 sys_menu 的 distinct `component`/route_name 衍生)。plan 定靜態清單(讀端用;020 寫端建 menu 選 component 時對齊完整頁面集)。
+- 本波:**靜態集 = 對齊 base-web example 的可路由頁面 component 名**(analyze A1 釘:impl 取 base-web example 實際頁面集,非任意值)。research C3 mock 範例:`["home","403","404","405","function_multi-tab","function_tab","exception_403","exception_404","exception_500","multi-menu_first_child","multi-menu_second_child_home","manage_user","manage_role","manage_menu","manage_user-detail","about"]` —— impl 對齊 base-web example 分支實際可路由頁(以該分支為準、不憑空增刪)。讀端用(列表顯示不依賴);**020 寫端**建 menu 選 component 時對齊完整集。
 
 ### 4.5 三端對齊表
 
@@ -109,7 +109,8 @@ migration 018 seed 6 筆(raw SQL,parent_id 自我參照);**欄值逐字對齊 re
 ## 6. id 型決策(§I.3 + type-lie)
 
 - **getUserRoutes `MenuRoute.id`** = string(route_name)—— §I.3 凍結、014 既有、不變。
-- **getMenuList `Menu.id`**(+ `parentId`)= **string**(i64→`.to_string()`)—— CommonRecord 型,沿 016/017/018 RoleItem/UserItem 的 string type-lie(typing number、runtime string、§I.3 v1.2.1「決定不修」)。
+- **getMenuList `Menu.id`** = **string**(i64→`.to_string()`)—— CommonRecord 型,沿 016/017/018 RoleItem/UserItem 的 string type-lie(typing number、runtime string、§I.3 v1.2.1「決定不修」)。
+- **getMenuList `Menu.parentId`** = **string**;**top-level(home/manage)`parent_id` NULL → wire `parentId="0"`**(base-web `Menu.parentId:number` 非 nullable、root 慣例 0;送 `"0"` 對齊 id string type-lie + 避 null↔number mismatch),非 top → 父 id `.to_string()`。(analyze I1 釘)
 - **getMenuTree `MenuTree.id`/`pId`** = **number**(i64)—— MenuTree 是**非 CommonRecord 的獨立型**、typing 明寫 `number`、且為 tree-select/tree-build 的 key(數值匹配較穩);rev2 對齊此 typing 送 number、**不套** string type-lie。
 - ★ CDP-verify(若構造):getMenuTree number-id 與 getMenuList string-id 並存於選單管理頁不衝突(getMenuTree 用於 020 寫端的父選擇、019 讀端僅顯示);讀端低風險、鏡像 016 number-typing/string-runtime 已證。
 
