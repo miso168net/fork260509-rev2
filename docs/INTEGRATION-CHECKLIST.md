@@ -127,6 +127,8 @@
 - [ ] **getMenuList 無搜尋過濾**:base-web `fetchGetMenuList` 無參數、handler 僅分頁(current/size 預設 1/10);020 若管理頁加搜尋條件再補 facade filter(沿 016 `RoleListFilter` pattern)。
 - [ ] **停用/軟刪 menu 顯示語意 → 020**:本波三讀端 + getUserRoutes 皆讀 active(deleted_at IS NULL)、seed 全 status=1;停用(status=2)menu 是否顯/隱於管理頁 vs runtime、軟刪復原 → 020 寫端定。
 - [ ] **prod-stack CDP via front-nginx `/api`**(承 [§2.8](#28-feature-004-compose-port-orchestration-follow-up)):019 dev acceptance 經 :21080 front-nginx(CDP /manage/menu 顯 6 筆真值)+ :21081 直連;prod base-web build(`VITE_SERVICE_BASE_URL=/api`)+ prod nginx `/api` strip 端到端仍待(全 Phase 4 共通項)。
+- [ ] **code-hygiene nits(reviewer Minor、皆 deferred、非正確性)**:(a) `handler/system_manage.rs` `normalize_page` 的 `#[allow(dead_code)]` + 註解「wired by US1/US2(T008/T012)in later units」已過時(現 3 個 live handler 呼叫、含 019 `get_menu_list`)—— pre-existing、build 無警告,動該檔時順手清;(b) `route/menu.rs` `menu_node_to_route` 的 `route_path.as_deref().map_or(false, |p| p.contains(':'))` 可改 `is_some_and`(`clippy::unnecessary_map_or`;repo 無 clippy gate、現編譯乾淨)。
+- [ ] **`icon_type` seed as-built(data-model §2 未列、實際 seed=1)**:migration 018 對 5 個 iconify icon 列 seed `icon_type=1`(manage_user-detail 無 icon→NULL),data-model §2 seed 表未明列此欄(§1 欄定義有)。getUserRoutes(MenuRoute 無 iconType)不受影響、getMenuList wire iconType="1" 正確;屬 spec-doc 漏列的 as-built(同 [§2.14](#214-feature-011-audit-log-follow-up)/[§2.17](#221-feature-017-manage-user-write-follow-up) 回填債 pattern),可補 data-model 註。
 
 ## 3. 已完成里程碑
 
@@ -164,10 +166,10 @@
 - [x] **user 寫端 CRUD feature(017)** ✅ (2026-06-02 merge `617136d` / SHA pin `7bfb353`)— 4 條 Super-only 寫 endpoint(addUser/updateUser/deleteUser/batchDeleteUser)+ sys_user schema 完補(業務欄 + §I.6 審計欄 retrofit + id BIGSERIAL)+ 預設密碼 + 停用拒登 1000 + base-web MODAL-WIRING;管理頁閉成完整 user CRUD(詳見 [DESIGN §10 Phase 4](INTEGRATION-DESIGN.md);follow-up [§2.21](#221-feature-017-manage-user-write-follow-up))
 - [x] **role 寫端 CRUD feature(018)** ✅ (2026-06-02 已 merge `8844105`+已推,SHA-pin `77c1fd6`)— 4 條 Super-only 寫 endpoint(addRole/updateRole/deleteRole/batchDeleteRole)+ sys_role §I.6 retrofit(migration 016)+ casbin seed(017)+ **有效角色集 `find_active_enabled` 統一(D3+D4)** + **★ enforce_mw 改 DB-fresh(B 決策)→ 角色停用/軟刪下次授權即時不授權·不可指派** + D5 校正 017 update_user 時間源 + 種子保護(code-based、不可刪/停用、可改 name·desc)+ base-web MODAL-WIRING;管理頁閉成完整 role CRUD + status 真正生效於授權(詳見 [DESIGN §10 Phase 4](INTEGRATION-DESIGN.md);follow-up [§2.22](#222-feature-018-manage-role-write-follow-up))
 - [x] **menu DB-driven feature(019)** ✅ (2026-06-02 merge `a07ff13` 回 rev2-admin-root + 已推,SHA-pin `239dcfd`)— 建 `sys_menu` 業務表(§I.6 凍結後首張新建業務表、create 即帶 6 審計欄、seed 6 筆逐字重現 014 樹)為選單定義單一真相;**getUserRoutes 改讀 sys_menu(輸出逐字不變=D5 回歸鐵律,三角色 curl diff=0)** + 三讀端(getMenuList/v2·getMenuTree·getAllPages,Super-only policy019)共讀同源 + 純函式 `assemble_menu_tree`;可見性仍 Casbin enforce(§I.2 不變、010 不動)。**server-only**(base-web 未動);真 CDP /manage/menu 顯 6 筆真值。詳見 [DESIGN §10 Phase 4](INTEGRATION-DESIGN.md);follow-up [§2.23](#223-feature-019-manage-menu-list-follow-up)
-- [~] wire shape mapping feature(Output DTO + `From<Entity>` + pagination wrapper)— **016 已立骨架**(PageRes<T> 分頁外殼 + UserItem/RoleItem/AllRoleItem DTO + lint-safe primitive 映射 seam);**017 user_item 改吃 sys_user 真值**(gender/status i16→string、時間 rfc3339、operator i64→string,缺值仍 null)+ **018 role_item 改吃 sys_role 真值**(role_desc/status i16→string、create/update time rfc3339、operator i64→string,缺值仍 null)+ **018 role 寫端 DTO**(RoleCreateReq / RoleUpdateReq〔省 roleCode,D2 immutable〕);其餘 entity 隨各 endpoint 接線
+- [~] wire shape mapping feature(Output DTO + `From<Entity>` + pagination wrapper)— **016 已立骨架**(PageRes<T> 分頁外殼 + UserItem/RoleItem/AllRoleItem DTO + lint-safe primitive 映射 seam);**017 user_item 改吃 sys_user 真值**(gender/status i16→string、時間 rfc3339、operator i64→string,缺值仍 null)+ **018 role_item 改吃 sys_role 真值**(role_desc/status i16→string、create/update time rfc3339、operator i64→string,缺值仍 null)+ **018 role 寫端 DTO**(RoleCreateReq / RoleUpdateReq〔省 roleCode,D2 immutable〕)+ **019 menu 讀端 DTO/mapper**(MenuItem〔flat 分頁、parentId top→"0"〕 + MenuTreeNode〔id/pId number、root pId=0〕 + MenuNode 樹中介型 + `menu_node_to_route`〔MenuNode→MenuRoute、props 由路徑衍生〕 + `parent_id_to_wire` 純 helper、reuse 既有 MenuRoute/RouteMeta struct 保 wire 序);其餘 entity 隨各 endpoint 接線
 - [~] alova-only endpoint 處理 feature(依 §11.2 拍板)— **017 已實作 alova 7 中的 4 寫端**(addUser/updateUser/deleteUser/batchDeleteUser,經 BASE-WEB-WRAPPER);餘 3 stub(sendCaptcha/verifyCaptcha/getLastTime)留 Phase 5
 - [x] 菜單樹建構 feature(parent_id → nested children)— **✅ 019**:純函式 `assemble_menu_tree`(parent_id→nested、依 order 排序〔None 末〕、孤節點略過),供 getUserRoutes + getMenuTree 共用、可單測
-- [x] 審計欄 retrofit feature(既有業務表補 §I.6 6 審計欄,綁 write 那一波,見 [§2.18](#218-constitution-i6-schema-audit-columns-retrofit))— **sys_user ✅ 017**(5 審計欄)+ **sys_role ✅ 018**(7 欄:role_desc/status + §I.6 5 審計欄);兩張業務主表審計欄 retrofit 皆完成、寫入路徑帶 operator(015 ctx)
+- [x] 審計欄 retrofit feature(既有業務表補 §I.6 6 審計欄,綁 write 那一波,見 [§2.18](#218-constitution-i6-schema-audit-columns-retrofit))— **sys_user ✅ 017**(5 審計欄)+ **sys_role ✅ 018**(7 欄:role_desc/status + §I.6 5 審計欄);兩張業務主表審計欄 retrofit 皆完成、寫入路徑帶 operator(015 ctx)。**019 sys_menu = §I.6 凍結後首張新建業務表**(create 即帶 6 審計欄、forward-only、0 retrofit 債)→ 驗證 forward-only 標準對新建表生效(retrofit 對象僅既有表、不含此)
 
 ### Phase 5 — 補位 + 抽離項(尚未啟動)
 
@@ -220,7 +222,7 @@
 
 ### 5.4 dynamic mode(§11.7 已選 dynamic;✅ 014 落地)
 
-- [x] `/route/getConstantRoutes` + `/route/getUserRoutes` + `/route/isRouteExist` 三 endpoint 完整實作 — ✅ 014(curl + CDP 驗;menu 走 Casbin enforce 過濾)
+- [x] `/route/getConstantRoutes` + `/route/getUserRoutes` + `/route/isRouteExist` 三 endpoint 完整實作 — ✅ 014(curl + CDP 驗;menu 走 Casbin enforce 過濾);**019 getUserRoutes 改 DB-driven 讀 sys_menu、輸出逐字不變**(endpoint 契約 / dynamic mode / home 欄不變;constantRoutes·isRouteExist 不動)
 - [x] `getUserRoutes` 必含 `home` 欄(e.g. `"home"`)(§4.13)— ✅ 014(`UserRoute.home="home"`)
 - [x] `VITE_AUTH_ROUTE_MODE` 切換機制(預設 `static`)— ✅ 014 翻 `dynamic`(base-web `.env`、BASE-WEB-ADAPT、兩段式 commit)
 
