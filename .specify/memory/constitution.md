@@ -38,7 +38,7 @@
 **鎖定不變式**:
 - envelope `{data, code, msg}`(無 `success` bool);`code` = string `"0000"` not number
 - `Role.id` / `MenuRoute.id` = **string**(對齊 mock;base-web TS 顯式宣告 number 與此不符但 runtime 安全、**決定不修** —— `Api.Common.CommonRecord` 為 `type` alias、TS declaration merging 無法 override member 型,`rev2-extra.d.ts` 補正不可行)
-- 業務驗證 error code 區段 = **`5xxx`**;refresh 類 critical code(`9999/9998/3333`)絕不用在業務驗證
+- 業務驗證 error code = **`2222`**(`BizError`;重複/不存在/自鎖/種子保護/非法 id·enum 等);**`5xxx` 段為授權/基建、非業務**(`5003` 權限不足〔403〕、`5000` 服務器內部〔500〕);refresh 類 critical code(`9999/9998/3333`)絕不用在業務驗證
 - `MenuType` enum:1 = directory / 2 = menu(非舊推測「1 = group / 2 = page」)
 - `Status` nullable:`CommonRecord.status: EnableStatus | null` rust-api 須支援
 - 預設帳號:`Super / Admin / User`(login req)+ User → User01 alias(getUserInfo response)
@@ -104,7 +104,7 @@
 | §11.7 | auth route mode | (b) dynamic(後端控 menu) |
 | §11.8 | obs stack | (a) 漸進 — Phase 5 obs-min / Phase 6 obs-full |
 | §11.9 | 軌道清單 | 5 軌道全啟用(2 ★ 詳見 §III) |
-| §11.10 | wire 細節 | Role.id / MenuRoute.id = string、User alias 模仿、business error `5xxx` |
+| §11.10 | wire 細節 | Role.id / MenuRoute.id = string、User alias 模仿、business error `2222`(`5xxx`=授權/基建) |
 | §11.11 | prod 路徑前綴 | (a) `/api/*` 主流 |
 | §11.12 | brainstorm 位置 | (a) `docs/superpowers/<NNN>-<feature-name>.md` |
 | §11.13 | login 替代入口 | (c) 全實作雙模 + v1 啟 stub mode |
@@ -193,4 +193,4 @@ DESIGN 仍為「核心事實」(設計研究歷史 + 拍板理由 + 詳細軌道
 
 ---
 
-**Version**: 1.2.2 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-06-02
+**Version**: 1.2.3 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-06-03

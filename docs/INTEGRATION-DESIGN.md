@@ -1441,6 +1441,16 @@ rev2 spec-kit feature 工作流前置 brainstorm 文件存哪?
 >
 > **觸發**:018 plan research grep 發現 `enforce_mw` 讀 token 快照(非 DB)→ clarify Q1/Q3「停用/刪角色即時不授權」改 B(user 親決)。
 
+### §11.18 v1.2.3 amend — §I.3 業務碼文字校正(5xxx→2222,2026-06-03)
+
+> **改哪節**:constitution §I.3 鎖定不變式 line 41「業務驗證 error code 區段 = `5xxx`」+ §II §11.10 摘要列「business error `5xxx`」,改為「業務驗證 = `2222`(`BizError`);`5xxx` 段為授權(`5003`)/基建(`5000`)、非業務」。
+>
+> **為何**:原「5xxx=業務驗證」句源自 `MOCK-COVERAGE-AUDIT §4.11` 的**設計建議**(mock 根本不驗業務、建議 rev2 自訂 5xxx 區段),從未成為實作真相 —— 自 008 `envelope.rs` BizCode 矩陣起、016-020 handler 一致用 **`2222`=`BizError`** 表業務驗證(重複/不存在/自鎖/種子保護/非法 id·enum),`5xxx` 實為授權(`5003` 403)/基建(`5000` 500)。此分流早於本檔 D8(line 1110「業務錯誤一律 2222...非 5xxx;2222=BizError、mock §4.11-grounded」)拍板記錄,但 constitution 文字未同步、stale。§I.3 後半「9999/9998/3333 絕不用在業務驗證」續有效(那些是 auth-only)。
+>
+> **改後影響**:純文字對齊已出貨 `envelope.rs` 13-variant BizCode 矩陣,**零規則變動、零 code 改動**;業務碼用 2222 拍板(早記於 D8)不變,僅校正 §I.3/§11.10 達成描述。文字校正/釐清 = **PATCH**(§V.3),version 1.2.2 → 1.2.3。
+>
+> **觸發**:021 `/speckit-analyze` 跨檔 consistency(C1)+ workflow 查證(`envelope.rs` 矩陣 + MOCK-AUDIT §4.11 出處 + 對抗驗證 claim 不被 refute)。
+
 ---
 
 ## §12 文件交叉引用
