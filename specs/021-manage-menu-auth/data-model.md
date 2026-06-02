@@ -54,7 +54,7 @@ update_role_home(State, Extension<RequestContext>, Json<RoleHomeReq>) -> Res<()>
 - **operator**:`ctx.operator_id`→None 回 `Internal(5000)`(沿既有)。
 - **roleId 解析**:wire 來自 modal `roleId:number`;DTO 收 **彈性(number|string→i64)**(沿 020 `de_parent_id` 經驗、防 §I.3 id=string vs modal number 落差)或 String parse i64;非法→2222。
 - **menuIds**:`Vec<i64>`(number wire、對齊 MenuTree.id number);updateRoleMenu 收 → route_names_for_ids → set_role_menu。
-- **自鎖 guard(FR-006/M5,code-based、鏡像 020 is_seed)**:`update_role_menu` 對 **R_SUPER** 角色,新集 MUST 含 `manage_menu`(選單管理頁)的可見性 → 缺則 2222「不可移除超级管理员的菜单管理可见性」(防 Super 自鎖);候選擴及 6 種子 nav 骨幹(plan 細化)。非 R_SUPER 角色不受此限。
+- **自鎖 guard(FR-006/M5,code-based、鏡像 020 is_seed)**:`update_role_menu` 對 **R_SUPER** 角色,新集 MUST 含 `manage_menu`(選單管理頁)的可見性 → 缺則 2222「不可移除超级管理员的菜单管理可见性」(防 Super 自鎖)。**範圍 = leaf `manage_menu` 單一**(非 6 種子):父層 `manage` 無可見性 policy(010 不 seed、可見度由 `route/menu.rs` filter_routes tree-prune 從「有可見子」推導)→ 021 可見性 guard **無從 pin 父層**(無 `(role,'manage','menu')` 列)、leaf-only 是唯一可行且充分。**充分性依賴兩條既有 invariant**:(i) `manage` ∈ 020 `is_seed_menu`〔禁刪禁停用、row 恆存活〕(ii) updateMenu 不更新 parent_id〔FR-011/D2、manage_menu 不被搬離 `manage`〕;二者鬆動則需重檢 guard。非 R_SUPER 角色不受此限。
 - **業務錯誤**:角色不存在/非法 roleId/menuIds 含全非法 → 2222;Db→5000+log。
 - **DTO**(camelCase):`RoleIdReq{role_id}`(query)、`RoleMenuReq{role_id, menu_ids:Vec<i64>}`、`RoleHomeReq{role_id, home:String}`。
 
