@@ -45,7 +45,7 @@ description: "Task list — 022 Button Permission Authorization"
 **Goal**:Super 設定某角色可用按鈕(硬替換、即時),該角色於用戶管理頁只見被授權操作鈕。
 **Independent Test**:curl `updateRoleButton(roleId=2, [...+user:add])` → Admin getUserInfo.buttons 即時含 user:add(無重啟);CDP Admin 登入 /manage/user 見 编辑、不見 删除/新增(無 user:delete/add)。
 
-- [ ] T005 [US1] 加 `rust-api/server/src/handler/system_manage.rs`:`get_role_button`(GET `?roleId`、`de_role_id`、`find_active_by_id().code` → `get_role_button_codes`、`Res<Vec<String>>` 字典序)+ `update_role_button`(POST `{roleId,codes}`、Super-only enforce_mw、operator 由 015 ctx〔None→5000〕、**非法 code(不在 getAllButtons registry)→2222**、`set_role_button` HARD REPLACE、`Res<()>`);4... 2 route 掛 enforce_mw + casbin seed 已於 T002 給。依賴 T003。[data-model §6, contracts §2]
+- [ ] T005 [US1] 加 `rust-api/server/src/handler/system_manage.rs`:`get_role_button`(GET `?roleId`、`de_role_id`、`find_active_by_id().code` → `get_role_button_codes`、`Res<Vec<String>>` 字典序)+ `update_role_button`(POST `{roleId,codes}`、Super-only enforce_mw、operator 由 015 ctx〔None→5000〕、**非法 code→2222**〔對照可用按鈕 registry = `sys_menu::list_active_all` 聚合的 valid-code set,**facade-direct、不依賴 T008 getAllButtons handler** → US1 不依賴 US2;F1〕、`set_role_button` HARD REPLACE、`Res<()>`);**2 route(getRoleButton/updateRoleButton)掛 enforce_mw** + casbin seed 已於 T002 給。依賴 T003。[data-model §6, contracts §2]
 - [ ] T006 [P] [US1] 加 `base-web/src/service/api/rev2-system-manage.ts`:`fetchGetRoleButton(roleId)`(get、params roleId)+ `fetchUpdateRoleButton(roleId, codes)`(post、data {roleId,codes})。[data-model §6]
 - [ ] T007 [P] [US1] pilot gating(MODAL-WIRING ★ v1.3.0、逐處記 file:line + upstream 風險):`base-web/src/views/manage/user/index.vue` row `编辑`→`v-if="hasAuth('user:edit')"`、`删除`→`hasAuth('user:delete')`;`base-web/src/components/advanced/table-header-operation.vue` 加 `show-add?: boolean`(預設 true)包 `新增` 鈕;`user/index.vue` toolbar 傳 `:show-add="hasAuth('user:add')"`。依賴 T004(getUserInfo 須回 user:*)。[data-model §7]
 
@@ -60,7 +60,7 @@ description: "Task list — 022 Button Permission Authorization"
 
 - [ ] T008 [US2] 加 `rust-api/server/src/handler/system_manage.rs`:`get_all_buttons`(Super-only、`sys_menu::list_active_all` → 各 row `buttons` JSON flatten → **dedup by code** → `Res<Vec<ButtonItem{code,desc}>>` 字典序);零 `entity::`(009 lint、收原始欄非 Model)。[data-model §1.3, research R2]
 - [ ] T009 [P] [US2] 加 `base-web/src/service/api/rev2-system-manage.ts`:`fetchGetAllButtons()`(get、`request<ButtonItem[]>`)。[data-model §6]
-- [ ] T010 [US2] 接線 `base-web/src/views/manage/role/modules/button-auth-modal.vue`(MODAL-WIRING ★):`getAllButtons`→`fetchGetAllButtons`、`getChecks`→`fetchGetRoleButton(roleId)`、`handleSubmit`→`fetchUpdateRoleButton(roleId, checks)`;**`ButtonConfig→{code,label/desc}`、`checks: string[]`、NTree `key-field="code"`、`init()` 改 `watch(visible)`**(對齊 menu-auth-modal、每次開以當前 roleId 重載);`!error` 才成功 toast。依賴 T005/T006/T008/T009。[research R5, data-model §6/§7]
+- [ ] T010 [US2] 接線 `base-web/src/views/manage/role/modules/button-auth-modal.vue`(MODAL-WIRING ★):`getAllButtons`→`fetchGetAllButtons`、`getChecks`→`fetchGetRoleButton(roleId)`、`handleSubmit`→`fetchUpdateRoleButton(roleId, checks)`;**`ButtonConfig→{code,label}`〔registry `ButtonItem.desc`→modal `label` 映射;C1〕、`checks: string[]`、NTree `key-field="code"`、`init()` 改 `watch(visible)`**(對齊 menu-auth-modal、每次開以當前 roleId 重載);`!error` 才成功 toast。依賴 T005/T006/T008/T009。[research R5, data-model §6/§7]
 
 **Checkpoint US2**:contracts §1 getAllButtons 綠 + CDP 編輯角色→菜单权限→modal 顯 registry + 勾選提交(updateRoleButton)。
 
@@ -100,7 +100,7 @@ Setup(T001)
   └─ Polish(T014 dead_code ∥ ; T015 holistic C-V + 021 CDP ; T016 docs)
 ```
 
-- **US1 ⟂ US2 ⟂ US3**:三者皆建於 Foundational 之上;US1 curl-testable 不依賴 modal(T010);US2 完成 modal UI;US3 主為 acceptance(code 多在 Foundational)。
+- **US1 ⟂ US2 ⟂ US3**:三者皆建於 Foundational 之上;**US1 curl-testable、不依賴 US2**(T005 非法 code 驗證走 facade 聚合 `list_active_all`、非 T008 handler;F1)亦不依賴 modal(T010);US2 完成 modal UI;US3 主為 acceptance(code 多在 Foundational)。
 - 跨故事 file 共用:`system_manage.rs`(T005/T008)、`rev2-system-manage.ts`(T006/T009)→ 同檔不同段、序列化避衝突(非 [P] 跨彼此)。
 
 ## Parallel 範例
