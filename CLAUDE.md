@@ -356,10 +356,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/023-manage-endpoint-auth/spec.md`](specs/023-manage-endpoint-auth/spec.md)
-**Active Plan**: [`specs/023-manage-endpoint-auth/plan.md`](specs/023-manage-endpoint-auth/plan.md)
-**Phase**: **023 EndpointAuth(Phase 3 #4)✅ 完成 + Merge `ef5ebe0` 回 rev2-admin-root(--no-ff、保留 023 branch、已推 origin)**。角色×API-endpoint 權限 **runtime 編輯**(新 `auth/endpoint_auth.rs`、Casbin `(role,path,method)` 逐 method HARD REPLACE 保 menu/button 正交、stock adapter 不 fork)+ **root-mode**(R_SUPER 不可編輯→自鎖歸零)+ **D1 build-time 靜態守衛**(main.rs↔migration↔ENDPOINT_REGISTRY 三方一致、關 path-typo/漏 seed 死路由破口、negative fixture 證咬合)+ **接口权限 modal**(鏡像 button-auth、composite key、root-mode disabled-for-Super)+ **§11.22 過時 `p,R_SUPER,*,*` wildcard→per-endpoint 矩陣 reconcile**(menu-read 三列 Super-only、FR-007 單一真相)。**reframe**:全路由 enforce 字面早完成(25/25 零破口)、本波交付 runtime 可編輯+治理+守衛;migration 023 只 seed 3 治理端點、**無新 crate/dep/fork/表**。subagent-driven 12 單元 spec+quality 雙審 + 最終 holistic = READY TO MERGE;acceptance 全綠(curl §1-7 / CDP isolated-context / migration 可逆 / 守恆 server 195+D1 5+lint 17 / 回歸 013-022)。Constitution v1.4.0 §IV 8/8 PASS。**menu+button+endpoint auth 三本柱完整閉合**。
-**下一步**: 無 active feature。之後候選:Phase 3 #5 axum-casbin fuller rewrite(全路由 observability/metrics)/ #6 受管 RBAC policy 層(casbin_rule soft-delete/protected/audit/CRUD,需 fork sea-orm-adapter→§11.6 Amendment)/ Phase 4 餘(其餘業務頁 button gating、選單 restore·re-parent、alova 3 stub Phase 5)/ Phase 2 餘(soft-delete 6-entity rollout、audit 其他 operation·entity)。詳見 [DESIGN §10 Phase 3 #4 as-built](docs/INTEGRATION-DESIGN.md)。
+**Active Spec**: [`specs/024-button-auth-rollout/spec.md`](specs/024-button-auth-rollout/spec.md)
+**Active Plan**: [`specs/024-button-auth-rollout/plan.md`](specs/024-button-auth-rollout/plan.md)
+**Phase**: **024 ButtonAuth Rollout(Phase 4 餘)— SDD 設計鏈進行中(brainstorm `9e59f09`/specify〔`88ab23c`〕/clarify〔0 ambiguity〕/plan ✅)、待 tasks/analyze/實作**。把 022 用戶頁「按鈕權限可編輯迴路」**rollout 到角色頁/選單頁**:為 `manage_role`/`manage_menu` seed `role:*`/`menu:*` 按鈕碼進 `sys_menu.buttons`(registry)→ 自動進「按鈕權限」modal 可勾選 → 沿 022 `updateRoleButton`→`set_role_button` HARD REPLACE 同步 casbin(即時)→ role/menu 頁寫按鈕依 `hasAuth(code)` 顯/隱。初始授權 **R_SUPER-only**、非-Super 由 modal 指派。**§2.26 reactive-columns 修正**(user/role/menu 三頁)。**唯一 rust = 1 seed migration**(後端機制/modal/wire 零改、沿 022);**無新 crate/dep/fork/endpoint/表**。**decoupled 刻意**(按鈕可見性 ≠ 023 端點可呼叫、留「完整版」未來;K1/FR-008)。**Constitution v1.4.0 §IV 8/8 PASS**(MODAL-WIRING ★ v1.3.0 (b) button gating 既有邊界內、**無 amendment**、無 finding)。
+**下一步**: `/speckit-tasks` → `/speckit-analyze` → `superpowers:executing-plans`→`subagent-driven-development`(MVP=US1 角色頁 gating + modal 指派端到端)。詳見 [DESIGN §10 Phase 4](docs/INTEGRATION-DESIGN.md)。
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
