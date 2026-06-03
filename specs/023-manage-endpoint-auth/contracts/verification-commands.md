@@ -101,6 +101,6 @@ dcargo test -p server --test entity_access_lint   # 17(handler/auth/endpoint_aut
 - CDP:接口权限 modal 顯 registry + 編輯非-Super 角色 + root-mode disabled-for-Super ✅
 - migration 023 up→down→up 可逆(不踩既有矩陣)✅
 - 守恆:server 單測(+endpoint_auth +D1 lint)+ entity_access_lint + 零 entity:: + Migrator::up 0 + 回歸 013/019/020/021/022 + 既有 endpoint 矩陣不變 ✅
-- DESIGN §4.6.3/§6.3 過時 wildcard 文字已校正(L500/521/749-752)+ §11.21 record ✅
+- DESIGN §4.6.3/§6.3 過時 wildcard 文字已校正(L500/521/749-752)+ §11.22 record ✅
 - Constitution §IV 8/8 PASS(含 MODAL-WIRING amendment v1.4.0)✅
 </content>

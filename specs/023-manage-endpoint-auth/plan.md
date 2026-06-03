@@ -64,7 +64,7 @@ base-web/  (worktree, submodule)
 ├── src/typings/api/system-manage.d.ts      # +Endpoint = {method,path}
 └── src/locales/langs/{zh-cn,en-us}.ts       # +page.manage.role.endpointAuth
 
-docs/INTEGRATION-DESIGN.md            # 改:§4.6.3(L500/521)+§6.3(L749-752)過時 wildcard 文字校正 + §11.21 amendment-of-record
+docs/INTEGRATION-DESIGN.md            # 改:§4.6.3(L500/521)+§6.3(L749-752)過時 wildcard 文字校正 + §11.22 amendment-of-record
 .specify/memory/constitution.md       # 改:§III.2 MODAL-WIRING ★ 邊界擴 + version 1.3.0→1.4.0(待 user 核可)
 ```
 
@@ -78,7 +78,7 @@ docs/INTEGRATION-DESIGN.md            # 改:§4.6.3(L500/521)+§6.3(L749-752)過
 |---|---|---|
 | **D1 守衛改 build-time 靜態 lint**(非 brainstorm 假設的 live-DB test) | research R5 評估:drift 是靜態文字屬性、build-lint 跑在普通 cargo test(每次 gate)、無新 dep(免 reqwest)、繞過 token-vs-policy 陷阱 | brainstorm §E 本就「若可行更佳、plan 評估」→ 採 build-lint;live-DB smoke 降為 optional 非 guard。research.md R5 留痕 |
 | **MODAL-WIRING ★ amendment(新 modal+trigger 超邊界)** | endpoint-auth-modal 無既有 placeholder(021/022 是接既有);新增 modal + drawer trigger 超出現「接 placeholder + hasAuth gating」邊界 | 擴 MODAL-WIRING ★ 邊界(允許同模式新權限 modal+trigger)、MINOR v1.3.0→1.4.0;exact text 逐行核可(constitution amendment workflow);proposal→DESIGN §11.22 |
-| **過時 wildcard 文字校正**(DESIGN §4.6.3/§6.3) | `p,R_SUPER,*,*` 計畫從未實作(matcher exact-equality)、016 已 de-facto 逐條 | R7 in-place 校正 3 處 + §11.21 record;casbin seed 不變(R_SUPER 本就 per-endpoint) |
+| **過時 wildcard 文字校正**(DESIGN §4.6.3/§6.3) | `p,R_SUPER,*,*` 計畫從未實作(matcher exact-equality)、016 已 de-facto 逐條 | R7 in-place 校正 3 處 + §11.22 record;casbin seed 不變(R_SUPER 本就 per-endpoint) |
 | **ENDPOINT_REGISTRY const 雙源風險** | const path 須與 main.rs route literal 同步 | D1 靜態 lint 斷言 registry ⟷ main.rs ⟷ migration 三方一致(關 drift 破口) |
 | **get_all_endpoints infallible**(回 const、無 DB) | 結構性 divergence vs 022 get_all_buttons(讀 DB aggregate) | research R2/R4 留痕;無 error arm |
 </content>
