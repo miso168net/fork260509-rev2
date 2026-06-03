@@ -30,6 +30,9 @@
 
 `sys_menu::list_active_all` → 各 row `buttons` JSON flatten → **dedup by code** → `Vec<ButtonItem{code,desc}>`。本波 active 選單按鈕全集 = 上述 6 碼(manage_role/manage_menu/home 等 buttons 仍 NULL)。**canonical 順序 = code 字典序**(見 §4)。
 
+> **不變式(as-built 補記)**:聚合以 **code 為鍵**;若同一 `code` 出現於多個選單,實作(`aggregate_active_buttons`,`BTreeMap<code,desc>`)為 **last-writer-wins desc** — 故同 code 跨選單的 `desc` MUST 保持一致,否則 registry 顯示哪個 desc 不確定(本波 6 碼分屬不同選單、無 code 碰撞,前提成立)。menu-seed 變更時須守此不變式。
+> **cosmetic 觀察(非缺陷)**:toggle-auth 頁面按鈕的 caption 走頁面自身 i18n(`adminOrUserVisible`→「管理员和用户可见」),與本檔 §1.2 為 B_CODE3 指定的 registry `desc`「管理员或普通用户可见」用字略異;兩者皆指 B_CODE3、gating 走 **code** 不受影響。若日後要求字面一致,可對齊 seed desc 與頁面 i18n(留後續、非本波 gating 範圍)。
+
 ## 2. sys_menu seed(救活 toggle-auth;migration 022)
 
 | 欄 | `function`(父) | `function_toggle-auth`(子) |

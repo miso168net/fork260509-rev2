@@ -90,3 +90,6 @@ base-web/  (worktree, submodule)
 | constitution v1.3.0 amend(2 條) | 本波啟動前置(FINDING 1+2) | 已完成(7a3ebd1 / 27410bf),DESIGN §11.19/§11.20 提案 of record |
 | `buttons.rs` 來源遷移 | getUserInfo.buttons 由硬編 matrix → Casbin;7 單元測試隨之改寫/退場 | data-model 定義 Casbin seed 逐字重現 B_CODE 分布 = 回歸基線 |
 | table-header-operation 共用元件改動 | pilot gate 用戶頁「新增」鈕需動共用元件 | 用附加 prop + 安全預設 true(不變 role/menu 頁呼叫端);MODAL-WIRING v1.3.0 紀律已要求 |
+| **endpoint policy seed(FINDING A)** | tasks.md T002 + data-model §3 字面只列 button(10)/menu(6) policy,漏 3 個新 handler 的 `(R_SUPER,path,method)` endpoint policy;Super-only `enforce_mw` 逐 endpoint 比對,無此 3 列連 Super 也被擋 5003(contracts §1/§2 Super 路徑會全失敗) | migration 022 補 3 列(getAllButtons GET/getRoleButton GET/updateRoleButton POST),鏡像 021 endpoint policy seed;down by v1 IN 3 path。實作時補入、spec reviewer 確認 |
+| button policy 列數 9→10(FINDING M) | tasks.md T002 寫「button policy 9 列」,但 per-role grant 列舉(Super 6+Admin 3+User 1)實為 10 列 | 以 per-role 列舉 + contracts §3 getUserInfo baseline 為權威,seed 10 列;為 doc 計數筆誤、非設計變更 |
+| `aggregate_active_buttons` 共享 helper | T005 為 F1 驗證建 `active_button_code_set`(BTreeSet codes);T008 getAllButtons 需同源 {code,desc} 聚合 → 兩處走同一 `sys_menu::list_active_all` | T008 合併為單一 `aggregate_active_buttons(db)->Vec<ButtonItem>`、兩 caller 共用(消 dual-registry drift);F1 仍 facade-direct(不呼叫 getAllButtons handler)、US1 自足不依賴 US2 |
