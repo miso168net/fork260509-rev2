@@ -62,5 +62,5 @@
 - **token-vs-policy 繞過**:靜態 lint 不發請求 → 無 3333 遮蔽問題(R5)。
 
 ## 8. 矩陣 reconcile(R7、文件、實作不變)
-in-place 校正 `docs/INTEGRATION-DESIGN.md` 三處過時 wildcard → 「逐 endpoint、無 wildcard」:**L500**(§4.6.3 矩陣列)/ **L521**(§4.6.3 seed 寫法)/ **L749-752**(§6.3 body)。+ §11.21 amendment-of-record(blockquote)。menu-read 分歧(getMenuList/v2·getAllPages·getMenuTree:Super-only)以實作為準、文件對齊;Admin runtime grantable(modal)。**casbin seed 不變**(R_SUPER 本就 per-endpoint)。
+in-place 校正 `docs/INTEGRATION-DESIGN.md` 三處過時 wildcard → 「逐 endpoint、無 wildcard」:**L500**(§4.6.3 矩陣列)/ **L521**(§4.6.3 seed 寫法)/ **L749-752**(§6.3 body)。+ §11.22 amendment-of-record(blockquote;§11.21 已給 `d700434` MODAL-WIRING、endpoint reconcile 用次一序號 §11.22)。menu-read 分歧(getMenuList/v2·getAllPages·getMenuTree:Super-only)以實作為準、文件對齊;Admin runtime grantable(modal)。**casbin seed 不變**(R_SUPER 本就 per-endpoint)。
 </content>

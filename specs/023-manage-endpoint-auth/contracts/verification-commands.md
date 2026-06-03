@@ -57,6 +57,9 @@ curl -s :21081/systemManage/updateRoleEndpoints -H "Authorization: Bearer $ADMIN
 # (e) psql:casbin_rule 3 新治理端點列 + redis reload log
 docker compose -f docker-compose.yml -f docker-compose.dev.yml exec -T postgres psql -U soybean -d soybean_admin_rust -c "SELECT v0,v1,v2 FROM casbin_rule WHERE v1 IN ('/systemManage/getAllEndpoints','/systemManage/getRoleEndpoints','/systemManage/updateRoleEndpoints') ORDER BY v1;"
 docker compose -f docker-compose.yml -f docker-compose.dev.yml logs rust-api | grep -i "invalidate received\|policy reloaded" | tail -2
+# (f) 011 audit(FR-011 / SC-006「100% 記錄稽核」)—— 鏡像 021 C-V、補回 022 漏驗。前述 §3/§4 update 皆以 Super(operator_id=1)操作
+docker compose -f docker-compose.yml -f docker-compose.dev.yml exec -T postgres psql -U soybean -d soybean_admin_rust -c "SELECT operation, entity_table, operator_id, payload_before, payload_after FROM sys_operation_log WHERE entity_table='casbin_rule' AND operator_id=1 ORDER BY created_at DESC LIMIT 1;"
+# 期:operation='UPDATE'、operator_id=1(Super)、payload_before/after 含該角色 endpoint 集(前後差反映剛 grant/remove 的端點)
 ```
 
 ## 5. D1 coverage guard(build-time 靜態 lint、核心價值)
@@ -93,6 +96,7 @@ dcargo test -p server --test entity_access_lint   # 17(handler/auth/endpoint_aut
 - getAllEndpoints 28 字典序 + Super-only(Admin 5003/none 3333)✅
 - getRoleEndpoints 預載 + root 全通(Super 回 28)✅
 - updateRoleEndpoints HARD REPLACE 即時反映(grant/remove、無重啟)+ root-mode reject(編輯 Super 2222)+ 非法 endpoint 2222 + roleId number|string + Super-only + redis reload ✅
+- **011 audit:`sys_operation_log` 記 operator_id + payload_before/after(變更前後 endpoint 集)** ✅(鏡像 021、補 022 漏驗)
 - **D1 靜態 lint:每 enforce_mw route 有 seed + registry 一致;negative fixture 抓 drift** ✅
 - CDP:接口权限 modal 顯 registry + 編輯非-Super 角色 + root-mode disabled-for-Super ✅
 - migration 023 up→down→up 可逆(不踩既有矩陣)✅

@@ -497,7 +497,7 @@ router 設計**直接符合 §3 base-web 期望 API 全集**,不引入 alias / r
 
 | Role 常量 | 對應預設帳號(§11.1) | 範圍 |
 |---|---|---|
-| `R_SUPER` | `Super` | 全通(wildcard) |
+| `R_SUPER` | `Super` | 全通(逐 endpoint 列、無 wildcard;§11.22) |
 | `R_ADMIN` | `Admin` | 部分(逐個列) |
 | `R_USER_COMMON` | `User`(displayName `User01`) | 僅自身相關 |
 
@@ -510,17 +510,17 @@ router 設計**直接符合 §3 base-web 期望 API 全集**,不引入 alias / r
 | `GET /auth/getUserInfo` | enforce-only | enforce-only | enforce-only | token-only(§5.1) |
 | `GET /route/getUserRoutes` | enforce-only | enforce-only | enforce-only | token-only |
 | `GET /systemManage/getRoleList` | ✓ | ✓ | ✗ | admin 級 |
-| `GET /systemManage/getAllRoles` | ✓ | ✓ | ✓ | user/menu modal 共用,seed 用 `p, *, ..., GET` |
+| `GET /systemManage/getAllRoles` | ✓ | ✓ | ✓ | user/menu modal 共用;逐 role 列、無 `*` 主體(§11.22) |
 | `GET /systemManage/getUserList` | ✓ | ✓ | ✗ | admin 級 |
-| `GET /systemManage/getMenuList/v2` | ✓ | ✓ | ✗ | admin 級 |
-| `GET /systemManage/getAllPages` | ✓ | ✓ | ✗ | admin 級 |
-| `GET /systemManage/getMenuTree` | ✓ | ✓ | ✗ | role-menu modal 用 |
+| `GET /systemManage/getMenuList/v2` | ✓ | ✗ | ✗ | Super-only(019 as-built;§11.22 menu-read 拍板) |
+| `GET /systemManage/getAllPages` | ✓ | ✗ | ✗ | Super-only(019 as-built;§11.22) |
+| `GET /systemManage/getMenuTree` | ✓ | ✗ | ✗ | role-menu modal 用、Super-only(019 as-built;§11.22) |
 | `POST /systemManage/{add,update}User` | ✓ | ✗ | ✗ | 寫操作、only super |
 | `DELETE /systemManage/{delete,batchDelete}User` | ✓ | ✗ | ✗ | 寫操作、only super |
 
-- **seed 寫法**(§6.3):`R_SUPER` 用 wildcard `p, R_SUPER, *, *`;`R_ADMIN` / `R_USER_COMMON` 逐 endpoint 列;三 role 共通的 endpoint 用 `*` 主體(如 `getAllRoles`)
+- **seed 寫法**(§6.3):**三 role 皆逐 endpoint 列、無 wildcard、無 `*` 主體** —— `R_SUPER` 亦每 gated endpoint 一條 `p, R_SUPER, <path>, <method>`(非 `p, R_SUPER, *, *`),`getAllRoles` 等共通端點逐 role 列;matcher exact-equality(`enforce.rs:41`)`*` 列永不 match,016 as-built 以來 de-facto 逐條(§11.22)
 - **redis pub-sub 啟用**:v1 即啟,即使單 instance(§6.3「一致性優先、不靠環境分支」)
-- **驗收**:migration 完跑後 `SELECT COUNT(*) FROM casbin_rule WHERE v0 IN ('R_SUPER','R_ADMIN','R_USER_COMMON','*')` ≥ 上表「✓」總數;三帳號 login 後 `/auth/getUserInfo` 都能進
+- **驗收**:migration 完跑後 `SELECT COUNT(*) FROM casbin_rule WHERE v0 IN ('R_SUPER','R_ADMIN','R_USER_COMMON')` ≥ 上表「✓」總數;三帳號 login 後 `/auth/getUserInfo` 都能進
 
 #### §4.6.4 migration files 規劃(Phase 2 entity 清單 + timestamp 規則)
 
@@ -747,7 +747,7 @@ CREATE INDEX idx_sys_tokens_chain ON sys_tokens(rotation_chain);
 - **schema**:`casbin_rule` 表(sea-orm-adapter 預設)
 - **model**:RBAC with domain(若 future multi-tenant)or RBAC without domain(v1)
 - **policy seed**(migration):
-  - `p, R_SUPER, *, *`(super 全通)
+  - `p, R_SUPER, <每個 gated endpoint 一列>`(super 全通、**逐 endpoint、無 wildcard `*` 主體**;matcher exact-equality、016 as-built 以來逐條;§11.22)
   - `p, R_ADMIN, /systemManage/getRoleList, GET`(admin 部分權限,逐個列)
   - `p, R_USER_COMMON, /auth/getUserInfo, GET`(user 只有自身)
   - role 命名對齊 mock(`R_SUPER` / `R_ADMIN` / `R_USER_COMMON`)
@@ -1496,6 +1496,16 @@ rev2 spec-kit feature 工作流前置 brainstorm 文件存哪?
 > **改後影響**:023 新增 `endpoint-auth-modal.vue` + `role-operate-drawer.vue` 第 3 顆「接口权限」NButton + `page.manage.role.endpointAuth` i18n(zh-cn/en-us)。日後同維度權限 modal(若有)沿此授權。**軌道授權邊界擴展 = MINOR**(§V.3,非鐵紀律反轉、**非新軌道**〔§11.9「5 軌道/2★」計數不變、僅擴 MODAL-WIRING 既有 ★ 邊界〕),version 1.3.0 → 1.4.0。
 >
 > **觸發**:023 `/speckit-plan` Constitution Check(FINDING #2/#7)。
+
+### §11.22 doc-reconcile — 過時 R_SUPER wildcard 文字校正為逐 endpoint + menu-read 分歧拍板(2026-06-04,023)
+
+> **改哪節**:本檔 §4.6.3 —— (1) role 範圍列(「全通(wildcard)」)、(2) `getAllRoles` 备注(「seed 用 `p, *, ..., GET`」)、(3) seed 寫法(「`R_SUPER` 用 wildcard `p, R_SUPER, *, *`」+「`*` 主體」)、(4) 驗收 SQL(`v0 IN (...,'*')`),及 §6.3 body(「`p, R_SUPER, *, *`(super 全通)」)→ 皆改「逐 endpoint 列、無 wildcard、無 `*` 主體」。**另**:§4.6.3 menu-read 三列(getMenuList/v2·getAllPages·getMenuTree)R_ADMIN 欄 ✓ → ✗、對齊實作。
+>
+> **為何**:(a) wildcard `p, R_SUPER, *, *` 計畫從未實作 —— enforce matcher exact-equality(`enforce.rs:41`)`*` 列永不 match 具體請求;016 as-built(§10 Phase 4「manage list endpoints」)已 de-facto 逐條 seed,但 §4.6.3/§6.3 in-place 文字漏校正。023 EndpointAuth 使 R_SUPER endpoint 集成 runtime-editable(root-mode guard 拒編輯),literal wildcard 列在 per-endpoint modal 不可勾選 → 文字必須 reconcile 成單一真相。(b) menu-read 分歧(spec 唯一 intended 文件變更):matrix 標 Admin 可讀,實作(019 seed 3 行 R_SUPER;023 contracts §3a Admin getMenuTree→5003)為 Super-only → 以實作為單一真相(FR-007),Admin 可於執行期經接口权限 modal 獲授(runtime grantable、非預設硬塞)。
+>
+> **改後影響**:純文件校正、**casbin seed 不變**(R_SUPER/R_ADMIN/R_USER_COMMON 本就 per-endpoint 列;023 migration 只 seed 3 新治理端點);授權矩陣描述與實作 100% 一致(SC-005)。**非 constitution amendment**(無版本 bump —— §11.19/§11.20/§11.21 為 constitution 修訂,本條為 DESIGN 內部 reconcile-of-record)。
+>
+> **觸發**:023 spec FR-007 + research R7 + tasks T010(矩陣單一真相);於 /speckit-analyze remediation pass 一併套用(2026-06-04)。
 
 ---
 

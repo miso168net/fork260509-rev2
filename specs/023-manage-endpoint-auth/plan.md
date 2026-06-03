@@ -24,7 +24,7 @@
 
 **Performance Goals**: N/A(admin 低頻;getAllEndpoints 回 ~28-item const、零 DB)。
 
-**Constraints**: endpoint 以 `(path,method)` 為鍵(exact-equality matcher、`enforce.rs:41`);**root-mode** R_SUPER 不可編輯;既有 endpoint 矩陣**不變**(FR-010、唯一 intended 變更 = 選單讀端分歧文件對齊);ENDPOINT_REGISTRY const path 須與 main.rs route literal byte-identical(D1 強制)。
+**Constraints**: endpoint 以 `(path,method)` 為鍵(exact-equality matcher、`enforce.rs:41`);**root-mode** R_SUPER 不可編輯;既有 endpoint 矩陣**不變**(FR-010、唯一 intended 變更 = 選單讀端分歧文件對齊);ENDPOINT_REGISTRY const path 須與 main.rs route literal byte-identical(D1 強制)。**SC-002 跨實例一致**由 redis pub-sub watcher 機制重用(共用 021、`policy_watcher.rs`)+ reload log 佐證,**非另起 2-instance harness**;單實例下亦即時(publish→自身 subscribe→reload)。
 
 **Scale/Scope**: rust:+1 module(`auth/endpoint_auth.rs`)+ 3 handler + 1 migration(3 列)+ 1 D1 lint test;base-web:+1 modal + 抽屜按鈕 + 3 fetch fn + Endpoint type + i18n。
 
