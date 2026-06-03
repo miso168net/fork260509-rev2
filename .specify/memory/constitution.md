@@ -128,18 +128,18 @@
 
 ### III.2 ★ 需 constitution 顯式授權軌道(本檔已授權)
 
-#### MODAL-WIRING ★(§7.4)— **本檔授權**(v1.3.0 amend:加 button 可見性 gating)
+#### MODAL-WIRING ★(§7.4)— **本檔授權**(v1.3.0 amend:加 button 可見性 gating;v1.4.0 amend:加同模式新權限 modal+trigger)
 
-**邊界**:`base-web/src/views/manage/**` 內的(a)`// request` placeholder 一行 —— 含 `modules/*-operate-{modal,drawer}.vue`(create/update)**與** `index.vue` 的 delete/batchDelete handler(如 `handleDelete`/`handleBatchDelete`);**以及(b,v1.3.0 amend)**業務頁操作按鈕的 `hasAuth(<button_code>)` 可見性 gating —— 含 `index.vue` 操作鈕 `v-if` 與其共用元件 `src/components/advanced/table-header-operation.vue` 的附加顯隱 prop。
+**邊界**:`base-web/src/views/manage/**` 內的(a)`// request` placeholder 一行 —— 含 `modules/*-operate-{modal,drawer}.vue`(create/update)**與** `index.vue` 的 delete/batchDelete handler(如 `handleDelete`/`handleBatchDelete`);**以及(b,v1.3.0 amend)**業務頁操作按鈕的 `hasAuth(<button_code>)` 可見性 gating —— 含 `index.vue` 操作鈕 `v-if` 與其共用元件 `src/components/advanced/table-header-operation.vue` 的附加顯隱 prop;**以及(c,v1.4.0 amend)**於 `views/manage/role/modules/role-operate-drawer.vue` 的 `v-if="isEdit"` 授權編輯區,新增**同模式的角色權限 auth-modal 元件**(新 `*-auth-modal.vue` 鏡像既有 `menu-auth-modal`/`button-auth-modal`)+ 其觸發 NButton + 對應 `page.manage.role.*Auth` i18n key —— 嚴格限「角色 × 某權限維度」runtime 編輯介面(對齊 MenuAuthModal/ButtonAuthModal 範式)。
 
 **授權內容**:(a)把 `// request; console.log(...)` 改為 `await fetchCreateXxx(formData)`;(b)為操作按鈕加 `v-if="hasAuth('<code>')"` 或等效 prop,依使用者被授予 button code 顯隱。
 
 **紀律**:
-- **嚴格限「`// request` 接線 + 按鈕可見性 gating」兩用途**,絕不擴張到其他 inline 邏輯
+- **嚴格限「`// request` 接線 + 按鈕可見性 gating + 同模式新權限 modal+trigger」三用途**,絕不擴張到其他 inline 邏輯
 - 每改一處在 spec 內紀錄(file:line + 改動內容 + upstream 衝突風險評估)
 - 共用元件改動 MUST 用附加 prop + 安全預設(不變既有呼叫端行為)
-- 影響 §10 Phase 4 中所涉及 CRUD 功能(原 manage-crud-alignment 範圍 6-10 檔、每檔 1-3 行, 擴大至 CRUD 所需改動)+ 022 起 ButtonAuth 消費 feature
-- 理由見 DESIGN §11.19
+- 影響 §10 Phase 4 中所涉及 CRUD 功能(原 manage-crud-alignment 範圍 6-10 檔、每檔 1-3 行, 擴大至 CRUD 所需改動)+ 022 起 ButtonAuth 消費 feature + 023 起 EndpointAuth(新權限 modal)
+- 理由見 DESIGN §11.19 / §11.21(v1.4.0)
 
 #### BASE-WEB-BUILD-CONFIG ★(§7.3)— **本檔授權**
 
@@ -196,4 +196,4 @@ DESIGN 仍為「核心事實」(設計研究歷史 + 拍板理由 + 詳細軌道
 
 ---
 
-**Version**: 1.3.0 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-06-03
+**Version**: 1.4.0 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-06-04
