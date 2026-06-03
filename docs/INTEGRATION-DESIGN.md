@@ -1459,6 +1459,26 @@ rev2 spec-kit feature 工作流前置 brainstorm 文件存哪?
 >
 > **觸發**:021 `/speckit-analyze` 跨檔 consistency(C1)+ workflow 查證(`envelope.rs` 矩陣 + MOCK-AUDIT §4.11 出處 + 對抗驗證 claim 不被 refute)。
 
+### §11.19 v1.3.0 amend — MODAL-WIRING ★ 邊界擴展加 button 可見性 gating(2026-06-03,022)
+
+> **改哪節**:constitution §III.2 MODAL-WIRING ★ 區塊「邊界 / 授權內容 / 紀律」—— 在原「`// request` placeholder 接線」外,**加(b)業務頁操作按鈕的 `hasAuth(<button_code>)` 可見性 gating**(`views/manage/**/index.vue` 操作鈕 `v-if` + 共用元件 `table-header-operation.vue` 附加顯隱 prop)。
+>
+> **為何**:ButtonAuth(022)本質是「按鈕權限要有消費者」—— grounding workflow 對抗驗證確認 base-web 業務頁(manage/user·role·menu)現況**完全不 gate 按鈕**(唯一消費者是 demo toggle-auth)。022 K2 親決 pilot = 用戶管理頁端到端生效,必須在業務頁加 `hasAuth` gating;此屬 base-web inline 改動,原 MODAL-WIRING 只授權 `// request` placeholder、不涵蓋 → plan Constitution Check §IV.2/IV.7 抓到。**擴展既有 view-inline ★ 軌道(非新增軌道)**涵蓋此用途、§11.9「5 軌道/2★」計數不變。
+>
+> **改後影響**:022 pilot 得在 `manage/user/index.vue` + `table-header-operation.vue` 加按鈕 gating(每處 spec 紀錄 file:line + upstream 風險);共用元件用附加 prop + 安全預設不變既有呼叫端。軌道授權邊界擴展 = **MINOR**(§V.3),version 1.2.3 → 1.3.0。
+>
+> **觸發**:022 `/speckit-plan` Constitution Check(FINDING 1)。
+
+### §11.20 v1.3.0 amend — §I.2 demo-menu 處理開 toggle-auth 例外(2026-06-03,022)
+
+> **改哪節**:constitution §I.2「含義」demo-menu bullet 加 sub-bullet 例外 + §II §11.5 摘要列加註 —— `function` / `function_toggle-auth` demo 選單由 022 提升為**真實 Casbin-enforced 選單**(seed 入 sys_menu + menu policy),其餘 demo menu 仍守「pageExcludePatterns 隱藏」原則。
+>
+> **為何**:022 K3/K4 親決保留 B_CODE1/2/3 並**救活 toggle-auth demo**(CDP 實測現況不可達 = not-found,因不在 sys_menu/Casbin)。§I.2 原則是 demo menu → 隱藏、不進 enforce;救活 toggle-auth 與此相反 → plan Constitution Check §IV.3/§IV.6(§11.5)抓到。**開窄例外**:僅 toggle-auth(+父 function)一個 demo 群提升為真實選單,作為 button 權限端到端 demo 載體(B_CODE1/2/3 三角色各見對應鈕),不動其餘 demo。此提升其實**更貼 §I.2 核心「menu Casbin enforce」**,僅例外其「demo 改用隱藏」子句。
+>
+> **改後影響**:022 migration seed 加 function / function_toggle-auth 入 sys_menu + 三角色 menu policy → **getUserRoutes 逐字基線 re-base**(含該 demo 選單,022 spec FR-010 已記為唯一 intended 回歸例外);per-role home 與既有業務選單可見性不受影響。原則例外 = **MINOR**(§V.3,非鐵紀律反轉),version 1.2.3 → 1.3.0。
+>
+> **觸發**:022 `/speckit-plan` Constitution Check(FINDING 2)。
+
 ---
 
 ## §12 文件交叉引用

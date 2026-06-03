@@ -27,6 +27,7 @@
 **含義**:
 - 業務 menu 走 `/route/getUserRoutes` → 後端 Casbin enforce 過濾 → 前端顯示
 - demo menu(`document` / `exception` / `multi-menu` / `iframe` 等 8 個 customRoutes)不在 Casbin enforce 範圍 → 由 BASE-WEB-BUILD-CONFIG ★ 軌道用 `pageExcludePatterns` 隱藏
+  - **例外(v1.3.0 amend,022)**:`function` / `function_toggle-auth` demo 選單由 022 ButtonAuth 提升為**真實 Casbin-enforced 選單**(seed 入 sys_menu + menu policy),作為「角色×按鈕權限」端到端 demo 載體;其餘 demo menu 仍守隱藏原則。此例外使導覽逐字基線重訂(含該 demo 選單)。理由+影響見 DESIGN §11.20。
 - constantRoutes(login / 404 / 403)前端寫死、與 menu 無關 → 不動
 
 **核心 feature**:Phase 3 的認證登入(enforce 起手)+ 動態選單路由守衛(menu Casbin enforce 過濾)+ Casbin policy 失效通知(redis pub-sub);各 feature 排程與 rev2 編號見 [DESIGN §10 Phase 3](../../docs/INTEGRATION-DESIGN.md)。
@@ -99,7 +100,7 @@
 | §11.2 | alova 7 endpoint | (a) 全實作 + 個別 disabled / stub flag |
 | §11.3 ★ | modal CRUD 衝突 | (B) 升 L4 改 modal placeholder(MODAL-WIRING 啟用) |
 | §11.4 | apifoxToken 移除 | (c) rust-api 忽略 unknown header(base-web 不動) |
-| §11.5 ★ | alova menu 處理 | (b'-narrow) `pageExcludePatterns` 隱藏 demo(BASE-WEB-BUILD-CONFIG 啟用) |
+| §11.5 ★ | alova menu 處理 | (b'-narrow) `pageExcludePatterns` 隱藏 demo;**v1.3.0 amend**:`function_toggle-auth` 例外提升為真實選單(§I.2 / DESIGN §11.20) |
 | §11.6 | sub-crate | axum-casbin 重寫;sea-orm-adapter / xdb 拷貝 |
 | §11.7 | auth route mode | (b) dynamic(後端控 menu) |
 | §11.8 | obs stack | (a) 漸進 — Phase 5 obs-min / Phase 6 obs-full |
@@ -127,16 +128,18 @@
 
 ### III.2 ★ 需 constitution 顯式授權軌道(本檔已授權)
 
-#### MODAL-WIRING ★(§7.4)— **本檔授權**
+#### MODAL-WIRING ★(§7.4)— **本檔授權**(v1.3.0 amend:加 button 可見性 gating)
 
-**邊界**:`base-web/src/views/manage/**` 內的 `// request` placeholder 一行 —— 含 `modules/*-operate-{modal,drawer}.vue`(create/update)**與** `index.vue` 的 delete/batchDelete handler(如 `handleDelete`/`handleBatchDelete`)。
+**邊界**:`base-web/src/views/manage/**` 內的(a)`// request` placeholder 一行 —— 含 `modules/*-operate-{modal,drawer}.vue`(create/update)**與** `index.vue` 的 delete/batchDelete handler(如 `handleDelete`/`handleBatchDelete`);**以及(b,v1.3.0 amend)**業務頁操作按鈕的 `hasAuth(<button_code>)` 可見性 gating —— 含 `index.vue` 操作鈕 `v-if` 與其共用元件 `src/components/advanced/table-header-operation.vue` 的附加顯隱 prop。
 
-**授權內容**:把 `// request; console.log(...)` 改為 `await fetchCreateXxx(formData)`。
+**授權內容**:(a)把 `// request; console.log(...)` 改為 `await fetchCreateXxx(formData)`;(b)為操作按鈕加 `v-if="hasAuth('<code>')"` 或等效 prop,依使用者被授予 button code 顯隱。
 
 **紀律**:
-- **嚴格限「只動 `// request` placeholder 處」**,絕不擴張到其他 inline
+- **嚴格限「`// request` 接線 + 按鈕可見性 gating」兩用途**,絕不擴張到其他 inline 邏輯
 - 每改一處在 spec 內紀錄(file:line + 改動內容 + upstream 衝突風險評估)
-- 影響 §10 Phase 4 中所涉及 CRUD 功能(原 manage-crud-alignment 範圍 6-10 檔、每檔 1-3 行, 擴大至 CRUD 所需改動)
+- 共用元件改動 MUST 用附加 prop + 安全預設(不變既有呼叫端行為)
+- 影響 §10 Phase 4 中所涉及 CRUD 功能(原 manage-crud-alignment 範圍 6-10 檔、每檔 1-3 行, 擴大至 CRUD 所需改動)+ 022 起 ButtonAuth 消費 feature
+- 理由見 DESIGN §11.19
 
 #### BASE-WEB-BUILD-CONFIG ★(§7.3)— **本檔授權**
 
@@ -193,4 +196,4 @@ DESIGN 仍為「核心事實」(設計研究歷史 + 拍板理由 + 詳細軌道
 
 ---
 
-**Version**: 1.2.3 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-06-03
+**Version**: 1.3.0 | **Ratified**: 2026-05-28 | **Last Amended**: 2026-06-03
