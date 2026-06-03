@@ -1487,6 +1487,16 @@ rev2 spec-kit feature 工作流前置 brainstorm 文件存哪?
 >
 > **觸發**:022 `/speckit-plan` Constitution Check(FINDING 2)。
 
+### §11.21 v1.4.0 amend — MODAL-WIRING ★ 邊界 +同模式新權限 modal+trigger(2026-06-04,023)
+
+> **改哪節**:constitution §III.2 MODAL-WIRING ★ 邊界加 **(c)** 子句 —— 允許於 `views/manage/role/modules/role-operate-drawer.vue` 的 `v-if="isEdit"` 授權編輯區,新增**同模式的角色權限 auth-modal 元件**(新 `*-auth-modal.vue` 鏡像既有 `menu-auth-modal`/`button-auth-modal`)+ 其觸發 NButton + `page.manage.role.*Auth` i18n key;紀律「兩用途」→「三用途」。
+>
+> **為何**:023 EndpointAuth 的「接口权限」編輯介面**無既有 placeholder**(021 menu / 022 button 是接 base-web 既有的 menu-auth-modal/button-auth-modal stub;endpoint〔API path×method〕權限 base-web 無對應 UI)。新增 modal 元件 + drawer trigger NButton **literally 既非 (a)「`// request` 接線」、亦非 (b)「hasAuth gating」** → plan Constitution Check §IV.2/§IV.7 抓到(FINDING)。**開窄例外**:僅允許「角色 × 某權限維度」的 runtime 編輯介面、嚴格對齊既有 MenuAuthModal/ButtonAuthModal 範式(NTree + 3 fetch fn + `watch(visible)`),不擴張到任意新 UI。
+>
+> **改後影響**:023 新增 `endpoint-auth-modal.vue` + `role-operate-drawer.vue` 第 3 顆「接口权限」NButton + `page.manage.role.endpointAuth` i18n(zh-cn/en-us)。日後同維度權限 modal(若有)沿此授權。**軌道授權邊界擴展 = MINOR**(§V.3,非鐵紀律反轉、**非新軌道**〔§11.9「5 軌道/2★」計數不變、僅擴 MODAL-WIRING 既有 ★ 邊界〕),version 1.3.0 → 1.4.0。
+>
+> **觸發**:023 `/speckit-plan` Constitution Check(FINDING #2/#7)。
+
 ---
 
 ## §12 文件交叉引用
