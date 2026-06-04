@@ -70,7 +70,7 @@
 ### 2.16 feature 013-auth-login-enforce follow-up
 
 - [ ] **token 簽發 DRY**(final review nit #2):`login` 與 `refresh_token` 各自 inline 簽 access+refresh(兩處重複),可抽 `issue_tokens(state,user_id,roles)->LoginToken` helper。非正確性風險(divergence 會被 US1/US3 acceptance 立即抓),最小機制階段 inline 反而清楚 access/refresh secret·TTL 配對 → defer,待第 4 條簽發路徑出現再抽。
-- [ ] **`sys_user` facade `audit_json()` 未含 `nick_name`**(final review minor):013 加了 nick_name 欄但 soft-delete audit snapshot 未納入(顯示名、非敏感、現無害)。**carrier 更正(2026-06-04)**:soft-delete rollout 已隨 009/018/019 完成、無「6-entity rollout」feature 可掛 → 此 ~1 行補欄改隨**任何動到 `sys_user` 的寫端 / Phase 3 #5 auth cleanup** 順手清(把 `nick_name` 加進 `audit_json()`)。
+- [x] **`sys_user` facade `audit_json()` 未含 `nick_name`** ✅ **早已解(2026-06-04 落地確認)**:`audit_json()`(facade `sys_user.rs:24-39`)**已含 `nick_name`**(@28)+ 全業務欄 + §I.6 審計欄 —— 應是 017 §I.6 retrofit 時 audit_json 重寫一併補,backlog 漏勾。此項 stale、無殘留(連同「6-entity rollout」幻影一併校正)。
 - [ ] **user-enumeration timing side-channel**(Deviation D-003):login 的 user-not-found 路徑跳過 argon2 verify(快)、wrong-password 走 argon2(慢)= username 列舉 timing oracle。此威脅模型(admin panel、固定 3 帳號 seed、無公開註冊)下 note-and-defer;未來真用戶註冊流程落地時,標準緩解 = not-found 路徑對固定 dummy hash 做一次 argon2 verify 等化時序。
 - [x] **prod `/api` wire ✅ (2026-06-02 prod-stack CDP)**:prod CDP via :443 攔截 17 API request 全走 `/api`(0 vite proxy)→ §11.11 prod 主流 front-nginx `/api/*` reverse proxy 端到端證實(login/getUserInfo/getUserRoutes/list/menu);Super dynamic-mode 側欄完整。見 [§2.8](#28-feature-004-compose-port-orchestration-follow-up)
 - [x] **`bearer_token` 重複**(final review nit #1)✅ (2026-05-30):已抽到 `server/src/auth/bearer.rs` 共用(handler/auth.rs + enforce.rs 共用、4 單測移轉),消除 auth 解析碼 drift 風險。
