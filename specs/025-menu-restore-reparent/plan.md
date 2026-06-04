@@ -84,3 +84,10 @@ tests/025-menu-restore-reparent/    # 外層:CDP isolated-context harness
 | **孤兒 casbin 列已知債** | 軟刪選單留 `[role,route_name,'menu']` 孤兒列;新建同 route_name 選單繼承舊可見性 grant | R6 文件記錄;restore/create 唯一性 guard 只擋 active 撞(§2.24 同類);不解、follow-up |
 | **restore route_name TOCTOU** | handler pre-check active 唯一性 + DB partial-unique 最終防線;race 撞→DbErr→5000 | R4 ② handler guard;同 create_menu(§2.24);可接受 |
 | **無單元測試(cycle/immutability 外)** | restore/re-parent guards = handler wiring + DB | C-V(curl/psql/CDP/migration 可逆)覆蓋;tasks/plan 明示(同 020) |
+
+### As-built 偏離(executing 階段發現,2026-06-04)
+
+- **`would_create_cycle` 須 `pub`**:data-model §1 列為私有 `fn`,但 §2 guard (b) 由 handler 呼叫 `sys_menu::would_create_cycle` → T006 將其改 `pub fn`(1 字、唯一 facade 改動,handler 不可 inline 複製已測邏輯)。
+- **T002 handler `parent_id` 過渡 stub**:`UpdateMenuData` 加 `parent_id` 使 handler struct-literal「missing field」→ T002 為保 build 綠在 `update_menu` 建構處加 `parent_id: current_parent_id`(**保留現列 parent_id**,非 `None`,避免 T002→T006 間 live updateMenu 把編輯選單壓平頂層的暫時性 regression);T006 再換成 guarded `req.parent_id`。
+- **re-parent 跨頂層邊界 component 修正**(T007 code review):`menu-operate-modal.vue` `getSubmitParams` 加 `effectiveLayout = parentId===0 || menuType==='1' ? layout : ''`,修「頂層葉搬 nested 殘留 `layout.X$` 汙染 component」;殘留 nested-directory / nested→頂層 邊際見 DESIGN §10 Phase 4 已知債 (3)。
+- **CDP 可用**:dev Edge `:9229` 在場,§8 CDP ①②③④ 實機 isolated-context 全 VERIFIED(非 curl/typecheck fallback)。
