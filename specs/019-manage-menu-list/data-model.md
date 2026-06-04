@@ -57,6 +57,7 @@ migration 018 seed 6 筆(raw SQL,parent_id 自我參照);**欄值逐字對齊 re
 - `menu_type`:`home` 是葉(實質 menu)→ 2;`manage` 是父(目錄)→ 1;manage 子皆葉 → 2。(對齊 base-web MenuType 1=dir/2=menu;`home` 在 014 是葉 route 故 2。)
 - **`props`**:014 MenuRoute 有 `props:Option<bool>`(manage_user-detail=true)。sys_menu 無 `props` 欄(base-web Menu typing 無 props 欄、props 屬 route-level)。getUserRoutes 樹組裝時:**`props` 由 component/route 規則衍生**(有路徑參數 `:id` → props=true),或 sys_menu 加一 `props` bool 欄。**已釘(tasks T006):樹組裝時 `props = route_path.contains(':')` 衍生**(免加欄;對當前 seed 樹正確 —— 僅 `manage_user-detail`〔`/manage/user-detail/:id`〕→ props=true,餘 home/manage/manage_user/role/menu 無 `:` → props 省略,逐字對齊 014)。**★ 020 follow-up(analyze U1)**:寫端若出現「有 `:` 路徑但非 props」或「props=true 但路徑無 `:`」之 menu,heuristic 會破 → 020 評估 sys_menu 加顯式 `props` bool 欄。
 - seed parent_id:先 INSERT `home`/`manage`(parent_id null)→ 子 INSERT 用 `parent_id=(SELECT id FROM sys_menu WHERE route_name='manage' AND deleted_at IS NULL)`(subquery)。created_by=null(system seed)。
+- **`icon_type`(as-built 回填,§2.23)**:上方 §2 seed 表未列 `icon_type` 欄(§1 欄定義有)。實際 migration 018 對 5 個有 iconify icon 的列 seed `icon_type=1`(home/manage/manage_user/manage_role/manage_menu)、`manage_user-detail`(無 icon)→ `icon_type=NULL`。getUserRoutes(MenuRoute 無 `iconType`)不受影響;getMenuList wire `iconType="1"` 正確。
 
 ## 3. 樹組裝(純函式 seam,getUserRoutes + getMenuTree 共用基礎)
 

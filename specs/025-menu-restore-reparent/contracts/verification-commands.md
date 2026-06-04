@@ -18,8 +18,8 @@ addmenu(){ curl -s $H/systemManage/addMenu -H "Authorization: Bearer $SUPER" -H 
 # 建一筆自訂葉選單 cdp_restore(menu_type=2、parent 頂層),取 id
 addmenu '{"menuName":"复原测试","routeName":"cdp_restore","menuType":"2","routePath":"/cdp-restore","component":"view.cdp-restore","parentId":0,"status":"1","order":99}'
 RID=$($PSQL -c "SELECT id FROM sys_menu WHERE route_name='cdp_restore' AND deleted_at IS NULL;")
-# 軟刪
-curl -s $H/systemManage/deleteMenu -H "Authorization: Bearer $SUPER" -H "$J" -d "{\"id\":\"$RID\"}" | python3 -c "import sys,json;print('delete:',json.load(sys.stdin)['code'])"  # 0000
+# 軟刪（as-built 回填 §2.29：deleteMenu 是 DELETE method → 須 `-X DELETE`；原文用 `-d` 為 curl 預設 POST、不會觸發 delete／回空，T009 acceptance 實際已用正確 `-X DELETE`。restoreMenu 為 POST、`-d` 正確不變）
+curl -s -X DELETE $H/systemManage/deleteMenu -H "Authorization: Bearer $SUPER" -H "$J" -d "{\"id\":\"$RID\"}" | python3 -c "import sys,json;print('delete:',json.load(sys.stdin)['code'])"  # 0000
 # getDeletedMenus 應含 cdp_restore
 curl -s "$H/systemManage/getDeletedMenus?current=1&size=50" -H "Authorization: Bearer $SUPER" | python3 -c "import sys,json;r=json.load(sys.stdin)['data']['records'];print('已刪含 cdp_restore=', any(m['routeName']=='cdp_restore' for m in r))"  # True
 # getMenuList(active)不含
@@ -39,8 +39,8 @@ addmenu '{"menuName":"目录","routeName":"cdp_dir","menuType":"1","routePath":"
 PID=$($PSQL -c "SELECT id FROM sys_menu WHERE route_name='cdp_dir' AND deleted_at IS NULL;")
 addmenu "{\"menuName\":\"子\",\"routeName\":\"cdp_child\",\"menuType\":\"2\",\"routePath\":\"/cdp-dir/child\",\"component\":\"view.cdp-child\",\"parentId\":$PID,\"status\":\"1\",\"order\":1}"
 CID=$($PSQL -c "SELECT id FROM sys_menu WHERE route_name='cdp_child' AND deleted_at IS NULL;")
-curl -s $H/systemManage/deleteMenu -H "Authorization: Bearer $SUPER" -H "$J" -d "{\"id\":\"$CID\"}" >/dev/null   # 刪子
-curl -s $H/systemManage/deleteMenu -H "Authorization: Bearer $SUPER" -H "$J" -d "{\"id\":\"$PID\"}" >/dev/null   # 刪父(此時無 active 子、可刪)
+curl -s -X DELETE $H/systemManage/deleteMenu -H "Authorization: Bearer $SUPER" -H "$J" -d "{\"id\":\"$CID\"}" >/dev/null   # 刪子
+curl -s -X DELETE $H/systemManage/deleteMenu -H "Authorization: Bearer $SUPER" -H "$J" -d "{\"id\":\"$PID\"}" >/dev/null   # 刪父(此時無 active 子、可刪)
 curl -s $H/systemManage/restoreMenu -H "Authorization: Bearer $SUPER" -H "$J" -d "{\"id\":\"$CID\"}" | python3 -c "import sys,json;d=json.load(sys.stdin);print('孤兒 restore code=',d['code'],'msg=',d['msg'])"  # 2222 上层菜单已删除
 # 先復原父,再復原子 → 兩者皆 0000
 curl -s $H/systemManage/restoreMenu -H "Authorization: Bearer $SUPER" -H "$J" -d "{\"id\":\"$PID\"}" | python3 -c "import sys,json;print('restore 父:',json.load(sys.stdin)['code'])"  # 0000

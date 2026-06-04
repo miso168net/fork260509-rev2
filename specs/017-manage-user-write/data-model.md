@@ -44,6 +44,7 @@
   ```
 - **raw `execute_unprepared`(seed 回填,D6)**:`UPDATE sys_user SET status = 1 WHERE id IN (1,2,3);`(created_at 由 column default 自動填;created_by/updated_*/deleted_by 對 seed 維持 NULL)
 - **raw `execute_unprepared`(C2:user_name 唯一性 DB 兜底)**:**先 `\d sys_user` 確認無既有 user_name unique index**,若無則 `CREATE UNIQUE INDEX IF NOT EXISTS uq_sys_user_user_name_active ON sys_user (user_name) WHERE deleted_at IS NULL;`(沿 009 `sys_role.code` partial unique 先例;FR-006 並發 race 兜底,app 層 `find_active_by_name` 仍給友善 2222)
+  - **as-built(回填,§2.21)**:`\d sys_user` 確認 migration 003 已建**同義** partial unique `sys_user_user_name_active_uniq`(`user_name WHERE deleted_at IS NULL`)→ 本條件式『若無則建』條件為假 → `uq_sys_user_user_name_active` **實際未建**(避重複索引);FR-006 DB race 兜底由 003 既有索引提供、語意等價,`down()` 的 `DROP INDEX ... uq_...`(「若本 migration 建」)亦無對象。
 
 **down()**(對稱、可逆):`DROP INDEX IF EXISTS uq_sys_user_user_name_active;`(若本 migration 建)+ `ALTER TABLE sys_user ALTER COLUMN id DROP DEFAULT; DROP SEQUENCE IF EXISTS sys_user_id_seq;` + drop_column ×9。
 
