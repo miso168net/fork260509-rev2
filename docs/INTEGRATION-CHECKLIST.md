@@ -206,15 +206,15 @@
 
 ### Phase 2 — 後端基礎設施 ✅ 全完成+已歸檔 (2026-05-29)
 
-### Phase 3 — 認證 + 動態選單(進行中)
+### Phase 3 — 認證 + 動態選單(✅ 核心完成 2026-06-05;#5 metrics 尾巴 → Phase 6、#6 治理 = 獨立 deferred 軌道)
 
 - [x] **登入 + getUserInfo feature(013)** ✅ merge `ade723d`(pin `bbabdbc`)— login/getUserInfo/refresh + JWT(HS256)+ 首個 Casbin enforce 點 + sys_role/sys_user_role/nick_name;詳見 DESIGN §10 Phase 3;follow-up §2.16
 - [x] **dynamic mode 路由 feature(014)** ✅ merge `9d06347`(pin `8965c8a`)— 3 route endpoint(constant 公開 / getUserRoutes·isRouteExist JWT)+ base-web 翻 dynamic + menu 可見性走 Casbin enforce 過濾;詳見 DESIGN §10 Phase 3;follow-up §2.17
 - [x] **audit-middleware feature(015)** ✅ merge `589a553`(pin `cff9785`)— request-context middleware + 2 append-only 審計表 + 首個 xdb 消費者 + 真值 INET client_ip;詳見 DESIGN §10 Phase 3;follow-up §2.19
 - [x] **Casbin redis pub-sub 啟用(021 落地)** ✅ merge `827d1e9`(已推)— `casbin:policy:invalidate`:set_role_*(021/022)變更後 PUBLISH + boot `spawn_policy_watcher` reload(+1 dep tokio-stream);單 instance 自收冪等、多 instance 未驗(follow-up §2.25/§2.26);實現 DESIGN §10 Phase 3 #3
 - [x] **policy seed / 全路由 rollout + 矩陣治理 feature(#4)** ✅ merge `ef5ebe0`(023 收口)— grounding 證全路由 enforce 早完成(25/25 零破口)→ 交付 runtime 可編輯 endpoint policy + D1 build-time 三方守衛 + 矩陣 reconcile;詳見 DESIGN §10 Phase 3 #4;follow-up §2.27
-- [ ] **axum-casbin 重寫 feature**(2026-05-29 從 Phase 2 §11.6 重定位:Casbin Axum enforce 中介層 + rev2 自家 metrics/error/observability;需真實受保護路由才驗得了)(**013 已做第一刀**:`auth/enforce.rs` 最小機制 middleware + 單示範路由;**018 再演進**:enforce_mw 取角色源由 token `claims.roles` 改 `roles_for_user` DB-fresh〔B 決策、棄 013 D4 stateless-enforce、角色停用即時生效;[DESIGN §11.17](INTEGRATION-DESIGN.md)〕;**026 又演進**:auth 層 DRY refactor〔`verify_bearer` 收 5 處 verify 前導 + `issue_tokens` 收 2 處簽發 + fail-closed/advisory/best-effort 三策略文件化,純 refactor 行為零變、已 merge `4553892`〕;本 feature 餘 = 全路由 rollout + metrics/observability,defer Phase 6)
-- [ ] **受管 RBAC policy 層 feature**(012 brainstorm 衍生:casbin policy 加 (a) soft-delete 可復原 (b) 不可刪 protected policy (c) policy 變更走 011 audit 記 operator (d) 統一 CRUD facade。需 fork sea-orm-adapter 的 load/remove → 動 §11.6「adapter=拷貝」前提、specced 時評估 Amendment;與 axum-casbin 重寫同期、因皆需 enforce/operator)
+- [x] **axum-casbin 重寫 feature ✅ 核心已被 013-026 增量吸收(2026-06-05 行政收口)** — rev2 自家 enforce middleware〔013 第一刀〕+ 全路由 rollout〔023 證 25/25 零破口〕+ DB-fresh 角色〔018〕+ error 標準化〔5003/3333〕+ auth DRY refactor〔026〕**皆已落地**;**唯一未做 = enforce 的 metrics/observability 埋點 → 併入 Phase 6 obs stack 一起做**(無 prometheus/grafana 消費者前做 = 重工)。故不再當獨立 feature、視核心完成,metrics 尾巴歸 Phase 6。詳見 [DESIGN §10 Phase 3 #5](INTEGRATION-DESIGN.md)(含 §11.17 DB-fresh 演進)
+- [ ] **受管 RBAC policy 層 feature(獨立 deferred 軌道、非 Phase 3 核心完成度 gate)** — casbin policy 治理:(a) soft-delete 可復原 (b) protected 不可刪 (c) 變更走 011 audit 記 operator (d) 統一 CRUD facade。**前置已備**(enforce/operator/policy 入口由 013/021/022/023 提供)→ 隨時可做、無技術 blocker;唯成本門檻 = fork sea-orm-adapter(改 load/remove)→ §11.6「adapter=拷貝」**constitution amendment** + 長期維護 fork。單-instance 下其解的 casbin 非原子/多-instance 債 benign → **刻意 defer 為未來治理選項**。詳見 [DESIGN §10 Phase 3 #6](INTEGRATION-DESIGN.md)
 
 ### Phase 4 — 主流業務(進行中)
 
