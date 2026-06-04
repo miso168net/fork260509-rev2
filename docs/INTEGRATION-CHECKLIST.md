@@ -29,22 +29,7 @@
 
 完整 12 拍板項與軌道授權細節見 [DESIGN §11](INTEGRATION-DESIGN.md);spec-kit `/speckit-plan` 將自動對照 constitution 跑 Compliance Check。
 
-> ### 2.2 ~ 2.7 全完成+已歸檔 (手動搬至 INTEGRATION-MILESTONES.md)
-> ### 2.9 全完成+已歸檔
-> ### 2.11 ~ 2.12 全完成+已歸檔 (手動搬至 INTEGRATION-MILESTONES.md)
-
-### 2.8 feature 004-compose-port-orchestration follow-up
-
-- [ ] `redis/redis-stack-server:latest` 未 pin tag(spec FR-012 明訂 latest;reproducibility 風險,日後可 pin 具體 semver)
-- [x] **base-web SPA 經 front-nginx 端到端 CDP ✅ (2026-06-02 prod-stack CDP campaign)** — dev:read-list ✅ 016 / 寫端 modal-wiring ✅ 017 / **020 menu 全 CRUD CDP**(新增/編輯〔menuType radio disabled=D2〕/刪自訂/種子刪 2222/純父刪 guard「请先删除子菜单」);**prod base-web build(`VITE_SERVICE_BASE_URL=/api`)+ front-nginx `/api` strip 端到端 ✅**:prod CDP via :443 攔截 **17 API request 全走 `https://localhost/api/...`、0 走 vite proxy-default**(login/getUserInfo/getUserRoutes/getConstantRoutes + getMenuList/getAllPages + getUserList/getRoleList + DELETE /api/systemManage/deleteMenu)→ 證 prod SPA→front-nginx `/api` strip→rust-api 全鏈;strip 路徑無關 → user/role/menu 寫端同走此 strip
-- [x] **prod base-web 已重 build ✅ (2026-06-02)**:`docker compose -f docker-compose.yml -f docker-compose.prod.yml build base-web`(`VITE_SERVICE_BASE_URL=/api`)→ `rev2-admin-base-web:latest` 取代 002 ApiFox build;dev cert seed 進 named volume `rev2-admin_front_nginx_certs`
-
-### 2.10 feature 007-db-redis-connection follow-up
-
-- [x] **`sys_user.id` 無 auto_increment** ✅ (2026-06-02,017 補完):007 proof migration 用顯式 seed id 1/2/3、無 sequence;017 migration 014 補 `BIGSERIAL`(raw SQL `CREATE SEQUENCE`+`SET DEFAULT`+`setval` 對齊 seed→next=4)、entity `auto_increment=true` 成對,addUser 動態建列可用(R2、見 [§2.20](#220-feature-016-manage-role-user-list-follow-up))
-- [x] **CLAUDE.md §8.1 帳號名 stale** ✅ (2026-05-29):§8.1 已改為 rev2 權威 `Super/Admin/User`(id 1/2/3、runtime argon2id of `123456`)+ 修正 stale `m20241024_*` 路徑 → 真實 `m20260529_*` seed 檔 + 標明 role 為 Phase 3、sys_user 現僅 id/user_name/password
-- [x] **migration invocation prod path** ✅ (2026-05-29,010 補掉):dev migrate override `cargo run --bin migration up`、prod migrate override `command [migration,up]` 經 entrypoint dispatcher,兩路徑皆於 010 stack up 時自動套用、prod acceptance 親驗(Phase 5 cleanup-job / CI migration step 沿用 prod path)
-- [ ] **URL secret 驗證邊界**(`validate_secret` 為 opaque token 設計、套用到連線 URL 的已知 gap;research R4 知情、決定不另造 URL validator):(a) `.example` 的 `CHANGE_ME` 內嵌於 URL,而 `validate_secret` 是 case-insensitive **全等**比對(非 substring)+ URL >32 → 誤用 `.example` 會過 boot、拖到 connect 才以隱晦 auth error 失敗(⚠️ Unit 1 review「加 `CHANGE_ME` 進 `PLACEHOLDER_SECRETS`」**無效**,全等語意擋不住內嵌 substring);(b) 未來若用無密碼 redis(短 URL <32)會以 `length<32` 失敗、訊息與 URL 無關;(c) migration `main.rs` 讀 URL 為 raw(不過 validate),與 server `load_secret` 有意分流。日後若要強化:URL 專屬 validator 或 substring placeholder 偵測
+> ### 2.2 ~ 2.12 全完成+已歸檔 (手動搬至 INTEGRATION-MILESTONES.md)
 
 ### 2.13 feature 010-migration-auto-apply follow-up
 
