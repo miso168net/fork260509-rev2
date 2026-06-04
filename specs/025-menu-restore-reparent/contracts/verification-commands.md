@@ -54,7 +54,7 @@ curl -s $H/systemManage/restoreMenu -H "Authorization: Bearer $SUPER" -H "$J" -d
 ```bash
 # 把 cdp_restore(頂層)搬到 cdp_dir 下 → updateMenu 帶 parentId=PID + 全業務欄(整欄替換、須帶全集,§2.24/project memory)
 curl -s "$H/systemManage/getMenuList/v2?current=1&size=100" -H "Authorization: Bearer $SUPER" | python3 -c "import sys,json;[print(json.dumps(m)) for m in json.load(sys.stdin)['data']['records'] if m['routeName']=='cdp_restore']" > /tmp/m.json
-# 取完整欄改 parentId 後 PUT(plan/tasks 會給完整 payload helper);驗:
+# ★ 完整欄 payload(project memory `wholecolumn_update_acceptance`):updateMenu 整欄替換、省略欄會被 NULL 化汙染列 → 須先從上方 getMenuList 讀 cdp_restore 現列**完整欄**(/tmp/m.json)、**只改 parentId**、再 **POST**(下方 `...其餘業務欄...` = 用該完整欄填滿;executing 階段 implementer 產此 payload helper);驗:
 curl -s $H/systemManage/updateMenu -H "Authorization: Bearer $SUPER" -H "$J" -d '{"id":"'$RID'","parentId":'$PID',"menuName":"复原测试","menuType":"2","routeName":"cdp_restore","routePath":"/cdp-restore","component":"view.cdp-restore","status":"1","order":99,...其餘業務欄...}' | python3 -c "import sys,json;print('reparent:',json.load(sys.stdin)['code'])"  # 0000
 $PSQL -c "SELECT 'parent_id='||parent_id FROM sys_menu WHERE id=$RID;"  # = PID
 # Super getUserRoutes 即時反映 cdp_restore 在 cdp_dir 下(D1 payoff、無重啟;cdp_dir/cdp_restore 須有 Super menu 可見性 policy 才顯,否則用 psql 證 parent_id)
@@ -67,7 +67,10 @@ MU=$($PSQL -c "SELECT id FROM sys_menu WHERE route_name='manage_user' AND delete
 curl -s $H/systemManage/updateMenu -H "Authorization: Bearer $SUPER" -H "$J" -d '{"id":"'$MU'","parentId":'$PID',...完整 manage_user 欄...}' | python3 -c "import sys,json;d=json.load(sys.stdin);print('種子 reparent=',d['code'],d['msg'])"  # 2222 不可移动系统内置菜单
 # (b) cycle:把 cdp_dir 搬到自己子 cdp_restore 下(cdp_restore 現是 cdp_dir 的子)→ 2222「不可移动到自己的子层」
 curl -s $H/systemManage/updateMenu -H "Authorization: Bearer $SUPER" -H "$J" -d '{"id":"'$PID'","parentId":'$RID',...完整 cdp_dir 欄...}' | python3 -c "import sys,json;d=json.load(sys.stdin);print('cycle=',d['code'],d['msg'])"  # 2222 不可移动到自己的子层
-# (c) 無效父:搬到非目錄(menu_type=2 的 cdp_restore)或不存在 id → 2222「上层菜单无效」
+# (c) 無效父(非目錄):把 cdp_child($CID)搬到 cdp_restore($RID,menu_type=2 葉、非目錄)下 → 2222「上层菜单无效」
+curl -s $H/systemManage/updateMenu -H "Authorization: Bearer $SUPER" -H "$J" -d '{"id":"'$CID'","parentId":'$RID',...完整 cdp_child 欄(從 getMenuList 取)...}' | python3 -c "import sys,json;d=json.load(sys.stdin);print('無效父(非目錄)=',d['code'],d['msg'])"  # 2222 上层菜单无效
+# (c') 不存在父:parentId=999999 → 2222「上层菜单无效」
+curl -s $H/systemManage/updateMenu -H "Authorization: Bearer $SUPER" -H "$J" -d '{"id":"'$RID'","parentId":999999,...完整 cdp_restore 欄...}' | python3 -c "import sys,json;d=json.load(sys.stdin);print('不存在父=',d['code'],d['msg'])"  # 2222 上层菜单无效
 ```
 
 ## 5. 授權 + envelope(Super-only)
