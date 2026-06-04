@@ -16,7 +16,7 @@
 
 > 以下為預計`下一步` (不要再被合到`最新進展`了)
 
-**下一步**: **023 EndpointAuth(Phase 3 #4)✅ 完成(merge `ef5ebe0`、保留 023 branch、已推 origin)** —— menu(021)+button(022)+endpoint(023)auth 三本柱完整閉合、全路由 policy 矩陣治理 + D1 防呆守衛落地。**之後候選**([DESIGN §10](INTEGRATION-DESIGN.md)):Phase 3 #5 axum-casbin fuller rewrite(全路由 observability/metrics 整合、沿 DB-fresh 基礎)/ #6 受管 RBAC policy 層(casbin_rule soft-delete/protected/audit/CRUD,需 fork sea-orm-adapter → §11.6 Amendment)/ Phase 4 餘(其餘業務頁 button gating〔FR-009 out〕、選單 restore·re-parent、alova 3 stub Phase 5)/ Phase 2 餘(soft-delete 6-entity rollout、audit 其他 operation·entity)
+**下一步**: **024 ButtonAuth Rollout(Phase 4 餘)進行中(SDD 設計鏈)**:brainstorm `9e59f09` → `/speckit-specify` ✅(branch `024-button-auth-rollout`、`88ab23c`)→ `/speckit-clarify` ✅(0 ambiguity)→ `/speckit-plan` ✅(§IV 8/8 PASS、**無 amendment**)。把 022 用戶頁按鈕權限可編輯迴路 rollout 到角色/選單頁(seed role:*/menu:* 按鈕碼進 registry → modal 可勾選同步 casbin → 頁面 hasAuth gating)+ §2.26 reactive 修正;唯一 rust=1 seed migration、decoupled 刻意。**下一步**:`/speckit-tasks` → `/speckit-analyze` → `superpowers:executing-plans`。**之後候選**([DESIGN §10](INTEGRATION-DESIGN.md)):Phase 3 #5 axum-casbin fuller rewrite / #6 受管 RBAC policy 層(需 fork→§11.6 Amendment)/ Phase 4 餘(選單 restore·re-parent、alova 3 stub Phase 5)/ Phase 2 餘(soft-delete 6-entity rollout、audit 其他)/ ButtonAuth「完整版」(aligned visible=clickable、023 端點對齊)
 
 ---
 
