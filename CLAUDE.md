@@ -356,10 +356,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/025-menu-restore-reparent/spec.md`](specs/025-menu-restore-reparent/spec.md)
-**Active Plan**: [`specs/025-menu-restore-reparent/plan.md`](specs/025-menu-restore-reparent/plan.md)
-**Phase**: **025 menu-restore-reparent ✅ 完成 + merged `6225bd8`(--no-ff、保留 025 branch、已推 origin)**。SDD 設計鏈 + subagent-driven 實作(T002-T010 逐單元 fresh implementer + spec/quality 雙審 + final holistic)+ holistic C-V/CDP 驗收全綠。補完 020 FR-011 OUT:選單 **restore**(回收桶 toggle/復原鈕、孤兒/route_name/非deleted guard、facade 鏡像 soft_delete 反向 + AuditOperation::Restore dormant 首消費)+ **re-parent**(parentId NTreeSelect、種子/cycle would_create_cycle/有效目錄父 guard)、2 Super-only endpoint(D1 lint 28→30)、migration 025、即時反映 getUserRoutes 無重啟·零 casbin 觸碰(R6)。acceptance §1-8 + 守恆(server 200/lint 17/endpoint 30/typecheck 0)+ migration 可逆 2→0→2 + CDP 4/4 + 019/020/021 回歸全綠。**無新表/crate/dep/fork**;Constitution v1.5.0 §IV 8/8 PASS(MODAL-WIRING ★ (d) amendment `2b05a5e`)。SHA-pin rust `95771ff`/base `4ad502b`。詳見 [DESIGN §10 Phase 4 as-built](docs/INTEGRATION-DESIGN.md) + MILESTONES `6225bd8`。
-**下一步**: 無 active feature。之後候選見 [DESIGN §10](docs/INTEGRATION-DESIGN.md):Phase 3 #5 axum-casbin fuller rewrite / #6 受管 RBAC policy 層(需 fork→§11.6 amendment)/ Phase 5(refresh token rotation·alova 3 stub·cleanup-job)/ Phase 2 餘(soft-delete 6-entity rollout·audit 其他)/ ButtonAuth「完整版」。
+**Active Spec**: [`specs/026-auth-dry-refactor/spec.md`](specs/026-auth-dry-refactor/spec.md)
+**Active Plan**: [`specs/026-auth-dry-refactor/plan.md`](specs/026-auth-dry-refactor/plan.md)
+**Phase**: **026 auth-dry-refactor — SDD 設計鏈起手(brainstorm `08310d6` Approach A 親決 / specify ✅〔branch `026-auth-dry-refactor`、spec + checklist〔0 NEEDS CLARIFICATION〕〕— 待 clarify/plan)**。承 Phase 3 #5 縮水後實質剩餘 = auth 層 **DRY refactor**(§2.16/17/18/19):抽 **`verify_bearer`**(5 callsites bearer→jwt::verify→claims:enforce_mw/get_user_info/get_user_routes/is_route_exist/ctx_mw)+ **`issue_tokens`**(2 callsites access+refresh:login/refresh_token)+ §2.18 fail-closed/open 文件化;**roles 段刻意留 inline**(變體+錯誤映射差、CP 值低)、metrics defer Phase 6、token rotation/stale token defer Phase 5。**純 refactor 行為零變**(既有測試前後逐字不變 + 兩 helper 新單測驗;唯一可觀察差異=4 條 verify-failed debug log 合併為 1 條,親決)。**rust-api 單倉、無新端點/表/crate/dep/migration、不動 base-web/casbin policy、無 amendment**(Constitution §IV 8/8 trivially PASS)。先前兩個 stale backlog(soft-delete 6-entity rollout 幻影、§2.16 nick_name)已校正/標 ✅。
+**下一步**: 手動執行 `/speckit-clarify`(預期 0 ambiguity、可略)或直接 `/speckit-plan` → `/speckit-tasks` → `/speckit-analyze`,再 `superpowers:executing-plans`+subagent-driven 實作(refactor:現有測試前後不變為主驗)。`/speckit-*` 各步由 user 手動跑。
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
