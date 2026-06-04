@@ -89,7 +89,7 @@
 ## Assumptions
 
 - **既有測試是回歸防護網**:既有的 auth 單元測試 + live-DB 驗收足以驗證「行為逐字不變」;本波不新增 wire-level 驗收(無行為變更)。
-- **純重構,無行為意圖**:唯一可接受的可觀察差異是 4 條重複 debug 記錄合併為 1 條(親決);wire/碼/狀態零變。
+- **純重構,無行為意圖**:唯一可接受的可觀察差異是 log 訊息收斂(皆親決、wire/碼/狀態零變):① verify-failed debug log 由 4 條 per-handler 訊息合併為 helper 內 1 條通用訊息(`verify_bearer`,debug 級);② `ctx_mw` 原 silent verify-fail 現亦經 `verify_bearer` 共用該 1 條 debug log;③ `refresh_token` 兩條 sign-error 訊息(access / refresh)合併為 1 條通用訊息(error 級)。
 - **角色查詢段刻意不抽**:其變體與錯誤策略差異使收斂效益低於成本(Approach A 親決)。
 - **token rotation / stale token 屬獨立後續(Phase 5)**,不在本波。
 - **rust-api 單倉**:全部變動在 rust-api worktree,base-web 不動。

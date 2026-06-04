@@ -8,7 +8,7 @@
 `pub fn bearer_token(headers: &HeaderMap) -> Option<&str>` —— 已是 SoT，從 `Authorization: Bearer <token>` 取 token、case-sensitive `Bearer ` 前綴、trim、空→`None`。有 4 個單測。**`verify_bearer` 將建在它之上**(同檔)。
 
 ### R0.2 `jwt::verify` 簽名（`auth/jwt.rs`)
-`jwt::verify(token, secret, aud) -> Result<Claims, jwt::Error>`;`Claims { user_id: i64, roles: Vec<String>, .. }`(login 簽入 roles、enforce 後改讀 DB-fresh 故 claims.roles 對 enforce 為 vestigial)。`jwt::sign(user_id, roles, secret, ttl_secs, iss, aud) -> Result<String, jwt::Error>`;常數 `JWT_AUD` / `JWT_ISS`。
+`jwt::verify(token, secret, aud) -> Result<Claims, jwt::JwtError>`;`Claims { user_id: i64, roles: Vec<String>, .. }`(login 簽入 roles、enforce 後改讀 DB-fresh 故 claims.roles 對 enforce 為 vestigial)。`jwt::sign(user_id, roles, secret, ttl_secs, iss, aud) -> Result<String, jwt::JwtError>`;常數 `JWT_AUD` / `JWT_ISS`。
 
 ### R0.3 五處 `bearer→verify→claims` 前導 CONFIRMED
 
@@ -44,7 +44,7 @@
 
 ## R2 — `issue_tokens` 設計決策
 
-**Decision**:`fn issue_tokens(user_id: i64, roles: Vec<String>, jwt: &JwtConfig) -> Result<LoginToken, jwt::Error>`(私有,入 `handler/auth.rs` 近 `LoginToken`)。簽 access(jwt_secret/access_ttl)+ refresh(refresh_token_secret/refresh_ttl),`?` 傳播 sign Err。兩 callsite `match issue_tokens(...) { Ok(t)=>t, Err(e)=>{ tracing::error!(...); → Internal } }`。
+**Decision**:`fn issue_tokens(user_id: i64, roles: Vec<String>, jwt: &JwtConfig) -> Result<LoginToken, jwt::JwtError>`(私有,入 `handler/auth.rs` 近 `LoginToken`)。簽 access(jwt_secret/access_ttl)+ refresh(refresh_token_secret/refresh_ttl),`?` 傳播 sign Err。兩 callsite `match issue_tokens(...) { Ok(t)=>t, Err(e)=>{ tracing::error!(...); → Internal } }`。
 **Rationale**:近 `LoginToken` wire DTO（兩消費者皆在 `auth.rs`）；`Vec<String>` 給 access 需 `.clone()`、refresh 取所有權（同現況）。**Alternatives rejected**:放 `auth/jwt.rs` 回 `(String,String)` tuple、handler 組 `LoginToken`（多一層、`LoginToken` 在 handler）→ 取就近。
 
 ## R3 — roles 段為何不抽（明示 OUT）

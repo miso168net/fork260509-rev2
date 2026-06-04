@@ -38,6 +38,7 @@ active  ──update_menu re-parent(025 新)──▶ active(parent_id 改;cycle
 **restore_menu guards(順序固定,R4)**:
 1. `find_deleted_by_id(id)`==None → `err_msg(BizError, "菜单不存在或未删除")`
 2. route_name 被某 active 列佔用(`find_active` by `route_name==model.route_name`)→ `err_msg(BizError, "路由名已被占用")`
+   - **as-built**:此 active 佔用查改用既有 facade `sys_menu::ids_for_route_names(&[model.route_name])`(active-only)、非另寫 `find_active`;`ids.is_empty()` false ⇒ 已被占用(handler `restore_menu`@1701)。
 3. `model.parent_id == Some(p)` && `find_active_by_id(p)`==None → `err_msg(BizError, "上层菜单已删除,请先复原上层")`(頂層 None 跳過)
 
 **update_menu re-parent guards(順序固定,R3;`changed = req.parent_id != model.parent_id`)**:
@@ -81,6 +82,7 @@ active  ──update_menu re-parent(025 新)──▶ active(parent_id 改;cycle
 
 - **wire 零新 typing**:getDeletedMenus reuse MenuList、restoreMenu reuse null + DeleteReq 形;updateMenu wire 已帶 parentId(只加 UI 控件)。
 - **MODAL-WIRING 紀律**:每改記 file:line + upstream 衝突風險;共用元件附加 prop + 安全預設(此波 menu 頁專屬、無共用元件改)。
+- **known-debt(SEED list duplication)**:種子 route_name 清單前後端各一份硬編碼且須手動同步 —— 前端 `menu-operate-modal.vue` `SEED_MENU_ROUTE_NAMES`(parentId disabled 判定)、後端 `handler/system_manage.rs` `is_seed_menu`(re-parent guard〔a〕);兩處同 6 名(home/manage/manage_user/manage_role/manage_menu/manage_user-detail)。後端新增種子須同步前端常數。本波刻意接受此 duplication(前端 code 已 inline 註解標 follow-up),不為單一布林判定造 wire 同步機制。
 
 ## 7. 測試(無新純函式以外單測;C-V 覆蓋)
 - **純單測**:would_create_cycle(新)+ immutability 重寫。**無其他新純函式**(restore/re-parent guards 為 handler wiring + DB)→ 由 contracts C-V(curl/psql/CDP/migration 可逆)覆蓋,plan/tasks 明示理由(同 020 範式)。

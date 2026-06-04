@@ -63,6 +63,8 @@ Super-only(無 wildcard、不 seed R_ADMIN/R_USER_COMMON)→ 非 Super 寫操作
 
 seed 3 角色(migration 006:`id` 1/2/3):`R_SUPER`/超级管理员、`R_ADMIN`/管理员、`R_USER_COMMON`/普通用户。**判定以 roleCode ∈ {R_SUPER,R_ADMIN,R_USER_COMMON}**(`fn is_seed_role_code(code:&str)`,純函式單測;handler 經 `find_active_by_id` 解析 id→`row.code` 再判 —— analyze I1 親決 code-based,貼 spec「code 為穩定鍵」、避 id 脆弱;id 1/2/3 僅 fresh-seed 對照、非判準);種子**不可刪、不可停用(status→2)**,可改 name/role_desc。
 
+> ★ as-built:`update_role` 是**整欄替換**(`update_role_query` 對 `status` 用 `col_expr(Expr::value(status))`,facade `sys_role.rs:216`),`status` 缺欄 → 寫 NULL → 離開有效集(§2 `find_active_enabled = deleted_at IS NULL AND status=1`)=等同停用。故種子停用 guard 以「`status != Some(1)`」判(handler `system_manage.rs:1324`):停用(2)**或省略 status(None→NULL)**對種子角色一律拒 **2222**「不可停用系统内置角色」。⇒ 改種子 name/role_desc 須**同送 `status="1"`**,否則被種子 guard 擋(非種子角色省略 status 則放行、僅該列 status 落 NULL)。
+
 ## 6. Wire DTO(三端對齊)
 
 ### 6.1 讀(016 owns,018 改吃真值 R10-equiv)

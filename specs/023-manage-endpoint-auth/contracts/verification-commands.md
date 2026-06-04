@@ -3,6 +3,7 @@
 > wiring/形狀類無純函式者由本 C-V 覆蓋(curl + psql + CDP);純函式(multi-method HARD REPLACE 正交 / get 排序 / root-mode guard / D1 靜態 lint)走單元測試。
 > **dev stack 前置**:`dcargo build -p server && docker compose -f docker-compose.yml -f docker-compose.dev.yml restart rust-api`(WSL2 inotify 不可靠)+ **base-web 改後 restart base-web**;套 migration 023(`docker compose -f docker-compose.yml -f docker-compose.dev.yml run --rm migrate up`)。**dev DB = `soybean_admin_rust`**(非 `soybean`;psql 用 `-d soybean_admin_rust`)。base-web 經 front-nginx :21080 `/api`;rust-api 直連 :21081。帳號密碼 `123456`(Super/Admin/User)。
 > **狀態污染**:編輯 Admin/User endpoint 改 dev casbin_rule(驗後還原或 throwaway DB);**migration 023 只 seed 3 R_SUPER 列、不動既有矩陣**。**無新 crate → prod image build 非強制**。
+> **⚠️ endpoint 總數 drift(point-in-time)**:下方所有「28」是 **023 當下** 的 registry 數(25 既有 + 3 新治理端點)。**025**(menu-restore-reparent)又加 2 個 endpoint(getDeletedMenus / restoreMenu)→ **現為 30**(`ENDPOINT_REGISTRY` / `EXPECTED_ROUTE_COUNT` / endpoint_coverage_lint 皆 30)。重跑本契約時 count 應為 30、非 28;此處 28 保留 023 歷史正確性、不回改。
 
 預備:
 ```bash
@@ -13,9 +14,9 @@ USERT=$(curl -s :21081/auth/login -H 'Content-Type: application/json' -d '{"user
 
 ## 1. getAllEndpoints(registry、Super-only)
 ```bash
-# (a) 28 條 registry(25 既有 + 3 新)、字典序
+# (a) 28 條 registry(25 既有 + 3 新)、字典序 ── 023 當下數;025 後現為 30(見檔首 drift 註記)
 curl -s :21081/systemManage/getAllEndpoints -H "Authorization: Bearer $SUPER" | python3 -c "import sys,json;d=json.load(sys.stdin)['data'];print('count=',len(d));print([f\"{e['method']} {e['path']}\" for e in d][:6])"
-# 期 count=28;含 'GET /systemManage/getAllEndpoints' 等 3 新治理端點
+# 期 count=28(023 當下;025 後 30);含 'GET /systemManage/getAllEndpoints' 等 3 新治理端點
 # (b) Super-only:Admin 5003 / 無 token 3333
 curl -s -o /dev/null -w "%{http_code}\n" :21081/systemManage/getAllEndpoints -H "Authorization: Bearer $ADMIN"   # 403、body code 5003
 curl -s :21081/systemManage/getAllEndpoints | python3 -c "import sys,json;print(json.load(sys.stdin)['code'])"      # 3333

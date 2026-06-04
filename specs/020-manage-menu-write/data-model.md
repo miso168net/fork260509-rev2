@@ -116,5 +116,6 @@ batch_delete_menus(State, Extension<RequestContext>, Json<BatchDeleteReq>) -> Re
 ## 7. 狀態 / 軟刪 / 不動項
 
 - 寫端軟刪(deleted_at)+ §I.6 成對審計;復原(restore)/ re-parent → FR-011 out(後續)。
+  > **supersede**:restore / re-parent 原列 FR-011 out,已於 025-menu-restore-reparent(merge `6225bd8`)補完(update 起納入 `parent_id` SET、加 re-parent 成環/有效父 guard)。
 - `get_user_routes` code **不動**(編輯既有可見選單→因讀同源即時反映 = D1 payoff;未編輯時逐字基線不變)。019 三讀端、constant routes、isRouteExist 不動。
 - 新選單可見性:020 不寫 casbin(D3)→ 新選單在 MenuAuth 指派前不顯於 runtime 導覽、顯於管理頁。

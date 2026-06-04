@@ -15,9 +15,9 @@
 
 | 項 | 形 |
 |---|---|
-| 簽名 | `fn issue_tokens(user_id: i64, roles: Vec<String>, jwt: &JwtConfig) -> Result<LoginToken, jwt::Error>`（私有) |
+| 簽名 | `fn issue_tokens(user_id: i64, roles: Vec<String>, jwt: &JwtConfig) -> Result<LoginToken, jwt::JwtError>`（私有) |
 | 邏輯 | `let access = jwt::sign(user_id, roles.clone(), &jwt.jwt_secret, jwt.access_token_ttl_secs, JWT_ISS, JWT_AUD)?;`<br>`let refresh = jwt::sign(user_id, roles, &jwt.refresh_token_secret, jwt.refresh_token_ttl_secs, JWT_ISS, JWT_AUD)?;`<br>`Ok(LoginToken { token: access, refresh_token: refresh })` |
-| 回傳語意 | `Ok(LoginToken)` 成功對;`Err(jwt::Error)` 簽發失敗(callsite 映 `Internal`/5000) |
+| 回傳語意 | `Ok(LoginToken)` 成功對;`Err(jwt::JwtError)` 簽發失敗(callsite 映 `Internal`/5000) |
 
 ## 3. Callsite 轉換表（7 處;**roles/user-load/失敗映射皆不動**)
 

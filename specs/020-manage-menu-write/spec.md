@@ -91,6 +91,7 @@
 - **FR-009**: 業務驗證錯誤(路由名重複 / 種子保護 / 具子選單 / 選單不存在 / 非法輸入)MUST 以既有「業務錯誤」碼回應(非授權/基建類);回傳沿既有統一回應格式與字串識別碼契約。
 - **FR-010**: 每筆選單的按鈕集合(按鈕代碼 + 說明)MUST 能隨選單新增/編輯一併寫入(承 019 結構化集合欄);此為選單定義,MUST NOT 與既有「角色可用按鈕代碼」權限矩陣混為一談(本波不動該矩陣)。
 - **FR-011**: 本波 MUST NOT 包含角色—選單可見性編輯入口(MenuAuth/ButtonAuth)、選單復原(restore 軟刪選單)、以及變更既有選單的上層父選單(re-parent),皆留後續 feature。
+  > **supersede**:選單復原(restore)與 re-parent(變更上層父選單)原列本波 OUT,已於 025-menu-restore-reparent(merge `6225bd8`)補完。
 - **FR-012**: 既有能力 MUST NOT 因寫端落地而被破壞(回歸):019 三讀端(選單列表/樹/頁面選項)、getUserRoutes 既有(未編輯時)逐字輸出與常數路由、既有授權把關(login/enforce)、既有 user/role 寫端與清單顯示皆維持原行為。
 
 ### Key Entities *(include if data involved)*

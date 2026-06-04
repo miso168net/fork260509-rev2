@@ -39,7 +39,7 @@ psql ... -c "SELECT updated_at IS NOT NULL, updated_by FROM sys_role WHERE code=
 curl -s :21081/systemManage/updateRole -H "Authorization: Bearer $SUPER" -d '{"id":"99999","roleName":"x"}'  # 2222
 # 4) 種子保護:停用種子 → 2222;改種子 name/desc → 0000
 curl -s :21081/systemManage/updateRole -H "Authorization: Bearer $SUPER" -d '{"id":"1","roleName":"超管","status":"2"}'  # → 2222「不可停用系统内置角色」
-curl -s :21081/systemManage/updateRole -H "Authorization: Bearer $SUPER" -d '{"id":"1","roleName":"超级管理员X","roleDesc":"d"}'  # → 0000(放行 name/desc)
+curl -s :21081/systemManage/updateRole -H "Authorization: Bearer $SUPER" -d '{"id":"1","roleName":"超级管理员X","roleDesc":"d","status":"1"}'  # → 0000(放行 name/desc;updateRole 整欄替換,種子須同送 status="1",省略 status→NULL→離開有效集→種子 guard 擋 2222)
 # 5) Admin → 5003
 ```
 

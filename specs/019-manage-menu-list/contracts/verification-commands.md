@@ -23,6 +23,10 @@ done
 # (c) getConstantRoutes 不變
 curl -s :21081/route/getConstantRoutes | python3 -m json.tool  # 403/404/500/login/iframe-page 與遷移前逐字一致
 # (d) 無有效角色 user(理論)→ routes 不含需授權 menu、不崩潰
+# (e) ★ 5000 錯誤面(014→019 演進新增 wire 路徑):014 in-code 路由無 DB 讀,019 改 DB-driven 後
+#     sys_menu 讀失敗(list_active_all Err)→ Internal/5000 + tracing::error log(route.rs get_user_routes)。
+#     此為 014 沒有、019 新增的錯誤路徑(token 不可用仍 3333、role lookup Err 仍 3333、home lookup Err 仍 fallback;唯 sys_menu 讀 = 5000)。
+#     (不必真造 DB 失敗 curl;最小註記。)
 ```
 
 psql:sys_menu seed 真值

@@ -68,7 +68,7 @@ rust-api/  (worktree, submodule)
 └── server/src/
     ├── auth/bearer.rs          # 改:+`verify_bearer(headers, secret, aud) -> Option<Claims>`(與既有 bearer_token 同檔)+ 單測
     ├── auth/enforce.rs         # 改:enforce_mw 改呼叫 verify_bearer(roles/fail-closed 不動)
-    ├── handler/auth.rs         # 改:+`issue_tokens(user_id, roles, &JwtConfig) -> Result<LoginToken, jwt::Error>` + 單測;login_attempt_inner/refresh_token 改呼叫;get_user_info 改呼叫 verify_bearer(user-load/roles 不動)
+    ├── handler/auth.rs         # 改:+`issue_tokens(user_id, roles, &JwtConfig) -> Result<LoginToken, jwt::JwtError>` + 單測;login_attempt_inner/refresh_token 改呼叫;get_user_info 改呼叫 verify_bearer(user-load/roles 不動)
     ├── handler/route.rs        # 改:get_user_routes/is_route_exist 改呼叫 verify_bearer(ordered/roles/home 不動)
     └── audit_ctx.rs            # 改:ctx_mw 改 verify_bearer(...).map(|c| c.user_id)
 ```
