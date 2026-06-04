@@ -160,7 +160,7 @@
 - [~] **其餘業務頁 button gating(FR-009 out)— 角色/選單頁 ✅ 024 rollout 完成**:022 pilot 僅用戶管理頁;**024 已 rollout 到角色/選單管理頁**(三頁 hasAuth gating 完整);其他業務頁(若未來新增)操作鈕 gating 仍沿三頁 reactive pattern。
 - [ ] **prod image build 非強制未跑**:022 無新 crate(只加 module 到既有 server crate)→ 不適用「加 crate 須 prod image build」守則;final review 確認 Dockerfile 無新 COPY 缺口風險。若要絕對保險可選跑一次 prod target build。
 - [ ] **`set_role_button` 非原子窗口 + 多 instance redis reload 未驗**:承 [§2.25](#225-feature-021-manage-menu-auth-follow-up) 同款(button_auth 共用 021 機制:`add_policies` 逐 rule loop 非單 txn / audit-fail-after-change / 單 instance only);final review 確認與已合併 021 baseline 一致、accepted。
-- [x] **用戶頁 row 操作鈕 reactive ✅ RESOLVED (2026-06-04,024)**:024 三頁(user/role/menu)reactive-columns retrofit 閉合 —— 加 `watch(()=>authStore.userInfo.buttons,()=>reloadColumns())`(鏡像既有 `watch(appStore.locale)→reloadColumns`),row 鈕 gating 隨 `userInfo.buttons` 即時重繪(shallow watch 正確:store `Object.assign` 替換 buttons 新陣列);三頁 byte-consistent、CDP 5/5 驗(撤碼即隱)。
+- [x] **用戶頁 row 操作鈕 reactive ✅ 機制閉合 (2026-06-04,024)**:024 三頁(user/role/menu)reactive-columns retrofit —— 加 `watch(()=>authStore.userInfo.buttons,()=>reloadColumns())`(鏡像既有 `watch(appStore.locale)→reloadColumns`、shallow watch 正確:store `Object.assign` 替換 buttons 新陣列)、三頁 byte-consistent。**gating 結果正確性** CDP 5/5 驗(撤碼後 fresh login 即隱);**in-session 即時重繪路徑機制經 code review 驗證、行為測試仍缺**(CDP 全用 fresh mount)→ 見 [§2.28](#228-feature-024-button-auth-rollout-follow-up)。
 
 ### 2.27 feature 023-manage-endpoint-auth follow-up
 
@@ -176,6 +176,7 @@
 - [ ] **跨維度:非-Super 預設無 manage_role/manage_menu 選單可見性(021)**:role/menu 頁 024 button gating 只在能檢視該頁的角色可觀察(預設僅 Super);非-Super 須先經 021 `updateRoleMenu` 授選單可見性才看得到頁(進而觀察 button gating)。三維度 button≠menu≠endpoint 刻意正交;CDP check 5 以「先授 Admin manage_role 選單 + role:edit 按鈕」證 literal US1。文件記錄(DESIGN §10)、非缺陷。
 - [ ] **cosmetic:既有 022 down() 註解 stale**:`m20260529_000022:104` 註「022 是唯一引入 v2='button' 的 migration」在 024 落地後不再為真;reverse-order rolldown(024.down 先於 022.down)+ 024.down by-code 精準避此 → 無害、不修(越界改既有 migration);若要註解保真可一行更正。
 - [ ] **set_role_button 非原子窗口 + 多 instance redis reload 未驗**(承 [§2.25](#225-feature-021-manage-menu-auth-follow-up)/[§2.26](#226-feature-022-manage-button-auth-follow-up)/[§2.27](#227-feature-023-manage-endpoint-auth-follow-up) 同款):024 沿 022 既有 `set_role_button`、無新風險;final review confirmed 與已合併 baseline 一致、accepted。
+- [ ] **§2.26 reactive watch 的 in-session 即時重繪路徑未經行為測試(僅機制驗證)**:CDP 5/5 全用 fresh login/navigate 驗 gating 結果(fresh mount 的 columns factory 已含正確 buttons、**不經 watch**);reactive watch(`userInfo.buttons` 變→`reloadColumns`→`$columns` 重算→render 重評 hasAuth)的 in-session 即時重繪**機制經 code review 驗證**、但**無測試 trigger 一次「停留頁面時 buttons 變動」**。現實 app 中 `userInfo.buttons` 停留頁面時罕變(modal 改 target 角色、不 re-fetch 當前 user)→ 屬防禦性;日後若加「刷新本人權限」流程,補 CDP 驗(操控 pinia store 或觸 getUserInfo re-fetch 後驗 row 鈕**不重登即時**重繪)。
 
 ## 3. 已完成里程碑
 
