@@ -356,10 +356,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/024-button-auth-rollout/spec.md`](specs/024-button-auth-rollout/spec.md)
-**Active Plan**: [`specs/024-button-auth-rollout/plan.md`](specs/024-button-auth-rollout/plan.md)
-**Phase**: **024 ButtonAuth Rollout ✅ 完成(merge `64d9bec` 回 rev2-admin-root、--no-ff、保留 024 branch、已推 origin)**。把 022 用戶頁「按鈕權限可編輯迴路」**rollout 到角色頁/選單頁** + 三頁 reactive 修正(§2.26 閉合)。**唯一 rust = 1 seed migration**(後端機制/modal/wire 零改):seed `role:*`/`menu:*` 進 `sys_menu.buttons`→ `aggregate_active_buttons` 自動納入 modal registry(12 碼)→ 沿 022 `set_role_button` HARD REPLACE 同步 casbin → role/menu/user 三頁 `hasAuth` gating + `watch(userInfo.buttons)→reloadColumns` reactive。初始授權 R_SUPER-only。**decoupled 刻意**(button 可見 ≠ endpoint 可呼叫、留「完整版」未來;K1/FR-008)+ 跨維度 as-built:非-Super 預設無 manage_role/menu 選單可見性(021)→ role/menu 頁 gating 只在能檢視頁的角色可觀察。**acceptance 全綠**:確定性 7 維度 + D3 round-trip + 3 對抗式 refuted + CDP 5/5(`tests/024-button-auth-rollout/`)。**無新 crate/dep/fork/endpoint/表/單元測試**;Constitution v1.4.0 §IV 8/8 PASS(MODAL-WIRING ★ v1.3.0 (b) 既有邊界內、**無 amendment**、無 finding)。
-**下一步**: 候選(見 [DESIGN §10](docs/INTEGRATION-DESIGN.md)/CHECKLIST §1):Phase 3 #5 axum-casbin fuller rewrite / #6 受管 RBAC policy 層(需 fork→§11.6 Amendment)/ Phase 4 餘(選單 restore·re-parent、alova 3 stub Phase 5)/ Phase 2 餘(soft-delete 6-entity rollout)/ ButtonAuth「完整版」(aligned visible=clickable、023 端點對齊)。
+**Active Spec**: [`specs/025-menu-restore-reparent/spec.md`](specs/025-menu-restore-reparent/spec.md)
+**Active Plan**: [`specs/025-menu-restore-reparent/plan.md`](specs/025-menu-restore-reparent/plan.md)
+**Phase**: **025 menu-restore-reparent(Phase 4 餘)— SDD 設計鏈進行中(brainstorm `4403425`/specify ✅〔branch `025-menu-restore-reparent`、`0cb3eea`〕、待 clarify/plan/tasks/實作)**。補完 020 FR-011 OUT scope:選單 **restore**(復原誤刪軟刪選單)+ **re-parent**(變更自訂選單上層父)。親決(brainstorm S1/R1-R3):S1 兩個一起做 / R1 restore 孤兒擋下要求先復原上層 / R2 只自訂選單可搬種子父固定 / R3 回收桶=選單頁「顯示已刪除」切換。**無新表/crate/dep/fork/§11.6 amendment**;getDeletedMenus 獨立端點 + re-parent 併進 updateMenu。**⚠️ Constitution 待判**:base-web 加 parentId NTreeSelect(新 form 控件)+ 已刪切換 可能觸 MODAL-WIRING ★ 邊界 → plan Constitution Check 定(先例 022/023 amendment)。可順帶清 §2.23/§2.24。
+**下一步**: `/speckit-clarify`(brainstorm 已解關鍵決策、預期 0 ambiguity、可選)→ `/speckit-plan`(★ 重點:MODAL-WIRING Constitution Check + verification-commands)→ `/speckit-tasks` → `/speckit-analyze` → `superpowers:executing-plans`。詳見 [DESIGN §10 Phase 4](docs/INTEGRATION-DESIGN.md) + spec-design [`docs/superpowers/025-menu-restore-reparent.md`](docs/superpowers/025-menu-restore-reparent.md)。
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
