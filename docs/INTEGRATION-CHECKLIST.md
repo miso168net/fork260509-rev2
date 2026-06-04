@@ -139,7 +139,7 @@
 - [ ] **addMenu `component` 未驗證對齊 getAllPages 48 頁集**(承 [§2.23](#223-feature-019-manage-menu-list-follow-up) analyze A1):020 addMenu 收 `component` 字串原樣寫入、未對齊 server 端 48 靜態頁集(base-web form 由 getAllPages 下拉提供、UI 不可達非法值)。日後若要 server 端硬擋非法 component,加 facade 驗證(對齊 getAllPages 集)。
 - [ ] **`normalize_page` 過時 `#[allow(dead_code)]` 仍在**(承 [§2.23](#223-feature-019-manage-menu-list-follow-up) code-hygiene):019 留的 nit;020 holistic review 已順手清 `de_parent_id` 同類 stale allow(tidy-up `dfa68c1`),但 `normalize_page` 的過時 allow/註解仍在(pre-existing、build 無警告);動 `handler/system_manage.rs` 時順手清。
 - [ ] **停用(status=2)menu 顯示語意 as-built**(解 [§2.23](#223-feature-019-manage-menu-list-follow-up)「停用/軟刪 menu 顯示語意 → 020」):020 軟刪(deleted_at)menu 離開三讀端 + getUserRoutes;**停用(status=2)menu 仍顯於 getMenuList**(list 只濾 deleted_at、不濾 status),runtime getUserRoutes 由 Casbin 可見性過濾(非 status)→ 種子全 status=1、自訂停用 menu 無可見性 policy 故 nav 本就不顯。種子不可停用(guard)。日後若要「停用 menu 隱於 nav」需在 getUserRoutes 加 status 過濾(屬可見性語意擴充)。
-- [ ] **MenuAuth/ButtonAuth 編輯 + 選單 restore + re-parent → 後續 feature**(FR-011 out):角色×選單可見性編輯(動 010 casbin menu policy)、軟刪選單復原、變更 parentId 皆 020 明示劃出,留獨立 feature。
+- [x] **MenuAuth/ButtonAuth 編輯 + 選單 restore + re-parent → 後續 feature ✅ 全落地**(FR-011 out 已補齊):MenuAuth ✅ **021**、ButtonAuth ✅ **022**、**選單 restore + re-parent ✅ 025**(回收桶 toggle/復原 + parentId NTreeSelect re-parent、孤兒/cycle/種子/有效父 guard、即時反映零 casbin);025 自身 follow-up 見 [§2.29](#229-feature-025-menu-restore-reparent-follow-up)。
 - [x] **prod /api strip ✅ (2026-06-02)**:prod CDP via :443 020 寫端 DELETE `/api/systemManage/deleteMenu` 走 front-nginx strip(種子→2222)。見 [§2.8](#28-feature-004-compose-port-orchestration-follow-up)
 - [ ] **`batch_delete_menus` 空 `ids`→`0000` no-op**(同 [§2.21](#221-feature-017-manage-user-write-follow-up)/[§2.22](#222-feature-018-manage-role-write-follow-up) user/role 版):handler 已有顯式 `if ids.is_empty()` early-return;UI 不可達(無勾選時 disabled-delete gate),benign。日後若新增可達路徑須補空陣列守衛。
 - [ ] **update_menu 整欄替換:省略業務欄→NULL(非 UI 可達)**(同 [§2.22](#222-feature-018-manage-role-write-follow-up) role 版):`update_menu_query` col_expr 對**所有 17 業務欄**整欄替換,非 UI caller 送部分 payload 會把未送欄 NULL 化;**種子停用 guard 只擋 `status==Some(2)`**(顯式停用)、`status` **省略(None)→NULL** 不被擋 → 種子被非 UI caller 送省 status 的 payload 會 status NULL-brick。base-web edit form 送全 Model(`getSubmitParams()`)→ **UI 不可達**。**curl acceptance 注意**:編輯「要保留原狀的列」(尤其 seed)須從 getMenuList 取完整欄位再改目標欄(D1 payoff 即如此驗、否則汙染列)。日後若要嚴格 partial-update(None 保留現值)須改 facade(同改 017/018、屬更廣決策)。
@@ -177,6 +177,17 @@
 - [ ] **cosmetic:既有 022 down() 註解 stale**:`m20260529_000022:104` 註「022 是唯一引入 v2='button' 的 migration」在 024 落地後不再為真;reverse-order rolldown(024.down 先於 022.down)+ 024.down by-code 精準避此 → 無害、不修(越界改既有 migration);若要註解保真可一行更正。
 - [ ] **set_role_button 非原子窗口 + 多 instance redis reload 未驗**(承 [§2.25](#225-feature-021-manage-menu-auth-follow-up)/[§2.26](#226-feature-022-manage-button-auth-follow-up)/[§2.27](#227-feature-023-manage-endpoint-auth-follow-up) 同款):024 沿 022 既有 `set_role_button`、無新風險;final review confirmed 與已合併 baseline 一致、accepted。
 - [ ] **§2.26 reactive watch 的 in-session 即時重繪路徑未經行為測試(僅機制驗證)**:CDP 5/5 全用 fresh login/navigate 驗 gating 結果(fresh mount 的 columns factory 已含正確 buttons、**不經 watch**);reactive watch(`userInfo.buttons` 變→`reloadColumns`→`$columns` 重算→render 重評 hasAuth)的 in-session 即時重繪**機制經 code review 驗證**、但**無測試 trigger 一次「停留頁面時 buttons 變動」**。現實 app 中 `userInfo.buttons` 停留頁面時罕變(modal 改 target 角色、不 re-fetch 當前 user)→ 屬防禦性;日後若加「刷新本人權限」流程,補 CDP 驗(操控 pinia store 或觸 getUserInfo re-fetch 後驗 row 鈕**不重登即時**重繪)。
+
+### 2.29 feature 025-menu-restore-reparent follow-up
+
+- [ ] **孤兒 casbin menu-visibility 列已知債**:軟刪選單留 `[role,route_name,'menu']` 孤兒 policy(讀路徑略過、無害);新建/restore 同 route_name 選單會繼承舊可見性 grant,唯一性 guard 只擋 **active** route_name 撞、不擋 **deleted** 撞。日後若要嚴格,軟刪時連帶清/標記 menu-visibility 列(動 010 casbin、權衡 R6 restore 自動套回的 payoff)。
+- [ ] **restore route_name TOCTOU(race→5000)**(同 [§2.24](#224-feature-020-manage-menu-write-follow-up) create_menu):restore handler active 唯一前檢在 txn 外 + DB partial-unique `sys_menu_route_name_active_uniq` 最終防線;並發撞→`DbErr`→5000(罕見、資料完整性保住)。若要 race 也回 2222 可偵測 PG 23505。
+- [ ] **re-parent 跨頂層邊界 component 殘留**(T007 code review 抓、已部分修):`getSubmitParams` 以 `effectiveLayout = parentId===0 || menuType==='1' ? layout : ''` 修掉「頂層葉搬 nested 殘留 `layout.X$` 汙染 component」;**殘留** = nested-directory re-parent 保守不重算其 component、nested→頂層須 user 在浮現的 layout 欄補選(與既有頂層建立行為一致)。日後若要全自動重算 component 須懂 soybean 多層 layout 模型。
+- [ ] **SEED_MENU_ROUTE_NAMES 前後端 duplication**:base-web modal disable hint 硬編 6 種子 route name 鏡像後端 `is_seed_menu`(server/src/handler/system_manage.rs),後端新增種子須同步 base-web。UI disable 僅 hint、後端 guard (a) 為權威。根治 = 後端 wire 加 `isSeed` 欄(屬 wire 變更、未來)。
+- [ ] **getMenuItem inline-map 與 get_menu_list 重複**(T003 review):`get_deleted_menus` 逐字 copy `get_menu_list` 的 26-欄 MenuItem map(沿 codebase inline-per-handler 慣例、刻意)。若出現第 3 消費者再抽 `to_menu_item(Model)->MenuItem` 共用 helper(屆時須一併動 get_menu_list)。
+- [ ] **contracts §1/§2 deleteMenu curl `-d`(POST)應為 `-X DELETE`**:`specs/025-menu-restore-reparent/contracts/verification-commands.md` §1/§2 的 deleteMenu 命令用 `-d`(curl 預設 POST)但 deleteMenu 是 DELETE 端點 → 須 `-X DELETE` 否則 delete 不執行(空回應)。spec-doc as-built 註(同既往回填債 pattern);T009 acceptance 已用正確 `-X DELETE` 驗。
+- [ ] **CDP ④ 僅 cycle 路徑 UI-driven**:T009 CDP ④ 用 cycle reject(move-self)觸 2222 toast;`上层菜单已删除,请先复原上层`(孤兒父 restore)與 `路由名已被占用`(restore route_name 佔用)兩 guard 已 **code + curl 驗**(T008/手動 acceptance)、未單獨 UI-driven。日後 CDP 巡檢可補。
+- [ ] **endpoint_auth.rs bucket-header count drift**(pre-existing、023 引入、非 025):`ENDPOINT_REGISTRY` 的 per-verb header(`── N GET ──` 等)隨 023/025 端點 append 在 DELETE bucket 之後而未併入對應 verb bucket、header count 略 stale;top-level「30 entries」正確、lint 解析 tuple 非 comment → 不影響。日後加端點時順手把新端點併入 method bucket 並更新 header count。
 
 ## 3. 已完成里程碑
 
@@ -274,7 +285,7 @@
 
 ### 5.4 dynamic mode(§11.7 已選 dynamic;✅ 014 落地)
 
-- [x] `/route/getConstantRoutes` + `/route/getUserRoutes` + `/route/isRouteExist` 三 endpoint 完整實作 — ✅ 014(curl + CDP 驗;menu 走 Casbin enforce 過濾);**019 getUserRoutes 改 DB-driven 讀 sys_menu、輸出逐字不變**(endpoint 契約 / dynamic mode / home 欄不變;constantRoutes·isRouteExist 不動)
+- [x] `/route/getConstantRoutes` + `/route/getUserRoutes` + `/route/isRouteExist` 三 endpoint 完整實作 — ✅ 014(curl + CDP 驗;menu 走 Casbin enforce 過濾);**019 getUserRoutes 改 DB-driven 讀 sys_menu、輸出逐字不變**(endpoint 契約 / dynamic mode / home 欄不變;constantRoutes·isRouteExist 不動);**025 restore/re-parent 即時反映 getUserRoutes**(零 casbin 觸碰、無重啟、route_name 不變→舊可見性自動套回、re-parent 即見新位置;T008/CDP 親驗 rust-api 全程不重啟)
 - [x] `getUserRoutes` 必含 `home` 欄(e.g. `"home"`)(§4.13)— ✅ 014(`UserRoute.home="home"`);**021 改 per-role**(取第一 active 角色 by id ASC 的 `sys_role.home`、None/查無→'home';未編輯時三角色逐字==基線、home 仍 'home' 保回歸鐵律)
 - [x] `VITE_AUTH_ROUTE_MODE` 切換機制(預設 `static`)— ✅ 014 翻 `dynamic`(base-web `.env`、BASE-WEB-ADAPT、兩段式 commit)
 
@@ -285,7 +296,7 @@
 
 ### 5.6 業務驗證 error code
 
-- [~] rev2 業務驗證錯誤碼 — 008 已釘 `5000`=infra sentinel、`5001-5999` 留 enforce/權限類(**013 用 `5003`「权限不足」= enforce deny**;base-web 對非列舉碼 fallback toast 不登出);refresh 絕不回 9999/9998/3333。**寫端業務驗證(017/018)用 `2222`(BizError、mock §4.11-grounded)** — user 寫端(用戶名重複/刪自己/不存在/非法 id·enum)+ **role 寫端(角色代碼重複/刪或停用種子/不存在/非法 id·enum)** 皆回 2222、**非 5xxx**(D8/D10,curl 驗;5xxx 留 enforce/infra 類);**020 menu 寫端 + 021 MenuAuth + 022 ButtonAuth 延續**(021:自鎖移 Super manage_menu / 角色不存在 / 選單不存在或已刪 / 非法 roleId 皆 2222、curl 驗;**022:非法 button code / 角色不存在 / 非法 roleId 皆 2222**;**023 endpoint-auth:編輯 R_SUPER〔root-mode〕/ 非法 endpoint〔(method,path)∉ ENDPOINT_REGISTRY〕/ 角色不存在 / 非法 roleId 皆 2222**;授權 5003/未認證 3333 仍由 enforce_mw)
+- [~] rev2 業務驗證錯誤碼 — 008 已釘 `5000`=infra sentinel、`5001-5999` 留 enforce/權限類(**013 用 `5003`「权限不足」= enforce deny**;base-web 對非列舉碼 fallback toast 不登出);refresh 絕不回 9999/9998/3333。**寫端業務驗證(017/018)用 `2222`(BizError、mock §4.11-grounded)** — user 寫端(用戶名重複/刪自己/不存在/非法 id·enum)+ **role 寫端(角色代碼重複/刪或停用種子/不存在/非法 id·enum)** 皆回 2222、**非 5xxx**(D8/D10,curl 驗;5xxx 留 enforce/infra 類);**020 menu 寫端 + 021 MenuAuth + 022 ButtonAuth 延續**(021:自鎖移 Super manage_menu / 角色不存在 / 選單不存在或已刪 / 非法 roleId 皆 2222、curl 驗;**022:非法 button code / 角色不存在 / 非法 roleId 皆 2222**;**023 endpoint-auth:編輯 R_SUPER〔root-mode〕/ 非法 endpoint〔(method,path)∉ ENDPOINT_REGISTRY〕/ 角色不存在 / 非法 roleId 皆 2222**;**025 menu restore/re-parent:restore〔非 deleted / route_name 佔用 / 孤兒父〕+ re-parent〔種子 / cycle / 非目錄·缺父 / 無效 id〕皆 2222**;授權 5003/未認證 3333 仍由 enforce_mw)
 
 ### 5.7 base-web wrapper 軌道(若 §11.3 拍板 (B))
 
