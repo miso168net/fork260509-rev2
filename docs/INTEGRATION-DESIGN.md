@@ -1515,6 +1515,18 @@ rev2 spec-kit feature 工作流前置 brainstorm 文件存哪?
 
 ---
 
+### §11.23 v1.5.0 amend — MODAL-WIRING ★ 邊界 +選單復原/re-parent 維運控制(2026-06-04,025)
+
+> **改哪節**:constitution §III.2 MODAL-WIRING ★「邊界」加 (d) 子句(`views/manage/menu/**` 選單復原/re-parent UI:parentId selector + 已刪 toggle + restore 鈕)+「紀律」三用途→四用途 + rationale +§11.23 + version 1.4.0→1.5.0。
+>
+> **為何**:025 menu-restore-reparent 的 re-parent 需在 `menu-operate-modal.vue` edit 加 parentId selector(**新 form 控件**;現 parentId 純內部 data 欄、`showLayout=parentId===0` 唯一消費、無控件可 un-disable),restore 需在 `index.vue` 加「顯示已刪除」toggle + 已刪列 restore 鈕(**全新 inline UI**;menu 頁無 toggle/search/recycle pattern)。二者 literally 既非 (a)`// request` 接線、亦非 (b)`hasAuth` gating、亦非 (c)role-page auth-modal → `/speckit-plan` Constitution Check §IV.2/§IV.7 抓到(與 023 觸 (c) 同 gap-pattern)。**開窄例外**:僅 `views/manage/menu/**` 的選單復原/re-parent 維運控制;R1(孤兒父已刪擋下)/R2(種子父固定、僅自訂可搬)/R3(已刪 toggle)為設計約束、嵌入子句使邊界自我記錄、不擴張到任意新 menu 頁 UI。+2 fetch fn(`rev2-system-manage.ts`)走 BASE-WEB-WRAPPER、免本子句。
+>
+> **改後影響**:025 得在 `menu/index.vue` + `menu-operate-modal.vue` 加 restore/re-parent UI(每處 spec 記 file:line + upstream 衝突風險;共用元件附加 prop + 安全預設)。**軌道授權邊界擴展、非新軌道**(§11.9「5 軌道/2★」計數不變、僅擴 MODAL-WIRING 既有 ★ 邊界)= **MINOR**(§V.3),version 1.4.0 → 1.5.0。分流四檔:規範→constitution §III.2;提案 of record→本節;1 行→CHECKLIST §1;row→MILESTONES(獨立 follow-up commit 指 amend SHA、避 self-ref)。
+>
+> **觸發**:025 `/speckit-plan` Constitution Check FINDING #2/#7。落 025 feature branch(隨 025 merge 回 default)。
+
+---
+
 ## §12 文件交叉引用
 
 - **CLAUDE.md** — workspace 指引(命名 / git 操作手冊 / spec-kit 工作流 / 預設帳號 / port 配置 / 知識圖譜)
