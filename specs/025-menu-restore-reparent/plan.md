@@ -30,27 +30,27 @@
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.* 對照 **constitution v1.4.0**(§IV 8 項):
+*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.* 對照 **constitution v1.5.0**(§IV 8 項;v1.5.0 (d) amendment `2b05a5e` 已 ratify):
 
 1. **§I.1 base-web 權威 / rust 提供對應 endpoint?** ✅ PASS —— getDeletedMenus/restoreMenu 為 base-web(已刪 toggle/restore)消費的新端點;re-parent 騎既有 updateMenu(base-web `MenuWriteModel` 已含 parentId)。
-2. **動 base-web inline?屬哪 ★ 軌道?邊界內?** ❌ **FINDING(超出 MODAL-WIRING ★ v1.4.0 邊界)** —— parentId `NTreeSelect`(menu-operate-modal、**新 form 控件**、現 parentId 純內部無控件)+「顯示已刪除」toggle/restore 鈕(index.vue、**全新 inline UI**)literally **非 (a)`// request` 接線、非 (b)hasAuth gating、非 (c)role-page auth-modal**(grounding G4 逐一判定)。→ **需 §III.2 (d) 子句 v1.5.0 amendment**(MINOR、§V.3 軌道授權邊界擴展、非新軌道、§11.9「5 軌道/2★」計數不變)。**待 user 親決**(§V.2、Claude 不主動 amend)。
+2. **動 base-web inline?屬哪 ★ 軌道?邊界內?** ✅ **PASS(MODAL-WIRING ★ v1.5.0 (d) 邊界內、amend `2b05a5e` ratified)** —— parentId `NTreeSelect`(menu-operate-modal、新 form 控件)+「顯示已刪除」toggle/restore 鈕(index.vue)= **§III.2 (d,v1.5.0) 子句**(`views/manage/menu/**` 選單復原/re-parent 維運控制,R1/R2/R3 約束嵌入)涵蓋。FINDING(原 plan 抓:literally 非 (a)(b)(c))→ user 親決擴 (d) 子句、ratify(MINOR、§V.3 軌道授權邊界擴展、非新軌道、§11.9「5 軌道/2★」計數不變)→ 解。
 3. **menu 顯示走 Casbin enforce?(§I.2)** ✅ N/A —— restore/re-parent route_name immutable → 不改可見性機制;casbin menu-visibility 列零觸碰(R6);getDeletedMenus 為管理讀端(非 nav 渲染)。
 4. **wire 對齊 §I.3 mock?** ✅ PASS —— getDeletedMenus reuse `MenuItem`/`PageRes`/`MenuList`(零新 typing)、restoreMenu `Res<()>`→null、id/parentId=string、業務錯誤 2222、envelope `{data,code,msg}`(R5 三端對齊)。
 5. **從 rev1 拷貝 code?** ✅ PASS —— 否(鏡像 rev2 自家 020 menu write + 023 endpoint pattern)。
 6. **凍結到 §II 12 拍板?** ✅ PASS —— 無 §II 拍板變動;stock 機制、無新 crate/dep/fork;business error 2222(§11.10)。
-7. **觸及 ★ 軌道?邊界內?** ❌ **FINDING(同 #2)** —— MODAL-WIRING ★ 需 (d) v1.5.0 amendment;**BASE-WEB-WRAPPER**(rev2-system-manage +2 fetch fn)**在授權邊界內**(service/api 非 views/manage,017-023 自由加);**BASE-WEB-BUILD-CONFIG ★ 未觸及**。
+7. **觸及 ★ 軌道?邊界內?** ✅ **PASS(同 #2,MODAL-WIRING ★ v1.5.0 (d) 邊界內、ratified)** —— MODAL-WIRING ★ (d) 子句涵蓋 menu restore/re-parent UI;**BASE-WEB-WRAPPER**(rev2-system-manage +2 fetch fn)**在授權邊界內**(service/api 非 views/manage,017-023 自由加);**BASE-WEB-BUILD-CONFIG ★ 未觸及**。
 8. **新建業務表 + §I.6 審計欄?** ✅ N/A —— 不建表(migration 025 只 seed 2 endpoint policy);restore 為既有 sys_menu 列狀態翻轉、§I.6 成對(deleted_at+deleted_by 同清 NULL)。
 
-**結論:§IV 6/8 PASS + 2 FINDING(#2/#7,同一 MODAL-WIRING ★ 邊界議題)→ 需 v1.5.0 (d) amendment 親決後成 8/8 PASS。** 與 023 同 gap-pattern(literally (a)(b)(c) 之外的新 UI 用途)。
+**結論:§IV 8/8 PASS**(v1.5.0 (d) amendment `2b05a5e` user 親決 + ratified;FINDING #2/#7〔base-web menu restore/re-parent UI literally (a)(b)(c) 之外、同 023 gap-pattern〕已解)。**Constitution v1.5.0 §IV 8/8 PASS。**
 
-### ★ 提議 amendment(待 user 親決,逐行列、分流四檔)
+### ★ amendment ✅ ratified(`2b05a5e`、user 親決、分流四檔)
 
 - **constitution §III.2 MODAL-WIRING ★**:(i) header(@131)+`;v1.5.0 amend:加選單復原/re-parent 維運控制`;(ii) 邊界(@133)+ **(d,v1.5.0 amend)** 子句:`於 views/manage/menu/** 的選單管理頁,新增選單復原/re-parent 維運 UI:(d-1) menu-operate-modal.vue edit 模式 parentId selector(種子父固定不可改、僅自訂可搬 R2);(d-2) index.vue「顯示已刪除」toggle(R3)+ 已刪列 restore 觸發鈕(孤兒父已刪擋下 R1);+ page.manage.menu.* i18n —— 嚴格限「選單樹復原/父層級調整」runtime 維運介面,不擴張到任意新 UI`;(iii) 紀律 use-count(@138)三用途→**四用途**;(iv) rationale(@142)+`/ §11.23(v1.5.0)`;(v) footer(@199)Version `1.4.0 → 1.5.0`。
 - **DESIGN §11.23**(新):`### §11.23 v1.5.0 amend — MODAL-WIRING ★ 邊界 +選單復原/re-parent 維運控制(2026-06-04,025)`(4-line 改哪節/為何/改後影響=MINOR §V.3/觸發=025 plan FINDING #2/#7 skeleton)。
 - **CHECKLIST §1** 1 行;**MILESTONES** row(獨立 follow-up commit 指 amend SHA、避 self-ref;memory `milestones_self_ref_sha`)。
 - **commit**:`docs(constitution): amend v1.5.0 — MODAL-WIRING ★ 邊界 +選單復原/re-parent 維運控制`(落 025 feature branch、隨 --no-ff merge)。
 
-**Post-Phase-1 re-check**:design 未引入其他違規 —— 不建表(§IV.8 N/A)、無 fork(§IV.6)、wire reuse(§IV.4)、casbin 可見性零觸(§IV.3)、rev1 不拷(§IV.5);**唯 MODAL-WIRING (d) 待 ratify** → ratify 後 8/8 PASS。
+**Post-Phase-1 re-check**:design 未引入其他違規 —— 不建表(§IV.8 N/A)、無 fork(§IV.6)、wire reuse(§IV.4)、casbin 可見性零觸(§IV.3)、rev1 不拷(§IV.5);MODAL-WIRING (d) ratified(`2b05a5e`)→ **維持 8/8 PASS**。
 
 ## Project Structure
 
