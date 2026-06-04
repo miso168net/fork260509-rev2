@@ -4,7 +4,7 @@
 
 **Created**: 2026-06-04
 
-**Status**: Draft
+**Status**: Implemented + Merged (`6225bd8`, 2026-06-04) — FR-001..011 / SC-001..006 全達成、acceptance §1-8 + 守恆 + CDP 4/4 + 019/020/021 回歸全綠
 
 **Input**: User description: "完成 020-manage-menu-write 刻意劃出的 FR-011 OUT scope:選單 soft-delete restore(復原誤刪的選單)+ re-parent(變更既有選單的上層父選單)。設計來源:[`docs/superpowers/025-menu-restore-reparent.md`](../../docs/superpowers/025-menu-restore-reparent.md)(Phase 0 brainstorm,S1/R1-R3 親決)。承 [§2.23/§2.24 follow-up]。"
 
