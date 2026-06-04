@@ -12,10 +12,10 @@
 
 **最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
 - **2026-06-04 026-auth-dry-refactor ✅ merge `4553892`(--no-ff、保留 026 branch、已推 origin;rust-api `95771ff..93b9be6` 5 commit、base-web 不動)** — auth 層純 DRY refactor:`verify_bearer`(5 verify callsite 收斂)+ `issue_tokens`(2 簽發 callsite 收斂)+ fail-closed/advisory/best-effort 三策略文件化,roles 段刻意留 inline。**行為零變**:既有 200 單測逐字不變 + 2 新 helper 單測 → server 206 + curl 等價 14/14 == baseline;唯一差異 = verify/sign debug log 合併(親決、wire 中性)。無新端點/表/crate/dep/migration、不動 base-web/casbin、無 amendment。詳見 MILESTONES §1;解 §2.16/§2.17/§2.19。
-- **2026-06-04 025-menu-restore-reparent ✅ merge `6225bd8`(--no-ff、保留 025 branch、已推;rust-api 4 + base-web 2 commit)** — 補完 020 FR-011 OUT:軟刪選單 restore(回收桶 toggle/復原鈕、孤兒/route_name/非deleted guard、`AuditOperation::Restore` 首消費)+ 自訂選單 re-parent(parentId NTreeSelect、種子/cycle/有效父 guard);2 Super-only endpoint + migration 025 + D1 lint 28→30;即時反映 getUserRoutes 零 casbin。守恆 server 200/lint 17/endpoint 30 + CDP 4/4 + migration 可逆 + 019/020/021 回歸不破;無新表/crate/dep/fork、v1.5.0(MODAL-WIRING (d) `2b05a5e`)。詳見 MILESTONES §1;follow-up §2.29。
+- **2026-06-05 014-026 spec-review(13 feature)+ 025-I1 fix(已驗綠)** — `superpowers:requesting-code-review` 多 agent 對照各 spec.md 逐項驗收 → 對抗驗證 → 彙整 [REVIEW-014-026.md](REVIEW-014-026.md):**11/13 Ready·2 w/ fixes、0 Critical、0 confirmed specGap、1 confirmed Important = 025-I1**。**025-I1 已修+live CDP 驗綠**:`menu-operate-modal.vue` `handleInitModel` 把 wire string `parentId` 正規化為 number(`Number()`),修頂層葉選單編輯吃掉 component layout 前綴(種子 `home`)+ M1 NTreeSelect 預選態;type-lie 消費端鐵律固化於 [DESIGN §9.1](INTEGRATION-DESIGN.md)。doc-debt 批次 follow-up §2.31。
 > 以下為預計`下一步` (不要再被合到`最新進展`了)
 
-**下一步**: **026 auth DRY refactor ✅ 完整完成**(Merge `4553892` 回 rev2-admin-root、--no-ff、保留 026 branch、已推 origin;verify_bearer 5 callsite + issue_tokens 2 callsite + fail-closed/advisory/best-effort 三策略文件化、純 refactor 行為零變 server 206 + curl 14/14 == baseline)。解 013/014/015 follow-up 的 auth-DRY 三項(§2.16/§2.17/§2.19)。**之後候選**([DESIGN §10](INTEGRATION-DESIGN.md)):Phase 3 #5 axum-casbin **fuller rewrite 餘部**(metrics/error/observability + 全路由 rollout,defer Phase 6)/ #6 受管 RBAC policy 層(需 fork→§11.6 Amendment;解 §2.25-28 casbin 非原子/多-instance 債)/ Phase 5(refresh token rotation〔捆綁 §5.3 stale token〕·alova 3 stub·cleanup-job)/ ButtonAuth「完整版」(aligned visible=clickable、024 decoupled 債對齊 023 端點)。
+**下一步**: **014-026 spec-review 完成 + 025-I1 修復驗綠**(報告 [REVIEW-014-026.md](REVIEW-014-026.md):11/13 Ready、0 Critical/specGap、1 Important = 025-I1 已修;type-lie 消費端鐵律固化 [DESIGN §9.1](INTEGRATION-DESIGN.md))。review 衍生 doc-debt 批次回填見 §2.31(皆非阻擋)。**之後候選**([DESIGN §10](INTEGRATION-DESIGN.md)):Phase 3 #5 axum-casbin **fuller rewrite 餘部**(metrics/error/observability + 全路由 rollout,defer Phase 6)/ #6 受管 RBAC policy 層(需 fork→§11.6 Amendment;解 §2.25-28 casbin 非原子/多-instance 債)/ Phase 5(refresh token rotation〔捆綁 §5.3 stale token〕·alova 3 stub·cleanup-job)/ ButtonAuth「完整版」(aligned visible=clickable、024 decoupled 債對齊 023 端點)。下個 feature `/speckit-specify` 由 user 手動執行(建 feature branch)。
 
 ---
 
@@ -178,6 +178,14 @@
 
 - [ ] **`ctx_mw` verify-fail debug log 微調(accepted、wire 中性、final review 抓)**:026 把 `ctx_mw`(原 `bearer_token(...).and_then(|t| jwt::verify(...).ok())` 靜默吞 verify 錯、**無 log**)改走 `verify_bearer` 後,present-but-invalid token 會觸發 helper 內 `debug!("auth: bearer JWT verify failed")` → ① ctx_mw 多一條 debug 線(原 silent);② protected route 帶壞 token 時 ctx_mw + enforce_mw 各記 = 2 線(原 enforce 1 線);③ 4 處 per-handler verify-fail 訊息(`enforce/get_user_info/...: token verify failed`)併為 1 條通用訊息 → **per-callsite 屬性從 log message 消失**(改靠 request span / trace_id 歸因)。皆 **debug 級、wire/碼/狀態零變、親決接受**([DESIGN §10 Phase 3 #5](INTEGRATION-DESIGN.md) as-built 已記)。日後 Phase 6 observability 若需 per-callsite verify-fail 歸因,於 metrics/tracing 層補(非回退 per-handler log 訊息)。
 
+### 2.31 014-026 spec-review 衍生 follow-up
+
+> 完整分項與理由見 [REVIEW-014-026.md](REVIEW-014-026.md);本節僅記可行動項。整體 11/13 Ready、0 Critical、0 confirmed specGap。
+
+- [x] **025-I1 頂層葉選單編輯吃掉 component layout 前綴** ✅ (2026-06-05):`menu-operate-modal.vue handleInitModel` 把 wire string `parentId` 正規化為 `Number()`(同修 M1 NTreeSelect 預選態);live CDP 驗綠(home 布局選擇器顯示+值 base、manage_user 巢狀隱藏)。type-lie 消費端鐵律固化 [DESIGN §9.1](INTEGRATION-DESIGN.md)。
+- [ ] **doc-debt 批次回填**(非阻擋、擇期清):018-M1 `verification-commands §2.4` 種子編輯範例結果與 as-built 相反(應帶 `status:"1"`)+ 018-M2 partial-update NULL 語意未回填 data-model;019-M1 `getUserRoutes` DB 錯回 5000 未入契約矩陣;020 contracts `parent_id` OUT 已被 025 supersede 未加 cross-ref;023-M2 contracts endpoint count 28→30;025-M2(tasks 未勾與 spec「Merged」不一致)/M3(`SEED_MENU_ROUTE_NAMES` 前後端 duplication、已知)/M4(guard② `ids_for_route_names` 未回填);026-M1(`jwt::Error`→`jwt::JwtError`)/M2(「唯一差異」措辭漏列 ctx_mw+refresh log)。
+- [ ] **021-M2 menu policy 編輯 audit 非原子**(已誠實 inline 標明):`set_role_menu` casbin mutation 與 011 audit 非同 txn,audit 失敗時 policy 已上線無稽核;併入 §2.25-28「受管 RBAC policy 層」feature 一起處理。
+
 ## 3. 已完成里程碑
 
 完整 commit 里程碑歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)(append-only、不在 SOP 注入,避免本檔膨脹)。
@@ -257,6 +265,7 @@
 - [x] **MenuType enum**:1=directory / 2=menu(§4.2.1)— ✅ 019(sys_menu menu_type;wire `"1"`/`"2"` 字串、CDP 顯「目錄/菜单」)
 - [x] **Status nullable**:`status: EnableStatus | null`(§4.2.2)— ✅ 016(`Option<String>` None→`null`、缺欄回 null、CDP render 不 crash)
 - [x] **MenuRoute.id** 型:string;`getUserRoutes` 供應時帶 string id(§4.13.1)— ✅ 014(`MenuRoute.id:String`=route name、serde camelCase、curl + CDP 驗)
+- [~] **wire string id/parentId type-lie 消費端鐵律**(2026-06-05 [014-026 review](REVIEW-014-026.md) §4.1):§I.3 凍結 id/parentId 為 string、typings 宣告 number、`defaultTransform` 不轉型;「只當 rowKey 無害」假設在 **025-I1 破**(前端 `=== 0` 嚴格比較 + `NTreeSelect` number key → data-corruption)。鐵律:消費端對 wire id/parentId 做數值比較/餵 number-keyed 元件**一律先 `Number()`**(落消費邊界、不改 wire 契約),固化 [DESIGN §9.1](INTEGRATION-DESIGN.md);025-I1 已修+CDP 驗綠。
 
 ### 5.2 role / 帳號 / token
 

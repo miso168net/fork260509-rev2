@@ -1026,6 +1026,8 @@ BASE_WEB_TAG=rev2-admin-base-web
 
 三端不對齊 = runtime bug 或 type lie。
 
+**wire id/parentId string type-lie 的消費端鐵律**(2026-06-05 [014-026 review](REVIEW-014-026.md) §4.1,025-I1 引爆):rust-api read DTO 把 `id` / `parent_id` 序列化為**字串**(§I.3、§11.10 凍結),base-web typings 卻宣告為 `number`(`CommonRecord.id` / `Menu.parentId`)、`defaultTransform` 不轉型 → runtime 是 string 的 type-lie。此 lie 在「只當 `NDataTable` rowKey(吃 string|number)」時無害,故 016/017 一路接受(§7.1、決定不修)。**但任何前端消費端對該 wire 值做嚴格數值比較(`=== 0`)、或餵給 number-keyed 元件(如 `NTreeSelect` key-field=id、wire `MenuTree.id` 為 number)時,type-lie 會變成可觀察的 data-corruption**:025-I1 — `menu-operate-modal.vue` 編輯頂層葉選單時 `model.parentId("0") === 0` 為 false → `effectiveLayout=''` → 吃掉 component 的 `layout.X$` 前綴(canonical 種子 `home` 命中)。**鐵律**:前端消費端凡要對 wire 來的 `id` / `parentId` 做數值比較或餵給 number-keyed 元件,**一律先 `Number()` 正規化**(最佳落點 = modal `handleInitModel` 載入後一次正規化,使全 downstream 比較/預選一致)。修法落於消費邊界,**不改 wire 契約**(§I.3 string 型維持凍結)。
+
 ### §9.2 三重防護紀律(類型 + facade + CI lint)
 
 對所有 sensitive 操作(soft-delete / audit / JWT secret / cleanup credential)套用:
