@@ -8,7 +8,7 @@
 
 ## 1. Current Focus
 
-**階段**:**Phase 1(001-006)+ Phase 2(007-012)全完成+已歸檔**。**Phase 3 RBAC 核心完成(行政收口)+ Phase 4 主流業務大部完成(013-026)**:認證地基(013 login/enforce·014 dynamic routes+menu 可見性·015 audit)、user/role/menu CRUD(016 list·017 user·018 role·020 menu·025 restore/re-parent)、menu DB-driven(019 sys_menu)、**menu/button/endpoint 三維權限 runtime 編輯**(021/022/023 + 024 rollout)、enforce_mw DB-fresh 角色(018)、**026 auth DRY refactor**,皆已 merge+推 origin。**Phase 3 兩條尾(非核心 gate)**:#5 axum-casbin 核心已被 013-026 吸收〔唯 metrics 埋點 → Phase 6〕、#6 受管 RBAC = 獨立 deferred 治理軌道〔隨時可做、需 §11.6 fork amendment〕。**逐 feature deliverable/as-built 見 [§4 Roadmap](#4-roadmap--phase-狀態) + [DESIGN §10](INTEGRATION-DESIGN.md);merge 史見 [MILESTONES §1](INTEGRATION-MILESTONES.md)。**
+**階段**:**Phase 1(001-006)+ Phase 2(007-012)全完成+已歸檔**。**Phase 3 RBAC 核心完成(行政收口)+ Phase 4 主流業務大部完成(013-026)**:認證地基(013 login/enforce·014 dynamic routes+menu 可見性·015 audit)、user/role/menu CRUD(016 list·017 user·018 role·020 menu·025 restore/re-parent)、menu DB-driven(019 sys_menu)、**menu/button/endpoint 三維權限 runtime 編輯**(021/022/023 + 024 rollout)、enforce_mw DB-fresh 角色(018)、**026 auth DRY refactor**,皆已 merge+推 origin。**Phase 3 兩條尾(非核心 gate)**:#5 axum-casbin 核心已被 013-026 吸收〔唯 metrics 埋點 → Phase 6〕、#6 受管 RBAC = 獨立 deferred 治理軌道〔隨時可做、需 §11.6 fork amendment〕。**Phase 5 起步**:**027-refresh-token-rotation ✅**(refresh 升級 DB 持久化 rotation chain + 盜用偵測〔reuse→整族系 revoke + 8888〕+ grace 寬限窗 + SHA-256 雜湊;wire 中性、base-web 零改;028 單一-session 拆出)。**逐 feature deliverable/as-built 見 [§4 Roadmap](#4-roadmap--phase-狀態) + [DESIGN §10](INTEGRATION-DESIGN.md);merge 史見 [MILESTONES §1](INTEGRATION-MILESTONES.md)。**
 
 **最新進展**(滾動最近 2 條;完整歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)):
 - **2026-06-04 026-auth-dry-refactor ✅ merge `4553892`(--no-ff、保留 026 branch、已推 origin;rust-api `95771ff..93b9be6` 5 commit、base-web 不動)** — auth 層純 DRY refactor:`verify_bearer`(5 verify callsite 收斂)+ `issue_tokens`(2 簽發 callsite 收斂)+ fail-closed/advisory/best-effort 三策略文件化,roles 段刻意留 inline。**行為零變**:既有 200 單測逐字不變 + 2 新 helper 單測 → server 206 + curl 等價 14/14 == baseline;唯一差異 = verify/sign debug log 合併(親決、wire 中性)。無新端點/表/crate/dep/migration、不動 base-web/casbin、無 amendment。詳見 MILESTONES §1;解 §2.16/§2.17/§2.19。
@@ -186,6 +186,14 @@
 - [x] **doc-debt 批次回填** ✅ (2026-06-05,as-built 驗證後 surgical 修、未碰 code;詳見 commit):018-M1(種子編輯範例補 `status:"1"`+guard 註)·M2(data-model 回填整欄替換 NULL 語意);019-M1(contracts 補 getUserRoutes 5000 錯誤面);020(spec FR-011 + data-model §7 加 025 supersede cross-ref、不改原 OUT 陳述);023-M2(contracts 加 28→30 drift 註、保 023 歷史不回改);025-M2(tasks T001-T010 勾 merged)·M3(data-model 補 SEED list duplication known-debt)·M4(data-model 補 guard② `ids_for_route_names` as-built);026-M1(6 處 `jwt::Error`→`jwt::JwtError`)·M2(spec 唯一差異措辭補 ctx_mw+refresh log)。
 - [ ] **021-M2 menu policy 編輯 audit 非原子**(已誠實 inline 標明):`set_role_menu` casbin mutation 與 011 audit 非同 txn,audit 失敗時 policy 已上線無稽核;併入 §2.25-28「受管 RBAC policy 層」feature 一起處理。
 
+### 2.32 feature 027-refresh-token-rotation follow-up
+
+- [ ] **028-single-session-enforcement(立案)**:「一帳號同時只能一個登入 + 每請求即時踢舊 session」拆獨立 feature(027 收尾拆出)。access 端 stateful 撤銷、機制評估為 current-session pointer;觸 enforce_mw + 3 非-enforce 認證端點 verify_bearer + Claims schema 變更。027 落地後可做;rationale 見 027 spec Clarifications + [DESIGN §10 Phase 5](INTEGRATION-DESIGN.md)
+- [ ] **sys_token 實體清理 / 過期淘汰**:027 FR-011 OUT — 過期/已作廢 row 持續累積,實體移除交 Phase 5 **cleanup-job feature**(027 期間靠 `expires_at` + 換新時 `jwt::verify` 排除過期)
+- [ ] **盜用偵測事件持久化審計 / 指標**:027 clarify ④ 以 **warn 級運行日誌**記錄(`tracing::warn!(user_id,rotation_chain)`、可觀察);持久化安全審計 / metrics 留 **Phase 6** 觀察性堆疊
+- [x] **CDP smoke deferred-with-rationale** ✅:027 對 base-web **零改**(wire 中性)、refresh 為背景 token 流程(無 base-web modal),curl C1-C5 已端到端證明 wire 契約保持 → CDP「curl ≠ base-web modal 對齊」gotcha 在無 base-web 改動的 feature 不適用(plan/contracts 標可選);未補測無債
+- [ ] **token_hash 撞鍵殘餘風險(極低、accepted)**:`Claims` 無 `jti`、`iat` 秒精度 → 同秒同 user/roles 兩 refresh JWT 理論可逐字相同 → SHA-256 撞 UNIQUE → benign 並發其一 insert DbErr→`5000`(SC-003 不破、僅偶發 5000);admin 低並發可接受。理想:rotate 對 insert unique-violation 特判為 BenignConcurrent
+
 ## 3. 已完成里程碑
 
 完整 commit 里程碑歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)(append-only、不在 SOP 注入,避免本檔膨脹)。
@@ -232,11 +240,12 @@
 - [x] **菜單樹建構 feature** ✅ 019 — 純函式 `assemble_menu_tree`(parent_id→nested、order 排序〔None 末〕、孤節點略過),getUserRoutes + getMenuTree 共用、可單測
 - [x] **審計欄 retrofit feature**(既有業務表補 §I.6 6 審計欄)✅ — sys_user(017,5 欄)+ sys_role(018,7 欄);019 sys_menu = 凍結後首張新建表 create 即帶 6 欄(0 retrofit 債);見 §2.18
 
-### Phase 5 — 補位 + 抽離項(尚未啟動)
+### Phase 5 — 補位 + 抽離項(已啟動)
 
-- [ ] refresh token 完整實作 feature(`sys_tokens` rotation_chain)
+- [x] **refresh token 完整實作 feature(027)** ✅ — DB 持久化 rotation chain + 盜用偵測 + grace + SHA-256 雜湊(`sys_token` 表 / `decide_rotation`+`rotate` facade / login+refresh 串接,wire 中性、base-web 零改);live-DB L1-L6 + curl C1-C5 + 守恆 + prod build 全綠;詳見 [DESIGN §10 Phase 5 + §6.2](INTEGRATION-DESIGN.md) + `specs/027-refresh-token-rotation/`;follow-up §2.32
+- [ ] **028-single-session-enforcement**(一帳號單一登入 + 即時踢)— 027 收尾拆出(access 端 stateful、current-session pointer);027 落地後可做,rationale 見 027 spec Clarifications + [DESIGN §10 Phase 5](INTEGRATION-DESIGN.md)
 - [ ] 抽離項 stub feature(`/auth/error` / `/auth/sendCaptcha` / `/auth/verifyCaptcha`)
-- [ ] cleanup-job feature(dry-run 預設 + cron + 最小權 credential)
+- [ ] cleanup-job feature(dry-run 預設 + cron + 最小權 credential;含過期/已作廢 sys_token 實體清理)
 
 ### Phase 6 — 觀察性(可選,生產 ready)
 
@@ -277,8 +286,8 @@
 ### 5.3 auth flow
 
 - [x] **login**:`{userName, password}` request、response envelope wrap `{token, refreshToken}`(§4.12.1)— ✅ 013(camelCase、curl + CDP 驗)
-- [x] **refresh rotation**:每次同時換新 token + 新 refreshToken(§4.12.2)— ✅ 013 refresh 簽新 access+refresh(**最小無狀態**;持久化 rotation_chain + `sys_tokens` 留 Phase 5)
-- [ ] **stale token**:`/auth/getUserInfo` 須支援 stale 但未 expired token(page reload restore session)(§4.12.3)
+- [x] **refresh rotation**:每次同時換新 token + 新 refreshToken(§4.12.2)— ✅ 013 最小無狀態;**✅ 027 升級為 DB 持久化 rotation chain + 盜用偵測(reuse→整族系 revoke + 8888)+ grace 寬限窗 + SHA-256 雜湊**(`sys_token`;wire 中性、`{token,refreshToken}` 逐字不變)
+- [x] **stale token**:`/auth/getUserInfo` 須支援 stale 但未 expired token(page reload restore session)(§4.12.3)— ✅ **027 US4/FR-009/SC-008 正式驗收**(027 不改 getUserInfo/verify_bearer;curl C5:15s 舊 access→`0000`+userName;族系雖被盜用 revoke,access stateless 仍有效)
 - [x] **logout 無 endpoint**:rust-api 不實作 `/auth/logout`,業務只走 frontend `resetStore()`(§4.12.4 已驗)
 - [x] **refresh critical 紀律**:`/auth/refreshToken` 絕對不回 `9999/9998/3333`(§4.11)— ✅ 013 失敗一律 `8888`(curl grep 驗無 3333/9999/9998)
 
