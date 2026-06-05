@@ -188,14 +188,20 @@
 
 ### 2.32 feature 027-refresh-token-rotation follow-up
 
-- [ ] **028-single-session-enforcement(引擎 + policy 儲存,brainstorm 已收斂)**:per-account 可控的 access 端單一-session(policy=開踢舊〔**`7777`**「账号在他处登录」modal〕、policy=關維持 027 多裝置)。**2026-06-05 brainstorm 全決**(`docs/superpowers/028-single-session-enforcement.md`):獨立 `sid` 入 Claims(required)/ pointer = Redis(讀)+ sys_user(持久真相)混合 / 4 認證 gate(不含 ctx_mw)+ refresh 驗 pointer + 繼承 sid / 登入 revoke 舊鏈 / policy = sys_user 三態(inherit/on/off)+ 系統預設 config(**028=off dormant 上線**)。**base-web 零改、無新對外端點、預期無 amendment**(§11.17 018 先例;sys_user 系統欄 §I.6 PASS-by-scope)。下一步 user 跑 `/speckit-specify`(建 028 branch)。詳見 [DESIGN §10 Phase 5](INTEGRATION-DESIGN.md)
-- [ ] **029-single-session-admin-ui(立案)**:028 policy 的 admin 管理 UI — 系統預設 runtime store(rev2 首張 system-settings 表,把 028 config 預設變 runtime 可調)+ admin 設定頁 + 每帳號 policy UI(使用者管理頁)+ get/set endpoint + casbin + base-web。疊在 028 儲存之上(後端先、UI 後);028 落地後做
+- [x] **028-single-session-enforcement ✅ 落地(2026-06-06)** — 見 §2.33 / [DESIGN §6.6](INTEGRATION-DESIGN.md)
+- [ ] **029-single-session-admin-ui(立案)**:028 policy 的 admin 管理 UI — 系統預設 runtime store(rev2 首張 system-settings 表,把 028 config 預設變 runtime 可調)+ admin 設定頁 + 每帳號 policy UI(使用者管理頁)+ get/set endpoint + casbin + base-web。疊在 028 儲存之上(後端先、UI 後);**028 已落地、可起**(後端先、UI 後)
 - [ ] **sys_token 實體清理 / 過期淘汰**:027 FR-011 OUT — 過期/已作廢 row 持續累積,實體移除交 Phase 5 **cleanup-job feature**(027 期間靠 `expires_at` + 換新時 `jwt::verify` 排除過期)
 - [ ] **盜用偵測事件持久化審計 / 指標**:027 clarify ④ 以 **warn 級運行日誌**記錄(`tracing::warn!(user_id,rotation_chain)`、可觀察);持久化安全審計 / metrics 留 **Phase 6** 觀察性堆疊
 - [x] **CDP smoke deferred-with-rationale** ✅:027 對 base-web **零改**(wire 中性)、refresh 為背景 token 流程(無 base-web modal),curl C1-C5 已端到端證明 wire 契約保持 → CDP「curl ≠ base-web modal 對齊」gotcha 在無 base-web 改動的 feature 不適用(plan/contracts 標可選);未補測無債
 - [ ] **token_hash 撞鍵殘餘風險(極低、accepted)**:`Claims` 無 `jti`、`iat` 秒精度 → 同秒同 user/roles 兩 refresh JWT 理論可逐字相同 → SHA-256 撞 UNIQUE → benign 並發其一 insert DbErr→`5000`(SC-003 不破、僅偶發 5000);admin 低並發可接受。理想:rotate 對 insert unique-violation 特判為 BenignConcurrent
 - [ ] **`expires_at` vs JWT `exp` 微小時鐘偏移(latent、accepted、final review 抓)**:`sys_token.expires_at`(`ttl_window` 的 `chrono::Utc::now()`)與 JWT `exp`(`jwt::sign` 的 `now_secs()`)是**兩次獨立時鐘讀取** → DB `expires_at` 比 JWT 真正 exp 晚數毫秒。**027 無害**:`expires_at` 純 lifecycle metadata、`rotate`/`decide_rotation` 從不讀它、過期由 `jwt::verify` 把關。**但未來若有 feature 拿 `sys_token.expires_at` 當 enforcement gate 須警覺此偏移**(屆時讓 `ttl_window` 先算、把 `issued` 餵進 jwt sign 統一單一時鐘源)。
 - [ ] **`rotate` 整鏈 revoke 原子性殘餘競態(SC-002、accepted、單實例 OK)**:`rotate` 只 `lock_exclusive` 命中**單列**、不鎖整鏈 → 極端並發下合法 Rotate 的新 active 與另一持同鏈 stale token 的整鏈 Reuse 鎖不同列、互不阻塞 → Reuse 的 chain UPDATE snapshot 可能不含尚未 insert 的新 active → 殘留一張 active(該 user **下次任一 rotate 觸發偵測時收斂**)。單實例 + admin 低並發 + 需攻擊者與真實 user 同毫秒並發、殘餘風險小(多實例本就 OUT、spec Assumptions);**未來若需嚴格化整鏈作廢**(多實例/高並發):Reuse 先 `SELECT ... WHERE rotation_chain=C FOR UPDATE` 鎖全鏈或對 chain 取 advisory lock。詳見 [DESIGN §6.2](INTEGRATION-DESIGN.md) 殘餘競態註。
+
+### 2.33 feature 028-single-session-enforcement follow-up
+
+- [ ] **same-second refresh token_hash collision(027 latent edge、非 028 regression)**:同一秒內 login→refresh 簽出 byte-identical JWT → `sys_token.token_hash` UNIQUE 違反 → rotate `5000`;real usage(refresh 近 access 到期、iat 不同)不觸發,028 acceptance immediate-refresh 才踩到(C4 須留 ≥1s iat gap)。fix = 加 `jti`/sub-second 使兩次簽發不再 byte-identical(027-scope、OUT of 028)。
+- [ ] **base-web 踢人 modal(7777)HARD-reload boot race**:HARD page reload 時 `window.$dialog?.error` 在 `AppProvider` 掛 `$dialog` 前被 boot-time getUserInfo 觸發 → 靜默 no-op(7777 仍正確回傳);in-app SPA 導航穩定彈窗。非 028 後端缺陷、base-web init timing;若要「被踢分頁 hard-refresh 也彈窗」屬 base-web 改、與 029 相關。
+- [x] **CDP isolated-context modal smoke ✅(2026-06-06)**:028 US3 親驗「账号在他处登录」彈窗 + 確認→/login + dialogCount=1 + off 不踢(不擾 user tab)。
 
 ## 3. 已完成里程碑
 
@@ -246,8 +252,8 @@
 ### Phase 5 — 補位 + 抽離項(已啟動)
 
 - [x] **refresh token 完整實作 feature(027)** ✅ — DB 持久化 rotation chain + 盜用偵測 + grace + SHA-256 雜湊(`sys_token` 表 / `decide_rotation`+`rotate` facade / login+refresh 串接,wire 中性、base-web 零改);live-DB L1-L6 + curl C1-C5 + 守恆 + prod build 全綠;詳見 [DESIGN §10 Phase 5 + §6.2](INTEGRATION-DESIGN.md) + `specs/027-refresh-token-rotation/`;follow-up §2.32
-- [ ] **028-single-session-enforcement(引擎 + policy 儲存)** — brainstorm 已收斂(2026-06-05 全決,`docs/superpowers/028-single-session-enforcement.md`):per-account 可控單一-session(policy=開踢舊〔`7777`〕、關維持 027 多裝置)、獨立 sid 入 Claims(required)、pointer Redis+sys_user 混合、4 gate+refresh 驗、登入 revoke 舊鏈、policy sys_user 三態 + 系統預設 config(028=off dormant);**base-web 零改、無新對外端點、預期無 amendment**;admin UI 拆 029。下一步 user 跑 `/speckit-specify`
-- [ ] **029-single-session-admin-ui** — 028 policy 的管理 UI(系統預設 runtime store=rev2 首張 system-settings 表 + admin 設定頁 + 每帳號 policy UI + endpoint + casbin + base-web);疊在 028 之上、028 後做
+- [x] **028-single-session-enforcement(引擎 + policy 儲存)** ✅ — per-account 可控 access 端單一-session(policy=開踢舊〔`7777`〕、關維持 027 多裝置):Claims +sid / pointer Redis+sys_user 混合 fail-open / 4 gate+refresh pointer-first / 登入 revoke 舊鏈 + 一律 set_pointer / policy sys_user 三態 + config(028=off dormant)。wire 中性、base-web 零改、無新端點/crate/amendment;U1/U2/pre-028 + live L1-L5 + curl C1-C4 + CDP modal smoke + 守恆 server 221/lint 17/30 + migration 可逆 + prod build 全綠;詳見 [DESIGN §10 Phase 5 + §6.6](INTEGRATION-DESIGN.md) + `specs/028-single-session-enforcement/`;follow-up §2.33
+- [ ] **029-single-session-admin-ui** — 028 policy 的管理 UI(系統預設 runtime store=rev2 首張 system-settings 表 + admin 設定頁 + 每帳號 policy UI + endpoint + casbin + base-web);疊在 028 之上、028 已落地、可起
 - [ ] 抽離項 stub feature(`/auth/error` / `/auth/sendCaptcha` / `/auth/verifyCaptcha`)
 - [ ] cleanup-job feature(dry-run 預設 + cron + 最小權 credential;含過期/已作廢 sys_token 實體清理)
 
@@ -291,7 +297,7 @@
 
 - [x] **login**:`{userName, password}` request、response envelope wrap `{token, refreshToken}`(§4.12.1)— ✅ 013(camelCase、curl + CDP 驗)
 - [x] **refresh rotation**:每次同時換新 token + 新 refreshToken(§4.12.2)— ✅ 013 最小無狀態;**✅ 027 升級為 DB 持久化 rotation chain + 盜用偵測(reuse→整族系 revoke + 8888)+ grace 寬限窗 + SHA-256 雜湊**(`sys_token`;wire 中性、`{token,refreshToken}` 逐字不變)
-- [x] **stale token**:`/auth/getUserInfo` 須支援 stale 但未 expired token(page reload restore session)(§4.12.3)— ✅ **027 US4/FR-009/SC-008 正式驗收**(027 不改 getUserInfo/verify_bearer;curl C5:15s 舊 access→`0000`+userName;族系雖被盜用 revoke,access stateless 仍有效)
+- [x] **stale token**:`/auth/getUserInfo` 須支援 stale 但未 expired token(page reload restore session)(§4.12.3)— ✅ **027 US4/FR-009/SC-008 正式驗收**(027 不改 getUserInfo/verify_bearer;curl C5:15s 舊 access→`0000`+userName;族系雖被盜用 revoke,access stateless 仍有效)— **✅ 028 升級為 per-account 可控**:policy=開時 access 端可被 session pointer 即時撤銷(舊 session 下個請求 4 認證 gate 回 `7777`),policy=關仍維持此 stateless 多裝置並存;§11.17(018 enforce DB-fresh stateful)同軸延伸,見 [DESIGN §6.6](INTEGRATION-DESIGN.md)
 - [x] **logout 無 endpoint**:rust-api 不實作 `/auth/logout`,業務只走 frontend `resetStore()`(§4.12.4 已驗)
 - [x] **refresh critical 紀律**:`/auth/refreshToken` 絕對不回 `9999/9998/3333`(§4.11)— ✅ 013 失敗一律 `8888`(curl grep 驗無 3333/9999/9998)
 
