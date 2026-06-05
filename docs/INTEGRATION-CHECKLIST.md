@@ -193,13 +193,13 @@
 - [ ] **sys_token 實體清理 / 過期淘汰**:027 FR-011 OUT — 過期/已作廢 row 持續累積,實體移除交 Phase 5 **cleanup-job feature**(027 期間靠 `expires_at` + 換新時 `jwt::verify` 排除過期)
 - [ ] **盜用偵測事件持久化審計 / 指標**:027 clarify ④ 以 **warn 級運行日誌**記錄(`tracing::warn!(user_id,rotation_chain)`、可觀察);持久化安全審計 / metrics 留 **Phase 6** 觀察性堆疊
 - [x] **CDP smoke deferred-with-rationale** ✅:027 對 base-web **零改**(wire 中性)、refresh 為背景 token 流程(無 base-web modal),curl C1-C5 已端到端證明 wire 契約保持 → CDP「curl ≠ base-web modal 對齊」gotcha 在無 base-web 改動的 feature 不適用(plan/contracts 標可選);未補測無債
-- [ ] **token_hash 撞鍵殘餘風險(極低、accepted)**:`Claims` 無 `jti`、`iat` 秒精度 → 同秒同 user/roles 兩 refresh JWT 理論可逐字相同 → SHA-256 撞 UNIQUE → benign 並發其一 insert DbErr→`5000`(SC-003 不破、僅偶發 5000);admin 低並發可接受。理想:rotate 對 insert unique-violation 特判為 BenignConcurrent
+- [ ] **token_hash 撞鍵殘餘風險(極低、accepted)**:`Claims` 無 `jti`、`iat` 秒精度 → 同秒同 user/roles 兩 refresh JWT 理論可逐字相同 → SHA-256 撞 UNIQUE → benign 並發其一 insert DbErr→`5000`(SC-003 不破、僅偶發 5000);admin 低並發可接受。理想:rotate 對 insert unique-violation 特判為 BenignConcurrent。**028 acceptance 實證觸發(2026-06-06)**:不只並發 — login→同秒 immediate refresh 也撞(refresh 重簽出的 token == login chain-head 的 token)→ 028 C4 驗收須留 **≥1s iat gap**;memory `same-second-refresh-token-hash-collision`
 - [ ] **`expires_at` vs JWT `exp` 微小時鐘偏移(latent、accepted、final review 抓)**:`sys_token.expires_at`(`ttl_window` 的 `chrono::Utc::now()`)與 JWT `exp`(`jwt::sign` 的 `now_secs()`)是**兩次獨立時鐘讀取** → DB `expires_at` 比 JWT 真正 exp 晚數毫秒。**027 無害**:`expires_at` 純 lifecycle metadata、`rotate`/`decide_rotation` 從不讀它、過期由 `jwt::verify` 把關。**但未來若有 feature 拿 `sys_token.expires_at` 當 enforcement gate 須警覺此偏移**(屆時讓 `ttl_window` 先算、把 `issued` 餵進 jwt sign 統一單一時鐘源)。
 - [ ] **`rotate` 整鏈 revoke 原子性殘餘競態(SC-002、accepted、單實例 OK)**:`rotate` 只 `lock_exclusive` 命中**單列**、不鎖整鏈 → 極端並發下合法 Rotate 的新 active 與另一持同鏈 stale token 的整鏈 Reuse 鎖不同列、互不阻塞 → Reuse 的 chain UPDATE snapshot 可能不含尚未 insert 的新 active → 殘留一張 active(該 user **下次任一 rotate 觸發偵測時收斂**)。單實例 + admin 低並發 + 需攻擊者與真實 user 同毫秒並發、殘餘風險小(多實例本就 OUT、spec Assumptions);**未來若需嚴格化整鏈作廢**(多實例/高並發):Reuse 先 `SELECT ... WHERE rotation_chain=C FOR UPDATE` 鎖全鏈或對 chain 取 advisory lock。詳見 [DESIGN §6.2](INTEGRATION-DESIGN.md) 殘餘競態註。
 
 ### 2.33 feature 028-single-session-enforcement follow-up
 
-- [ ] **same-second refresh token_hash collision(027 latent edge、非 028 regression)**:同一秒內 login→refresh 簽出 byte-identical JWT → `sys_token.token_hash` UNIQUE 違反 → rotate `5000`;real usage(refresh 近 access 到期、iat 不同)不觸發,028 acceptance immediate-refresh 才踩到(C4 須留 ≥1s iat gap)。fix = 加 `jti`/sub-second 使兩次簽發不再 byte-identical(027-scope、OUT of 028)。
+- [ ] **same-second token_hash collision(028 acceptance 實證觸發、非 028 regression)** → 同根因併入 **§2.32 token_hash 撞鍵殘餘風險**(027 token-design 無 `jti`/秒精度 `iat`);028 C4 驗收須留 ≥1s iat gap、real usage 不觸發。
 - [ ] **base-web 踢人 modal(7777)HARD-reload boot race**:HARD page reload 時 `window.$dialog?.error` 在 `AppProvider` 掛 `$dialog` 前被 boot-time getUserInfo 觸發 → 靜默 no-op(7777 仍正確回傳);in-app SPA 導航穩定彈窗。非 028 後端缺陷、base-web init timing;若要「被踢分頁 hard-refresh 也彈窗」屬 base-web 改、與 029 相關。
 - [x] **CDP isolated-context modal smoke ✅(2026-06-06)**:028 US3 親驗「账号在他处登录」彈窗 + 確認→/login + dialogCount=1 + off 不踢(不擾 user tab)。
 
@@ -249,7 +249,7 @@
 - [x] **菜單樹建構 feature** ✅ 019 — 純函式 `assemble_menu_tree`(parent_id→nested、order 排序〔None 末〕、孤節點略過),getUserRoutes + getMenuTree 共用、可單測
 - [x] **審計欄 retrofit feature**(既有業務表補 §I.6 6 審計欄)✅ — sys_user(017,5 欄)+ sys_role(018,7 欄);019 sys_menu = 凍結後首張新建表 create 即帶 6 欄(0 retrofit 債);見 §2.18
 
-### Phase 5 — 補位 + 抽離項(已啟動)
+### Phase 5 — 補位 + 抽離項(進行中)
 
 - [x] **refresh token 完整實作 feature(027)** ✅ — DB 持久化 rotation chain + 盜用偵測 + grace + SHA-256 雜湊(`sys_token` 表 / `decide_rotation`+`rotate` facade / login+refresh 串接,wire 中性、base-web 零改);live-DB L1-L6 + curl C1-C5 + 守恆 + prod build 全綠;詳見 [DESIGN §10 Phase 5 + §6.2](INTEGRATION-DESIGN.md) + `specs/027-refresh-token-rotation/`;follow-up §2.32
 - [x] **028-single-session-enforcement(引擎 + policy 儲存)** ✅ — per-account 可控 access 端單一-session(policy=開踢舊〔`7777`〕、關維持 027 多裝置):Claims +sid / pointer Redis+sys_user 混合 fail-open / 4 gate+refresh pointer-first / 登入 revoke 舊鏈 + 一律 set_pointer / policy sys_user 三態 + config(028=off dormant)。wire 中性、base-web 零改、無新端點/crate/amendment;U1/U2/pre-028 + live L1-L5 + curl C1-C4 + CDP modal smoke + 守恆 server 221/lint 17/30 + migration 可逆 + prod build 全綠;詳見 [DESIGN §10 Phase 5 + §6.6](INTEGRATION-DESIGN.md) + `specs/028-single-session-enforcement/`;follow-up §2.33
