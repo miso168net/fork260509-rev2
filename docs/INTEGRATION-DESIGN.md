@@ -742,6 +742,20 @@ CREATE INDEX idx_sys_tokens_chain ON sys_tokens(rotation_chain);
 
 **critical**:refresh 失敗(token 不存在 / chain revoked / expired)→ 回 `"8888"`(logoutCodes),**絕不可回 `"3333"`**(會 dead loop)
 
+**✅ 027-refresh-token-rotation 落地(2026-06-05、rust-api `1bd0436`)— as-built 與此設計的差異/精化**:
+- **表名單數**:as-built 表 `sys_token`(**單數**),對齊 codebase 7-entity `filename==table_name` 慣例(皆單數);此草圖用複數 `sys_tokens`。entity/facade 檔 `sys_token.rs`、index `idx_sys_token_*`。
+- **雜湊儲存(非原文,FR-007/SC-005)**:`token_hash VARCHAR(64) NOT NULL UNIQUE` 存 refresh JWT 的 **SHA-256 hex**(`sha256_hex`,sha2 直接 dep),**不存原文**(草圖的 `token VARCHAR(2048)` 偏離否決 — DB 外洩縱深防禦);比對改以雜湊進行。
+- **rotation_chain 存字串**:`rotation_chain VARCHAR(36)`(uuid v4 字串 `Uuid::new_v4().to_string()`),非草圖 native PG `UUID`(sea-orm 無 `with-uuid` feature、避版本對齊風險;不透明分組標識字串足夠)。
+- **無 DB 層 FK**:`user_id BIGINT NOT NULL`,**不加** FOREIGN KEY(對齊 codebase 慣例:無 migration 用 FK 約束、含 join 表 sys_user_role);「FK→sys_user」僅邏輯關係。
+- **新增 `used_at TIMESTAMPTZ NULL`**:草圖未含;`active→used` 時設,供 grace 寬限窗判定。
+- **partial index 非-unique**:`idx_sys_token_user_active (user_id) WHERE status='active'` 刻意**非 unique**(容忍 benign 並發短暫 multi-active),raw SQL `execute_unprepared`;另 `idx_sys_token_chain (rotation_chain)` 整族系 revoke 用。
+- **logout 流程精化(FR-010)**:草圖 flow ③「user logout(被動)→ 整條 chain 標 revoked」**改為**:logout = 前端清狀態,被放棄的 chain **不主動 revoke**、靠 `expires_at` 到期自然失效;**主動 revoke 只由盜用偵測(FR-003)觸發**(整族系)。
+- **狀態機**:純判定 seam `decide_rotation(status,used_at,now,grace)→{Rotate,Benign,Reuse}`(FR-014 全分支單測、`(used,None)` fail-closed→Reuse、`>=grace` 邊界=Reuse)+ facade `rotate`(`db.begin()` 純 txn + **單列 `FOR UPDATE`** 序列化、**非** `mutate_in_txn`)回 `{Rotated,BenignConcurrent,Reuse,NotFound}`;`now` 用 handler 傳入的 `issued_at`(同一瞬間、facade 免 wall-clock)。`GRACE_SECS=30`。
+- **handler 串接(wire 中性)**:`login` 在 015 login-attempt 審計寫入**之後**呼 `create_chain_head`(保 015 success=純憑證成敗;chain-head DbErr→`5000`);`refresh_token` 預簽 `issue_tokens`(unchanged)→ `rotate` → Rotated|Benign→`ok(new)` / Reuse|NotFound→`8888` / DbErr→`5000`。`LoginToken`/`Claims`/`issue_tokens` 逐字不變、**base-web 零改**;`expires_at` 純 lifecycle metadata、輪替判定不讀(過期由 handler `jwt::verify` 把關)。
+- **殘餘競態(SC-002 誠實)**:單列鎖 → 極端並發下合法 Rotate 的新 active 與另一 stale token 的整鏈 Reuse 鎖不同列、可能殘留一張 active,於該 user **下次 rotate 收斂**;單實例 admin 低並發可接受(嚴格化需鎖全鏈/advisory lock)。
+- **acceptance**:live-DB L1-L6 6/6 + curl C1-C5 + 守恆(server **218** 單測〔U1/U2/U3 + ttl_window〕+ entity_access_lint 17 + endpoint_coverage_lint 30〔無新端點〕+ migration up→down→up 可逆 throwaway DB)+ **prod image build 綠**。新 server 直接 dep `sha2`/`chrono`(皆 lock 既有 transitive、**非新 workspace crate、非 fork**,FR-012 ✅)。
+- **028-single-session-enforcement** 拆出(access 端 stateful 撤銷、current-session pointer):見 §10 Phase 5;**設計細節見 `specs/027-refresh-token-rotation/`**。
+
 ### §6.3 Casbin policy(動態 reload + redis pub-sub channel)
 
 - **schema**:`casbin_rule` 表(sea-orm-adapter 預設)
@@ -1181,9 +1195,10 @@ BASE_WEB_TAG=rev2-admin-base-web
 
 ### Phase 5 — 補位 + 抽離項
 
-1. **refresh token 完整實作 feature** — `/auth/refreshToken` + `sys_tokens` rotation_chain + 舊 token 標 `used`
-2. **抽離項 stub feature** — `/auth/error` / `/auth/sendCaptcha` / `/auth/verifyCaptcha`(若 §11.2 選 stub)
-3. **cleanup-job feature** — dry-run 預設 + `--execute` 才實刪 + host cron + 獨立最小權限 credential
+1. **refresh token 完整實作** — ✅ **027-refresh-token-rotation 落地(2026-06-05、rust-api `1bd0436`)**:`/auth/refreshToken` 升級為 DB 持久化 rotation chain + 盜用偵測(reuse detection)+ grace 寬限窗 + SHA-256 雜湊儲存(`sys_token` 表 / `decide_rotation`+`rotate` facade / login+refresh 串接,wire 中性、base-web 零改)。**as-built 見 §6.2**;follow-up CHECKLIST §2.32。
+2. **028-single-session-enforcement** — 「一帳號同時只能一個登入 + 每請求即時踢舊 session」(access 端 stateful 撤銷,機制評估為 current-session pointer)。**027 收尾拆出**(027 維持多裝置/多族系並存 + access stateless;單一-session 屬不同軸:觸 enforce_mw + 3 非-enforce 認證端點 verify_bearer + Claims schema 變更,scope ≈ 翻倍且打破 027 乾淨基線)。027 落地後可做。rationale 見 `specs/027-refresh-token-rotation/spec.md` Clarifications。
+3. **抽離項 stub feature** — `/auth/error` / `/auth/sendCaptcha` / `/auth/verifyCaptcha`(若 §11.2 選 stub)
+4. **cleanup-job feature** — dry-run 預設 + `--execute` 才實刪 + host cron + 獨立最小權限 credential(過期/已作廢 sys_token 實體清理屬此 feature,027 FR-011 OUT)
 
 ### Phase 6 — 觀察性(可選,生產 ready)
 
