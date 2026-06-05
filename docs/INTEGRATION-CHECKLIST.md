@@ -193,6 +193,8 @@
 - [ ] **盜用偵測事件持久化審計 / 指標**:027 clarify ④ 以 **warn 級運行日誌**記錄(`tracing::warn!(user_id,rotation_chain)`、可觀察);持久化安全審計 / metrics 留 **Phase 6** 觀察性堆疊
 - [x] **CDP smoke deferred-with-rationale** ✅:027 對 base-web **零改**(wire 中性)、refresh 為背景 token 流程(無 base-web modal),curl C1-C5 已端到端證明 wire 契約保持 → CDP「curl ≠ base-web modal 對齊」gotcha 在無 base-web 改動的 feature 不適用(plan/contracts 標可選);未補測無債
 - [ ] **token_hash 撞鍵殘餘風險(極低、accepted)**:`Claims` 無 `jti`、`iat` 秒精度 → 同秒同 user/roles 兩 refresh JWT 理論可逐字相同 → SHA-256 撞 UNIQUE → benign 並發其一 insert DbErr→`5000`(SC-003 不破、僅偶發 5000);admin 低並發可接受。理想:rotate 對 insert unique-violation 特判為 BenignConcurrent
+- [ ] **`expires_at` vs JWT `exp` 微小時鐘偏移(latent、accepted、final review 抓)**:`sys_token.expires_at`(`ttl_window` 的 `chrono::Utc::now()`)與 JWT `exp`(`jwt::sign` 的 `now_secs()`)是**兩次獨立時鐘讀取** → DB `expires_at` 比 JWT 真正 exp 晚數毫秒。**027 無害**:`expires_at` 純 lifecycle metadata、`rotate`/`decide_rotation` 從不讀它、過期由 `jwt::verify` 把關。**但未來若有 feature 拿 `sys_token.expires_at` 當 enforcement gate 須警覺此偏移**(屆時讓 `ttl_window` 先算、把 `issued` 餵進 jwt sign 統一單一時鐘源)。
+- [ ] **`rotate` 整鏈 revoke 原子性殘餘競態(SC-002、accepted、單實例 OK)**:`rotate` 只 `lock_exclusive` 命中**單列**、不鎖整鏈 → 極端並發下合法 Rotate 的新 active 與另一持同鏈 stale token 的整鏈 Reuse 鎖不同列、互不阻塞 → Reuse 的 chain UPDATE snapshot 可能不含尚未 insert 的新 active → 殘留一張 active(該 user **下次任一 rotate 觸發偵測時收斂**)。單實例 + admin 低並發 + 需攻擊者與真實 user 同毫秒並發、殘餘風險小(多實例本就 OUT、spec Assumptions);**未來若需嚴格化整鏈作廢**(多實例/高並發):Reuse 先 `SELECT ... WHERE rotation_chain=C FOR UPDATE` 鎖全鏈或對 chain 取 advisory lock。詳見 [DESIGN §6.2](INTEGRATION-DESIGN.md) 殘餘競態註。
 
 ## 3. 已完成里程碑
 
