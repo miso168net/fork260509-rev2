@@ -47,7 +47,7 @@
 
 **結論:8/8 PASS,無 amendment 必需。**
 
-**Constitution Note(#8,提呈 user)**:§I.6 例外清單字面列「append-only 審計表」「join 表」,`sys_token` 是**可變狀態 session infra**(status active→used→revoked,非 append-only、非 join),不字面落任一既列例外。但 §I.6 規則本身只約束「**業務主表**」(追 human operator 的 *_by 欄),sys_token 無 human operator(機器代認證使用者建立/輪替)→ 非業務主表、規則不適用(PASS by scope)。**可選**:§I.6 PATCH amendment 把「session/token lifecycle infra 表」explicit 列為非業務主表示例(釐清、不改規則語義;依 §V.2 須 user 親決)。**推薦接受 scope 解讀、不 amend**;若 user 要 explicit 化再走 amendment 流程。
+**Constitution Note(#8,提呈 user)**:§I.6 例外清單字面列「append-only 審計表」「join 表」,`sys_token` 是**可變狀態 session infra**(status active→used→revoked,非 append-only、非 join),不字面落任一既列例外。但 §I.6 規則本身只約束「**業務主表**」(追 human operator 的 *_by 欄),sys_token 無 human operator(機器代認證使用者建立/輪替)→ 非業務主表、規則不適用(PASS by scope)。曾提呈可選 §I.6 PATCH amendment(把「session/token lifecycle infra 表」explicit 列為非業務主表示例;釐清、不改規則語義)。**user 親決不 amend(2026-06-05)** —— 接受 PASS-by-scope 解讀(`sys_token` 非業務主表已成立、有 sys_login_attempt 等 infra 先例);未來若要 explicit 化再走 §V.2 amendment 流程。
 
 ## Project Structure
 
@@ -84,7 +84,7 @@ rust-api/
 
 ## Complexity Tracking
 
-無 Constitution 違規需 justify(8/8 PASS)。唯一需 user 知會 = #8 的 §I.6 scope 解讀(見 Constitution Note,推薦不 amend)。
+無 Constitution 違規需 justify(8/8 PASS)。唯一需 user 知會 = #8 的 §I.6 scope 解讀(見 Constitution Note,**user 親決不 amend**)。
 
 ## Phase 進度
 
