@@ -15,7 +15,7 @@
 ### Session 2026-06-05
 
 - Q: 偵測到盜用重放時的作廢範圍? → A: 只作廢**受影響的單一登入族系**(被重放憑證所屬的 rotation chain,token family revocation),不牽連該使用者其他族系/裝置的合法 session。
-- Q: 是否在 027 納入「一帳號同時只能一個登入 + 每請求即時踢舊 session」(access 端 stateful)? → A: **不納入 027,拆為獨立後續 feature 028-single-session-enforcement**(027 落地後做、機制已評估為 current-session pointer)。027 **維持多裝置/多族系合法並存**(FR-003 只作廢單一族系)、**access 端維持 stateless 短 TTL**(FR-008/FR-012 不碰 access 簽發/驗證)。理由:即時踢是 access 端的不同軸(觸及 enforce_mw + 三個非-enforce 認證端點的 verify_bearer 線 + Claims schema 變更),scope ≈ 翻倍且會打破 027「wire 中性、getUserInfo 行為逐字不變、206 單測逐字」的乾淨基線;且 sys_tokens 為 refresh-keyed rotation(非 access session store)、partial index 刻意非-unique(容忍多裝置),與「單一 session」語義對立。此邊界刻意保留,避免單一-session 混入 027。
+- Q: 是否在 027 納入「一帳號同時只能一個登入 + 每請求即時踢舊 session」(access 端 stateful)? → A: **不納入 027,拆為獨立後續 feature 028-single-session-enforcement**(027 落地後做、機制已評估為 current-session pointer)。027 **維持多裝置/多族系合法並存**(FR-003 只作廢單一族系)、**access 端維持 stateless 短 TTL**(FR-008/FR-012 不碰 access 簽發/驗證)。理由:即時踢是 access 端的不同軸(觸及 enforce_mw + 三個非-enforce 認證端點的 verify_bearer 線 + Claims schema 變更),scope ≈ 翻倍且會打破 027「wire 中性、getUserInfo 行為逐字不變、206 單測逐字」的乾淨基線;且 sys_token 表為 refresh-keyed rotation(非 access session store)、partial index 刻意非-unique(容忍多裝置),與「單一 session」語義對立。此邊界刻意保留,避免單一-session 混入 027。
 - Q: refresh 憑證的存活模型?(sliding vs 絕對上限) → A: **sliding**(每次換新的新憑證取得全新完整存活期,對齊現行重簽行為);v1 **不引入族系絕對上限**(YAGNI,日後要再加)。
 - Q: 偵測到盜用重放時是否留存安全審計紀錄? → A: 本 feature 以**運行日誌(warn 級)**記錄盜用偵測事件(可觀察);**持久化安全審計紀錄 / 指標**留待觀察性堆疊(Phase 6),不在本 feature 新增持久化審計路徑(對齊 brainstorm「metrics/observability → Phase 6」OUT)。
 
@@ -72,7 +72,7 @@
 
 身為使用者,我重新整理頁面時,前端會用尚未過期的 access 憑證向 getUserInfo 還原我的登入狀態。我希望這個既有行為**不受本次升級影響**仍正常運作。
 
-**Why this priority**: 既有不變式的正式驗收(§5.3 stale token),非新能力;本 feature 不改 getUserInfo,只確保升級未誤傷此路徑。優先序最低。
+**Why this priority**: 既有不變式的正式驗收(stale-but-unexpired access 還原(US4/FR-009)),非新能力;本 feature 不改 getUserInfo,只確保升級未誤傷此路徑。優先序最低。
 
 **Independent Test**: 持一張較早簽發但**尚未過期**的 access 憑證呼叫 getUserInfo → 仍回 200 與正確使用者資訊。
 
@@ -101,11 +101,11 @@
 - **FR-006**: refresh 換新過程中的**真正伺服器故障**(如資料庫錯誤)MUST 回內部錯誤碼(`5000`),不得偽裝成登出碼或重新驗證碼。
 - **FR-007**: 系統 MUST 以不可逆雜湊(SHA-256)儲存 refresh 憑證,不得儲存原文;憑證比對改以雜湊進行。
 - **FR-008**: 本 feature MUST 維持 wire 中性:登入/換新成功回應的 `{token, refreshToken}` 結構**逐字不變**;不新增任何對外端點。
-- **FR-009**: 既有「以尚未過期的 access 憑證經 getUserInfo 還原 session」之行為 MUST 維持不變(本 feature 不改 getUserInfo,正式驗收 §5.3 不變式)。
+- **FR-009**: 既有「以尚未過期的 access 憑證經 getUserInfo 還原 session」之行為 MUST 維持不變(本 feature 不改 getUserInfo,正式驗收此 stale-but-unexpired 還原不變式)。
 - **FR-010**: 系統 MUST NOT 新增登出端點;登出維持僅由前端清除狀態(沿 §4.12.4)。被前端放棄的族系**不主動作廢**,靠憑證到期自然失效;**主動作廢只由盜用偵測(FR-003)觸發**。
-- **FR-011**: refresh 憑證紀錄的**實體清理 / 過期淘汰**屬本 feature 範圍外(交由後續 cleanup-job feature);本 feature 僅建立與標記狀態,憑證有效性由「到期時間」於驗證時把關。
+- **FR-011**: refresh 憑證紀錄的**實體清理 / 過期淘汰**屬本 feature 範圍外(交由後續 cleanup-job feature);本 feature 僅建立與標記狀態。**過期憑證的把關由憑證自身的有效期(換新時驗證即拒過期)負責**;紀錄的「到期時間」欄為生命週期 metadata、供後續清理 job 查詢淘汰,**換新判定流程不另讀此欄**。
 - **FR-012**: 本 feature MUST NOT 變更 base-web、MUST NOT 變更權限政策(casbin)、MUST NOT 引入分岔的第三方套件(不 fork)、MUST NOT 新增 workspace crate。
-- **FR-013**: 新增的 refresh 憑證紀錄表屬**機器管理的 session 生命週期表**(無人工操作者新增/編輯列),比照既有 append-only / 基礎設施表免除標準審計欄要求;以自身的「簽發時間 / 到期時間 / 使用時間 / 建立時間」生命週期欄記錄。
+- **FR-013**: 新增的 refresh 憑證紀錄表屬**機器管理的 session 生命週期表**(列由登入/換新機器流程代認證使用者建立、狀態機器驅動,**無人工操作者**)→ 非「業務主表」,標準審計欄(誰建/誰改/誰刪)規則前提不成立、免除;比照既有同屬無-人工操作者的基礎設施表(如登入嘗試 / 存取日誌)。以自身的「簽發時間 / 到期時間 / 使用時間 / 建立時間」生命週期欄記錄。**注意**:本表為可變狀態(非 append-only),其免除依「非業務主表」前提、非「append-only 例外」。
 - **FR-014**: 盜用偵測的核心判定(憑證狀態 × 寬限窗口 → 結果)MUST 有單元測試覆蓋全部分支(正常輪替 / 良性並發 / 盜用作廢 / 已作廢 / 查無)。
 
 ### Key Entities *(include if feature involves data)*
@@ -124,7 +124,7 @@
 - **SC-005**: 資料庫中的 refresh 憑證紀錄**不含**任何可直接使用的原文憑證(僅雜湊);DB dump 無法直接重放。
 - **SC-006**: 登入/換新成功回應的 `{token, refreshToken}` 鍵與結構與升級前**0 差異**;既有 login round-trip 與 refresh 驗收行為保持。
 - **SC-007**: 守恆不破 —— 既有 server 單元測試(206)前後全綠(加上新測)、entity-access lint(17)、endpoint coverage(30,本 feature 不新增端點)維持;新增資料表的遷移可逆(up→down→up)。
-- **SC-008**: 持未過期 access 憑證呼叫 getUserInfo 100% 回 200 與正確使用者資訊(§5.3 stale token 不變式成立)。
+- **SC-008**: 持未過期 access 憑證呼叫 getUserInfo 100% 回 200 與正確使用者資訊(stale-but-unexpired access 還原(US4/FR-009) 不變式成立)。
 
 ## Assumptions
 
