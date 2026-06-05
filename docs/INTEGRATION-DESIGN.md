@@ -1583,6 +1583,16 @@ rev2 spec-kit feature 工作流前置 brainstorm 文件存哪?
 >
 > **觸發**:025 `/speckit-plan` Constitution Check FINDING #2/#7。落 025 feature branch(隨 025 merge 回 default)。
 
+### §11.24 v1.6.0 amend — MODAL-WIRING ★ 邊界 +同 manage 範式的新管理頁(2026-06-06,029)
+
+> **改哪節**:constitution §III.2 MODAL-WIRING ★「邊界」加 (e) 子句(同 `manage/` 範式新管理頁:`views/manage/<page>/index.vue` + 可選 `modules/*`,鏡像既有 user/role/menu 頁結構、消費 rev2 端點、route 由 elegant-router 自動生成、選單走 §I.2 Casbin)+「紀律」四用途→五用途 + rationale +§11.24 + version 1.5.0→1.6.0。
+>
+> **為何**:029 single-session-admin-ui 需新增 `views/manage/system-settings/` 管理頁(系統單一-session 預設 runtime 設定面)。現 MODAL-WIRING 4 clause 皆「**改既有** manage 頁」(a 接線 / b 按鈕 gating / c 角色權限 modal / d 選單復原-re-parent),都不含「**新增一個** manage 頁 view」。base-web grep 確認無既有 settings 頁(僅 `layouts/modules/theme-drawer` 主題側欄,非 admin 系統設定)→ genuinely new。`/speckit-plan` Constitution Check gate #7 抓到(同 023/025 gap-pattern)。**開窄例外**:僅「同既有 `manage/` 範式(index.vue + 可選 modules、鏡像 user/role/menu)、消費 rev2 端點、route 由 elegant-router 從檔案結構自動生成、選單可見性走 §I.2 Casbin(後端 sys_menu + role-menu seed)」;**不擴張到任意新 UI / 非-manage 頁 / 自訂佈局**。同 029 其餘 base-web touch 皆免本子句:+3 fetch fn(`rev2-system-manage.ts`)走 BASE-WEB-WRAPPER、`getUserList` 加 `sessionPolicy` typing 走 BASE-WEB-ADAPT、使用者頁 `session_policy` 欄 + 列上 policy action 走 MODAL-WIRING (a)/(b) 既有界。
+>
+> **改後影響**:029 得在 `views/manage/system-settings/index.vue` 加新頁(spec 記 file:line + upstream 衝突風險〔elegant-router 從檔案結構自動生成 route + imports,upstream 衝突低〕)。**軌道授權邊界擴展、非新軌道**(§11.9「5 軌道/2★」計數不變、僅擴 MODAL-WIRING 既有 ★ 邊界)= **MINOR**(§V.3),version 1.5.0 → 1.6.0。分流四檔:規範→constitution §III.2;提案 of record→本節;1 行→CHECKLIST;row→MILESTONES(029 merge row 內記、鏡像 025 (d) 作法)。
+>
+> **觸發**:029 `/speckit-plan` Constitution Check gate #7。落 029 feature branch(隨 029 merge 回 default)。
+
 ---
 
 ## §12 文件交叉引用

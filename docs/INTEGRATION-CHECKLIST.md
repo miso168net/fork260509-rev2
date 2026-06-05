@@ -253,7 +253,7 @@
 
 - [x] **refresh token 完整實作 feature(027)** ✅ — DB 持久化 rotation chain + 盜用偵測 + grace + SHA-256 雜湊(`sys_token` 表 / `decide_rotation`+`rotate` facade / login+refresh 串接,wire 中性、base-web 零改);live-DB L1-L6 + curl C1-C5 + 守恆 + prod build 全綠;詳見 [DESIGN §10 Phase 5 + §6.2](INTEGRATION-DESIGN.md) + `specs/027-refresh-token-rotation/`;follow-up §2.32
 - [x] **028-single-session-enforcement(引擎 + policy 儲存)** ✅ — per-account 可控 access 端單一-session(policy=開踢舊〔`7777`〕、關維持 027 多裝置):Claims +sid / pointer Redis+sys_user 混合 fail-open / 4 gate+refresh pointer-first / 登入 revoke 舊鏈 + 一律 set_pointer / policy sys_user 三態 + config(028=off dormant)。wire 中性、base-web 零改、無新端點/crate/amendment;U1/U2/pre-028 + live L1-L5 + curl C1-C4 + CDP modal smoke + 守恆 server 221/lint 17/30 + migration 可逆 + prod build 全綠;詳見 [DESIGN §10 Phase 5 + §6.6](INTEGRATION-DESIGN.md) + `specs/028-single-session-enforcement/`;follow-up §2.33
-- [ ] **029-single-session-admin-ui** — 028 policy 的管理 UI(系統預設 runtime store=rev2 首張 system-settings 表 + admin 設定頁 + 每帳號 policy UI + endpoint + casbin + base-web);疊在 028 之上、028 已落地、可起
+- [~] **029-single-session-admin-ui** — 028 policy 的管理 UI(系統預設 runtime store=rev2 首張 system-settings 表 + admin 設定頁 + 每帳號 policy UI + endpoint + casbin + base-web);疊在 028 之上。**SDD 設計鏈進行中**(specify ✅ / clarify ✅〔0 歧義〕);**constitution amend → v1.6.0**(MODAL-WIRING ★ (e) 同 manage 範式新管理頁、ratified、DESIGN §11.24)
 - [ ] 抽離項 stub feature(`/auth/error` / `/auth/sendCaptcha` / `/auth/verifyCaptcha`)
 - [ ] cleanup-job feature(dry-run 預設 + cron + 最小權 credential;含過期/已作廢 sys_token 實體清理)
 
