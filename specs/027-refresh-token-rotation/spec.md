@@ -10,6 +10,15 @@
 
 > **性質**:這是一個**後端安全強化** feature —— 補齊 auth 路徑唯一仍「無狀態、無洩漏偵測」的一塊(refresh)。**對最終使用者的正常體驗零影響**(登入/換新照常、wire 不變),價值在「看不見的安全網」:被竊的 refresh 憑證再用會被偵測並使該登入族系失效。**rust-api 單倉、base-web 零改**。下列 user story 兼採「使用者體驗」與「安全姿態」兩視角。
 
+## Clarifications
+
+### Session 2026-06-05
+
+- Q: 偵測到盜用重放時的作廢範圍? → A: 只作廢**受影響的單一登入族系**(被重放憑證所屬的 rotation chain,token family revocation),不牽連該使用者其他族系/裝置的合法 session。
+- Q: 是否在 027 納入「一帳號同時只能一個登入 + 每請求即時踢舊 session」(access 端 stateful)? → A: **不納入 027,拆為獨立後續 feature 028-single-session-enforcement**(027 落地後做、機制已評估為 current-session pointer)。027 **維持多裝置/多族系合法並存**(FR-003 只作廢單一族系)、**access 端維持 stateless 短 TTL**(FR-008/FR-012 不碰 access 簽發/驗證)。理由:即時踢是 access 端的不同軸(觸及 enforce_mw + 三個非-enforce 認證端點的 verify_bearer 線 + Claims schema 變更),scope ≈ 翻倍且會打破 027「wire 中性、getUserInfo 行為逐字不變、206 單測逐字」的乾淨基線;且 sys_tokens 為 refresh-keyed rotation(非 access session store)、partial index 刻意非-unique(容忍多裝置),與「單一 session」語義對立。此邊界刻意保留,避免單一-session 混入 027。
+- Q: refresh 憑證的存活模型?(sliding vs 絕對上限) → A: **sliding**(每次換新的新憑證取得全新完整存活期,對齊現行重簽行為);v1 **不引入族系絕對上限**(YAGNI,日後要再加)。
+- Q: 偵測到盜用重放時是否留存安全審計紀錄? → A: 本 feature 以**運行日誌(warn 級)**記錄盜用偵測事件(可觀察);**持久化安全審計紀錄 / 指標**留待觀察性堆疊(Phase 6),不在本 feature 新增持久化審計路徑(對齊 brainstorm「metrics/observability → Phase 6」OUT)。
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - 換新即輪替,任何時刻只有最新一張 refresh 憑證有效 (Priority: P1)
@@ -86,7 +95,7 @@
 
 - **FR-001**: 登入成功時,系統 MUST 建立一條新的登入族系,並持久化一筆「有效」狀態的 refresh 憑證紀錄(隸屬該族系)。
 - **FR-002**: 以一張「有效」refresh 憑證換新時,系統 MUST 在同一個原子交易內:把該憑證標為「已用」、於同族系新增一張「有效」憑證,並回一對全新 token。換新過程 MUST NOT 留下「無任何有效憑證」的半完成族系狀態(中途失敗須可由重新登入恢復、不得使族系資料毀損)。
-- **FR-003**: 系統 MUST 偵測 refresh 憑證的盜用重放:當收到一張**已被換掉且超過寬限窗口**的憑證、或一張**屬已作廢族系**的憑證時,MUST 將該族系**所有**憑證標為「已作廢」並回登出碼。
+- **FR-003**: 系統 MUST 偵測 refresh 憑證的盜用重放:當收到一張**已被換掉且超過寬限窗口**的憑證、或一張**屬已作廢族系**的憑證時,MUST 將**該被重放憑證所屬的單一登入族系**之所有憑證標為「已作廢」並回登出碼。作廢範圍 MUST 限於該單一族系,**不**連帶作廢該使用者的其他族系(其他裝置/分頁登入不受影響)。
 - **FR-004**: 系統 MUST 提供一個寬限窗口以容忍良性並發:當收到一張**剛被換掉、仍在寬限窗口內**的憑證時,MUST 比照一次正常換新處理(發新憑證進同族系)、MUST NOT 作廢族系、MUST NOT 登出使用者。
 - **FR-005**: 所有 refresh 換新的**驗證類失敗**(查無紀錄 / 盜用 / 族系已作廢 / 憑證過期 / 簽名或受眾錯)MUST 回登出碼(`8888`),**絕不可**回 `3333` / `9999` / `9998`(沿既有 refresh 失敗紀律,避免登出 dead loop)。
 - **FR-006**: refresh 換新過程中的**真正伺服器故障**(如資料庫錯誤)MUST 回內部錯誤碼(`5000`),不得偽裝成登出碼或重新驗證碼。
@@ -124,5 +133,7 @@
 - **前端不需改動**:base-web 既有的 refresh 呼叫、登出碼判讀、單一換新去重機制皆已就緒,wire 契約不變故零改。
 - **正常使用體驗不變**:正常登入與自動換新對使用者**無可觀察差異**;唯一新增的可觀察行為是「被竊憑證重放後的一次強制重新登入」與「部署過渡時既有 session 的一次性重新登入」。
 - **實體清理為獨立後續**:過期/已作廢憑證的實體移除交由後續 cleanup-job feature;本 feature 期間憑證紀錄持續累積、靠到期時間於驗證時排除。
+- **session 存活 = sliding**:每次換新的新 refresh 憑證取得全新完整存活期(對齊現行重簽);v1 無族系絕對上限。
+- **單一 session 強制為獨立後續(028)**:「一帳號同時只能一個登入 + 每請求即時踢」屬 access 端 stateful 撤銷、不同軸,拆為獨立 feature 028-single-session-enforcement(027 落地後做);本 feature 刻意維持多裝置/多族系並存 + access stateless(見 Clarifications)。
 - **單一服務實例**:現行部署為單實例;多實例下的憑證紀錄一致性與本 feature 正交、不在範圍。
 - **rust-api 單倉**:全部變動在 rust-api worktree;不新增對外端點、不動 base-web、不動權限政策、不 fork、不新增 workspace crate。
