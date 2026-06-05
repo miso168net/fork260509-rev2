@@ -89,7 +89,8 @@ pub async fn update(db, key: &str, value: &str, operator) -> Result<bool, DbErr>
 - **`update`** 經 `crate::model::audit::mutate_in_txn`(`audit.rs:76`)closure 回 `Ok((txn, result, Some(event)))`:
   - `AuditOperation::Update`(`audit.rs:17`)、`entity_table = "system_settings"`、`entity_id: None`(KV PK 非 i64)、`payload_before/after` 經 `audit_json()`(`audit.rs:55`)、`operator: Some(AuditOperator{ id: <admin user_id>, ip: None })`(`audit.rs:35`)、`trace_id`。
   - 寫 `setting_value` 同時 col_expr **`updated_at` = now()**/**`updated_by` = operator.id**(§I.6 pair)。
-- **typed accessor**(`value_type == "enum:on,off"` → `SessionMode`):純函式 seam(TDD red→green):`"on" -> On`、`"off" -> Off`、其他/未知 → `Err`(或 fail-safe `Off` + log warn;plan 定)。可為 `get_session_default(db) -> SessionMode` helper 或 handler 內聯;boot(§3)與 watcher reload(§4)共用。
+- **typed accessor**(`value_type == "enum:on,off"` → `SessionMode`):純函式 seam(TDD red→green):`"on" -> On`、`"off" -> Off`、其他/未知 → **read-side fail-safe `Off`**(防 DB 髒值致 panic)。可為 `get_session_default(db) -> SessionMode` helper 或 handler 內聯;boot(§3)與 watcher reload(§4)共用。
+- **FR-013 write-side 驗證(與 read-side fallback 分職)**:`update_system_setting` handler 在寫入**之前**依該 setting 的 `value_type` 驗 `value`(`enum:on,off` → 僅收 `on`/`off`),**非法值回 `Res::err`、不持久、原值不變**(spec FR-013);typed accessor 的 fail-safe fallback **只**作 read-side 防禦(讀到既有髒值不 panic),**不**作為接受非法寫入的藉口 —— 二者語意不同、缺一不可。
 
 ## 6. facade `sys_user::update_session_policy`(`model/facade/sys_user.rs`,新)
 

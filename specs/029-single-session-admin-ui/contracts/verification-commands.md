@@ -82,6 +82,10 @@ AO3=$(curl -s $BASE/auth/login -H 'Content-Type: application/json' -d "{\"userNa
 curl -s $BASE/auth/getUserInfo -H "Authorization: Bearer $AO1" | pj "d['code']"   # 7777（舊 session 被 runtime-toggled 系統預設踢出 — access 路徑）
 curl -s $BASE/auth/getUserInfo -H "Authorization: Bearer $AO3" | pj "d['code']"   # 0000（當前 session）
 
+# C3b FR-013：非法值被拒、原值不變（write-side reject，非 read-side fallback）
+curl -s -X POST $BASE/systemManage/updateSystemSetting -H "Authorization: Bearer $ST" -H 'Content-Type: application/json' -d '{"key":"single_session_default","value":"maybe"}' | pj "d['code']"   # 非 0000（依 value_type 'enum:on,off' 拒絕、不持久）
+$PSQL "SELECT setting_value FROM system_settings WHERE setting_key='single_session_default'"   # 仍為改前值（原值不變，FR-013）
+
 # C4 per-account policy（updateUserSessionPolicy account=on → 被踢 + DEL sess 驗；others 不受影響）
 $PSQL "UPDATE system_settings SET setting_value='off' WHERE setting_key='single_session_default'"   # 還原系統 off，隔離 per-account 行為
 curl -s -X POST $BASE/systemManage/updateSystemSetting -H "Authorization: Bearer $ST" -H 'Content-Type: application/json' -d '{"key":"single_session_default","value":"off"}' >/dev/null
