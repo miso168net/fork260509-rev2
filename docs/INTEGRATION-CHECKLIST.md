@@ -188,7 +188,7 @@
 
 ### 2.32 feature 027-refresh-token-rotation follow-up
 
-- [ ] **028-single-session-enforcement(立案)**:「一帳號同時只能一個登入 + 每請求即時踢舊 session」拆獨立 feature(027 收尾拆出)。access 端 stateful 撤銷、機制評估為 current-session pointer;觸 enforce_mw + 3 非-enforce 認證端點 verify_bearer + Claims schema 變更。027 落地後可做;rationale 見 027 spec Clarifications + [DESIGN §10 Phase 5](INTEGRATION-DESIGN.md)
+- [ ] **028-single-session-enforcement(立案 + Phase 0 brainstorm 草稿)**:「一帳號同時只能一個登入 + 每請求即時踢舊 session」拆獨立 feature(027 收尾拆出)。access 端 stateful 撤銷、機制評估為 current-session pointer;觸 enforce_mw + 3 非-enforce 認證端點 verify_bearer + Claims schema 變更。**2026-06-05 grounding 三 de-risk**:踢碼用現成 `7777`(「账号在他处登录」modal、無迴圈、無新碼)/ 不需 amendment(§11.17 018 先例)/ base-web 零改。Phase 0 brainstorm 起點 = `docs/superpowers/028-single-session-enforcement.md`(§8 列 3 待拍板軸:session_id 來源 / pointer 存儲 / Claims 過渡);027 落地後可做。rationale 見 027 spec Clarifications + [DESIGN §10 Phase 5](INTEGRATION-DESIGN.md)
 - [ ] **sys_token 實體清理 / 過期淘汰**:027 FR-011 OUT — 過期/已作廢 row 持續累積,實體移除交 Phase 5 **cleanup-job feature**(027 期間靠 `expires_at` + 換新時 `jwt::verify` 排除過期)
 - [ ] **盜用偵測事件持久化審計 / 指標**:027 clarify ④ 以 **warn 級運行日誌**記錄(`tracing::warn!(user_id,rotation_chain)`、可觀察);持久化安全審計 / metrics 留 **Phase 6** 觀察性堆疊
 - [x] **CDP smoke deferred-with-rationale** ✅:027 對 base-web **零改**(wire 中性)、refresh 為背景 token 流程(無 base-web modal),curl C1-C5 已端到端證明 wire 契約保持 → CDP「curl ≠ base-web modal 對齊」gotcha 在無 base-web 改動的 feature 不適用(plan/contracts 標可選);未補測無債
