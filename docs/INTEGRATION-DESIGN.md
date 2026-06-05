@@ -1196,9 +1196,10 @@ BASE_WEB_TAG=rev2-admin-base-web
 ### Phase 5 — 補位 + 抽離項
 
 1. **refresh token 完整實作** — ✅ **027-refresh-token-rotation 落地(2026-06-05、rust-api `1bd0436`)**:`/auth/refreshToken` 升級為 DB 持久化 rotation chain + 盜用偵測(reuse detection)+ grace 寬限窗 + SHA-256 雜湊儲存(`sys_token` 表 / `decide_rotation`+`rotate` facade / login+refresh 串接,wire 中性、base-web 零改)。**as-built 見 §6.2**;follow-up CHECKLIST §2.32。
-2. **028-single-session-enforcement** — 「一帳號同時只能一個登入 + 每請求即時踢舊 session」(access 端 stateful 撤銷,機制評估為 current-session pointer)。**027 收尾拆出**(027 維持多裝置/多族系並存 + access stateless;單一-session 屬不同軸:觸 enforce_mw + 3 非-enforce 認證端點 verify_bearer + Claims schema 變更,scope ≈ 翻倍且打破 027 乾淨基線)。027 落地後可做。rationale 見 `specs/027-refresh-token-rotation/spec.md` Clarifications。
-3. **抽離項 stub feature** — `/auth/error` / `/auth/sendCaptcha` / `/auth/verifyCaptcha`(若 §11.2 選 stub)
-4. **cleanup-job feature** — dry-run 預設 + `--execute` 才實刪 + host cron + 獨立最小權限 credential(過期/已作廢 sys_token 實體清理屬此 feature,027 FR-011 OUT)
+2. **028-single-session-enforcement(引擎 + policy 儲存)** — per-account 可控的 access 端單一-session(policy 解析=開:一帳號一有效登入、新登入即時踢舊〔**`7777`「账号在他处登录」** modal、現成、無迴圈〕;policy=關維持 027 多裝置)。**brainstorm 已收斂(2026-06-05、全決)**:獨立 `sid` 入 Claims(required、上線一次性重登)/ pointer = **Redis(讀)+ sys_user(持久真相)混合**(lazy rehydration)/ session 檢查放 **4 認證 gate**(enforce_mw + getUserInfo/getUserRoutes/isRouteExist,不含 ctx_mw)+ refresh 驗 pointer + 繼承 sid / 登入 revoke 舊 027 chain / policy = **sys_user 三態**(inherit/on/off)+ 系統預設 config(**028=off、dormant 上線**)。**base-web 零改、無新對外端點、預期無 constitution amendment**(§11.17 018 stateful 先例;sys_user 系統欄 §I.6 PASS-by-scope)。brainstorm = `docs/superpowers/028-single-session-enforcement.md`;真正 per-device「每裝置一個 session」OUT;**admin UI 拆 029**。
+3. **029-single-session-admin-ui** — 028 policy 的 admin 管理 UI:**系統預設 runtime store**(rev2 首張 system-settings 表,把 028 的 config 預設變 runtime 可調)+ admin 設定頁 + 每帳號 policy UI(使用者管理頁)+ get/set endpoint + casbin + base-web。疊在 028 儲存之上(後端先、UI 後,對齊 019→020→021 遞進)。
+4. **抽離項 stub feature** — `/auth/error` / `/auth/sendCaptcha` / `/auth/verifyCaptcha`(若 §11.2 選 stub)
+5. **cleanup-job feature** — dry-run 預設 + `--execute` 才實刪 + host cron + 獨立最小權限 credential(過期/已作廢 sys_token 實體清理屬此 feature,027 FR-011 OUT)
 
 ### Phase 6 — 觀察性(可選,生產 ready)
 

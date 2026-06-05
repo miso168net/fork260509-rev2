@@ -15,7 +15,7 @@
 - **2026-06-05 014-026 spec-review(13 feature)+ 025-I1 fix(已驗綠)** — `superpowers:requesting-code-review` 多 agent 對照各 spec.md 逐項驗收 → 對抗驗證 → 彙整 [REVIEW-014-026.md](REVIEW-014-026.md):**11/13 Ready·2 w/ fixes、0 Critical、0 confirmed specGap、1 confirmed Important = 025-I1**。**025-I1 已修+live CDP 驗綠**:`menu-operate-modal.vue` `handleInitModel` 把 wire string `parentId` 正規化為 number(`Number()`),修頂層葉選單編輯吃掉 component layout 前綴(種子 `home`)+ M1 NTreeSelect 預選態;type-lie 消費端鐵律固化於 [DESIGN §9.1](INTEGRATION-DESIGN.md)。doc-debt 批次 follow-up §2.31。
 > 以下為預計`下一步` (不要再被合到`最新進展`了)
 
-**下一步**: **027-refresh-token-rotation 已 merge+推 origin**(merge `2d4d8d4`、保留 027 branch;refresh DB 持久化 rotation + 盜用偵測 + grace + SHA-256;見 [MILESTONES §1](INTEGRATION-MILESTONES.md))。**之後候選**([DESIGN §10](INTEGRATION-DESIGN.md)):**028-single-session-enforcement**(027 拆出立案、access 端 stateful 即時踢/current-session pointer、§2.32)/ Phase 5 抽離項 stub(captcha/getLastTime)·cleanup-job(含 sys_token 實體清理/過期淘汰)/ **#6 受管 RBAC**(獨立 deferred 治理軌道、需 fork→§11.6 Amendment、解 casbin 非原子/多-instance 債)/ ButtonAuth「完整版」(aligned visible=clickable、024 decoupled 債對齊 023 端點)。下個 feature `/speckit-specify` 由 user 手動執行(建 feature branch)。
+**下一步**: **028-single-session-enforcement brainstorm 已收斂**(2026-06-05 全決,`docs/superpowers/028-single-session-enforcement.md`;引擎+policy 儲存、base-web 零改、無新對外端點、預期無 amendment、admin UI 拆 029)→ 待 **user 跑 `/speckit-specify`**(建 028 feature branch、input=該 doc)。**其他候選**([DESIGN §10 Phase 5](INTEGRATION-DESIGN.md)):**029-single-session-admin-ui**(028 後、系統預設 runtime store + admin 設定頁)/ stub(captcha/getLastTime)·cleanup-job(含 sys_token 實體清理)/ **#6 受管 RBAC**(需 fork→§11.6 Amendment)/ ButtonAuth「完整版」(aligned visible=clickable)。
 
 ---
 
@@ -188,7 +188,8 @@
 
 ### 2.32 feature 027-refresh-token-rotation follow-up
 
-- [ ] **028-single-session-enforcement(立案 + Phase 0 brainstorm 草稿)**:「一帳號同時只能一個登入 + 每請求即時踢舊 session」拆獨立 feature(027 收尾拆出)。access 端 stateful 撤銷、機制評估為 current-session pointer;觸 enforce_mw + 3 非-enforce 認證端點 verify_bearer + Claims schema 變更。**2026-06-05 grounding 三 de-risk**:踢碼用現成 `7777`(「账号在他处登录」modal、無迴圈、無新碼)/ 不需 amendment(§11.17 018 先例)/ base-web 零改。Phase 0 brainstorm 起點 = `docs/superpowers/028-single-session-enforcement.md`(§8 列 3 待拍板軸:session_id 來源 / pointer 存儲 / Claims 過渡);027 落地後可做。rationale 見 027 spec Clarifications + [DESIGN §10 Phase 5](INTEGRATION-DESIGN.md)
+- [ ] **028-single-session-enforcement(引擎 + policy 儲存,brainstorm 已收斂)**:per-account 可控的 access 端單一-session(policy=開踢舊〔**`7777`**「账号在他处登录」modal〕、policy=關維持 027 多裝置)。**2026-06-05 brainstorm 全決**(`docs/superpowers/028-single-session-enforcement.md`):獨立 `sid` 入 Claims(required)/ pointer = Redis(讀)+ sys_user(持久真相)混合 / 4 認證 gate(不含 ctx_mw)+ refresh 驗 pointer + 繼承 sid / 登入 revoke 舊鏈 / policy = sys_user 三態(inherit/on/off)+ 系統預設 config(**028=off dormant 上線**)。**base-web 零改、無新對外端點、預期無 amendment**(§11.17 018 先例;sys_user 系統欄 §I.6 PASS-by-scope)。下一步 user 跑 `/speckit-specify`(建 028 branch)。詳見 [DESIGN §10 Phase 5](INTEGRATION-DESIGN.md)
+- [ ] **029-single-session-admin-ui(立案)**:028 policy 的 admin 管理 UI — 系統預設 runtime store(rev2 首張 system-settings 表,把 028 config 預設變 runtime 可調)+ admin 設定頁 + 每帳號 policy UI(使用者管理頁)+ get/set endpoint + casbin + base-web。疊在 028 儲存之上(後端先、UI 後);028 落地後做
 - [ ] **sys_token 實體清理 / 過期淘汰**:027 FR-011 OUT — 過期/已作廢 row 持續累積,實體移除交 Phase 5 **cleanup-job feature**(027 期間靠 `expires_at` + 換新時 `jwt::verify` 排除過期)
 - [ ] **盜用偵測事件持久化審計 / 指標**:027 clarify ④ 以 **warn 級運行日誌**記錄(`tracing::warn!(user_id,rotation_chain)`、可觀察);持久化安全審計 / metrics 留 **Phase 6** 觀察性堆疊
 - [x] **CDP smoke deferred-with-rationale** ✅:027 對 base-web **零改**(wire 中性)、refresh 為背景 token 流程(無 base-web modal),curl C1-C5 已端到端證明 wire 契約保持 → CDP「curl ≠ base-web modal 對齊」gotcha 在無 base-web 改動的 feature 不適用(plan/contracts 標可選);未補測無債
@@ -245,7 +246,8 @@
 ### Phase 5 — 補位 + 抽離項(已啟動)
 
 - [x] **refresh token 完整實作 feature(027)** ✅ — DB 持久化 rotation chain + 盜用偵測 + grace + SHA-256 雜湊(`sys_token` 表 / `decide_rotation`+`rotate` facade / login+refresh 串接,wire 中性、base-web 零改);live-DB L1-L6 + curl C1-C5 + 守恆 + prod build 全綠;詳見 [DESIGN §10 Phase 5 + §6.2](INTEGRATION-DESIGN.md) + `specs/027-refresh-token-rotation/`;follow-up §2.32
-- [ ] **028-single-session-enforcement**(一帳號單一登入 + 即時踢)— 027 收尾拆出(access 端 stateful、current-session pointer);027 落地後可做,rationale 見 027 spec Clarifications + [DESIGN §10 Phase 5](INTEGRATION-DESIGN.md)
+- [ ] **028-single-session-enforcement(引擎 + policy 儲存)** — brainstorm 已收斂(2026-06-05 全決,`docs/superpowers/028-single-session-enforcement.md`):per-account 可控單一-session(policy=開踢舊〔`7777`〕、關維持 027 多裝置)、獨立 sid 入 Claims(required)、pointer Redis+sys_user 混合、4 gate+refresh 驗、登入 revoke 舊鏈、policy sys_user 三態 + 系統預設 config(028=off dormant);**base-web 零改、無新對外端點、預期無 amendment**;admin UI 拆 029。下一步 user 跑 `/speckit-specify`
+- [ ] **029-single-session-admin-ui** — 028 policy 的管理 UI(系統預設 runtime store=rev2 首張 system-settings 表 + admin 設定頁 + 每帳號 policy UI + endpoint + casbin + base-web);疊在 028 之上、028 後做
 - [ ] 抽離項 stub feature(`/auth/error` / `/auth/sendCaptcha` / `/auth/verifyCaptcha`)
 - [ ] cleanup-job feature(dry-run 預設 + cron + 最小權 credential;含過期/已作廢 sys_token 實體清理)
 
