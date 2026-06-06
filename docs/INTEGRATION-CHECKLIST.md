@@ -189,7 +189,7 @@
 ### 2.32 feature 027-refresh-token-rotation follow-up
 
 - [x] **028-single-session-enforcement ✅ 落地(2026-06-06)** — 見 §2.33 / [DESIGN §6.6](INTEGRATION-DESIGN.md)
-- [ ] **029-single-session-admin-ui(立案)**:028 policy 的 admin 管理 UI — 系統預設 runtime store(rev2 首張 system-settings 表,把 028 config 預設變 runtime 可調)+ admin 設定頁 + 每帳號 policy UI(使用者管理頁)+ get/set endpoint + casbin + base-web。疊在 028 儲存之上(後端先、UI 後);**028 已落地、可起**(後端先、UI 後)
+- [x] **029-single-session-admin-ui ✅ 落地(2026-06-06、merge `1ce835a`)**:028 policy 的 admin 管理 UI(系統預設 runtime store rev2 首張 `system_settings` KV + 每帳號 policy UI + 3 Super-only 端點 + base-web 雙頁)已交付;follow-up 見 §2.34 / as-built [DESIGN §6.7](INTEGRATION-DESIGN.md)
 - [ ] **sys_token 實體清理 / 過期淘汰**:027 FR-011 OUT — 過期/已作廢 row 持續累積,實體移除交 Phase 5 **cleanup-job feature**(027 期間靠 `expires_at` + 換新時 `jwt::verify` 排除過期)
 - [ ] **盜用偵測事件持久化審計 / 指標**:027 clarify ④ 以 **warn 級運行日誌**記錄(`tracing::warn!(user_id,rotation_chain)`、可觀察);持久化安全審計 / metrics 留 **Phase 6** 觀察性堆疊
 - [x] **CDP smoke deferred-with-rationale** ✅:027 對 base-web **零改**(wire 中性)、refresh 為背景 token 流程(無 base-web modal),curl C1-C5 已端到端證明 wire 契約保持 → CDP「curl ≠ base-web modal 對齊」gotcha 在無 base-web 改動的 feature 不適用(plan/contracts 標可選);未補測無債
@@ -202,6 +202,13 @@
 - [ ] **same-second token_hash collision(028 acceptance 實證觸發、非 028 regression)** → 同根因併入 **§2.32 token_hash 撞鍵殘餘風險**(027 token-design 無 `jti`/秒精度 `iat`);028 C4 驗收須留 ≥1s iat gap、real usage 不觸發。
 - [ ] **base-web 踢人 modal(7777)HARD-reload boot race**:HARD page reload 時 `window.$dialog?.error` 在 `AppProvider` 掛 `$dialog` 前被 boot-time getUserInfo 觸發 → 靜默 no-op(7777 仍正確回傳);in-app SPA 導航穩定彈窗。非 028 後端缺陷、base-web init timing;若要「被踢分頁 hard-refresh 也彈窗」屬 base-web 改、與 029 相關。
 - [x] **CDP isolated-context modal smoke ✅(2026-06-06)**:028 US3 親驗「账号在他处登录」彈窗 + 確認→/login + dialogCount=1 + off 不踢(不擾 user tab)。
+
+### 2.34 feature 029-single-session-admin-ui follow-up
+
+- [ ] **FR-013 value_type 驗證在 handler、不在 facade(latent、為「第 2 個 system setting」警覺)**:`system_settings::update` facade 直接寫入給定字串、**不**自驗 value_type;FR-013 值域驗證(`value_in_value_type`)只在 `update_system_setting` handler。029 為唯一寫入路徑、安全;但 `system_settings` KV 表刻意設計為**可擴充框架**([DESIGN §6.7](INTEGRATION-DESIGN.md):日後系統級開關共用)→ 未來新增第 2 個 setting 若另闢經 facade 的寫入路徑,會繞過驗證。加第 2 個 setting 時:把 value_type 驗證下推 facade `update`(對所有 caller 生效)或在 facade doc 明訂 caller 責任。(final review Minor)
+- [ ] **`value_in_value_type` 不 trim enum 成員空白(minor、未來 value_type 含空白才中)**:`enum:on,off` 以 `split(',')` 比對、不去空白 → 假設未來定義 `enum:on, off` 會把 ` off` 當字面值。029 唯一 value_type `enum:on,off` 無空白、不中;日後若有含空白的 value_type 須 trim。
+- [ ] **設定頁載入失敗靜默顯示「關」(minor UX)**:`fetchGetSystemSettings` 失敗/空時設定頁靜默 return、switch 停在 false → 真載入失敗時頁面顯示「關」可能誤表實際狀態(request 層已 toast 錯誤 + seed 保證該列存在 → 殘餘極小)。要硬化:switch 以 `loaded` ref 守(首次成功載入前顯 placeholder、不把 false 當已確認真相)。
+- [x] **CDP isolated-context 雙頁 smoke ✅(2026-06-06)**:設定頁 switch off→on→「设置已更新」+ DB 翻轉(browser→backend end-to-end)/ 使用者頁 sessionPolicy 欄 + 設定單一會話 action + modal 3 態 prefilled;不擾 user tab。**非 deferred、無 CDP 債**。(過程踩 base-web dev-server /mnt/d inotify stale module → restart 即解,記 memory `live-tests-pollute-running-watcher` + `project-devstack-acceptance-restart`,非 029 code 缺陷。)
 
 ## 3. 已完成里程碑
 
