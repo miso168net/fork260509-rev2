@@ -252,7 +252,7 @@
 - [x] **ButtonAuth Rollout feature(024)** ✅ merge `64d9bec`(已推)— 022 按鈕權限迴路 rollout 到角色/選單頁 + 三頁 reactive 修正(§2.26 閉合);唯一 rust=1 seed migration(後端零改)+ base-web 三頁 hasAuth gating;decoupled 刻意(FR-008);Constitution v1.4.0;詳見 DESIGN §10 Phase 4 + `specs/024-button-auth-rollout/`;follow-up §2.28
 - [x] **menu restore + re-parent feature(025)** ✅ merge `6225bd8`(已推)— 補完 020 FR-011 OUT:軟刪選單 restore(回收桶 + 3 guard + AuditOperation::Restore 首消費)+ 自訂選單 re-parent(parentId NTreeSelect + 種子/cycle/有效父 guard);2 endpoint + migration 025 + D1 lint 28→30;即時反映 getUserRoutes 零 casbin;Constitution v1.5.0(MODAL-WIRING (d) `2b05a5e`);詳見 DESIGN §10 Phase 4 + `specs/025-menu-restore-reparent/`;follow-up §2.29
 - [~] **wire shape mapping feature**(Output DTO + pagination wrapper)— 016 立骨架(PageRes<T> + UserItem/RoleItem/AllRoleItem),各 feature 隨 endpoint 接 DTO(017 user_item / 018 role_item+寫端 / 019 menu 讀端+mapper / 020 menu 寫端 / 022 button / 023 endpoint / 025 re-parent);詳見 DESIGN §10 各 Phase + 各 `specs/`
-- [~] alova-only endpoint 處理 feature(依 §11.2 拍板)— **017 已實作 alova 7 中的 4 寫端**(addUser/updateUser/deleteUser/batchDeleteUser,經 BASE-WEB-WRAPPER);餘 3 stub(sendCaptcha/verifyCaptcha/getLastTime)留 Phase 5
+- [x] alova-only endpoint 處理 feature(依 §11.2 拍板)— **017 已實作 alova 7 中的 4 寫端**(addUser/updateUser/deleteUser/batchDeleteUser,經 BASE-WEB-WRAPPER);**餘 3(sendCaptcha/verifyCaptcha/getLastTime)+ /auth/error = ⊘ moot、不實作**(僅 alova framework demo 頁、dynamic 模式不可達、走 ApiFox mock 非 rust-api;見 §5.8)→ alova-only 處理完結
 - [x] **菜單樹建構 feature** ✅ 019 — 純函式 `assemble_menu_tree`(parent_id→nested、order 排序〔None 末〕、孤節點略過),getUserRoutes + getMenuTree 共用、可單測
 - [x] **審計欄 retrofit feature**(既有業務表補 §I.6 6 審計欄)✅ — sys_user(017,5 欄)+ sys_role(018,7 欄);019 sys_menu = 凍結後首張新建表 create 即帶 6 欄(0 retrofit 債);見 §2.18
 
@@ -261,7 +261,7 @@
 - [x] **refresh token 完整實作 feature(027)** ✅ — DB 持久化 rotation chain + 盜用偵測 + grace + SHA-256 雜湊(`sys_token` 表 / `decide_rotation`+`rotate` facade / login+refresh 串接,wire 中性、base-web 零改);live-DB L1-L6 + curl C1-C5 + 守恆 + prod build 全綠;詳見 [DESIGN §10 Phase 5 + §6.2](INTEGRATION-DESIGN.md) + `specs/027-refresh-token-rotation/`;follow-up §2.32
 - [x] **028-single-session-enforcement(引擎 + policy 儲存)** ✅ — per-account 可控 access 端單一-session(policy=開踢舊〔`7777`〕、關維持 027 多裝置):Claims +sid / pointer Redis+sys_user 混合 fail-open / 4 gate+refresh pointer-first / 登入 revoke 舊鏈 + 一律 set_pointer / policy sys_user 三態 + config(028=off dormant)。wire 中性、base-web 零改、無新端點/crate/amendment;U1/U2/pre-028 + live L1-L5 + curl C1-C4 + CDP modal smoke + 守恆 server 221/lint 17/30 + migration 可逆 + prod build 全綠;詳見 [DESIGN §10 Phase 5 + §6.6](INTEGRATION-DESIGN.md) + `specs/028-single-session-enforcement/`;follow-up §2.33
 - [x] **029-single-session-admin-ui ✅** — 028 policy 的管理 UI:系統預設 runtime 可調(rev2 首張 `system_settings` KV 表 + `AppState.session_mode` + `settings_watcher` pub-sub `settings:invalidate`)+ 每帳號 policy UI + 3 Super-only 端點(30→33)+ getUserList additive `sessionPolicy` + casbin/sys_menu seed(m028/m029)+ base-web 設定頁(MODAL-WIRING ★ (e))/ 使用者頁 policy 欄·modal。**不改 028 enforcement、雙倉、無新 crate**;U1/U2/value_in_value_type + live L1-L4 + curl C1-C6+C3b + CDP 雙頁 smoke + 守恆 server 224/lint 17/33 + migration 可逆 + base-web typecheck/prod build 全綠;**constitution v1.6.0**(MODAL-WIRING ★ (e)、ratified `3bd3eda`、§11.24)。詳見 [DESIGN §10 Phase 5 + §6.7](INTEGRATION-DESIGN.md) + `specs/029-single-session-admin-ui/`
-- [ ] 抽離項 stub feature(`/auth/error` / `/auth/sendCaptcha` / `/auth/verifyCaptcha`)
+- [x] **⊘ 抽離項 stub feature — moot、不實作**(`/auth/error` / `/auth/sendCaptcha` / `/auth/verifyCaptcha`):僅服務 alova framework demo 頁,dynamic 模式 `getUserRoutes` 不送該 menu → 不可達,且走 `service-alova`/ApiFox mock 非 rust-api → rust-api stub 零價值;2026-06-06 grounding 收掉(見 §5.8)。**Phase 5 唯一剩 cleanup-job**
 - [ ] cleanup-job feature(dry-run 預設 + cron + 最小權 credential;含過期/已作廢 sys_token 實體清理)
 
 ### Phase 6 — 觀察性(可選,生產 ready)
@@ -333,7 +333,7 @@
 
 ### 5.8 alova 7 endpoint(若 §11.2 選實作)
 
-- [~] `sendCaptcha` / `verifyCaptcha` / `addUser` / `updateUser` / `deleteUser` / `batchDeleteUser` / `getLastTime` — **4 寫端 ✅ 017**(`addUser`/`updateUser`/`deleteUser`/`batchDeleteUser`,經 BASE-WEB-WRAPPER `rev2-system-manage.ts`、Super-only、curl+CDP 驗);**餘 3(`sendCaptcha`/`verifyCaptcha`/`getLastTime`)留 Phase 5 stub**(依 §11.2 拍板)
+- [x] `sendCaptcha` / `verifyCaptcha` / `addUser` / `updateUser` / `deleteUser` / `batchDeleteUser` / `getLastTime` — **4 寫端 ✅ 017**(`addUser`/`updateUser`/`deleteUser`/`batchDeleteUser`,經 BASE-WEB-WRAPPER `rev2-system-manage.ts`、Super-only、curl+CDP 驗);**餘 3(`sendCaptcha`/`verifyCaptcha`/`getLastTime`)+ `/auth/error` = ⊘ moot、rust-api 不實作**(2026-06-06 grounding:三者僅服務 base-web `views/alova/scenes/` framework demo 頁〔captcha 在 demo 頁、非 `pwd-login` 登入流;getLastTime 僅 mock;`/auth/error` orphan〕,且 **dynamic 路由模式(014)`getUserRoutes` 根本不送 alova demo menu → demo 頁不可達**、又走 `service-alova`/ApiFox mock 層而非 rust-api → rust-api stub 零產品價值。§11.2「stub」拍板 predate dynamic 不可達之認知;正式收掉、不列 Phase 5)
 
 ### 5.9 mock 驗證 follow-up(優先級低)
 
