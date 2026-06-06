@@ -104,6 +104,10 @@ docker compose ps --services --filter status=running | grep -qx cleanup-job \
 # 期望 OK：cleanup-job 為 profile:[jobs] one-shot、一般 up 不啟（FR-007：非常駐、on-demand）
 ```
 
+## SC-002（store 有上界）— 設計性質、不獨立測
+
+SC-002「token 儲存被 ~7 天 refresh TTL 窗封頂、非無限累積」是**純過期規則的數學必然**（任一列其 JWT 過期後即被下次 cleanup 移除）—— 無法在驗收期內用單一命令實測（需等 ≥7 天或操弄系統時鐘）。由 **FR-002 規則 + C3（execute 確實移除過期列）+ 週期性 cleanup（host cron）**共同保證，**刻意不另立獨立測項**（/speckit-analyze E1 接受）。
+
 ## 純單元（非 C-V、由 cargo test 覆蓋）
 
 - `purge_cutoff(fixed_now, 60)` == `fixed_now - 60s`（red→green，固化安全規則）。
