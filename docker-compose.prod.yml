@@ -48,6 +48,15 @@ services:
     image: rev2-admin-rust-api:latest
     command: ["migration", "up"]
 
+  cleanup-job:
+    # ★ prod cleanup-job:runtime image,command ["cleanup-job"] 經 entrypoint.rust-api.sh dispatcher
+    #   的 case "cleanup-job" 分支派發 → exec /usr/local/bin/cleanup-job(無 arg = dry-run)。同 migrate
+    #   prod:不 override entrypoint(runtime dispatcher 即設計派發點)。--execute 由 host cron 觸發時補。
+    build:
+      target: runtime
+    image: rev2-admin-rust-api:latest
+    command: ["cleanup-job"]
+
   postgres:
     ports:
       - "127.0.0.1:25432:5432"
