@@ -89,6 +89,8 @@ psql postgresql://soybean@127.0.0.1:25432/soybean_admin_rust -At \
 ```
 
 > 此即 028 C4 場景：此前需刻意製造 ≥1s gap 才不撞;jti 落地後同秒亦過 → 028 C4「≥1s gap」caveat 可拔。
+>
+> **★ as-built 校正（2026-06-06 acceptance 實證）**：上面的 **login×2 平行其實測不到撞鍵** —— 每次 `login` 都 mint 一個**新 `sid`**（`handler/auth.rs:100`），兩 token 的 `sid` 不同 → JWT byte-distinct → `token_hash` 本就不撞（**不論有無 jti**）。真正會撞 UNIQUE 的是 **login → 同秒 `refresh`**：`refresh` **沿用** login lineage 的同一 `sid` + 同秒 `iat/exp` → 無 jti 時 `rotate()` 簽出的新 refresh JWT 與舊者 byte-identical → insert chain head 撞 `token_hash` UNIQUE → `5000`。jti（per-token）使之 byte-distinct。**故驗收除 login×2（合規）外，另跑 login→同秒 `POST /auth/refreshToken` ×6 全 `0000`**（這才是 jti 修的實際路徑）；並對帳 `user_id=1` 的 `count(*) == count(DISTINCT token_hash)`（全程零撞鍵）。host 無 psql → 改 `docker compose exec -T postgres psql -U soybean -d soybean_admin_rust`。
 
 ## C5 — jti 相容性 transition（記載、非阻擋）
 
