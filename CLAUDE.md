@@ -358,8 +358,8 @@ cd ..
 <!-- SPECKIT START -->
 **Active Spec**: [`specs/030-cleanup-job/spec.md`](specs/030-cleanup-job/spec.md)
 **Active Plan**: [`specs/030-cleanup-job/plan.md`](specs/030-cleanup-job/plan.md)
-**Phase**: **030 cleanup-job — 設計中**(specify ✅ + clarify ✅〔0 critical ambiguity〕+ plan ✅〔Constitution 8/8 PASS、純後端無 ★ 軌道 / 無 base-web / 無新表〕;tasks/analyze 待)。把 027 FR-011 延後的 sys_token 過期清理落地成 on-demand `cleanup-job` binary(**純過期** `expires_at<now-60s`、dry-run 預設 /`--execute` 才刪、`profile:[jobs]` + host cron)+ 加 `idx_sys_token_expires_at` + 修 same-second `token_hash` 撞鍵(`Claims` 加 per-token `jti`);**不改 027/028 enforcement、無新 crate**。設計見 [`docs/superpowers/030-cleanup-job.md`](docs/superpowers/030-cleanup-job.md) + [`specs/030-cleanup-job/`](specs/030-cleanup-job/)。
-**下一步**: `/speckit-tasks`(dependency-ordered task 清單)→ `/speckit-analyze` → `superpowers:executing-plans` 實作。
+**Phase**: **030 cleanup-job — ✅ 全完成+已 merge**(merge `d3bc391` 回 rev2-admin-root、--no-ff、保留 030 branch;rust-api worktree `0f16fb8→2f5bbde→faa3628` 3 commit + 外層 compose `39f68a6`/docs `acdebfc`/SHA pin `622456e`)。把 027 FR-011 延後的 sys_token 過期清理落地成 on-demand `cleanup-job` binary(**純過期** `expires_at<now-60s`、與 status 無關、dry-run 預設 /`--execute` 才刪、`profile:[jobs]` + host cron)+ `idx_sys_token_expires_at` 索引(m030)+ 修 same-second `token_hash` 撞鍵(`Claims` 加 per-token `jti`、真正撞鍵路徑=login→同秒 refresh)。**純後端、base-web 零改、不改 027/028 enforcement、無新 crate、Constitution 8/8 PASS、無 amendment**。acceptance C1-C4/C6 全綠;subagent-driven 5 單元雙審 + final holistic READY TO MERGE。**Phase 5 補位 + 抽離項全完成**(027/028/029/030 ✅ + stub ⊘moot)。as-built 見 [DESIGN §10 Phase 5 #5](docs/INTEGRATION-DESIGN.md) + [`specs/030-cleanup-job/`](specs/030-cleanup-job/)。
+**下一步**: 待 push 三遠端(rust-api worktree→fork / 030-cleanup-job→origin / rev2-admin-root→origin、需 user 同意)。其後候選:Phase 6 obs(loki/promtail/grafana)/ #6 受管 RBAC(deferred、需 §11.6 fork amendment)/ least-priv cleanup PG role(030 follow-up)。
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
