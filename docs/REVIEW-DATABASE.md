@@ -2,7 +2,8 @@
 
 > 稽核日期:2026-06-06
 > 方法:`pg_dump --schema-only`(活體 ground truth)vs `rust-api/migration/src` 逐表 reconcile(欄 / 索引 / 約束 provenance + drift)
-> 結論:**全 11 表、29 migration 全套用、零 drift。**
+> 結論:**全 11 表、29 migration 全套用、schema 零 drift;種子 baseline 完整(活體含全部種子,偏離皆為 runtime 業務 / 測試殘留)。**
+> **本報告兩部分**:① 前半 = **schema(DDL)稽核**(表 / 欄 / 索引 / 約束);② 後半 = **「種子資料(seed data)」稽核**(各 migration 的 INSERT / UPDATE 種子 + 活體 reconcile + dev DB 測試殘留 finding)。
 
 ---
 
@@ -23,16 +24,18 @@
 | 表名 | 用途 | 來源 feature / migration | 欄數 | verdict | row 數 |
 |---|---|---|---:|:---:|---:|
 | `sys_user` | 系統使用者帳號主表(登入 / 身分 / RBAC user 端 + soft-delete + 業務欄 + 審計欄 + single-session) | 001 建表 → 003 / 008 / 014 / 027(feature 007/009/013/014/028) | 16 | MATCH | 15 |
-| `sys_role` | RBAC 角色表(code/name/home/status + 審計欄) | 006 建表 → 016 / 021 | 12 | MATCH | 3 |
+| `sys_role` | RBAC 角色表(code/name/home/status + 審計欄) | 006 建表 → 016 / 021 | 12 | MATCH | 6 |
 | `sys_menu` | 後台選單 / 路由樹主表(menu/route 元資料 + button 權限) | 018 建表(feature 018) | 27 | MATCH | 12 |
 | `sys_token` | refresh token rotation chain 持久化(session/token 基礎設施) | 026 建表(feature 027) | 9 | MATCH | 72 |
-| `sys_user_role` | user↔role 多對多 join 表(複合 PK、硬刪) | 007 建表(feature 013) | 2 | MATCH | 4 |
-| `sys_operation_log` | append-only 操作審計日誌(CRUD before/after + 操作者 + trace) | 004 建表 | 10 | MATCH | 161 |
+| `sys_user_role` | user↔role 多對多 join 表(複合 PK、硬刪) | 007 建表(feature 013) | 2 | MATCH | 13 |
+| `sys_operation_log` | append-only 操作審計日誌(CRUD before/after + 操作者 + trace) | 004 建表 | 10 | MATCH | 160 |
 | `sys_access_log` | append-only 存取審計(method/path/status/ip/region/trace) | 011 建表(feature 015) | 10 | MATCH | 1401 |
 | `sys_login_attempt` | append-only 登入嘗試審計(成敗 / IP / region,供 lockout) | 012 建表 | 9 | MATCH | 345 |
 | `system_settings` | 系統設定 KV 地基表(setting_key/value/type + 審計欄) | 028 建表(feature 028/029) | 10 | MATCH | 1 |
-| `casbin_rule` | Casbin RBAC policy storage(sea-orm-adapter 標準格式) | 005 委派 adapter DDL,009 seed | 8 | MATCH | 70 |
+| `casbin_rule` | Casbin RBAC policy storage(sea-orm-adapter 標準格式) | 005 委派 adapter DDL,009 seed | 8 | MATCH | 69 |
 | `seaql_migrations` | sea-orm migration 追蹤表(框架內部) | 無對應 migration 檔 | — | — | 29 |
+
+> **row 數為精確 `count(*)`**(2026-06-06)。初稿曾用 `pg_stat_user_tables.n_live_tup`(VACUUM 估計值)、有 4 處偏差,已校正:`casbin_rule` 70→69、`sys_role` 3→6、`sys_user_role` 4→13、`sys_operation_log` 161→160。row 數含 runtime + 測試殘留(非全為種子),詳見後半「種子資料」§活體 vs 種子 reconcile。
 
 ---
 
@@ -491,3 +494,263 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
 ## 稽核結論
 
 **rev2 後端 schema 健康度:優。** 11 張表、全 29 個 migration 已套用,活體 DB 與 migration 源逐表、逐欄、逐索引、逐約束 100% `MATCH`,零 drift、零 LIVE_ONLY / MIGRATION_ONLY / 型不符;所有「看似偏離」項目(指派路徑筆誤、種子值非 DEFAULT、審計欄取捨、無 FK、欄序疊加)經逐一回溯,皆屬稽核輸入瑕疵或明確設計意圖,非真實漂移。migration 即活體的可信單一真相,schema 完全受控。
+---
+
+## 種子資料(seed data)
+
+> 種子稽核日期:2026-06-06
+> 範圍:`rust-api/migration/src` 內各 `up()` 的**種子操作** —— `INSERT`(植入 baseline 列)+ `UPDATE` 回填(backfill 既有列欄值)。**排除 schema 操作**(`CREATE TABLE` / `ALTER` 加欄 / index / 約束,那是本報告前半的職責)。
+> 方法:逐 migration 抽取 seed SQL(`execute_unprepared` raw SQL / sea-orm Insert DSL),對齊 2026-06-06 活體 DB 取樣,標每張表的活體列是「==種子(靜態)」還是「種子 + runtime 累積」,並隔離出**非種子、非 runtime-業務的測試殘留**。
+
+本節補上前半 schema 稽核未涵蓋的**資料層**。前半結論是「schema 零 drift」;本節證明「種子完整、且活體仍含全部種子 baseline」,並把活體相對種子的偏離歸因到三類來源,確認沒有任何「該有卻消失的種子」。
+
+### 關鍵框架:種子 vs 活體
+
+- **種子(seed baseline)** = migration 在 `up()` 內**定義**的 baseline 資料。它是**靜態、可重產、idempotent**(全部走 `ON CONFLICT DO NOTHING` 或對固定 id 的 `UPDATE`),重跑 migration 不增不爆。種子是「乾淨初始狀態」的單一真相。
+- **活體(live)** = 取樣當下 DB 的實際列,可能 = 種子 + **runtime 累積**(經 API / CDP / 整合測試新增、編輯的列)。
+- **動態表偏離種子是正常的,不是 drift。** `sys_user` / `sys_role` / `sys_menu` / `sys_user_role` 這類「可經後台 CRUD 編輯」的表,活體比種子多列是 runtime 自然累積(新增帳號、新增角色、CDP 測試列),屬預期行為。**drift 專指 schema 結構偏離**(前半已證零 drift);**種子偏離專指資料**,兩者是不同維度,本節只談後者。
+- 對照之下,**`casbin_rule` 是「半靜態」例外** —— 它**唯一**的合法 runtime 變更是經 modal(`updateRoleButton` / `updateRoleEndpoints` / `updateRoleMenu`)的政策編輯;本次取樣發現活體 casbin 恰好 **== 種子 baseline、零 runtime 編輯殘留**(見 §活體 vs 種子 reconcile)。
+
+### 種子總覽表
+
+| migration | 目標表 | 種子內容摘要 | 列數 |
+|---|---|---|---:|
+| 002 `seed_sys_user` | `sys_user` | 3 預設帳號 Super/Admin/User(共用 runtime 生成 argon2id hash) | 3 |
+| 006 `create_sys_role` | `sys_role` | 3 角色 R_SUPER / R_ADMIN / R_USER_COMMON | 3 |
+| 007 `create_sys_user_role` | `sys_user_role` | 3 指派(user→role,role_id 走 code subquery) | 3 |
+| 009 `seed_casbin_policy` | `casbin_rule` | endpoint policy:getUserList(SUPER+ADMIN) | 2 |
+| 010 `seed_menu_policy` | `casbin_rule` | menu 可見度三階梯(home/manage_user/...) | 9 |
+| 013 `seed_manage_policy` | `casbin_rule` | manage 讀端:getRoleList / getAllRoles | 5 |
+| 014 `alter_sys_user_business_audit` | `sys_user` | **UPDATE** 回填 status=1(id 1/2/3) | 3 |
+| 015 `seed_write_policy` | `casbin_rule` | user 寫端 4 端點(SUPER only) | 4 |
+| 016 `alter_sys_role_business_audit` | `sys_role` | **UPDATE** 回填 status=1(id 1/2/3) | 3 |
+| 017 `seed_write_role_policy` | `casbin_rule` | role 寫端 4 端點(SUPER only) | 4 |
+| 018 `create_sys_menu` | `sys_menu` | seed 6 選單(home + manage 樹) | 6 |
+| 019 `seed_menu_read_policy` | `casbin_rule` | menu 讀端 3 端點(SUPER only) | 3 |
+| 020 `seed_menu_write_policy` | `casbin_rule` | menu 寫端 4 端點(SUPER only) | 4 |
+| 021 `alter_sys_role_home_seed_menu_auth_policy` | `sys_role` | **UPDATE** 全表回填 home='home' | (全表) |
+| 021 同上 | `casbin_rule` | menu-auth 讀寫 4 端點(SUPER only) | 4 |
+| 022 `seed_button_auth` | `sys_menu` | INSERT function/function_toggle-auth 2 列 + **UPDATE** manage_user.buttons | 2 + 1U |
+| 022 同上 | `casbin_rule` | button 10 + menu 6 + endpoint 3 | 19 |
+| 023 `seed_endpoint_auth_policy` | `casbin_rule` | endpoint-auth 治理 3 端點(SUPER only) | 3 |
+| 024 `seed_role_menu_button_auth` | `sys_menu` | **UPDATE** manage_role.buttons + manage_menu.buttons(各 3 碼) | 2U |
+| 024 同上 | `casbin_rule` | button 6(role:* / menu:*,SUPER only) | 6 |
+| 025 `seed_menu_restore_policy` | `casbin_rule` | menu restore 2 端點(SUPER only) | 2 |
+| 028 `create_system_settings` | `system_settings` | single_session_default = off | 1 |
+| 029 `seed_settings_admin` | `casbin_rule` | endpoint 3(settings 治理,SUPER only) | 3 |
+| 029 同上 | `sys_menu` | INSERT manage_system-settings 列 | 1 |
+| 029 同上 | `casbin_rule` | menu policy manage_system-settings(SUPER) | 1 |
+
+> **casbin 種子總計**:2+9+5+4+4+4+19+3+6+2+3+1 = **69 列**(全 ptype='p',無 'g')。詳細矩陣見 §casbin_rule policy 種子矩陣。
+
+### sys_user(002 seed,3 帳號)
+
+| id | 帳號(`user_name`) | 暱稱(`nick_name`) | 密碼(`password`) | 角色(經 007 指派) |
+|---:|---|---|---|---|
+| 1 | `Super` | (007 起無 seed;013 起 getUserInfo join 組裝) | runtime 生成 argon2id PHC(plaintext `123456`) | R_SUPER |
+| 2 | `Admin` | 同上 | 同一 hash(plaintext `123456`) | R_ADMIN |
+| 3 | `User` | 同上 | 同一 hash(plaintext `123456`) | R_USER_COMMON |
+
+- **密碼非寫死固定 hash**:002 `up()` 在 runtime 以 `Argon2::default()` + `OsRng` random salt 為 plaintext `b"123456"` 生成**單一 PHC 字串**,3 個 user **共用同一 hash**;每次重跑 migration hash 字串不同,但都驗得過 `123456`。argon2 PHC 字串只含 `[A-Za-z0-9+/.$,=]`(無單引號),故可安全 interpolate 進此靜態 seed 的 SQL literal(user 輸入仍須 parameterized binding)。
+- **冪等**:`ON CONFLICT (user_name) DO NOTHING`(指定 `user_name` 衝突欄)。
+- **權威名**:`Super` / `Admin` / `User` 對齊 base-web mock ground truth + DESIGN §11.1;rev1 的 `Soybean`/`Administrator`/`GeneralUser` 已淘汰、勿用。
+- **down 對稱**:`DELETE FROM sys_user WHERE user_name IN ('Super','Admin','User')`(純資料刪除,不 drop schema)。
+- **status=1 不在 002**:由 014 UPDATE 回填(見 §UPDATE 回填)。
+
+### sys_role(006 seed,3 角色)
+
+| id(BIGSERIAL) | `code` | `name` | `home` | `status` |
+|---:|---|---|---|:---:|
+| 1 | `R_SUPER` | 超级管理员 | `home`(021 回填) | 1(016 回填) |
+| 2 | `R_ADMIN` | 管理员 | `home`(021 回填) | 1(016 回填) |
+| 3 | `R_USER_COMMON` | 普通用户 | `home`(021 回填) | 1(016 回填) |
+
+- **id 未顯式給**:`BIGSERIAL` auto-increment;故 007 指派用 `code` subquery 而非寫死 id。
+- **冪等**:`ON CONFLICT DO NOTHING`(無指定欄)。
+- **`home` / `status` 不在 006**:`status=1` 由 016 回填、`home='home'` 由 021 全表回填(見 §UPDATE 回填)。
+- **down 對稱**:DROP INDEX + drop_table sys_role(連種子一併移除)。
+
+### sys_user_role(007 seed,3 指派)
+
+| `user_id` | `role_id`(解析方式) |
+|---:|---|
+| 1 | `(SELECT id FROM sys_role WHERE code='R_SUPER' AND deleted_at IS NULL)` |
+| 2 | `(SELECT id FROM sys_role WHERE code='R_ADMIN' AND deleted_at IS NULL)` |
+| 3 | `(SELECT id FROM sys_role WHERE code='R_USER_COMMON' AND deleted_at IS NULL)` |
+
+- **role_id 不寫死**:用 `code` subquery 動態解析,且帶 `deleted_at IS NULL` 守衛(只指派 active role),對齊 soft-delete 語意。
+- **冪等**:`ON CONFLICT DO NOTHING`;複合 PK `(user_id, role_id)`。
+- **角色不走 casbin `g`**:rev2 user→role 由本 join 表承載,**casbin 無任何 ptype='g' 列**(活體確認 0 個 'g')。
+- **down 對稱**:drop_table sys_user_role(連表帶種子一併移除)。
+
+### sys_menu(seed 選單樹)
+
+種子分兩批落地:018 種 home + manage 樹(6 列)、022 種 function 樹(2 列)、029 種 manage_system-settings(1 列),共 **9 列 seed 選單**;另有 022/024 對既有列的 `buttons` 回填(見 §UPDATE 回填)。
+
+| migration | route_name | menu_type | parent | route_path | 備註 |
+|---|---|:---:|---|---|---|
+| 018 | `home` | 2 | (top) | `/home` | order=1 |
+| 018 | `manage` | 1 | (top) | `/manage` | order=9,目錄容器 |
+| 018 | `manage_user` | 2 | manage | `/manage/user` | order=1 |
+| 018 | `manage_role` | 2 | manage | `/manage/role` | order=2 |
+| 018 | `manage_menu` | 2 | manage | `/manage/menu` | order=3,**keep_alive=true** |
+| 018 | `manage_user-detail` | 2 | manage | `/manage/user-detail/:id` | **hide_in_menu=true**,active_menu='manage_user' |
+| 022 | `function` | 1 | (top) | `/function` | order=6,目錄容器 |
+| 022 | `function_toggle-auth` | 2 | function | `/function/toggle-auth` | order=4,buttons=三碼 demo registry |
+| 029 | `manage_system-settings` | 2 | manage | `/manage/system-settings` | order=4,icon='mdi:cog' |
+
+- **逐字重現後端路由樹**:018 的 6 選單逐字重現 `server/src/route/menu.rs::business_routes()`(D5 回歸鐵律);029 鏡像 018 `manage_user` 列形。
+- **parent 用 subquery 解析**:children 用 `(SELECT id FROM sys_menu WHERE route_name='manage'/'function' AND deleted_at IS NULL)` 動態解析 parent_id,故 INSERT 順序刻意「先父後子」。
+- **審計欄**:系統種子的 `created_by` 一律 NULL;`status=1` 全部直接給(非後續回填)。
+- **冪等**:全部 `ON CONFLICT DO NOTHING`。
+- **down**:018 `DROP TABLE`(連 6 列 seed)、022/029 精準刪本 migration 引入的列。
+
+### system_settings(028 seed,1 列)
+
+| `setting_key` (PK) | `setting_value` | `value_type` | `description` | `created_by` |
+|---|---|---|---|---|
+| `single_session_default` | `off` | `enum:on,off` | 全站單一-session 預設 | NULL(系統種子) |
+
+- **PK 非 auto-id**:`setting_key` 為 VARCHAR PK;`created_at` 走 col default `current_timestamp`。
+- **冪等**:`ON CONFLICT DO NOTHING`;**down 對稱 = drop_table**(整表移除,非逐列刪)。
+
+### casbin_rule policy 種子矩陣
+
+這是本節重點。casbin_rule 用同一張表承載**三個維度**的 policy,以 `v2` 欄區分語意:
+
+- **v2 = HTTP method(`GET`/`POST`/`DELETE`)** → **endpoint policy**(`enforce_mw` 端點級 RBAC)
+- **v2 = `'menu'`** → **menu 可見度 policy**(`getUserRoutes` 選單過濾)
+- **v2 = `'button'`** → **button 級權限**(`getUserInfo.buttons` 由這些列聚合)
+
+共通形式:`INSERT INTO casbin_rule (ptype,v0,v1,v2,v3,v4,v5) VALUES (...) ON CONFLICT DO NOTHING`;`ptype` 一律 `'p'`、`v0`=role code、`v1`=obj(path 或 route_name 或 button code)、`v2`=維度標記;**`v3`/`v4`/`v5` 全填空字串 `''`**(stock sea-orm-adapter 空欄慣例,v0..v5 NOT NULL 無預設);**path 一律無 `/api` 前綴**;種子值全部 hard-coded literal、無 subquery。
+
+#### 維度一:endpoint policy(v2 = HTTP method)
+
+| role | 端點(path) | method | 種者 migration |
+|---|---|:---:|:---:|
+| R_SUPER, R_ADMIN | `/systemManage/getUserList` | GET | 009 |
+| R_SUPER, R_ADMIN | `/systemManage/getRoleList` | GET | 013 |
+| R_SUPER, R_ADMIN, R_USER_COMMON | `/systemManage/getAllRoles` | GET | 013 |
+| R_SUPER | `/systemManage/addUser`,`/updateUser` | POST | 015 |
+| R_SUPER | `/systemManage/deleteUser`,`/batchDeleteUser` | DELETE | 015 |
+| R_SUPER | `/systemManage/addRole`,`/updateRole` | POST | 017 |
+| R_SUPER | `/systemManage/deleteRole`,`/batchDeleteRole` | DELETE | 017 |
+| R_SUPER | `/systemManage/getMenuList/v2`,`/getAllPages`,`/getMenuTree` | GET | 019 |
+| R_SUPER | `/systemManage/addMenu`,`/updateMenu` | POST | 020 |
+| R_SUPER | `/systemManage/deleteMenu`,`/batchDeleteMenu` | DELETE | 020 |
+| R_SUPER | `/systemManage/getRoleMenu`,`/getRoleHome` | GET | 021 |
+| R_SUPER | `/systemManage/updateRoleMenu`,`/updateRoleHome` | POST | 021 |
+| R_SUPER | `/systemManage/getAllButtons`,`/getRoleButton` | GET | 022 |
+| R_SUPER | `/systemManage/updateRoleButton` | POST | 022 |
+| R_SUPER | `/systemManage/getAllEndpoints`,`/getRoleEndpoints` | GET | 023 |
+| R_SUPER | `/systemManage/updateRoleEndpoints` | POST | 023 |
+| R_SUPER | `/systemManage/getDeletedMenus` | GET | 025 |
+| R_SUPER | `/systemManage/restoreMenu` | POST | 025 |
+| R_SUPER | `/systemManage/getSystemSettings` | GET | 029 |
+| R_SUPER | `/systemManage/updateSystemSetting`,`/updateUserSessionPolicy` | POST | 029 |
+
+> endpoint 維度小計:**GET 18 + POST 13 + DELETE 6 = 37 列**。
+
+#### 維度二:menu 可見度 policy(v2 = 'menu')
+
+| route_name | R_SUPER | R_ADMIN | R_USER_COMMON | 種者 migration |
+|---|:---:|:---:|:---:|:---:|
+| `home` | ✓ | ✓ | ✓ | 010 |
+| `manage_user` | ✓ | ✓ | — | 010 |
+| `manage_user-detail` | ✓ | ✓ | — | 010 |
+| `manage_role` | ✓ | — | — | 010 |
+| `manage_menu` | ✓ | — | — | 010 |
+| `function` | ✓ | ✓ | ✓ | 022 |
+| `function_toggle-auth` | ✓ | ✓ | ✓ | 022 |
+| `manage_system-settings` | ✓ | — | — | 029 |
+
+> menu 維度小計:010 種 9 列 + 022 種 6 列 + 029 種 1 列 = **16 列**。父層 `manage` 不 seed menu policy(容器目錄,可見性由子節點決定)。
+
+#### 維度三:button 級權限(v2 = 'button')
+
+| button code | R_SUPER | R_ADMIN | R_USER_COMMON | 種者 migration |
+|---|:---:|:---:|:---:|:---:|
+| `B_CODE1` | ✓ | — | — | 022 |
+| `B_CODE2` | ✓ | ✓ | — | 022 |
+| `B_CODE3` | ✓ | ✓ | ✓ | 022 |
+| `user:add` | ✓ | — | — | 022 |
+| `user:edit` | ✓ | ✓ | — | 022 |
+| `user:delete` | ✓ | — | — | 022 |
+| `role:add` | ✓ | — | — | 024 |
+| `role:edit` | ✓ | — | — | 024 |
+| `role:delete` | ✓ | — | — | 024 |
+| `menu:add` | ✓ | — | — | 024 |
+| `menu:edit` | ✓ | — | — | 024 |
+| `menu:delete` | ✓ | — | — | 024 |
+
+> button 維度小計:022 種 10 列(R_SUPER 6 + R_ADMIN 3 + R_USER_COMMON 1)+ 024 種 6 列(全 R_SUPER)= **16 列**。
+
+#### casbin 三維度合計
+
+| 維度 | 種子列數 | 種者 migration |
+|---|---:|---|
+| endpoint(GET 18 / POST 13 / DELETE 6) | 37 | 009/013/015/017/019/020/021/022/023/025/029 |
+| menu(v2='menu') | 16 | 010/022/029 |
+| button(v2='button') | 16 | 022/024 |
+| **合計** | **69** | — |
+
+**權限設計重點**:R_SUPER 涵蓋幾乎全部治理端點與權限;R_ADMIN 只有讀端(getUserList/getRoleList/getAllRoles)+ 部分 menu(home/manage_user/manage_user-detail/function/function_toggle-auth)+ 3 個 button(B_CODE2/B_CODE3/user:edit),**無任何寫端 endpoint**;R_USER_COMMON 最小集(home/function/function_toggle-auth menu + getAllRoles role-picker + B_CODE3)。**所有寫端 endpoint(add/update/delete/batchDelete)與所有治理端點(getAll*/getRole*/updateRole*)皆 R_SUPER only**,非 Super 經 `enforce_mw` 拒 403。其餘角色的進階授權刻意**不 seed**,由運維經 modal(updateRoleButton / updateRoleEndpoints / updateRoleMenu)runtime 指派。
+
+**冪等與 down 紀律**:全 12 個 casbin seed migration 皆 `ON CONFLICT DO NOTHING`;各 `down()` 嚴格只反轉自己(by `v1 IN(...)` 精確刪,**不裸刪維度**)—— 例如 022 down 刪 button 必須帶 `v1 IN(B_CODE*/user:*)` 避免誤刪;024 down 刪 button 必須帶 `v1 IN(role:*/menu:*)` 避免誤刪 022 的 10 列;010 的 9 列 menu 也靠 022 down 的 `v1 IN('function','function_toggle-auth')` 守衛避開。
+
+### UPDATE 回填
+
+種子除 INSERT,還有三處對既有列的欄值回填(對齊「§I.6 審計欄凍結前後」的補欄需求,以及 home 基線):
+
+| migration | 目標表 | 回填內容 | 範圍 |
+|---|---|---|---|
+| 014 | `sys_user` | `status = 1`(啟用) | `WHERE id IN (1,2,3)`(Super/Admin/User) |
+| 016 | `sys_role` | `status = 1`(啟用) | `WHERE id IN (1,2,3)`(三角色) |
+| 021 | `sys_role` | `home = 'home'` | **無 WHERE、全表**(per-role getUserRoutes 首頁基線預設) |
+| 022 | `sys_menu` | `manage_user.buttons` = `[user:add, user:edit, user:delete]` registry | `WHERE route_name='manage_user' AND deleted_at IS NULL` |
+| 024 | `sys_menu` | `manage_role.buttons` = `[role:add, role:edit, role:delete]` registry | `WHERE route_name='manage_role' AND deleted_at IS NULL` |
+| 024 | `sys_menu` | `manage_menu.buttons` = `[menu:add, menu:edit, menu:delete]` registry | `WHERE route_name='manage_menu' AND deleted_at IS NULL` |
+
+- **014/016 status=1**:對固定 id 1/2/3 回填,因 `status` 欄是後加(business_audit alter)、建表時不存在,故用 UPDATE 補既有種子列。down 不還原 status(欄被 drop、值隨之消失,對稱合理)。
+- **021 home='home' 全表**:刻意無 WHERE,把**全角色**(含 runtime 新增的)的 home 拉到基線 `home`;此基線值可被後續 per-role 編輯(updateRoleHome)覆寫。
+- **022/024 buttons registry**:`up()` 帶 `deleted_at IS NULL` 守衛(只回填 active 選單);後端零改(getAllButtons 聚合 active `sys_menu.buttons`、set_role_button HARD REPLACE code-agnostic)。024 down 還原為 NULL 時 WHERE 不帶 `deleted_at` 守衛(小不對稱、無害)。
+
+### 活體 vs 種子 reconcile
+
+逐表標記 2026-06-06 活體相對種子 baseline 的關係:
+
+| 表 | 種子列 | 活體列 | 關係 | 說明 |
+|---|---:|---:|:---:|---|
+| `casbin_rule` | 69 | 69(ptype='p',0 個 'g') | **== 種子(靜態)** | 詳見下方逐維度核對 |
+| `system_settings` | 1 | 1 | **== 種子(靜態)** | single_session_default=off,未經 runtime 編輯 |
+| `sys_role` | 3 | 6 | 種子 + runtime 累積 | seed id 1/2/3 完整在活體;多出 16/17/18 為測試殘留(見 §dev DB 測試殘留) |
+| `sys_user` | 3 | 15 | 種子 + runtime 累積 | seed id 1/2/3(cby=∅)完整在活體;其餘為 runtime + 測試殘留 |
+| `sys_user_role` | 3 | 13 | 種子 + runtime 累積 | seed 1→1/2→2/3→3 完整;其餘對應 runtime/測試 user |
+| `sys_menu` | 9 | 12 | 種子 + runtime 累積 | seed 9 列(018×6 + 022×2 + 029×1)完整;多出 13/14/15 為 CDP 測試殘留 |
+
+**casbin_rule 是本次最重要的 reconcile 結論**:活體 69 列與種子 69 列**逐列完全相同、零差異**(seed 集合 ∖ live = ∅,live ∖ seed = ∅)。維度核對:
+
+- GET 18 / POST 13 / DELETE 6(= endpoint 37)、menu 16、button 16 —— **每個維度的活體計數都精確等於種子計數**。
+- **task 提示中標為「可能 runtime 授權編輯」的列,經核對全部是種子 baseline**:`R_ADMIN | B_CODE2 | button`、`R_ADMIN | B_CODE3 | button`、`R_ADMIN | user:edit | button`、`R_USER_COMMON | B_CODE3 | button` 四列**均由 022 `seed_button_auth` 種入**(022 的 R_ADMIN 3 + R_USER_COMMON 1 分級正是這四列),**不是** runtime modal 授權。
+- 因此本次取樣的 casbin **沒有任何 runtime 授權編輯殘留** —— 雖然 `updateRoleButton`/`updateRoleEndpoints`/`updateRoleMenu` 提供了合法 runtime 變更通道,但取樣當下活體政策恰好停在乾淨種子 baseline 上。
+
+> **note(casbin 精確列數 = 69)**:`SELECT count(*) FROM casbin_rule` 精確值 = **69**(ptype='p' 69 + ptype='g' 0)。本報告前半總覽表初稿的 row 數取自 `pg_stat_user_tables.n_live_tup`(VACUUM 估計值)有偏差,已**同批校正為精確 count(*)**:`casbin_rule` 70→69、`sys_role` 3→6、`sys_user_role` 4→13、`sys_operation_log` 161→160(其餘表估計值與精確值相符)。兩半部現一致。
+
+### dev DB 測試殘留 finding
+
+活體 DB 除「種子」與「runtime-業務」兩類列外,還夾帶第三類:**測試殘留** —— CDP 自動化測試 / 整合測試建立、未清理的列。這些列**既非種子 baseline、也非真實業務 runtime**,僅是 dev DB 上累積的 test fixture,值得標記:
+
+| 表 | 測試殘留列 | 來源 |
+|---|---|---|
+| `sys_role` | id 16(`CDPR1_*`)、17(`CDPR2_*`)、18(`CDPX_R_*`) | CDP role CRUD 測試 |
+| `sys_user` | id 4–7(alice/bob/cdpuser/cdpdisabled)、15(test)、16–18(cdp*)、19(rv017);id **900001/900002/900003**(`audit_it_user_*`,900003 single-session on) | runtime/CDP 測試(4-19,cby=1)+ 高 id **整合測試殘留**(900001-3,cby=∅) |
+| `sys_menu` | id 13(`cdpm1`)、14(`cdpm2`)、15(`cdpx_m2`)(cby=1) | CDP menu CRUD 測試 |
+| `sys_user_role` | 4→3/5→3/6→2/6→3/7→3/15→2/16→3/17→3/18→3/19→3 | 對應上述測試 user 的角色指派 |
+
+- **特別點名 900001-3**:這三列 `audit_it_user_*`(cby=∅、高 id 區段)是 **rust-api in-crate 整合測試**(`#[ignore]` live-postgres 測試)的 fixture,跑完未回滾;cby=∅ 容易被誤判為種子(種子也 cby=∅),但種子帳號只有 id 1/2/3,**900001-3 確定是測試殘留**,id 區段(900000+)即是隔離標記。
+- **casbin / system_settings 無測試殘留**:這兩表活體 == 種子,測試未在其上留污染列(casbin 測試列若有也已清,或測試走 throwaway DB)。
+- **建議**:這些殘留**不影響種子完整性**(種子 baseline 全在),但污染 dev DB 取樣、易混淆「種子 vs 活體」判讀。建議二選一 ——(a)以 throwaway DB 重跑 `migration up` 取得乾淨種子 baseline 快照供對照;或(b)寫一支 cleanup 腳本清掉測試 id 區段(sys_role 16-18、sys_user 4-19 + 900001-3、sys_menu 13-15 及其 sys_user_role / 任何 runtime casbin 列),讓 dev DB 回到「種子 + 真實業務」的乾淨狀態。整合測試本身宜改用 throwaway DB 或測試後 rollback,避免持續累積。
+
+### 種子完整性結論
+
+**migration 種子齊備,活體含全部種子 baseline。** 24 處 seed 操作(21 INSERT 批 + 3 類 UPDATE 回填)分布在 13 個 migration,涵蓋 6 張表;全部 idempotent(`ON CONFLICT DO NOTHING` / 固定-id UPDATE),down 各自精確反轉。逐表 reconcile 確認:每一條種子列都能在活體找到對應(seed ⊆ live,無「該有卻消失的種子」);`casbin_rule` 與 `system_settings` 活體**恰好 == 種子靜態 baseline**(casbin 69 列零 runtime 編輯殘留),`sys_user`/`sys_role`/`sys_menu`/`sys_user_role` 活體 = 種子 + runtime 累積 + 可清理的測試殘留。**種子層健康度:優** —— 種子定義完整、idempotent、down 對稱,活體偏離全部歸因明確(runtime 業務 / 測試殘留),無種子 drift。
