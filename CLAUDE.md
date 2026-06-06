@@ -356,10 +356,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/029-single-session-admin-ui/spec.md`](specs/029-single-session-admin-ui/spec.md)
-**Active Plan**: [`specs/029-single-session-admin-ui/plan.md`](specs/029-single-session-admin-ui/plan.md)
-**Phase**: **029 single-session-admin-ui — ✅ 完成**(specify/clarify/plan/tasks/analyze ✅ + **constitution v1.6.0** `3bd3eda`〔MODAL-WIRING ★ (e)〕+ subagent-driven TDD T002-T021 雙審 + final holistic 三維 + 雙頁 CDP isolated-context smoke 全綠 → merge `--no-ff` 回 `rev2-admin-root`〔SHA 見 MILESTONES §1〕、保留 029 branch、雙倉已推 fork + origin)。把 028 單一-session policy 升級為 **admin UI 可調**:rev2 首張 `system_settings` KV 表 + `AppState.session_mode` + `settings_watcher`(pub-sub)使系統預設 runtime 可調 + 3 Super-only 端點(30→33)+ getUserList additive `sessionPolicy` + 設定頁(MODAL-WIRING (e))/ 使用者頁 policy UI;**不改 028 enforcement**、無新 crate。as-built 見 [DESIGN §6.7](docs/INTEGRATION-DESIGN.md);詳見 [`specs/029-single-session-admin-ui/`](specs/029-single-session-admin-ui/)。
-**下一步**: 無 active feature。Phase 5 候選([DESIGN §10 Phase 5](docs/INTEGRATION-DESIGN.md)):抽離項 stub(captcha/getLastTime)· cleanup-job(含 sys_token 實體清理 + same-second `jti` fix)· **#6 受管 RBAC**(需 §11.6 fork amendment)· ButtonAuth「完整版」。新 feature 起手走階段 0 brainstorm → 手動 `/speckit-specify`。
+**Active Spec**: [`specs/030-cleanup-job/spec.md`](specs/030-cleanup-job/spec.md)
+**Active Plan**: [`specs/030-cleanup-job/plan.md`](specs/030-cleanup-job/plan.md)
+**Phase**: **030 cleanup-job — 設計中**(specify ✅ + clarify ✅〔0 critical ambiguity〕+ plan ✅〔Constitution 8/8 PASS、純後端無 ★ 軌道 / 無 base-web / 無新表〕;tasks/analyze 待)。把 027 FR-011 延後的 sys_token 過期清理落地成 on-demand `cleanup-job` binary(**純過期** `expires_at<now-60s`、dry-run 預設 /`--execute` 才刪、`profile:[jobs]` + host cron)+ 加 `idx_sys_token_expires_at` + 修 same-second `token_hash` 撞鍵(`Claims` 加 per-token `jti`);**不改 027/028 enforcement、無新 crate**。設計見 [`docs/superpowers/030-cleanup-job.md`](docs/superpowers/030-cleanup-job.md) + [`specs/030-cleanup-job/`](specs/030-cleanup-job/)。
+**下一步**: `/speckit-tasks`(dependency-ordered task 清單)→ `/speckit-analyze` → `superpowers:executing-plans` 實作。
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工

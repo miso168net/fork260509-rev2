@@ -89,6 +89,26 @@ services:
     networks:
       - rev2_net
 
+  cleanup-job:
+    # ★ on-demand 維運 job(030):純過期 sys_token 清理。profile:[jobs] → 一般 up 不啟(FR-007);
+    #   host cron / 人工觸發。dry-run 預設、--execute 才刪。鏡像 migrate 的 one-shot 結構。
+    profiles: ["jobs"]
+    build:
+      context: ./
+      dockerfile: deploy/Dockerfile.rust-api.txt
+    image: rev2-admin-rust-api:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      APP_DATABASE_URL_FILE: /run/secrets/cleanup_database_url
+    secrets:
+      - cleanup_database_url
+    command: ["cleanup-job"]
+    restart: "no"
+    networks:
+      - rev2_net
+
   postgres:
     image: postgres:17-alpine
     environment:
@@ -162,3 +182,5 @@ secrets:
     file: ./deploy/secrets/database_url.txt
   redis_url:
     file: ./deploy/secrets/redis_url.txt
+  cleanup_database_url:
+    file: ./deploy/secrets/cleanup_database_url.txt

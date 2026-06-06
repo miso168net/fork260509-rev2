@@ -90,6 +90,21 @@ services:
     entrypoint: ["cargo", "run", "--bin", "migration"]
     command: ["up"]
 
+  cleanup-job:
+    # ★ dev cleanup-job:同 migrate,dev image ENTRYPOINT 是 cargo-watch(跑 server),
+    #   整段 entrypoint 換成 cargo run --bin cleanup-job(compose-level override、不改 Dockerfile)。
+    #   command: [] 清空 base 的 ["cleanup-job"]:否則 argv 會變 cargo run --bin cleanup-job cleanup-job,
+    #   把字串 "cleanup-job" 當 binary arg 傳入 → binary 拒收(usage 報錯 exit 64)。清空後 = dry-run。
+    build:
+      target: dev
+    image: rev2-admin-rust-api:dev
+    volumes:
+      - ./rust-api:/app
+      - rust_api_cargo_cache:/usr/local/cargo
+      - rust_api_target:/app/target
+    entrypoint: ["cargo", "run", "--bin", "cleanup-job"]
+    command: []
+
   postgres:
     ports:
       - "127.0.0.1:25432:5432"
