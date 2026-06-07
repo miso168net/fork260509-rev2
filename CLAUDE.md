@@ -356,10 +356,10 @@ cd ..
 > 下面 `<!-- SPECKIT START / END -->` marker 區為當前 feature 的 active spec/plan 快照，Claude 在 feature 啟動/收尾時手動維護（**只用簡潔描述、不擴張內容**；marker 名稱保留供 spec-kit 將來自動同步、**勿刪**）。
 
 <!-- SPECKIT START -->
-**Active Spec**: [`specs/031-obs-min/spec.md`](specs/031-obs-min/spec.md)
-**Active Plan**: [`specs/031-obs-min/plan.md`](specs/031-obs-min/plan.md)
-**Phase**: **031 obs-min(Phase 6 obs、log-only)— ✅ 完成、merged `3383828`**(--no-ff 回 rev2-admin-root、保留 031 branch、已推 origin)。opt-in `profiles:[obs]` log 堆疊 = loki(儲存/LogQL)←alloy(docker-SD 採集全容器 stdout、取代 EOL promtail)→grafana(Explore、loki datasource);rust-api ctx_mw 注 trace_id 進 tracing span+boundary event→loki `fields_trace_id` 對接 `sys_access_log`;front-nginx stdout JSON+傳 `X-Request-Id`。純後端/infra、base-web 零改、無 wire/migration/新 crate/dashboard/metrics(留 obs-full)、Constitution 8/8 PASS、無 amendment(promtail→alloy=EOL fix-forward)。acceptance C1-C7+守恆全綠。pin loki `3.7.2`/alloy `v1.16.1`/grafana `13.0.2`。設計見 [`specs/031-obs-min/`](specs/031-obs-min/) + DESIGN §10 Phase 6 #1 as-built。
-**下一步**: Phase 6 obs-min ✅。後續候選(user 擇期):obs-full(metrics/prometheus + exporter + pushgateway + axum-casbin metrics 埋點)/ dashboard provisioning / #6 受管 RBAC(deferred)/ 030 follow-up。
+**Active Spec**: [`specs/032-obs-full/spec.md`](specs/032-obs-full/spec.md)
+**Active Plan**: [`specs/032-obs-full/plan.md`](specs/032-obs-full/plan.md)（⏳ plan 待）
+**Phase**: **032 obs-full(Phase 6 obs、metrics)— 設計中**(specify ✅〔spec quality 16/16、0 NEEDS CLARIFICATION〕;clarify/plan/tasks/analyze 待)。接續 031 obs-min 的 log 半邊、補 metrics 半邊 + 閉 Phase 3 #5 parked 的 enforce metrics 債。9 決策(brainstorm):D1 一刀做完整 obs-full / D2 純 greenfield / D3 `axum-prometheus`(HTTP)+ enforce 自埋 / D4 新 `profiles:[metrics]`(grafana 跨 `obs`+`metrics`;完整=`--profile obs --profile metrics`) / D5 dashboard 另開 #3 / D6 pushgateway 含(+cleanup-job push) / D7 baseline alert rules(notification channel defer) / D8 `/metrics` 公開 ops route 不經 nginx → prod 不暴露 / D9 enforce 埋點在 `enforce_mw`。**純後端/infra、base-web 零改、無 migration/新表/新 workspace crate(deps only)、預判 Constitution 8/8 PASS**。設計見 [`docs/superpowers/032-obs-full.md`](docs/superpowers/032-obs-full.md) + [`specs/032-obs-full/`](specs/032-obs-full/)。
+**下一步**: `/speckit-clarify`(optional)→ `/speckit-plan`(補 brainstorm §7 的 8 項 research:axum-prometheus 版本 pin+MSRV/label 基數/2 exporter pin+secret/prometheus retention+scrape/pushgateway push 機制/grafana provisioning/nginx 不 proxy `/metrics`)→ `/speckit-tasks` → `/speckit-analyze` → `superpowers:executing-plans`。
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
