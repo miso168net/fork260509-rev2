@@ -222,15 +222,20 @@
 - [ ] **alloy `user: root` 讀 docker.sock(R11 prod 硬化 defer)**:obs-min 為可攜性讓 alloy run-as-root 讀 `/var/run/docker.sock`(root:docker 660)。prod 非-root 硬化(`group_add` host docker gid 或 rootless docker-SD)留 **security pass**(032 obs-full 已落地但未含 alloy 硬化);dev/個人 workspace 可接受。
 - [ ] **obs/metrics prod 查詢入口對外暴露(grafana/loki/prometheus 經 front-nginx reverse proxy + TLS + 採集端 auth)**:031/032 prod obs+metrics 全 = internal-only(無對外 host port),維運者經 `docker compose exec` / port-forward 達 grafana/prometheus;「對外暴露」spec Assumptions 明列**延後 security pass**(032 obs-full 已落地、metrics service〔prometheus/grafana/pushgateway〕同 internal-only、對外暴露 + scrape auth 仍未做)。
 - [ ] **obs(loki/alloy/grafana)+ metrics(prometheus/exporter/pushgateway)全 service 無 healthcheck → `up --wait` 視 running 即 ready(非 queryable)**:pipeline self-heal(alloy 重試 push、grafana 重試 datasource、prometheus 重試 scrape)故功能可接受,但 `--wait` 回傳不代表 loki 已可查 / prometheus 已 scrape(031 C1 改輪詢 loki `/ready`、032 acceptance 改輪詢 prometheus `/api/v1/targets` + pg_up/redis_up)。加 loki `/ready` + grafana `/api/health` + prometheus `/-/ready` healthcheck 可給真 readiness signal(minor operational、未來自動化起 stack 時有用)。
-- [ ] **(dashboard-provisioning feature 考量)rust-api log trace_id 在 loki `fields_trace_id`(nested)非 top-level**:tracing-subscriber `fmt().json()` 把 event 欄位巢狀 `"fields"` 下(rust-api 既有全 log 慣例)。obs-min LogQL `{service="rust-api"} | json | fields_trace_id="X"` 已穩定可查;**dashboard-provisioning feature** 若要 grafana log dashboard 用 clean top-level `trace_id`,可在 `init_tracing` 加 `flatten_event(true)`(**全域改所有 log 形狀、需重驗所有 log 消費者**)。注:032 obs-full 純 metrics(不帶 trace_id label),此純 log-dashboard 考量、obs-full 不觸發。
+- [x] **(dashboard-provisioning feature 考量)rust-api log trace_id 在 loki `fields_trace_id`(nested)非 top-level** ✅ 已決 (2026-06-08、033):033 audit-log 板沿用 nested `fields_trace_id`(enforce-deny logs panel、`enableLogDetails` 展開可見 trace_id)、**刻意不**做 `flatten_event(true)`(全域改 log 形狀、超 033 純-config 範圍);trace_id 查詢沿既有穩定路徑。原 note 保留供日後若做全域 flatten 參考。
 - [~] **enforce metrics 埋點**:**✅ 032 obs-full** 落地基礎 enforce allow/deny counter(`casbin_enforce_total{decision}`、`enforce_mw` 3 outcome、閉 Phase 3 #5 債、經 prometheus 消費);**仍待**:027 盜用偵測 metrics(reuse/8888 counter)/ 026 per-callsite verify-fail 歸因(per-route label),留後續 dashboard/metrics 擴充 feature 補(守低基數紀律)。
 
 ### 2.37 feature 032-obs-full follow-up
 
 - [ ] **least-priv exporter PG role**:postgres_exporter 現 reuse soybean superuser DSN(internal-only 可接受);專用唯讀 role(`CREATE USER ...; GRANT pg_monitor`、零寫/DDL)需 migration、合 030 §2.35 least-priv PG role 軌道一起做。
 - [ ] **alert notification channel(SMTP/webhook 送信)**:3 baseline alert rule 已 provision + grafana 內建 default backstop 下可 Firing,但 contact point/notification policy defer(需真實 creds、鏡像 acme 需真實 domain;notification 產生但 SMTP 未設→silently drop)。
-- [ ] **grafana dashboard(metrics)**:032 為 Explore + alert-only;master/rust-api/postgres/redis overview dashboard JSON 留 dashboard-provisioning feature。
+- [x] **grafana dashboard(metrics)** ✅ (2026-06-08、033 merge `3d27cd5`):dashboard-provisioning 交付 6 板(master-overview/rust-api/postgres/redis/cleanup-job/audit-log)provisioned in obs-full;見 [DESIGN §10 Phase 6 #3](INTEGRATION-DESIGN.md) + §2.38。
 - [ ] **`rust-api-high-5xx-rate` alert rule `noDataState:Alerting` 零流量理論誤報**(final review M2):5xx-rate 表達式在「完全無流量」系統 = empty/empty → grafana NoData → `noDataState:Alerting` 會誤 firing。**本部署不可達**(prometheus 每 15s scrape rust-api `/metrics`、被 axum 計數 → `axum_http_requests_total` 恆有近期樣本 → 永不 NoData),且為 plan 刻意 fail-loud 設計;若未來要嚴格消除此理論 edge,把表達式包 `... or vector(0)` 強制有值。低優先、自我修正。
+
+### 2.38 feature 033-dashboard-provisioning follow-up
+
+- [ ] **cleanup-job 經 `docker run` 跑時 log 被 alloy 依 image 標成 `service=rust-api`(污染 rust-api loki 串流)**:033 acceptance C0 用 `docker run rev2-admin-rust-api:dev` 跑 cleanup-job、alloy docker-SD 依 image 派 service label → 其純文字 stdout("would delete 0 rows" 等)灌進 `service=rust-api` → 無 guard 的 `| json` 板回 400 JSONParserErr(已在 audit-log 板補 `|~ \`^{\`` guard 化解、commit `5fa6a1c`)。**症狀已解、log 歸屬根因未除**:改經 compose `--profile jobs` cleanup-job service 跑(alloy relabel compose-service→service、得乾淨 `service=cleanup-job` label)、或精修 alloy labeling 規則。dashboards 已 guard、不阻塞;屬 obs log 歸屬 hygiene、合 §2.36 alloy 硬化軌道。
+- [ ] **(minor)postgres 板 PG17 bgwriter gap(82% match、1 panel No data)**:pin `postgres_mixin@v0.19.1` 的 bgwriter buffers panel 用 PG17 移除的 `pg_stat_bgwriter_buffers_{backend,checkpoint}_total`(折進 `pg_stat_checkpointer`)→ 該 1 panel 永 No data。upstream/PG17 gap、非 bug;日後 postgres_mixin 出 PG17 對齊版可重 pin 升級。
 
 ## 3. 已完成里程碑
 
