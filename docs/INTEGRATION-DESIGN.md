@@ -1393,6 +1393,7 @@ axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index
 >
 > **理由**:跟隨 followup §8 建議。Phase 1-4 焦點在核心 feature、不被 obs 設定干擾;Phase 5+ 業務 traffic 增加、需 log 觀察與 metric 追蹤。
 > **影響**:Phase 5 + Phase 6 docker-compose 配置;無新軌道
+> **採集 agent 可替換注記（031 plan）**:此處列的「promtail」是**可替換的實作元件**、非凍結拍板(constitution §II §11.8 凍結值為「漸進 obs-min/obs-full」、不 name 特定採集 agent)。031-obs-min 落地時 promtail 已 EOL/deprecated → 改用後繼 **Grafana Alloy**(同 docker-SD + loki push 能力、River config),屬 §6 EOL fix-forward 實作替換、**不需 constitution amendment**(/speckit-analyze 經 constitution.md:106 核對確認)。詳見 `specs/031-obs-min/research.md` R2/R4。
 
 | 階段 | followup 建議 | 替代選項 |
 |---|---|---|

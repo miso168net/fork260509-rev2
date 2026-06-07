@@ -102,4 +102,5 @@
 - 後端應用**已輸出結構化 log**、且**已有 per-request 識別碼**的內部 plumbing（複用既有、不新建識別碼機制）。
 - log 保留為**短期**（開發 / 個人 workspace 無長期歸檔需求);長期歸檔屬後續。
 - 觀察性查詢入口是**獨立的維運 UI**（非整合進既有前端應用）;不改動前端應用。
+- **dev 為主要查詢入口**（loopback host port）;**prod 環境的查詢入口對外暴露延後**:obs 元件在 prod 為 internal-only（無對外 host port），prod 維運者經 `docker compose exec` / port-forward 達查詢入口,「對外暴露（經反向代理 + TLS）」留後續 obs-full / security pass。故 SC-001「單一入口查」主要於 dev 入口驗收;prod 以「stack 可運行」（SC-005）為界。
 - 不新增需編譯的後端模組單元（複用既有 log 機制）;對既有反向代理設定的調整僅限 log 輸出格式 / 去向。
