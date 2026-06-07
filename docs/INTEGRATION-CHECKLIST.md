@@ -244,11 +244,15 @@
 
 ### Phase 0 — 設計拍板 ✅ 全完成+已歸檔 (2026-05-28)
 
+> 設計鏈 7 件(RESEARCH / RESEARCH-FOLLOWUP / MOCK-COVERAGE-AUDIT / DESIGN / CHECKLIST / §11 12 拍板〔user 親決〕/ constitution v1.0.0 凍結);非 code、無 merge SHA。詳見 [DESIGN §10 Phase 0](INTEGRATION-DESIGN.md)。
+
 ### Phase 1 — 部署基建 ✅ 全完成+已歸檔 (2026-05-28)
 
 > 5 feature 全交(001 rust-api Dockerfile `a21e932` / 002 base-web Dockerfile `a70fa5f` / 003 TLS cert `cb5e1a1` / 004 compose 編排 `b4294c7` / 005 secret 注入 `068b2a8`),各 feature branch 保留供 audit;詳細 deliverable 見 [DESIGN §10 Phase 1](INTEGRATION-DESIGN.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
 
 ### Phase 2 — 後端基礎設施 ✅ 全完成+已歸檔 (2026-05-29)
+
+> 後端基礎設施 6 feature 全交(007 連線層+config+JWT secret 吸收 `928949d` / 008 envelope Res<T>+12-code 矩陣 `7bdf5bb` / 009 soft-delete 三重防護+entity crate `88312b6` / 010 migration 自動套+migrate gate `e4ff2b2` / 011 audit-log+mutate_in_txn `2be489f` / 012 sub-crate sea-orm-adapter+xdb+casbin 2.20 `774f7b3`),各 feature branch 保留供 audit;詳細 deliverable 見 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
 
 ### Phase 3 — 認證 + 動態選單(✅ 核心完成 2026-06-05;#5 metrics 尾巴 ✅ 032 obs-full、#6 治理 = 獨立 deferred 軌道)
 
@@ -260,7 +264,7 @@
 - [x] **axum-casbin 重寫 feature ✅ 核心已被 013-026 增量吸收(2026-06-05 行政收口)** — rev2 自家 enforce middleware〔013 第一刀〕+ 全路由 rollout〔023 證 25/25 零破口〕+ DB-fresh 角色〔018〕+ error 標準化〔5003/3333〕+ auth DRY refactor〔026〕**皆已落地**;**enforce 的 metrics/observability 埋點 ✅ 032 obs-full 落地**(`enforce_mw` 自埋 `casbin_enforce_total{decision}` allow/deny counter、經 prometheus 消費、merge `a13f85f`)→ Phase 3 #5 完全收。核心完成、視為獨立 feature 收口。詳見 [DESIGN §10 Phase 3 #5](INTEGRATION-DESIGN.md)(含 §11.17 DB-fresh 演進)
 - [ ] **受管 RBAC policy 層 feature(獨立 deferred 軌道、非 Phase 3 核心完成度 gate)** — casbin policy 治理:(a) soft-delete 可復原 (b) protected 不可刪 (c) 變更走 011 audit 記 operator (d) 統一 CRUD facade。**前置已備**(enforce/operator/policy 入口由 013/021/022/023 提供)→ 隨時可做、無技術 blocker;唯成本門檻 = fork sea-orm-adapter(改 load/remove)→ §11.6「adapter=拷貝」**constitution amendment** + 長期維護 fork。單-instance 下其解的 casbin 非原子/多-instance 債 benign → **刻意 defer 為未來治理選項**。詳見 [DESIGN §10 Phase 3 #6](INTEGRATION-DESIGN.md)
 
-### Phase 4 — 主流業務(進行中)
+### Phase 4 — 主流業務(大部完成 — 016-025 + 跨切項〔wire mapping / alova / 菜單樹 / 審計欄 retrofit〕全交 ✅;status/gender 等 wire 細節全功能巡檢 → Phase 7)
 
 - [x] **manage list endpoints feature(6 read)** ✅ — 016(user/role 三條 merge `5969d08`/pin `81c56ef`)+ 019(menu 三條 merge `a07ff13`/pin `239dcfd`、Super-only);6 read endpoint 全交;詳見 DESIGN §10 Phase 4
 - [x] **user 寫端 CRUD feature(017)** ✅ merge `617136d`(pin `7bfb353`)— 4 Super-only 寫端 + sys_user schema 完補(§I.6 retrofit + BIGSERIAL)+ 停用拒登 1000 + MODAL-WIRING;詳見 DESIGN §10 Phase 4;follow-up §2.21
@@ -271,7 +275,7 @@
 - [x] **ButtonAuth feature(022)** ✅ merge `e103de0`(已推)— 角色×按鈕權限 runtime 編輯(鏡像 021、無自鎖)+ per-menu 按鈕來源 + pilot 用戶頁 hasAuth gating + 救活 toggle-auth;getUserInfo.buttons 改讀 Casbin、buttons.rs 退場;CDP 4/4;Constitution v1.3.0(2 amendment);詳見 DESIGN §10 Phase 4 + `specs/022-manage-button-auth/`;follow-up §2.26
 - [x] **ButtonAuth Rollout feature(024)** ✅ merge `64d9bec`(已推)— 022 按鈕權限迴路 rollout 到角色/選單頁 + 三頁 reactive 修正(§2.26 閉合);唯一 rust=1 seed migration(後端零改)+ base-web 三頁 hasAuth gating;decoupled 刻意(FR-008);Constitution v1.4.0;詳見 DESIGN §10 Phase 4 + `specs/024-button-auth-rollout/`;follow-up §2.28
 - [x] **menu restore + re-parent feature(025)** ✅ merge `6225bd8`(已推)— 補完 020 FR-011 OUT:軟刪選單 restore(回收桶 + 3 guard + AuditOperation::Restore 首消費)+ 自訂選單 re-parent(parentId NTreeSelect + 種子/cycle/有效父 guard);2 endpoint + migration 025 + D1 lint 28→30;即時反映 getUserRoutes 零 casbin;Constitution v1.5.0(MODAL-WIRING (d) `2b05a5e`);詳見 DESIGN §10 Phase 4 + `specs/025-menu-restore-reparent/`;follow-up §2.29
-- [~] **wire shape mapping feature**(Output DTO + pagination wrapper)— 016 立骨架(PageRes<T> + UserItem/RoleItem/AllRoleItem),各 feature 隨 endpoint 接 DTO(017 user_item / 018 role_item+寫端 / 019 menu 讀端+mapper / 020 menu 寫端 / 022 button / 023 endpoint / 025 re-parent);詳見 DESIGN §10 各 Phase + 各 `specs/`
+- [x] **wire shape mapping feature** ✅(Output DTO + pagination wrapper、**跨 feature 範式非單一 feature、隨各端點增量落地**)— 016 立骨架(PageRes<T> + UserItem/RoleItem/AllRoleItem),各 feature 隨 endpoint 接 lint-safe mapping fn(017 user_item / 018 role_item+寫端 / 019 menu 讀端+mapper / 020 menu 寫端 / 022 button / 023 endpoint / 025 re-parent / 029 sessionPolicy);詳見 [DESIGN §10 Phase 4 #2](INTEGRATION-DESIGN.md) + 各 `specs/`
 - [x] alova-only endpoint 處理 feature(依 §11.2 拍板)— **017 已實作 alova 7 中的 4 寫端**(addUser/updateUser/deleteUser/batchDeleteUser,經 BASE-WEB-WRAPPER);**餘 3(sendCaptcha/verifyCaptcha/getLastTime)+ /auth/error = ⊘ moot、不實作**(僅 alova framework demo 頁、dynamic 模式不可達、走 ApiFox mock 非 rust-api;見 §5.8)→ alova-only 處理完結
 - [x] **菜單樹建構 feature** ✅ 019 — 純函式 `assemble_menu_tree`(parent_id→nested、order 排序〔None 末〕、孤節點略過),getUserRoutes + getMenuTree 共用、可單測
 - [x] **審計欄 retrofit feature**(既有業務表補 §I.6 6 審計欄)✅ — sys_user(017,5 欄)+ sys_role(018,7 欄);019 sys_menu = 凍結後首張新建表 create 即帶 6 欄(0 retrofit 債);見 §2.18
