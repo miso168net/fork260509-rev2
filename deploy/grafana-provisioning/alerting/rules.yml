@@ -1,0 +1,122 @@
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: obs-full-baseline
+    folder: obs-full
+    interval: 1m
+    rules:
+      # (a) 後端應用不可用
+      - uid: obsfull-rustapi-down
+        title: rust-api-target-down
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: prometheus
+            model:
+              datasource: { type: prometheus, uid: prometheus }
+              editorMode: code
+              expr: up{job="rust-api"}
+              instant: true
+              intervalMs: 1000
+              maxDataPoints: 43200
+              range: false
+              refId: A
+          - refId: C
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              datasource: { type: __expr__, uid: __expr__ }
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              conditions:
+                - type: query
+                  evaluator: { type: lt, params: [1] }
+                  operator: { type: and }
+                  query: { params: [C] }
+                  reducer: { type: last }
+        noDataState: Alerting
+        execErrState: Alerting
+        for: 2m
+        labels: { severity: critical }
+        annotations: { summary: "rust-api scrape target down (up{job=rust-api} < 1)" }
+      # (b) 基礎設施採集不可達
+      - uid: obsfull-infra-exporter-down
+        title: infra-exporter-down
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: prometheus
+            model:
+              datasource: { type: prometheus, uid: prometheus }
+              editorMode: code
+              expr: up{job=~"postgres|redis"}
+              instant: true
+              intervalMs: 1000
+              maxDataPoints: 43200
+              range: false
+              refId: A
+          - refId: C
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              datasource: { type: __expr__, uid: __expr__ }
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              conditions:
+                - type: query
+                  evaluator: { type: lt, params: [1] }
+                  operator: { type: and }
+                  query: { params: [C] }
+                  reducer: { type: last }
+        noDataState: Alerting
+        execErrState: Alerting
+        for: 2m
+        labels: { severity: critical }
+        annotations: { summary: "postgres/redis exporter scrape target down (up < 1)" }
+      # (c) 錯誤率過高
+      - uid: obsfull-rustapi-high-5xx
+        title: rust-api-high-5xx-rate
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: prometheus
+            model:
+              datasource: { type: prometheus, uid: prometheus }
+              editorMode: code
+              expr: 'sum(rate(axum_http_requests_total{status=~"5.."}[5m])) / clamp_min(sum(rate(axum_http_requests_total[5m])), 1)'
+              instant: true
+              intervalMs: 1000
+              maxDataPoints: 43200
+              range: false
+              refId: A
+          - refId: C
+            relativeTimeRange: { from: 600, to: 0 }
+            datasourceUid: __expr__
+            model:
+              type: threshold
+              datasource: { type: __expr__, uid: __expr__ }
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              conditions:
+                - type: query
+                  evaluator: { type: gt, params: [0.05] }
+                  operator: { type: and }
+                  query: { params: [C] }
+                  reducer: { type: last }
+        noDataState: Alerting
+        execErrState: Alerting
+        for: 5m
+        labels: { severity: warning }
+        annotations: { summary: "rust-api 5xx error ratio > 5% (5m)" }
