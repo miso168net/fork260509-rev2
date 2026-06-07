@@ -90,8 +90,8 @@ curl -s 'http://127.0.0.1:23090/api/v1/query?query=cleanup_job_last_success_time
 ```bash
 GF_PASS=$(cat deploy/secrets/grafana_admin_password.txt)
 curl -s -u "admin:$GF_PASS" http://127.0.0.1:23000/api/v1/provisioning/alert-rules | python3 -c 'import sys,json;d=json.load(sys.stdin);print("provisioned alert rules:",len(d));[print(" -",r.get("title")) for r in d]'
-# 期望:≥1（含 "rust-api target down"）
-# 觸發驗（可選）:停 rust-api → up{job="rust-api"}==0 → 該 rule 進 Alerting
+# 期望:3 條 baseline rule（rust-api-target-down / infra-exporter-down / rust-api-high-5xx-rate、對 FR-005 三失效型）
+# 觸發驗（可選）:停 rust-api → up{job="rust-api"}==0 → rust-api-target-down 進 Alerting
 # docker compose ... stop rust-api; sleep 150; 查 rule state；再 start
 ```
 

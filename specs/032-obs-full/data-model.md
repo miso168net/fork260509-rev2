@@ -70,16 +70,16 @@ cleanup_job_rows_deleted  <n>
 
 ## 5. grafana alert rule（unified alerting、provisioning、D7）
 
-| 欄 | 值（baseline `rust-api target down`）|
-|---|---|
-| group / folder | `rust-api-availability` / `obs-full`(auto-create)、interval 1m |
-| query A | `up{job="rust-api"}` instant、datasourceUid=`prometheus` |
-| expr C | threshold `lt 1`、`condition:C` |
-| for / state | `for:2m`、`noDataState:Alerting`/`execErrState:Alerting` |
-| label | `severity:critical` |
+rule group `obs-full-baseline`（folder `obs-full` auto-create、interval 1m）含 **3 條** grafana-managed rule（覆蓋 FR-005 三失效型;皆 query A + `__expr__` threshold C、`datasourceUid:prometheus`、`noDataState:Alerting`/`execErrState:Alerting`）:
+
+| rule | 失效型 | query A | expr C | for / severity |
+|---|---|---|---|---|
+| `rust-api-target-down` | 後端應用不可用 | `up{job="rust-api"}` instant | threshold `lt 1` | `for:2m` / critical |
+| `infra-exporter-down` | 基礎設施採集不可達 | `up{job=~"postgres|redis"}` instant | threshold `lt 1` | `for:2m` / critical |
+| `rust-api-high-5xx-rate` | 錯誤率過高 | `sum(rate(axum_http_requests_total{status=~"5.."}[5m])) / clamp_min(sum(rate(axum_http_requests_total[5m])),1)` | threshold `gt 0.05`（>5%）| `for:5m` / warning |
 
 - **datasource 設顯式 `uid:prometheus`** → alert rule `datasourceUid` 對得上(否則 auto-random UID resolve 失敗、#1 footgun)。
-- **notification channel = OUT**(D7):rule 在內建 default contact point backstop 下可 provision + Firing(notification 產生但 SMTP 未設→drop = 「channel deferred」正中);**不** provision notification-policies 檔(避 dangling-receiver boot error)。可擴 5xx 比率 / exporter down rule(plan/tasks)。
+- **notification channel = OUT**(D7):rule 在內建 default contact point backstop 下可 provision + Firing(notification 產生但 SMTP 未設→drop = 「channel deferred」正中);**不** provision notification-policies 檔(避 dangling-receiver boot error)。
 
 ## 6. rust-api code 改點（worktree、兩既有 crate）
 

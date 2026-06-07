@@ -46,7 +46,7 @@
 
 - **prometheus**（`deploy/prometheus/prometheus.yml`）：`global.scrape_interval:15s` + `scrape_configs`〔`rust-api`→`rust-api:21081`/metrics、`postgres`→`postgres_exporter:9187`、`redis`→`redis_exporter:9121`、`pushgateway`→`pushgateway:9091`(`honor_labels:true`)〕。
 - **grafana prometheus datasource**（`deploy/grafana-provisioning/datasources/prometheus.yml`）：`apiVersion:1` + `datasources:[{name:Prometheus, type:prometheus, access:proxy, url:http://prometheus:9090, **uid:prometheus**, isDefault:false, editable:false, jsonData:{httpMethod:POST, timeInterval:15s}}]`。
-- **grafana alerting**（`deploy/grafana-provisioning/alerting/rules.yml`）：`apiVersion:1` + `groups:[{orgId:1, name:rust-api-availability, folder:obs-full, interval:1m, rules:[{uid, title:"rust-api target down", condition:C, data:[A=up{job="rust-api"}@uid:prometheus, C=threshold lt 1], for:2m, noDataState:Alerting, execErrState:Alerting, labels.severity:critical}]}]`。
+- **grafana alerting**（`deploy/grafana-provisioning/alerting/rules.yml`）：`apiVersion:1` + group `obs-full-baseline`（folder obs-full、interval 1m）含 **3 條 baseline rule（FR-005 三失效型、皆 datasourceUid:prometheus + noDataState/execErrState:Alerting）**：`rust-api-target-down`（A=`up{job="rust-api"}`, C=threshold lt 1, for:2m, critical）/ `infra-exporter-down`（A=`up{job=~"postgres|redis"}`, C=threshold lt 1, for:2m, critical）/ `rust-api-high-5xx-rate`（A=`sum(rate(axum_http_requests_total{status=~"5.."}[5m]))/clamp_min(sum(rate(axum_http_requests_total[5m])),1)`, C=threshold gt 0.05, for:5m, warning）。
 
 ## 4. 維運叫用契約
 
