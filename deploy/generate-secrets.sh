@@ -3,8 +3,8 @@
 # 用法:bash deploy/generate-secrets.sh [--force]
 #
 # 功能:
-#   生成 7 個必須 secret 檔到 deploy/secrets/*.txt
-#   - 4 個 leaf secret: jwt_secret, refresh_token_secret, postgres_password, redis_password
+#   生成 8 個必須 secret 檔到 deploy/secrets/*.txt
+#   - 5 個 leaf secret: jwt_secret, refresh_token_secret, postgres_password, redis_password, grafana_admin_password
 #   - 3 個 URL secret: database_url, redis_url, cleanup_database_url
 #
 # 設計:
@@ -12,7 +12,8 @@
 #   - jwt/refresh leaf: openssl rand -base64 48(64 chars)→ 通過 rust-api validate_secret(len ≥ 32)
 #   - postgres/redis leaf: openssl rand -hex 24(48 hex chars,URL-safe;熵同 base64 24)→ 嵌入 URL 不被 + / = 破壞
 #   - URL: 從 leaf cat 組合(R6 同次同源 dual-write,不重呼 gen_rand)
-#   - 不含 obs/optional secret(acme_email/grafana/exporter)
+#   - grafana_admin_password 已納入預設集(obs Phase 6 用,obs 未啟時無害)
+#   - 不含其餘 obs/optional secret(acme_email/exporter)
 #
 # 冪等語義:
 #   - 零參數:已存在的 .txt 直接跳過,缺失的才補生
@@ -39,7 +40,7 @@ gen_rand() {
 declare -A STATUS
 
 # ============================================================
-# Step 1: 4 個 leaf secret
+# Step 1: 5 個 leaf secret
 # ============================================================
 echo "=== Step 1: 生成 leaf secret ==="
 
@@ -61,6 +62,7 @@ gen_leaf "jwt_secret"            -base64 48
 gen_leaf "refresh_token_secret"  -base64 48
 gen_leaf "postgres_password"     -hex 24
 gen_leaf "redis_password"        -hex 24
+gen_leaf "grafana_admin_password"  -base64 24
 
 # ============================================================
 # Step 2: 3 個 URL secret(從 leaf cat,R6 同次同源 dual-write)
@@ -101,6 +103,7 @@ chmod 600 "$SECRETS_DIR"/*.txt
 echo ""
 echo "=== Secret 生成摘要 ==="
 for name in jwt_secret refresh_token_secret postgres_password redis_password \
+            grafana_admin_password \
             database_url redis_url cleanup_database_url; do
     printf "  %-30s %s\n" "${name}.txt" "${STATUS[$name]}"
 done
