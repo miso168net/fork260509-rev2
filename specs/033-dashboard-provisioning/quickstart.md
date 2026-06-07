@@ -4,13 +4,13 @@
 
 ## 改動清單（全 outer/deploy、base-web+rust-api 零改）
 
-1. **`deploy/grafana-provisioning/datasources/loki.yml`**（改）— 加 `uid: loki`（D4、現 auto-gen;audit-log 板穩定引用）。
+1. **`deploy/grafana-provisioning/datasources/loki.yml`**（改）— 加 `uid: loki`（D4、現 auto-gen;audit-log 板穩定引用）**＋ `deleteDatasources:[{name:Loki,orgId:1}]`**（★ as-built 必要、見 R8 修正:直接改顯式 uid 會 crash-loop、deleteDatasources 先刪舊 row 再重建、對 fresh volume no-op）。
 2. **`deploy/grafana-provisioning/dashboards/provider.yaml`**（新）— file provider、`folder: obs-full`、`options.path: /etc/grafana/provisioning/dashboards/json`、`allowUiUpdates:false`/`disableDeletion:true`。
 3. **`deploy/grafana-provisioning/dashboards/json/*.json`**（新 6 檔、`schemaVersion: 39`）:
    - **master-overview.json**（greenfield、prometheus）— `up{job=~"rust-api|postgres|redis|pushgateway"}` / `pg_up`·`redis_up` / 總請求率 / deny 率 / cleanup age。
    - **rust-api.json**（greenfield、prometheus）— 請求率 by endpoint·status / 延遲 p50·p95·p99（histogram_quantile）/ **5xx `(... or vector(0))/clamp_min(...)`** / in-flight / enforce allow·deny。
    - **cleanup-job.json**（greenfield、prometheus）— last-success 時間/age/rows_deleted / `up{job="pushgateway"}`（**不**做 `up{job="cleanup_job"}`）。
-   - **audit-log.json**（greenfield、**loki**）— log 量 by service / rust-api error·warn（`level` top-level）/ **nginx status（`|~ \`^{\` | json`）** / trace_id（`fields_trace_id` nested）。
+   - **audit-log.json**（greenfield、**loki**）— log 量 by service / rust-api error·warn（`level` top-level）/ **nginx status（`|~ \`^{\` | json`）** / trace_id（`fields_trace_id` nested）。★ **as-built:rust-api 三 `| json` panel(error·warn/by-level/enforce-deny)同樣補 `|~ \`^{\`` guard**（R7 假設「rust-api 全 JSON」被推翻、見 R7 修正）。
    - **postgres.json**（community pin）— `postgres_mixin/postgres-overview.json @ v0.19.1` + datasource 變數 pin uid:prometheus+hide。
    - **redis.json**（community pin）— grafana.com `763 rev6` + `${DS_PROM}`→`prometheus`、刪 `__inputs`。
 
@@ -53,7 +53,7 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml --profile obs --p
 - **無 CDP**：grafana 獨立 ops UI（非 base-web）。
 - **純 config、零 rust/base-web 改**：無 migration/crate/secret/compose service → §3「新 crate ⇒ prod build」**嚴格不觸發**;但 C5 仍驗 prod `--profile obs --profile metrics` 起 + internal-only。
 - **★ live-grounded 修正（research）**：job 名 `postgres`/`redis`（非 _exporter）/ 無 `up{job=cleanup_job}` / 5xx `or vector(0)` / nginx LogQL `|~ \`^{\``（裸 `| json` 回 400）/ rust-api `level` top-level·`fields_trace_id` nested / cleanup_job 現無 fresh push（C0 先觸發）。
-- **★ loki uid patch 安全**（research R8：無引用 auto-gen uid、0 dashboard、alert 綁 prometheus、Explore by-name）→ 只需 force-recreate grafana。
+- **★ loki uid patch（as-built 修正）**：R8 原判「只需 force-recreate」**錯**——Loki 在 031 無 uid 首次 provision、auto-gen uid 已 persist 進 `grafana_data` 卷,直接改顯式 uid 會 **crash-loop**`data source not found`。**修:loki.yml 加 `deleteDatasources:[{name:Loki,orgId:1}]`**（先刪舊 row 再以 uid 重建、對 fresh volume no-op、idempotent、零手動步驟;**部署地雷**:已跑 031/032 環境落 033 必經此修）。
 - **§I.5 greenfield**：app 板自寫、infra 板用 upstream exporter dashboard（版本鎖 exporter tag、非拷 rev1）。
 - **收尾**：純 outer/deploy 改動（無 worktree）;push/merge 不早於 `superpowers:finishing-a-development-branch`。
 - **WSL2**：改 provisioning 後 grafana `--force-recreate`（非 restart、drvfs bind-mount shadow-path 衝突、031/032 gotcha）。
