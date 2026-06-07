@@ -3,7 +3,8 @@
 > 本 feature **無新純函式**(metrics 埋點是 layer/counter wiring、prometheus/grafana 是 config) → **無新單元測試、全由 acceptance C-V 覆蓋**(§3 紀律;若 cleanup-job push body 組裝有可抽純邏輯則 test-first、否則 C-V)。既有測試不破。
 > **無 CDP browser smoke**:obs-full 是維運 infra、prometheus/grafana 為獨立 ops UI(非 base-web) → 不適用 base-web CDP（同 027/030/031 的 N/A）。
 > **§3「新 workspace crate ⇒ prod image build」嚴格不觸發**(無新 workspace member、deps 加在既有 server+cleanup-job);但 **C10 仍須驗 prod `--profile metrics` stack 起 + rust-api prod build**(新 deps 進 runtime image、FR-009/SC-009)。
-> 活體前置:rust-api `server`/`cleanup-job` 改 code 後須**重建+重啟 rust-api**(WSL2 /mnt/d inotify 不可靠、memory `devstack-acceptance-restart`):`dcargo build -p server && docker compose ... restart rust-api`;改 nginx/單檔 bind-mount 用 `--force-recreate`(memory)。metrics 首次起會 pull image。
+> 活體前置:rust-api `server`/`cleanup-job` 改 code 後須**重建+重啟 rust-api**(WSL2 /mnt/d inotify 不可靠、memory `devstack-acceptance-restart`):`dcargo build -p server && docker compose ... restart rust-api`;改 nginx/單檔 bind-mount(`_locations.inc`、grafana provisioning)須 `--force-recreate <svc>`、**非 `restart`**(drvfs bind-mount shadow-path 衝突 + 長跑 container single-file mount 易 stale、memory)。metrics 首次起會 pull image。
+> **dcargo 注意**:canonical `dcargo()`(touch trigger build 用)的 `find ... touch` 清單須含 `"$PWD/rust-api/cleanup-job/src"`(本 feature 改 cleanup-job;若本機 dcargo 定義漏列、編 cleanup-job 前手動補 touch 該目錄一次)。
 > 連線常數(CLAUDE §8.2):rust-api dev `:21081`、prometheus `:23090`、pushgateway `:29091`、grafana `:23000`、postgres `:25432`(user soybean / db soybean_admin_rust)。
 
 ## C1 — rust-api `/metrics` 活體（SC-001 + FR-001/002）
@@ -136,6 +137,21 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml --profile metric
 # 收尾:還原 dev config
 ```
 
+## C11 — nginx FR-011 `/api/metrics` 對外擋塊（FR-011/SC-009;NEW scope、user 2026-06-07）
+
+```bash
+# 前置:改 deploy/nginx/conf.d/_locations.inc 後須 --force-recreate（非 restart、drvfs bind-mount stale）
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --force-recreate front-nginx
+# (1) 對外經 front-nginx → /api/metrics 應 404（location = /api/metrics { return 404; } 優先於 /api/ prefix strip）
+echo "HTTP  /api/metrics: $(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:21080/api/metrics)"    # 期望 404
+echo "HTTPS /api/metrics: $(curl -k -s -o /dev/null -w '%{http_code}' https://127.0.0.1:21443/api/metrics)" # 期望 404
+# (2) 內網直連 rust-api → /metrics 仍 200（prometheus 走此路 scrape、不經 nginx、不受擋塊影響）
+echo "direct :21081/metrics: $(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:21081/metrics)"      # 期望 200
+# (3) /api/ proxy 未壞:正常 /api/<endpoint> 仍 200（證擋塊只擋 metrics、沒誤殺 /api proxy）
+echo "HTTP  /api/auth/login: $(curl -s -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:21080/api/auth/login -H 'Content-Type: application/json' -d '{"userName":"Super","password":"123456"}')"  # 期望 200
+# 期望:對外 /api/metrics=404（HTTP+HTTPS）、內網直連 /metrics=200、/api/<normal>=200（proxy 未斷）
+```
+
 ## 守恆 / 無回歸
 
 ```bash
@@ -147,4 +163,4 @@ dcargo test -p server --test entity_access_lint 2>&1 | tail -2   # 17 不變（m
 for f in dev prod; do docker compose -f docker-compose.yml -f docker-compose.$f.yml --profile metrics config >/dev/null && echo "$f metrics OK"; done
 ```
 
-> **acceptance 重點**:C1 `/metrics` 活體 / C2 enforce counter(閉 Phase 3 #5 債核心) / C3 prometheus scrape targets / C4 exporter / C5 grafana prometheus datasource 端到端 / C6 pushgateway+cleanup-job push / C7 alert rule provisioned / C8 profile gating(metrics⊥log) / C9 零侵入+旁路 / C10 prod 起。**全由活體 C-V 覆蓋、無新單元測試**(§3 已明示)。
+> **acceptance 重點**:C1 `/metrics` 活體 / C2 enforce counter(閉 Phase 3 #5 債核心) / C3 prometheus scrape targets / C4 exporter / C5 grafana prometheus datasource 端到端 / C6 pushgateway+cleanup-job push / C7 alert rule provisioned / C8 profile gating(metrics⊥log) / C9 零侵入+旁路 / C10 prod 起 / C11 nginx FR-011 `/api/metrics` 對外擋塊(404、內網直連仍 200)。**全由活體 C-V 覆蓋、無新單元測試**(§3 已明示)。

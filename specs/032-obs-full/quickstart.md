@@ -4,9 +4,9 @@
 
 ## 改動清單（rust-api worktree = server + cleanup-job 兩 crate）
 
-1. **`rust-api/server/Cargo.toml`** + **`server/src/main.rs`**（worktree）— `axum-prometheus 0.7.0` + `metrics 0.23`;`PrometheusMetricLayer::pair()`（OnceLock guard）→ `/metrics` route + `.layer()` 全域。
+1. **`rust-api/server/Cargo.toml`** + **`server/src/main.rs`**（worktree）— `axum-prometheus 0.7.0` + `metrics 0.23`;`PrometheusMetricLayer::pair()`（as-built 無 init guard — `main()` 唯一呼叫者、bin-only crate）→ `/metrics` route + `.layer()` 全域。
 2. **`rust-api/server/src/auth/enforce.rs`**（worktree）— `enforce_mw` allow/deny 三 outcome 加 `metrics::counter!("casbin_enforce_total","decision"=>…).increment(1)`（閉 Phase 3 #5 enforce metrics 債）。
-3. **`rust-api/cleanup-job/Cargo.toml`** + **`cleanup-job/src/main.rs`**（worktree）— `metrics-exporter-prometheus 0.15` + `ureq`/`reqwest`(blocking);`install_recorder()` + `gauge!` + `render()` + blocking PUT `pushgateway:9091/metrics/job/cleanup_job`（best-effort warn-on-fail）。
+3. **`rust-api/cleanup-job/Cargo.toml`** + **`cleanup-job/src/main.rs`**（worktree）— `metrics-exporter-prometheus 0.15`（`default-features = false`）+ `ureq 2`（`default-features = false`、非 reqwest::blocking）;`install_recorder()` + `gauge!` + `render()` + blocking PUT `pushgateway:9091/metrics/job/cleanup_job`（best-effort warn-on-fail）。
 4. **`deploy/prometheus/prometheus.yml`**（新）— static scrape（rust-api/postgres_exporter/redis_exporter/pushgateway、`honor_labels:true`）。
 5. **`deploy/grafana-provisioning/datasources/prometheus.yml`**（新）— prometheus datasource（`isDefault:false`、`uid:prometheus`）。
 6. **`deploy/grafana-provisioning/alerting/rules.yml`**（新）— baseline alert rule（rust-api target down …）。
@@ -15,8 +15,8 @@
 
 ## image / crate pins（§6/R、不浮動）
 
-- **crate**：`axum-prometheus 0.7.0`（最後 axum-0.7 相容、MSRV 1.70）· `metrics 0.23`（對齊 transitive）· `metrics-exporter-prometheus 0.15` · `ureq`/`reqwest` blocking。
-- **image**：`prom/prometheus:v3.12.0`（前導 v）· `prometheuscommunity/postgres-exporter:v0.19.1` · `oliver006/redis_exporter:v1.85.0` · `prom/pushgateway:v1.11.3` · `grafana/grafana:13.0.2`（reuse 031）。
+- **crate**：`axum-prometheus 0.7.0`（最後 axum-0.7 相容、MSRV 1.70）· `metrics 0.23`（對齊 transitive）· `metrics-exporter-prometheus 0.15`（**`default-features = false`** — 去 push-gateway/http-listener 預設 features 帶的 hyper-rustls/aws-lc-rs/cmake 重 stack；只用 install_recorder/render）· `ureq 2`（`default-features = false`、**非 `reqwest::blocking`**：tokio runtime 內建構會 panic）。
+- **image**：`prom/prometheus:v3.12.0`（前導 v）· `prometheuscommunity/postgres-exporter:v0.19.1` · `oliver006/redis_exporter:v1.85.0-alpine`（**`-alpine` 必要** — bare tag 是 scratch 無 `/bin/sh`、sh-wrapper 起不來）· `prom/pushgateway:v1.11.3` · `grafana/grafana:13.0.2`（reuse 031）。
 
 ## 本機跑（dev stack + 完整觀察性）
 
@@ -55,4 +55,4 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml --profile obs --p
 - **least-priv exporter PG role**:本 feature reuse soybean（internal-only）、least-priv role defer follow-up（合 030 least-priv 軌道）。
 - **§I.5 greenfield**:config 全新寫、不參照 rev1（rev1 obs-full `specs/044` 僅概念參考）。
 - **收尾**:rust-api（server + cleanup-job）走 §4.1 兩段式 commit（worktree → 外層 SHA pin）;compose/deploy 為 outer 改動。push/merge 不早於 `superpowers:finishing-a-development-branch`。
-- **axum-prometheus 陷阱**:`set_global_recorder` 一次/process（測試 OnceLock guard）;`metrics` crate major 須 0.23（對齊、否則 custom counter 靜默掉）;0.7.0 鎖 axum 0.7（**勿升 ≥0.8、需整 migrate axum 0.8**）。
+- **axum-prometheus 陷阱**:`set_global_recorder` 一次/process（as-built 無 guard — `main()` 唯一呼叫者、無測試在程序內建 router;若未來有則須 OnceLock guard）;`metrics` crate major 須 0.23（對齊、否則 custom counter 靜默掉）;0.7.0 鎖 axum 0.7（**勿升 ≥0.8、需整 migrate axum 0.8**）。

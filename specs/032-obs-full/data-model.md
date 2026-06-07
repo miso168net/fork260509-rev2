@@ -88,7 +88,7 @@ rule group `obs-full-baseline`（folder `obs-full` auto-create、interval 1m）�
 | `server/Cargo.toml` | + `axum-prometheus = "0.7.0"` + `metrics = "0.23"` |
 | `server/src/main.rs` | `PrometheusMetricLayer::pair()`(OnceLock guard、`set_global_recorder` 一次/process)→ `/metrics` route render handle + `.layer(prometheus_layer)` 全域 |
 | `server/src/auth/enforce.rs` | `enforce_mw` allow/deny 三 outcome 加 `metrics::counter!("casbin_enforce_total","decision"=>…).increment(1)` |
-| `cleanup-job/Cargo.toml` | + `metrics-exporter-prometheus = "0.15"` + `ureq`(或 `reqwest` blocking) |
+| `cleanup-job/Cargo.toml` | + `metrics-exporter-prometheus = { version = "0.15", default-features = false }`（關 push-gateway/http-listener 預設 features、去 hyper-rustls/aws-lc-rs/cmake 重 stack）+ `ureq = { version = "2", default-features = false }`（**非 `reqwest::blocking`**：tokio runtime 內建構會 panic） |
 | `cleanup-job/src/main.rs` | install_recorder + gauge!(last_success_ts / rows_deleted)+ render + blocking PUT pushgateway(best-effort warn-on-fail) |
 
 - **零 wire/DTO/endpoint 業務改動**;`sys_*` schema 不變;base-web 不消費。

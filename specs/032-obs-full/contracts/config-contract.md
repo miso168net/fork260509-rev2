@@ -15,7 +15,7 @@
 | `rust-api/server/Cargo.toml` | 改（+ axum-prometheus 0.7.0 + metrics 0.23） | **rust-api worktree** |
 | `rust-api/server/src/main.rs` | 改（PrometheusMetricLayer + /metrics route + layer） | **rust-api worktree** |
 | `rust-api/server/src/auth/enforce.rs` | 改（enforce_mw allow/deny counter） | **rust-api worktree** |
-| `rust-api/cleanup-job/Cargo.toml` | 改（+ metrics-exporter-prometheus 0.15 + ureq/reqwest blocking） | **rust-api worktree** |
+| `rust-api/cleanup-job/Cargo.toml` | 改（+ metrics-exporter-prometheus 0.15〔default-features=false〕 + ureq 2〔default-features=false、非 reqwest::blocking〕） | **rust-api worktree** |
 | `rust-api/cleanup-job/src/main.rs` | 改（install_recorder + gauge + render + blocking PUT pushgateway best-effort） | **rust-api worktree** |
 
 **rust-api worktree 改動 = `server`(metrics)+ `cleanup-job`(push)兩既有 crate**（收尾走 §4.1 兩段式 commit）。**無新 workspace crate、無 migration、無 base-web 改動、無新 secret**（reuse postgres_password + redis_password）。
@@ -26,7 +26,7 @@
 |---|---|---|---|---|---|
 | `prometheus` | `prom/prometheus:v3.12.0` | metrics | `127.0.0.1:23090:9090` | `prometheus_data:/prometheus` | — |
 | `postgres_exporter` | `prometheuscommunity/postgres-exporter:v0.19.1` | metrics | 無 | — | `postgres_password`（DATA_SOURCE_PASS_FILE）|
-| `redis_exporter` | `oliver006/redis_exporter:v1.85.0` | metrics | 無 | — | `redis_password`（sh-wrapper）|
+| `redis_exporter` | `oliver006/redis_exporter:v1.85.0-alpine`（`-alpine` 必要、bare tag 是 scratch 無 sh） | metrics | 無 | — | `redis_password`（sh-wrapper）|
 | `pushgateway` | `prom/pushgateway:v1.11.3` | metrics | `127.0.0.1:29091:9091` | — | — |
 | `grafana`（既有、改 profile） | `grafana/grafana:13.0.2` | **["obs","metrics"]** | `127.0.0.1:23000:3000` | `grafana_data` | `grafana_admin_password` |
 
