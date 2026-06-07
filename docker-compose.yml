@@ -188,9 +188,61 @@ services:
     networks:
       - rev2_net
 
+  prometheus:
+    image: prom/prometheus:v3.12.0
+    profiles: ["metrics"]
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=15d
+    volumes:
+      - prometheus_data:/prometheus
+    restart: unless-stopped
+    networks:
+      - rev2_net
+
+  postgres_exporter:
+    image: prometheuscommunity/postgres-exporter:v0.19.1
+    profiles: ["metrics"]
+    environment:
+      DATA_SOURCE_USER: soybean
+      DATA_SOURCE_URI: postgres:5432/soybean_admin_rust?sslmode=disable
+      DATA_SOURCE_PASS_FILE: /run/secrets/postgres_password
+    secrets:
+      - postgres_password
+    restart: unless-stopped
+    networks:
+      - rev2_net
+
+  redis_exporter:
+    # ★ 預設 oliver006/redis_exporter:v1.85.0 鏡像 FROM scratch、無 /bin/sh,sh-wrapper entrypoint 會掛;
+    #   改 -alpine 變體(同版本 pin)取得 /bin/sh。經 sh-wrapper 從 secret 檔讀密碼後 export REDIS_PASSWORD
+    #   再 exec(原生 REDIS_PASSWORD_FILE 要 JSON map、非 raw 密碼檔,見 upstream #613)。
+    #   密碼讀取沿用 redis-stack 慣例:source 寫單錢字 $(cat ...),compose 視為字面、不做 ${VAR} 插值
+    #   (render 後會顯示成 $$(...),那是 compose 的 escape 輸出、非 source 寫法)。
+    image: oliver006/redis_exporter:v1.85.0-alpine
+    profiles: ["metrics"]
+    environment:
+      REDIS_ADDR: redis://redis-stack:6379
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - 'export REDIS_PASSWORD="$(cat /run/secrets/redis_password)"; exec /redis_exporter'
+    secrets:
+      - redis_password
+    restart: unless-stopped
+    networks:
+      - rev2_net
+
+  pushgateway:
+    image: prom/pushgateway:v1.11.3
+    profiles: ["metrics"]
+    restart: unless-stopped
+    networks:
+      - rev2_net
+
   grafana:
     image: grafana/grafana:13.0.2
-    profiles: ["obs"]
+    profiles: ["obs", "metrics"]
     environment:
       GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/grafana_admin_password
       GF_AUTH_ANONYMOUS_ENABLED: "false"
@@ -200,7 +252,11 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
     depends_on:
-      - loki
+      # required: false — grafana 現跨 obs+metrics 兩 profile;metrics-only 啟動時 loki 不在
+      # active set,長式 depends_on 容許目標缺席(在則等其啟動,不在則照常啟)。
+      loki:
+        condition: service_started
+        required: false
     restart: unless-stopped
     networks:
       - rev2_net
@@ -219,6 +275,7 @@ volumes:
   loki_data:
   grafana_data:
   alloy_data:
+  prometheus_data:
 
 secrets:
   postgres_password:

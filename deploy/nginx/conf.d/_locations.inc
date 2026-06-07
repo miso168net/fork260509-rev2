@@ -6,6 +6,13 @@ location / {
     proxy_set_header X-Forwarded-Proto $scheme;
 }
 
+# 032 FR-011: rust-api /metrics 不得對外暴露。location /api/ 會剝前綴把 /api/metrics 轉到
+# rust-api /metrics;用 exact-match 擋塊回 404(優先於 prefix /api/)。內網 prometheus 仍直接
+# scrape rust-api:21081/metrics、不經 nginx、不受此擋塊影響。
+location = /api/metrics {
+    return 404;
+}
+
 location /api/ {
     proxy_pass http://rust-api:21081/;   # ★ 末尾 / 必要:strip /api 前綴
     proxy_set_header Host $host;

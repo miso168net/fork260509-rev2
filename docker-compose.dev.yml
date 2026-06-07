@@ -128,3 +128,13 @@ services:
       - "127.0.0.1:23000:3000"
     volumes:
       - ./deploy/grafana-provisioning:/etc/grafana/provisioning:ro
+
+  prometheus:
+    ports:
+      - "127.0.0.1:23090:9090"
+    volumes:
+      - ./deploy/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+  pushgateway:
+    ports:
+      - "127.0.0.1:29091:9091"

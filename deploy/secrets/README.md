@@ -74,8 +74,10 @@ bash deploy/generate-secrets.sh --force
 | 名稱 | 用途 | 預計階段 |
 |---|---|---|
 | `acme_email` | acme.sh 申請 TLS 憑證的聯絡信箱 | Phase 6 |
-| `postgres_exporter_dsn` | postgres_exporter 連線字串 | Phase 5 |
-| `redis_exporter_password` | redis_exporter 存取密碼 | Phase 5 |
+| ~~`postgres_exporter_dsn`~~ | ~~postgres_exporter 連線字串~~ | **❌ superseded（032 obs-full）** |
+| ~~`redis_exporter_password`~~ | ~~redis_exporter 存取密碼~~ | **❌ superseded（032 obs-full）** |
+
+> **032 obs-full 落地後 `postgres_exporter_dsn` / `redis_exporter_password` 不再需要**：兩 exporter 改 **reuse 既有 leaf secret** —— postgres_exporter 經 `DATA_SOURCE_PASS_FILE=/run/secrets/postgres_password`（env `DATA_SOURCE_USER`/`DATA_SOURCE_URI` 補無 creds 部分）、redis_exporter 經 sh-wrapper（`export REDIS_PASSWORD="$(cat /run/secrets/redis_password)"`）。**無新 secret**；least-priv exporter PG role 仍 defer follow-up（reuse soybean DSN、internal-only 可接受）。
 
 ---
 
