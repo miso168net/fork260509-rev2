@@ -32,6 +32,8 @@
 | **D4** | compose 接線範式 | **`profiles: ["obs"]` inline 在 master `docker-compose.yml`** | user 親選。對齊 rev2 既有慣例（acme `profiles:[prod]`、cleanup-job `profiles:[jobs]`);一般 up 不啟、`--profile obs` 才帶起。 |
 | **D5** | rust-api request_id 注入做法 | **沿用既有 `ctx_mw` + tracing span**（非 tower-http TraceLayer） | rev2 `audit_ctx.rs` 已算好 `trace_id`;包一個 span 即可、**零新 dep**。比引入 tower-http TraceLayer 更貼 rev2。 |
 
+> **★ plan 階段更新（2026-06-07 supersede）**:D2/本檔多處的「**promtail**」採集 agent，因 `/speckit-plan` research（WebSearch）查得 **promtail 已 EOL/deprecated**（後繼 = **Grafana Alloy**），經 §6 紀律 surface 後 **user 親決改用 `grafana/alloy`**（同 docker service-discovery + loki push 能力、config 改用 River 語法、非設計改動）。**實作以 [`specs/031-obs-min/research.md` R2/R4](../../specs/031-obs-min/research.md) + [plan.md](../../specs/031-obs-min/plan.md) 為權威**（含 pin:loki `3.7.2`/alloy `v1.16.1`/grafana `13.0.2`、Constitution 8/8 PASS、§11.8 promtail→alloy 判定為 EOL fix-forward 實作替換、無需 amendment）。本 brainstorm 檔的 promtail 字樣保留為歷史記錄、不逐處改寫。
+
 ---
 
 ## 3. Grounding 驗證事實（grep-backed，不信抽象假設）

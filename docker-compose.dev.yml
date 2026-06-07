@@ -112,3 +112,19 @@ services:
   redis-stack:
     ports:
       - "127.0.0.1:26379:6379"
+
+  loki:
+    ports:
+      - "127.0.0.1:23100:3100"
+    volumes:
+      - ./deploy/loki-config.yml:/etc/loki/config.yml:ro
+
+  alloy:
+    volumes:
+      - ./deploy/alloy-config.alloy:/etc/alloy/config.alloy:ro
+
+  grafana:
+    ports:
+      - "127.0.0.1:23000:3000"
+    volumes:
+      - ./deploy/grafana-provisioning:/etc/grafana/provisioning:ro
