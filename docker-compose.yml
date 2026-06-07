@@ -157,6 +157,54 @@ services:
     networks:
       - rev2_net
 
+  loki:
+    image: grafana/loki:3.7.2
+    profiles: ["obs"]
+    command: ["-config.file=/etc/loki/config.yml"]
+    volumes:
+      - loki_data:/loki
+    restart: unless-stopped
+    networks:
+      - rev2_net
+
+  alloy:
+    image: grafana/alloy:v1.16.1
+    profiles: ["obs"]
+    # alloy reads the docker socket (root:docker, mode 660) to discover + tail all
+    # container stdout; run as root for portable socket access. prod hardening
+    # (non-root + group_add host docker gid) is deferred to obs-full / security pass (research R11).
+    user: root
+    command:
+      - run
+      - --storage.path=/var/lib/alloy/data
+      - --server.http.listen-addr=0.0.0.0:12345
+      - /etc/alloy/config.alloy
+    volumes:
+      - alloy_data:/var/lib/alloy/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - loki
+    restart: unless-stopped
+    networks:
+      - rev2_net
+
+  grafana:
+    image: grafana/grafana:13.0.2
+    profiles: ["obs"]
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/grafana_admin_password
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+    secrets:
+      - grafana_admin_password
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - loki
+    restart: unless-stopped
+    networks:
+      - rev2_net
+
 networks:
   rev2_net:
 
@@ -168,6 +216,9 @@ volumes:
   base_web_pnpm_store:
   rust_api_cargo_cache:
   rust_api_target:
+  loki_data:
+  grafana_data:
+  alloy_data:
 
 secrets:
   postgres_password:
@@ -184,3 +235,5 @@ secrets:
     file: ./deploy/secrets/redis_url.txt
   cleanup_database_url:
     file: ./deploy/secrets/cleanup_database_url.txt
+  grafana_admin_password:
+    file: ./deploy/secrets/grafana_admin_password.txt

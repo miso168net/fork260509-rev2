@@ -71,3 +71,15 @@ services:
     volumes:
       - front_nginx_certs:/acme.sh
     restart: unless-stopped
+
+  loki:
+    volumes:
+      - ./deploy/loki-config.yml:/etc/loki/config.yml:ro
+
+  alloy:
+    volumes:
+      - ./deploy/alloy-config.alloy:/etc/alloy/config.alloy:ro
+
+  grafana:
+    volumes:
+      - ./deploy/grafana-provisioning:/etc/grafana/provisioning:ro
