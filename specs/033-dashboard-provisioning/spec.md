@@ -8,6 +8,8 @@
 
 **Input**: User description: "@docs/superpowers/033-dashboard-provisioning.md" — Phase 6 觀察性第三刀：**儀表板（dashboards）provisioning**。接續 031 obs-min（log）+ 032 obs-full（metrics），把觀察性從「逐次手打查詢（Explore）+ 告警」補成「開觀察 UI 即見的現成監控面板」。涵蓋：後端應用面板、基礎設施（資料庫/快取）面板、全域總覽面板、維運 job 面板、log pipeline 面板。隨部署可重現 provision、opt-in 維運堆疊、零侵入應用行為。儀表板告警通知管道（送信）/ 對外暴露硬化明確排除為後續。設計來源見 brainstorm spec-design（8 決策已拍板）。
 
+> **術語**：本 spec「**監控面板 / 面板**」= 一張**儀表板（dashboard）**——一組相關圖表的集合（如「後端應用面板」「資料庫面板」）;「**圖表（panel）**」= 一張儀表板內的單一視覺化（綁一條查詢）。下文 ≥6「面板」皆指儀表板。
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - 維運者開觀察入口即見後端應用監控面板（Priority: P1）🎯 MVP
