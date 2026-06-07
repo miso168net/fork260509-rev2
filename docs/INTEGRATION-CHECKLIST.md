@@ -216,6 +216,14 @@
 - [ ] **實際 host 排程(cron/systemd timer)未建立(operational、prod deploy 時)**:feature 交付 binary + compose one-shot service 的「可被觸發」能力,但週期性觸發的 host 排程未設(spec assumption:外部排程器、部署**刻意**不含 in-stack scheduler)。**SC-002「store 有上界」在 prod 實際成立取決於排程真的週期跑**。建立時注意(acceptance 實證的兩個觸發陷阱):① 用與運行中 stack **相同的 `-f` compose flags** —— bare `docker compose --profile jobs run` 會因 postgres config drift(base 無 ports vs 運行中 stack 有)想**重建 postgres 容器、擾動運行 stack**(C3 acceptance 改走 `docker run --network rev2-admin_rev2_net … --entrypoint /usr/local/bin/cleanup-job` 直跑 runtime binary 避開);② execute 因 dispatcher arg trap 須 `--entrypoint /usr/local/bin/cleanup-job … --execute`(append arg 否則被當 `$1` → usage;見 [research D7](../specs/030-cleanup-job/research.md))。
 - [ ] **(trivial)canonical `dcargo`(specs/017 verification-commands 定義)touch-list 不含 `cleanup-job/src`**:WSL2 /mnt/d mtime-stale → 未來改 cleanup-job 用該 dcargo 可能不觸發重建(本次實作已在 dcargo 的 `find … touch` 清單補上 `cleanup-job/src`);動 cleanup-job 時沿用補丁版或更新 017 定義。
 
+### 2.36 feature 031-obs-min follow-up
+
+- [ ] **alloy `user: root` 讀 docker.sock(R11 prod 硬化 defer)**:obs-min 為可攜性讓 alloy run-as-root 讀 `/var/run/docker.sock`(root:docker 660)。prod 非-root 硬化(`group_add` host docker gid 或 rootless docker-SD)留 **obs-full / security pass**;dev/個人 workspace 可接受。
+- [ ] **obs prod 查詢入口對外暴露(grafana/loki 經 front-nginx reverse proxy + TLS)**:031 prod obs = internal-only(無對外 host port),維運者經 `docker compose exec` / port-forward 達 grafana;「對外暴露」spec Assumptions 明列**延後 obs-full / security pass**(loki 若跨主機暴露再加 basic-auth/gateway)。
+- [ ] **obs 三 service 無 healthcheck → `up --wait` 視 running 即 ready(非 queryable)**:pipeline self-heal(alloy 重試 push、grafana 重試 datasource)故功能可接受,但 `--wait` 回傳不代表 loki 已可查(C1 acceptance 改輪詢 loki `/ready`)。加 loki `/ready` + grafana `/api/health` healthcheck 可給真 readiness signal(minor operational、未來自動化起 stack 時有用)。
+- [ ] **(obs-full 考量)rust-api log trace_id 在 loki `fields_trace_id`(nested)非 top-level**:tracing-subscriber `fmt().json()` 把 event 欄位巢狀 `"fields"` 下(rust-api 既有全 log 慣例)。obs-min LogQL `{service="rust-api"} | json | fields_trace_id="X"` 已穩定可查;obs-full 若要 grafana dashboard 用 clean top-level `trace_id`,可在 `init_tracing` 加 `flatten_event(true)`(**全域改所有 log 形狀、需重驗所有 log 消費者**)。
+- [ ] **enforce metrics 埋點(Phase 3 #5 尾 / 027 盜用偵測 metrics / 026 per-callsite verify-fail 歸因)仍待 obs-full**:031 obs-min 已落地 **log 層 + per-request tracing span**(trace_id 關聯地基),但 metrics(prometheus)埋點需 obs-full 的 prometheus 消費者才不重工。
+
 ## 3. 已完成里程碑
 
 完整 commit 里程碑歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)(append-only、不在 SOP 注入,避免本檔膨脹)。
