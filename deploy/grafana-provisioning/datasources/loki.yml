@@ -1,10 +1,20 @@
 apiVersion: 1
 
+# 033: Loki 在 031 是無 uid 首次 provision、grafana 把它持久化成 auto-gen uid
+# (P8E80F9AEF21F6940) 寫進 grafana_data 卷。本刀改成顯式 uid: loki 時,grafana
+# 13.0.2 provisioner 會以新 uid 找既有 datasource、找不到而 crash-loop。先用
+# deleteDatasources 按 name 刪舊 row 再重建(對 fresh volume 為 no-op、idempotent),
+# 讓 dev 既有卷與全新/既有部署都安全收斂到 uid: loki。
+deleteDatasources:
+  - name: Loki
+    orgId: 1
+
 datasources:
   - name: Loki
     type: loki
     access: proxy
     url: http://loki:3100
+    uid: loki
     isDefault: true
     editable: false
     jsonData:
