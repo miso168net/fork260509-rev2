@@ -358,8 +358,8 @@ cd ..
 <!-- SPECKIT START -->
 **Active Spec**: [`specs/031-obs-min/spec.md`](specs/031-obs-min/spec.md)
 **Active Plan**: [`specs/031-obs-min/plan.md`](specs/031-obs-min/plan.md)
-**Phase**: **031 obs-min(Phase 6 obs、log-only)— 設計中**(specify ✅ + clarify ✅〔0 critical ambiguity〕+ plan ✅〔Constitution 8/8 PASS、純 infra/後端〕;tasks/analyze 待)。DESIGN §11.8「Phase 5+ 啟 obs-min」落地:opt-in `profiles:[obs]` log 觀察堆疊 = **loki**(儲存/LogQL)← **alloy**(docker-SD 採集全容器 stdout、**取代 EOL promtail**、plan 階段 user 親決)→ **grafana**(Explore、loki datasource provisioning);rust-api `ctx_mw` 注入既有 `trace_id` 進 tracing log(span + flat boundary event)→ log↔`sys_access_log` 對接;front-nginx 改 stdout JSON + 傳 `X-Request-Id`。**純後端/infra、base-web 零改、無 wire/migration/新 crate、無 dashboard/metrics(留 obs-full)、greenfield、Constitution 8/8 PASS、無 amendment**(§11.8 promtail→alloy 為 EOL fix-forward 實作替換、已 surface)。pin:loki `3.7.2`/alloy `v1.16.1`/grafana `13.0.2`。設計見 [`docs/superpowers/031-obs-min.md`](docs/superpowers/031-obs-min.md) + [`specs/031-obs-min/`](specs/031-obs-min/)。
-**下一步**: `/speckit-tasks`(dependency-ordered)→ `/speckit-analyze`(留意 §11.8 promtail→alloy 措辭判定)→ `superpowers:executing-plans` 實作。
+**Phase**: **031 obs-min(Phase 6 obs、log-only)— ✅ 完成、merged `3383828`**(--no-ff 回 rev2-admin-root、保留 031 branch、已推 origin)。opt-in `profiles:[obs]` log 堆疊 = loki(儲存/LogQL)←alloy(docker-SD 採集全容器 stdout、取代 EOL promtail)→grafana(Explore、loki datasource);rust-api ctx_mw 注 trace_id 進 tracing span+boundary event→loki `fields_trace_id` 對接 `sys_access_log`;front-nginx stdout JSON+傳 `X-Request-Id`。純後端/infra、base-web 零改、無 wire/migration/新 crate/dashboard/metrics(留 obs-full)、Constitution 8/8 PASS、無 amendment(promtail→alloy=EOL fix-forward)。acceptance C1-C7+守恆全綠。pin loki `3.7.2`/alloy `v1.16.1`/grafana `13.0.2`。設計見 [`specs/031-obs-min/`](specs/031-obs-min/) + DESIGN §10 Phase 6 #1 as-built。
+**下一步**: Phase 6 obs-min ✅。後續候選(user 擇期):obs-full(metrics/prometheus + exporter + pushgateway + axum-casbin metrics 埋點)/ dashboard provisioning / #6 受管 RBAC(deferred)/ 030 follow-up。
 <!-- SPECKIT END -->
 
 ## 7. 整合設計文件職責分工
