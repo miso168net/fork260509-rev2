@@ -37,7 +37,7 @@ bash deploy/generate-secrets.sh --force
 
 ---
 
-## 7 個必要 Secret
+## 8 個必要 Secret
 
 | 名稱 | 用途 | 消費服務 / 環境變數 | 類型 |
 |---|---|---|---|
@@ -45,6 +45,7 @@ bash deploy/generate-secrets.sh --force
 | `refresh_token_secret` | JWT refresh token 簽名金鑰 | rust-api `APP_JWT_REFRESH_TOKEN_SECRET_FILE` | leaf |
 | `postgres_password` | PostgreSQL 資料庫密碼 | postgres `POSTGRES_PASSWORD_FILE` | leaf |
 | `redis_password` | Redis 存取密碼 | redis-stack `--requirepass`（透過 command 注入） | leaf |
+| `grafana_admin_password` | Grafana 管理員密碼 | grafana `GF_SECURITY_ADMIN_PASSWORD__FILE` | leaf |
 | `database_url` | rust-api 主連線字串 | Phase 2 wired（預期 `APP_DATABASE_URL_FILE`） | composite |
 | `redis_url` | rust-api Redis 連線字串 | Phase 2 wired（預期 `APP_REDIS_URL_FILE`） | composite |
 | `cleanup_database_url` | Cleanup job 專用連線字串 | Phase 5 wired（cleanup-job）；最小權限 role 同留 Phase 5 | composite |
@@ -59,6 +60,7 @@ bash deploy/generate-secrets.sh --force
 | `refresh_token_secret` | `docker run --rm alpine/openssl rand -base64 48 > deploy/secrets/refresh_token_secret.txt` | base64（非 URL-embedded） |
 | `postgres_password` | `docker run --rm alpine/openssl rand -hex 24 > deploy/secrets/postgres_password.txt` | **hex**（URL-safe，嵌入連線字串） |
 | `redis_password` | `docker run --rm alpine/openssl rand -hex 24 > deploy/secrets/redis_password.txt` | **hex**（URL-safe，嵌入連線字串） |
+| `grafana_admin_password` | `docker run --rm alpine/openssl rand -base64 24 > deploy/secrets/grafana_admin_password.txt` | base64（非 URL-embedded） |
 | `database_url` | `echo "postgres://soybean:$(cat deploy/secrets/postgres_password.txt)@postgres:5432/soybean_admin_rust" > deploy/secrets/database_url.txt` | 依賴 `postgres_password.txt` |
 | `redis_url` | `echo "redis://:$(cat deploy/secrets/redis_password.txt)@redis-stack:6379" > deploy/secrets/redis_url.txt` | 依賴 `redis_password.txt` |
 | `cleanup_database_url` | `cp deploy/secrets/database_url.txt deploy/secrets/cleanup_database_url.txt` | 暫與 database_url 同值（Phase 5 再分離） |
@@ -72,7 +74,6 @@ bash deploy/generate-secrets.sh --force
 | 名稱 | 用途 | 預計階段 |
 |---|---|---|
 | `acme_email` | acme.sh 申請 TLS 憑證的聯絡信箱 | Phase 6 |
-| `grafana_admin_password` | Grafana 管理員密碼 | Phase 5 |
 | `postgres_exporter_dsn` | postgres_exporter 連線字串 | Phase 5 |
 | `redis_exporter_password` | redis_exporter 存取密碼 | Phase 5 |
 

@@ -440,7 +440,7 @@ feature 啟動  →  docs/superpowers/<NNN>-<feature-name>.md(brainstorm)
 
 ### 8.2 容器 endpoint 與 port 配置
 
-> rev2 port 配置（刻意用 2XXXX 前綴避開 fork260509-rev1 既有 port，方便兩個 workspace 並存）。**核心 5 service（front-nginx / base-web / rust-api / postgres / redis-stack）已落地，dev stack 實機運行通過**（Phase 1 #4/#5；005 T013 五 service healthy、`psql -U soybean` 連線通）。observability 3 service（grafana / prometheus / pushgateway）⏳ 仍 Phase 6 規劃、尚未進 compose。
+> rev2 port 配置（刻意用 2XXXX 前綴避開 fork260509-rev1 既有 port，方便兩個 workspace 並存）。**核心 5 service（front-nginx / base-web / rust-api / postgres / redis-stack）已落地，dev stack 實機運行通過**（Phase 1 #4/#5；005 T013 五 service healthy、`psql -U soybean` 連線通）。observability：obs-min（log-only）3 service（loki / alloy / grafana）已進 compose（`profiles:[obs]` opt-in、一般 `up` 不啟；031 落地、dev/prod 實機驗過）；prometheus / pushgateway（metrics = obs-full）仍 ⏳ 未進 compose。
 
 | 角色 | fork260509-rev1（舊有） | fork260509-rev2 | 備註 |
 |---|---|---|---|
@@ -449,14 +449,16 @@ feature 啟動  →  docs/superpowers/<NNN>-<feature-name>.md(brainstorm)
 | rust-api | host 映射 `11081:11081` | host 映射 `21081:21081` | 僅 dev 期間 host 直連用 |
 | postgres | host 映射 `15432:5432` | host 映射 `25432:5432` | 容器內仍 `:5432`（不改） |
 | redis-stack | host 映射 `16379:6379` | host 映射 `26379:6379` | 容器內仍 `:6379`（不改） |
-| grafana | host 映射 `13000:3000` | host 映射 `23000:3000` | 觀察性儀表板 UI |
-| prometheus | host 映射 `13090:9090` | host 映射 `23090:9090` | metrics scrape + 儲存 |
-| pushgateway | host 映射 `19091:9091` | host 映射 `29091:9091` | short-lived job metrics push |
+| grafana | host 映射 `13000:3000` | host 映射 `23000:3000` | 031 obs-min log 觀察 UI（profiles:[obs] opt-in、loki datasource provisioning、prod internal-only） |
+| loki | — | host 映射 `23100:3100` | 031 obs-min log 儲存/LogQL（profiles:[obs]、72h retention、prod internal-only） |
+| alloy | — | 無 host port（內網 :12345） | 031 obs-min log 採集（docker-SD、取代 EOL promtail、讀 docker.sock） |
+| prometheus | host 映射 `13090:9090` | host 映射 `23090:9090` | metrics scrape + 儲存（⏳ obs-full、未進 compose） |
+| pushgateway | host 映射 `19091:9091` | host 映射 `29091:9091` | short-lived job metrics push（⏳ obs-full、未進 compose） |
 | docker compose project name | `rev1-admin` | `rev2-admin` | 透過 `COMPOSE_PROJECT_NAME` 環境變數設定 |
-| docker volume name | `rev1-admin_<vol>`（auto-prefix） | `rev2-admin_<service>_<purpose>`（auto-prefix,移除顯式 name:） | 命名規則 + 正典 7 卷見 §8.2.2 |
+| docker volume name | `rev1-admin_<vol>`（auto-prefix） | `rev2-admin_<service>_<purpose>`（auto-prefix,移除顯式 name:） | 命名規則 + 正典卷清單（7 always-on + 3 obs-min）見 §8.2.2 |
 
 **啟動模式**（3 種；TLS 結構規劃如下）：
-- **dev**（`-f -f dev.yml`）：127.0.0.1 loopback、HTTP `:21080` + HTTPS `:21443`（自簽 cert）+ 直連 backend port `:21081 :25432 :26379` + observability `:23000 :23090 :29091`（範例見 §8.2.1）
+- **dev**（`-f -f dev.yml`）：127.0.0.1 loopback、HTTP `:21080` + HTTPS `:21443`（自簽 cert）+ 直連 backend port `:21081 :25432 :26379`（範例見 §8.2.1）；observability 為 profile-gated（`--profile obs`、一般 up 不啟），啟用後 dev obs host port = grafana `:23000` + loki `:23100`（alloy 無 host port）；`:23090 :29091` 仍 ⏳ obs-full
 - **prod baseline**（`-f -f prod.yml`、不帶 `--profile prod`）：0.0.0.0 對外、80 強制 redirect 443、acme.sh 不啟（需先 seed cert into named volume `front_nginx_certs`,實際卷名 `rev2-admin_front_nginx_certs`）
 - **prod + acme**（`-f -f prod.yml --profile prod`）：同 prod baseline + acme.sh skeleton（實際 cert acquisition 留待後續、需真實 domain + DNS provider）
 
@@ -507,7 +509,7 @@ docker compose exec acme acme.sh --version    # sanity check
 - `<purpose>` ∈ `data` / `certs` / `node_modules` / `pnpm_store` / `cargo_cache` / `target`
 - feature 006 移除所有顯式 `name:` 欄位，project prefix 成為唯一前綴來源；US1 同時重命名 3 個 key：`redis_data` → `redis_stack_data`、`bw_node_modules` → `base_web_node_modules`、`bw_pnpm_store` → `base_web_pnpm_store`。
 
-**正典 7 卷清單**：
+**正典卷清單（7 always-on + 3 obs-min opt-in）**：
 
 | compose key | 實際卷名 | 消費 service / mount | 類型 |
 |---|---|---|---|
@@ -519,7 +521,15 @@ docker compose exec acme acme.sh --version    # sanity check
 | `rust_api_cargo_cache` | `rev2-admin_rust_api_cargo_cache` | rust-api dev `/usr/local/cargo` | build 快取 |
 | `rust_api_target` | `rev2-admin_rust_api_target` | rust-api dev `/app/target` | build 快取 |
 
-> feature 006（US1）已移除所有顯式 `name:` 欄位，project prefix `rev2-admin_` 為唯一前綴來源，新增卷只需依上述規則命名 compose key 即自動對齊。
+**obs-min 卷（031、`profiles:[obs]` opt-in、一般 up 不建）**：
+
+| compose key | 實際卷名 | 消費 service / mount | 類型 |
+|---|---|---|---|
+| `loki_data` | `rev2-admin_loki_data` | loki `/loki` | data |
+| `grafana_data` | `rev2-admin_grafana_data` | grafana `/var/lib/grafana` | data |
+| `alloy_data` | `rev2-admin_alloy_data` | alloy `/var/lib/alloy/data` | data |
+
+> feature 006（US1）已移除所有顯式 `name:` 欄位，project prefix `rev2-admin_` 為唯一前綴來源，新增卷只需依上述規則命名 compose key 即自動對齊。obs-min 3 卷同樣無顯式 `name:`，僅在 `--profile obs` 啟用時才建立。
 
 ### 8.3 知識圖譜（graphify）
 

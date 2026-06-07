@@ -50,12 +50,12 @@
 | dev 起 obs（含全 stack） | `docker compose -f docker-compose.yml -f docker-compose.dev.yml --profile obs up -d --wait` |
 | dev 一般起（**不**含 obs） | `docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --wait`（FR-006:loki/alloy/grafana 不啟） |
 | grafana Explore 入口（dev） | `http://127.0.0.1:23000`（admin / `cat deploy/secrets/grafana_admin_password.txt`）→ Explore → Loki datasource |
-| LogQL 查 + trace 對接 | `{service="rust-api"} | json | trace_id="<uuid>"` |
+| LogQL 查 + trace 對接 | `{service="rust-api"} | json | fields_trace_id="<uuid>"`(rust-api trace_id 巢狀於 `fields`、見 §5) |
 | prod 起 obs | `docker compose -f docker-compose.yml -f docker-compose.prod.yml --profile obs up -d --wait`（internal、無 host port） |
 | seed grafana secret | `bash deploy/generate-secrets.sh`（含新 `grafana_admin_password`） |
 
 ## 5. rust-api / nginx 內部接點契約（log↔audit 同源）
 
 - nginx `/api/` location:`proxy_set_header X-Request-Id $request_id;` → rust-api `ctx_mw extract_trace_id` 收 `x-request-id`（`audit_ctx.rs:31,74-76`）。
-- rust-api `ctx_mw`:`next.run` 包 span + 一條 boundary event `tracing::info!(trace_id=…, status=…, "request complete")` → JSON top-level `trace_id` → LogQL flat 抽。
+- rust-api `ctx_mw`:`next.run` 包 span + 一條 boundary event `tracing::info!(trace_id=…, status=…, "request complete")`。`fmt().json()` 把 event 欄位巢狀於 `"fields"` 物件(rust-api 全體 log 既有慣例)→ loki `| json` flatten 後查詢鍵為 **`fields_trace_id`**(`{service="rust-api"} | json | fields_trace_id="<uuid>"`、見 data-model §1.1/§3);穩定、非 array-index-fragile。
 - **不變式**:log 不含 body/password/token;span 不加 authorization/token/password 欄（R9 guard）。

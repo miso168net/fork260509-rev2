@@ -6,21 +6,27 @@
 
 ### 1.1 rust-api（`fmt().json()`、`main.rs:506`）
 
-每筆 event 為 JSON;**boundary event**（D5、`ctx_mw` 加）保證 `trace_id` 在 top-level:
+每筆 event 為 JSON;**boundary event**（D5、`ctx_mw` 加）帶 `trace_id`,**但 `tracing-subscriber` 的 `fmt().json()` 把所有 event 欄位巢狀在 `"fields"` 物件下**(這是 rust-api 全體 log 的既有慣例 — 如 sqlx log 的 `fields.summary`/`fields.db.statement`),as-built 實際形狀:
 ```json
-{"timestamp":"…","level":"INFO","message":"request complete",
- "trace_id":"<uuid>","method":"GET","path":"/api/...","status":200,"operator_id":"Some(1)"}
+{"timestamp":"2026-06-07T12:52:58.614059Z","level":"INFO",
+ "fields":{"message":"request complete","trace_id":"<uuid>","method":"GET","path":"/auth/getUserInfo","status":200,"operator_id":"Some(1)"},
+ "target":"server::audit_ctx",
+ "span":{"method":"GET","operator_id":"Some(1)","path":"/auth/getUserInfo","trace_id":"<uuid>","name":"request"},
+ "spans":[{"method":"GET","operator_id":"Some(1)","path":"/auth/getUserInfo","trace_id":"<uuid>","name":"request"}]}
 ```
-- 巢狀事件（handler 內既有 `tracing::info!/warn!`）同時帶 span context（`"span":{...}`/`"spans":[...]`、巢狀)— ambient 關聯用;**LogQL 查詢鍵以 boundary event 的 flat `trace_id` 為準**。
+- 巢狀事件（handler 內既有 `tracing::info!/warn!`）同時帶 span context（`"span":{...}`/`"spans":[...]`、巢狀)— ambient 關聯用。
+- **LogQL 查詢鍵 = `fields_trace_id`**:boundary event 的 `trace_id` 在 `fields` 物件下(與 app 既有 tracing-subscriber 慣例一致、**非** top-level)→ loki `| json` flatten 巢狀物件以 `_` 連接後落 `fields_trace_id`(查詢見 §3)。`fields_trace_id` 是穩定、非 array-index-fragile 的 path(避開 `spans_0_trace_id` array 路徑)。
 - 既有 best-effort warn（`audit_ctx.rs:140`）等不變。
 
 ### 1.2 front-nginx（D3、JSON `log_format json_combined escape=json`）
 
 ```json
 {"time":"<iso8601>","service":"front-nginx","request_id":"<32-hex>","remote_addr":"…",
- "method":"GET","uri":"/api/...","status":200,"body_bytes_sent":…,"request_time":…,
+ "method":"GET","uri":"/api/...","status":"200","body_bytes_sent":"…","request_time":"…",
  "upstream_response_time":"…","http_referer":"…","http_user_agent":"…"}
 ```
+- genuinely **flat**(top-level `request_id`/`service`/`uri`/`status`/…、無巢狀)。
+- **數值欄 `status`/`body_bytes_sent`/`request_time` as-built 為 quoted string**(`"status":"200"`)— robustness vs nginx HTTP-000 aborted-connection 空值會破 unquoted JSON(nginx trac #2221);loki `| json` 仍可比對(string 值)。
 - `request_id` = nginx 內建 `$request_id`(per-request 32-hex)、即傳給 rust-api 的 `X-Request-Id`。
 
 ### 1.3 postgres / redis-stack / base-web
@@ -51,14 +57,14 @@ client ──[X-Request-Id? 有則沿用]──> front-nginx
 | `compose_project` | `…_com_docker_compose_project`(=`rev2-admin`) | 隔離並存 rev1/他 stack（`keep` action 只收 rev2-admin） |
 | `container` | `__meta_docker_container_name`(`/(.*)`) | 容器實例去歧義 |
 
-- **label cardinality 紀律**:`trace_id` **不**設為 loki label（高基數會炸 index）;它是 log line 內欄、用 `| json | trace_id="X"` query-time 抽（非 label）。
-- **LogQL 查詢契約**:`{service="rust-api"} | json | trace_id="<uuid>"`（log↔audit 對接）;`{service="front-nginx"} | json | status>=500`(錯誤查) 等。
+- **label cardinality 紀律**:`trace_id` **不**設為 loki label（高基數會炸 index）;它是 log line 內欄、用 `| json | fields_trace_id="X"` query-time 抽（非 label）。
+- **LogQL 查詢契約**:`{service="rust-api"} | json | fields_trace_id="<uuid>"`(log↔audit 對接;rust-api 的 trace_id 巢狀在 `fields` 下、`| json` flatten 後為 `fields_trace_id`、見 §1.1 — 或顯式抽取形 `| json trace_id="fields.trace_id" | trace_id="<uuid>"`);`{service="front-nginx"} | json | request_id="<32-hex>"`(nginx JSON flat、top-level `request_id`);`{service="front-nginx"} | json | status="500"`(錯誤查、nginx 數值欄為 quoted string) 等。
 
 ## 4. rust-api span 注入（`audit_ctx.rs` ctx_mw、唯一 code 改動）
 
 | 欄 | 現況 | 變更 |
 |---|---|---|
-| `trace_id` | 只寫 `sys_access_log`(:136) | **新**:span field + boundary event flat field → log |
+| `trace_id` | 只寫 `sys_access_log`(:136) | **新**:span field + boundary event field → log（`fmt().json()` 巢狀於 `"fields"` 下 → loki `fields_trace_id`、見 §1.1）|
 | `method`/`path` | 寫 `sys_access_log`(:130-131、String) | **新**:span/event field（`%` Display by-ref、不 move、既有寫入不破）|
 | `operator_id` | 寫 `sys_access_log`(:134-137、Option<i64>) | **新**:span/event field（`?` Debug、Copy）|
 

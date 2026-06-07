@@ -1043,7 +1043,7 @@ BASE_WEB_TAG=rev2-admin-base-web
 | 階段 | 啟動範圍 | 工作量 | 觸發時機 |
 |---|---|---|---|
 | **Phase 1-4(setup + 業務跑通)** | **不啟 obs**(只 5 service:postgres / redis / rust-api / base-web / front-nginx) | 0 | rev2 焦點在 rust-api 對齊 mock |
-| **Phase 5(業務驗收 + 抽離項補位)** | **啟 obs-min**(promtail + loki + grafana,純 log) | 0.5-1 人日 | 業務跑起來有 log 量、debug 需求 |
+| **Phase 5(業務驗收 + 抽離項補位)** | **啟 obs-min**(promtail + loki + grafana,純 log;**實作改用 alloy — promtail EOL fix-forward、能力等價、見 §10 Phase 6 as-built**) | 0.5-1 人日 | 業務跑起來有 log 量、debug 需求 |
 | **Phase 6(production-ready)** | **啟 obs-full**(+ prometheus + 3 exporter + pushgateway + grafana alerting) | 2-3 人日 | 性能監控、alerting 需求 |
 
 ### §8.6 DB migration + 背景工作
@@ -1232,7 +1232,13 @@ BASE_WEB_TAG=rev2-admin-base-web
 
 ### Phase 6 — 觀察性(可選,生產 ready)
 
-1. **obs-min feature** — promtail + loki + grafana(純 log)
+1. **✅ 031-obs-min 落地(2026-06-07、rust-api worktree `audit_ctx.rs` 改 + 外層 compose/deploy)**:opt-in `profiles:[obs]` 純 log 觀察堆疊三件套(**loki** 儲存/LogQL ← **alloy** docker-SD 採集全容器 stdout → **grafana** Explore + loki datasource provisioning),把 rust-api request `trace_id`/nginx `$request_id`/`sys_access_log.trace_id` 串成跨服務同源關聯。**pin**:`grafana/loki:3.7.2` / `grafana/alloy:v1.16.1` / `grafana/grafana:13.0.2`;retention **72h**(bounded、單機 filesystem TSDB v13)。
+   - **採集 agent promtail→alloy(EOL fix-forward 實作替換、非拍板改)**:brainstorm D3 / §11.8 列的採集 agent 原為 **promtail**,落地時 WebSearch 確認 promtail 已被 Grafana 標記 **EOL/deprecated**、後繼為 **Grafana Alloy**(`discovery.docker` + `loki.source.docker` + `loki.write` 等價 docker-SD + loki push 能力、River config);依 CLAUDE §6(元件/版本選擇不可 silently 決定)surface 後 **user 2026-06-07 plan 階段親決改用 alloy**。**能力等價、log-only 範圍與時機不變 → 不構成 §11.8 拍板撤回/修改、無 amendment**(/speckit-analyze 經 `constitution.md:106` 核對確認;§11.8 凍結值為「漸進 obs-min/obs-full」、未 name 特定採集 agent)。
+   - **request_id ↔ audit 關聯(D5、唯一 code 改動 = `audit_ctx.rs` ctx_mw)**:把 `next.run(req)` 包進 per-request `tracing::info_span!("request", trace_id, method, path, operator_id)` + span scope 內補一條 boundary event `tracing::info!(…, "request complete")` 帶 `trace_id`;同一 id 同時落 log 與 `sys_access_log.trace_id` → log↔審計對接(FR-003)。零新 dep(tracing 既有)、零 wire/DTO/endpoint 改。**★ as-built LogQL path = `fields_trace_id`(非 pre-impl spec 預測的 top-level `trace_id`)**:`tracing-subscriber` 的 `fmt().json()` 把所有 event 欄位**巢狀在 `"fields"` 物件下**(這是 rust-api 全體 log 既有慣例 — 如 sqlx log 的 `fields.summary`/`fields.db.statement`),`| json` flatten 後 trace_id 落 `fields_trace_id` → 正確查詢 `{service="rust-api"} | json | fields_trace_id="<uuid>"`(或顯式抽取 `| json trace_id="fields.trace_id" | trace_id="X"`)。**feature 目標仍達成**:`fields_trace_id` 是**穩定、非 array-index-fragile 的 path**(正是 research R1 要避開 `spans_0_trace_id` array 路徑的真實目的);boundary event 確實提供了「穩定的 trace_id LogQL 查詢鍵」、只是落在 `fields_trace_id` 而非 R1 不精確預測的字面 top-level `trace_id`。**無 code 改動**(實作正確、與 app 既有 `fields`-nesting 慣例一致;**刻意不**做 `flatten_event(true)` 全域 flatten — 那會改變所有 log 形狀、超出 031 audit_ctx.rs-only 範圍)— 此為文件修正。
+   - **nginx stdout JSON access log(D3) + X-Request-Id 傳遞**:`deploy/nginx/nginx.conf` 改 `access_log /dev/stdout` 自訂 JSON `log_format`(genuinely **flat**、top-level `request_id`/`service`/`uri`/`status`/…;**數值欄 `status`/`body_bytes_sent`/`request_time` 為 quoted string** — robustness vs nginx HTTP-000 aborted-connection 空值會破 unquoted JSON、nginx trac #2221),`/api/` location 加 `proxy_set_header X-Request-Id $request_id`。**跨服務 id**:經 front-nginx 時 id = nginx 的 32-hex `$request_id`(傳 X-Request-Id → rust-api honor);**直連 :21081(無 nginx)時** rust-api 自 mint UUIDv4 — 兩者皆 valid(FR-011)。
+   - **profiles:[obs] opt-in**:一般 `up`(無 `--profile obs`)不啟三 service(FR-006/SC-003);**dev** host port grafana `127.0.0.1:23000` / loki `127.0.0.1:23100`(alloy 無 host port);**prod internal-only**(無對外 host port、FR-009/SC-005)。3 volume `loki_data`/`grafana_data`/`alloy_data`(auto-prefix `rev2-admin_*`)、secret `grafana_admin_password`(`GF_SECURITY_ADMIN_PASSWORD__FILE`,7→8 secret)。
+   - **範圍 / Constitution**:純後端/infra,**base-web 零改**,無 wire/migration/新 crate/dashboard/metrics(dashboard + prometheus/exporter 留 obs-full / dashboard-provisioning feature)。greenfield(§I.5、未讀 rev1)、**Constitution 8/8 PASS、無 amendment**。**acceptance C1-C7 + 守恆全綠**(225 server 測 green / entity_access_lint 17 / dev+prod compose config parse / prod internal-only 驗 / log↔audit 同源對接 / profile gating / 旁路停 loki app 不反壓)。
+   - **設計細節見 [`specs/031-obs-min/`](../specs/031-obs-min/)**(spec/plan/research/data-model/contracts) + Phase 0 brainstorm [`docs/superpowers/031-obs-min.md`](superpowers/031-obs-min.md)。
 2. **obs-full feature** — + prometheus + 3 exporter + pushgateway + grafana alerting
 3. **dashboard provisioning feature** — master overview / rust-api / postgres / redis / audit pipeline 等
 
@@ -1393,7 +1399,7 @@ axios `src/service/request/index.ts:17` + alova `src/service-alova/request/index
 >
 > **理由**:跟隨 followup §8 建議。Phase 1-4 焦點在核心 feature、不被 obs 設定干擾;Phase 5+ 業務 traffic 增加、需 log 觀察與 metric 追蹤。
 > **影響**:Phase 5 + Phase 6 docker-compose 配置;無新軌道
-> **採集 agent 可替換注記（031 plan）**:此處列的「promtail」是**可替換的實作元件**、非凍結拍板(constitution §II §11.8 凍結值為「漸進 obs-min/obs-full」、不 name 特定採集 agent)。031-obs-min 落地時 promtail 已 EOL/deprecated → 改用後繼 **Grafana Alloy**(同 docker-SD + loki push 能力、River config),屬 §6 EOL fix-forward 實作替換、**不需 constitution amendment**(/speckit-analyze 經 constitution.md:106 核對確認)。詳見 `specs/031-obs-min/research.md` R2/R4。
+> **採集 agent 可替換注記（031 plan）**:此處列的「promtail」是**可替換的實作元件**、非凍結拍板(constitution §II §11.8 凍結值為「漸進 obs-min/obs-full」、不 name 特定採集 agent)。031-obs-min 落地時 promtail 已 EOL/deprecated → 改用後繼 **Grafana Alloy**(同 docker-SD + loki push 能力、River config),屬 §6 EOL fix-forward 實作替換、**不需 constitution amendment**(/speckit-analyze 經 constitution.md:106 核對確認)。詳見 `specs/031-obs-min/research.md` R2/R4。**as-built canonical 記錄見 §10 Phase 6 #1**(實作改用 alloy — promtail EOL fix-forward、能力等價)。
 
 | 階段 | followup 建議 | 替代選項 |
 |---|---|---|

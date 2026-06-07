@@ -42,8 +42,9 @@ sleep 5
 TID=$($PSQL -c "SELECT trace_id FROM sys_access_log ORDER BY id DESC LIMIT 1;")
 echo "audit trace_id = $TID"
 # 用同 trace_id 在 loki 查 rust-api log → 應對得上(同值)
+# 注意:rust-api 的 trace_id 巢狀於 fmt().json() 的 "fields" 物件 → loki | json flatten 後為 fields_trace_id(見 data-model §1.1)
 curl -G -s "http://127.0.0.1:23100/loki/api/v1/query_range" \
-  --data-urlencode "query={service=\"rust-api\"} | json | trace_id=\"$TID\"" \
+  --data-urlencode "query={service=\"rust-api\"} | json | fields_trace_id=\"$TID\"" \
   --data-urlencode "start=$(( $(date +%s) - 300 ))000000000" --data-urlencode "end=$(date +%s)000000000" \
   | python3 -c 'import sys,json; d=json.load(sys.stdin); n=sum(len(s["values"]) for s in d.get("data",{}).get("result",[])); print(f"loki rows for trace_id: {n}")'
 # 期望:≥1 row → log 的 trace_id == sys_access_log.trace_id == 同一請求(SC-002 ≤2 步對接)
@@ -61,7 +62,7 @@ curl -G -s "http://127.0.0.1:23100/loki/api/v1/query_range" \
   --data-urlencode "start=$(( $(date +%s) - 120 ))000000000" --data-urlencode "end=$(date +%s)000000000" --data-urlencode 'limit=10' \
   | head -c 1200
 # 期望:回 front-nginx 的 JSON 行、含 "request_id":"<32-hex>" / "service":"front-nginx" / "uri":"/api/..." / "status"
-# 進階對接:取該 nginx request_id → 查 {service="rust-api"} | json | trace_id="<同 request_id>" → 應對得上(FR-004 跨服務同值)
+# 進階對接:取該 nginx request_id → 查 {service="rust-api"} | json | fields_trace_id="<同 request_id>" → 應對得上(FR-004 跨服務同值;rust-api trace_id 在 fields 下 → fields_trace_id)
 ```
 
 ## C4 — profile gating:一般 up 不啟 obs（SC-003 + FR-006）

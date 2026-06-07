@@ -28,7 +28,7 @@ dcargo build -p server && docker compose -f docker-compose.yml -f docker-compose
 docker compose -f docker-compose.yml -f docker-compose.dev.yml restart front-nginx                          # nginx JSON log
 docker compose -f docker-compose.yml -f docker-compose.dev.yml --profile obs up -d --wait                   # 起 obs 三 service
 # grafana: http://127.0.0.1:23000 (admin / cat deploy/secrets/grafana_admin_password.txt) → Explore → Loki
-#   LogQL: {service="rust-api"} | json | trace_id="<uuid>"
+#   LogQL: {service="rust-api"} | json | fields_trace_id="<uuid>"  (rust-api trace_id 巢狀於 fmt().json() 的 "fields" → fields_trace_id;或 | json trace_id="fields.trace_id" | trace_id="<uuid>")
 ```
 
 ## 驗收要點（對 SC）
