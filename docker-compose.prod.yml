@@ -83,3 +83,7 @@ services:
   grafana:
     volumes:
       - ./deploy/grafana-provisioning:/etc/grafana/provisioning:ro
+
+  prometheus:
+    volumes:
+      - ./deploy/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro

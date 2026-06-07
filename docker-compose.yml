@@ -188,9 +188,22 @@ services:
     networks:
       - rev2_net
 
+  prometheus:
+    image: prom/prometheus:v3.12.0
+    profiles: ["metrics"]
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=15d
+    volumes:
+      - prometheus_data:/prometheus
+    restart: unless-stopped
+    networks:
+      - rev2_net
+
   grafana:
     image: grafana/grafana:13.0.2
-    profiles: ["obs"]
+    profiles: ["obs", "metrics"]
     environment:
       GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/grafana_admin_password
       GF_AUTH_ANONYMOUS_ENABLED: "false"
@@ -200,7 +213,11 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
     depends_on:
-      - loki
+      # required: false — grafana 現跨 obs+metrics 兩 profile;metrics-only 啟動時 loki 不在
+      # active set,長式 depends_on 容許目標缺席(在則等其啟動,不在則照常啟)。
+      loki:
+        condition: service_started
+        required: false
     restart: unless-stopped
     networks:
       - rev2_net
@@ -219,6 +236,7 @@ volumes:
   loki_data:
   grafana_data:
   alloy_data:
+  prometheus_data:
 
 secrets:
   postgres_password:
