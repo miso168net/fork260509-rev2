@@ -40,7 +40,7 @@
 |---|---|:---:|---|
 | 1 | §I.1 base-web 為權威(rust-api 是否未提供 base-web 用到的端點?)| ✅ PASS | US5 新增 rev2 端點(getArchivedPolicies/restorePolicy)由 base-web 新頁消費;既有 3 modal 的端點不動。rust-api 主動提供新 UI 所需。 |
 | 2 | §I.2 menu 顯示走 Casbin enforce? | ✅ PASS | 回收桶頁可見性走 §I.2(seed sys_menu 列 + R_SUPER role-menu policy);FR-013。 |
-| 3 | §I.3 wire 對齊 mock ground truth(envelope/id 型/error code/enum)? | ✅ PASS | 新端點走 `Res<T>` envelope、string id、**重用 008 BizCode 矩陣既有碼(2222/4040/5000/0000)、不新增**;3 modal wire 零改(US3 對外逐位元組不變)。 |
+| 3 | §I.3 wire 對齊 mock ground truth(envelope/id 型/error code/enum)? | ✅ PASS | 新端點走 `Res<T>` envelope、string id、**重用 008 BizCode 矩陣既有碼(2222/4040/5000/0000)、不新增**;3 modal wire 零改(US4 對外逐位元組不變)。 |
 | 4 | §I.5 是否從 rev1 拷貝 code? | ✅ PASS | 全新 rev2 碼;**adapter 完全不改**(archive 路線)→ 不觸 §I.5 例外清單、不新增拷貝。 |
 | 5 | §I.5 / §II §11.6 adapter「拷貝」前提 | ✅ PASS | 治理走 DB-first(sea-orm 直寫 casbin_rule、新 rust-api 側 entity + facade),**不 fork adapter load/remove** → §11.6「sea-orm-adapter 拷貝」前提**不動、無 backend amendment**。 |
 | 6 | §II 12 拍板凍結是否需改? | ✅ PASS(backend)| backend 不撤回任何 §II 拍板。 |
@@ -87,8 +87,8 @@ rust-api/                                    # worktree + submodule(改後兩段
     │   └── sys_casbin_policy_archive.rs     # 新:archive facade
     ├── auth/
     │   ├── policy_governance.rs             # 新:薄 service 統籌 mutate_in_txn → reload → publish(集中三胞胎 reload/publish)
-    │   ├── menu_auth.rs / button_auth.rs / endpoint_auth.rs  # 改:收斂為 set_role_dimension 呼叫(US3)
-    │   └── menu CRUD facade                 # 改:軟刪/還原連動 policy facade(US4)
+    │   ├── menu_auth.rs / button_auth.rs / endpoint_auth.rs  # 改:收斂為 set_role_dimension 呼叫(US4)
+    │   └── menu CRUD facade                 # 改:軟刪/還原連動 policy facade(US3)
     └── handler/                             # 改:新增 getArchivedPolicies/restorePolicy + 收斂後讀寫;+ enforce + route 註冊
 
 base-web/                                    # worktree + submodule(US5、改後兩段式 commit)

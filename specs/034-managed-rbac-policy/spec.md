@@ -128,7 +128,7 @@
 - **FR-012**: 還原一條其相同 live 授予已存在的權限 MUST 為成功 no-op(不產生重複)。
 - **FR-013**: 回收桶檢視與還原能力 MUST 限超級管理員(選單可見性走既有 Casbin enforce、端點走 enforce)。
 - **FR-014**: 系統 MUST NOT 改變任何權限**讀**決策(誰看得到哪個選單、誰能存取哪個端點)相對於現行行為 —— 本 feature 為純寫側治理。
-- **FR-015**: 資料遷移後,系統 MUST 保留既有 seed policy baseline 與既有 Super/Admin/User 的 enforce 決策(逐項相同)。
+- **FR-015**: 資料遷移(m031–m034)後,系統 MUST 保留既有 seed policy baseline —— policy 列數不因新增治理欄 / archive 機制而改變,且 protected 標記集 = 預期治理集、既有種子列可 reconcile(資料層保留;與 FR-014「讀決策不變」的行為層互補)。
 - **FR-016**: 錯誤回應 MUST 沿用既有業務錯誤碼慣例(受保護不可移除沿用既有「業務錯誤」碼、找不到沿用「不存在」碼、競態沿用既有碼);MUST NOT 新增錯誤碼。
 
 ### Key Entities *(include if feature involves data)*
