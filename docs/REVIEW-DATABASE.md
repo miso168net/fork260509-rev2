@@ -1,8 +1,9 @@
 # REVIEW-DATABASE — 活體資料庫 vs migration 源 稽核報告
 
 > 稽核日期:2026-06-06
+> 更新:2026-06-09 — 補入 m000030(`sys_token` `expires_at` 索引、feature 030 cleanup-job;026 後唯一觸及 sys_token 的 migration)+ 重新取樣 volatile row 數;schema 仍零 drift(新索引活體與 migration 一致)、種子盤點不變(030 純索引無 seed)。
 > 方法:`pg_dump --schema-only`(活體 ground truth)vs `rust-api/migration/src` 逐表 reconcile(欄 / 索引 / 約束 provenance + drift)
-> 結論:**全 11 表、29 migration 全套用、schema 零 drift;種子 baseline 完整(活體含全部種子,偏離皆為 runtime 業務 / 測試殘留)。**
+> 結論:**全 11 表、30 migration 全套用、schema 零 drift;種子 baseline 完整(活體含全部種子,偏離皆為 runtime 業務 / 測試殘留)。**
 > **本報告兩部分**:① 前半 = **schema(DDL)稽核**(表 / 欄 / 索引 / 約束);② 後半 = **「種子資料(seed data)」稽核**(各 migration 的 INSERT / UPDATE 種子 + 活體 reconcile + dev DB 測試殘留 finding)。
 
 ---
@@ -13,9 +14,9 @@
 
 - **活體 DB**:`postgres:17-alpine`,db = `soybean_admin_rust`,user = `soybean`,container = `rev2-admin-postgres-1`,host port `25432`(容器內 `:5432`)。
 - **表數**:11 張 — `casbin_rule` / `seaql_migrations` / `sys_access_log` / `sys_login_attempt` / `sys_menu` / `sys_operation_log` / `sys_role` / `sys_token` / `sys_user` / `sys_user_role` / `system_settings`。
-- **migration**:`seaql_migrations`(sea-orm 內部追蹤表、無對應 migration 檔)記錄 **全 29 個 migration(`m000001` ~ `m000029`)皆已套用**。
+- **migration**:`seaql_migrations`(sea-orm 內部追蹤表、無對應 migration 檔)記錄 **全 30 個 migration(`m000001` ~ `m000030`)皆已套用**。
 - **稽核方法**:以 `pg_dump --schema-only` 抓活體 schema 作 ground truth,對每張表逐欄 / 逐索引 / 逐約束回溯到產生它的 migration(provenance),並標 `MATCH` / `LIVE_ONLY` / `MIGRATION_ONLY` / 型不符。
-- **稽核範圍**:本報告詳列其中 10 張業務 / 基礎設施表;`seaql_migrations` 為 sea-orm 框架內部表(無對應 migration 檔),僅作為「29 migration 全套用」的證據來源,不單獨展開欄位比對。
+- **稽核範圍**:本報告詳列其中 10 張業務 / 基礎設施表;`seaql_migrations` 為 sea-orm 框架內部表(無對應 migration 檔),僅作為「30 migration 全套用」的證據來源,不單獨展開欄位比對。
 
 ---
 
@@ -26,16 +27,16 @@
 | `sys_user` | 系統使用者帳號主表(登入 / 身分 / RBAC user 端 + soft-delete + 業務欄 + 審計欄 + single-session) | 001 建表 → 003 / 008 / 014 / 027(feature 007/009/013/014/028) | 16 | MATCH | 15 |
 | `sys_role` | RBAC 角色表(code/name/home/status + 審計欄) | 006 建表 → 016 / 021 | 12 | MATCH | 6 |
 | `sys_menu` | 後台選單 / 路由樹主表(menu/route 元資料 + button 權限) | 018 建表(feature 018) | 27 | MATCH | 12 |
-| `sys_token` | refresh token rotation chain 持久化(session/token 基礎設施) | 026 建表(feature 027) | 9 | MATCH | 72 |
+| `sys_token` | refresh token rotation chain 持久化(session/token 基礎設施) | 026 建表 → 030 加 expires_at 索引(feature 027/030) | 9 | MATCH | 101 |
 | `sys_user_role` | user↔role 多對多 join 表(複合 PK、硬刪) | 007 建表(feature 013) | 2 | MATCH | 13 |
 | `sys_operation_log` | append-only 操作審計日誌(CRUD before/after + 操作者 + trace) | 004 建表 | 10 | MATCH | 160 |
-| `sys_access_log` | append-only 存取審計(method/path/status/ip/region/trace) | 011 建表(feature 015) | 10 | MATCH | 1401 |
-| `sys_login_attempt` | append-only 登入嘗試審計(成敗 / IP / region,供 lockout) | 012 建表 | 9 | MATCH | 345 |
+| `sys_access_log` | append-only 存取審計(method/path/status/ip/region/trace) | 011 建表(feature 015) | 10 | MATCH | 1432 |
+| `sys_login_attempt` | append-only 登入嘗試審計(成敗 / IP / region,供 lockout) | 012 建表 | 9 | MATCH | 375 |
 | `system_settings` | 系統設定 KV 地基表(setting_key/value/type + 審計欄) | 028 建表(feature 028/029) | 10 | MATCH | 1 |
 | `casbin_rule` | Casbin RBAC policy storage(sea-orm-adapter 標準格式) | 005 委派 adapter DDL,009 seed | 8 | MATCH | 69 |
-| `seaql_migrations` | sea-orm migration 追蹤表(框架內部) | 無對應 migration 檔 | — | — | 29 |
+| `seaql_migrations` | sea-orm migration 追蹤表(框架內部) | 無對應 migration 檔 | — | — | 30 |
 
-> **row 數為精確 `count(*)`**(2026-06-06)。初稿曾用 `pg_stat_user_tables.n_live_tup`(VACUUM 估計值)、有 4 處偏差,已校正:`casbin_rule` 70→69、`sys_role` 3→6、`sys_user_role` 4→13、`sys_operation_log` 161→160。row 數含 runtime + 測試殘留(非全為種子),詳見後半「種子資料」§活體 vs 種子 reconcile。
+> **row 數為精確 `count(*)`**(初稿 2026-06-06)。初稿曾用 `pg_stat_user_tables.n_live_tup`(VACUUM 估計值)、有 4 處偏差,已校正:`casbin_rule` 70→69、`sys_role` 3→6、`sys_user_role` 4→13、`sys_operation_log` 161→160。row 數含 runtime + 測試殘留(非全為種子),詳見後半「種子資料」§活體 vs 種子 reconcile。**2026-06-09 重新取樣**:volatile 表自然成長 — `sys_token` 72→101、`sys_access_log` 1401→1432、`sys_login_attempt` 345→375、`seaql_migrations` 29→30(新增 m000030);其餘 7 表 row 數不變。
 
 ---
 
@@ -190,7 +191,7 @@ RBAC 角色表:存系統角色(code/name/home/status + §I.6 審計欄),與 `sys
 
 session / token 基礎設施表 — refresh token rotation chain 的持久化儲存(token_hash + rotation_chain + status 狀態機 + 時間戳)。
 
-**來源**:feature 027 refresh-token-rotation;僅由 migration 026(`m20260529_000026_create_sys_token.rs`)建立,無任何後續 alter_* 觸及此表。
+**來源**:feature 027 refresh-token-rotation 由 migration 026(`m20260529_000026_create_sys_token.rs`)建表;feature 030 cleanup-job 由 migration 030(`m20260529_000030_index_sys_token_expires_at.rs`)補一個 `expires_at` plain btree 索引(純加索引、無 alter 改欄)。030 為 026 後唯一觸及此表的 migration。
 
 ### 欄位比對
 
@@ -214,16 +215,18 @@ session / token 基礎設施表 — refresh token rotation chain 的持久化儲
 | `sys_token_token_hash_key` | UNIQUE | UNIQUE btree (token_hash) | 026(TokenHash `.unique_key()`) | MATCH |
 | `idx_sys_token_user_active` | INDEX(partial) | btree (user_id) WHERE status='active'(non-unique) | 026 raw `execute_unprepared: CREATE INDEX ... WHERE status = 'active'` | MATCH |
 | `idx_sys_token_chain` | INDEX | btree (rotation_chain) | 026 create_index DSL(col RotationChain) | MATCH |
+| `idx_sys_token_expires_at` | INDEX | btree (expires_at) | 030 `create_index` DSL(col ExpiresAt,plain btree) | MATCH |
 
 ### Notes
 
-完全 reconcile,9 欄 + 4 索引 + 2 約束全 MATCH,零 drift。重點:
+完全 reconcile,9 欄 + 5 索引(含 030 補的 expires_at)+ 2 約束全 MATCH,零 drift。重點:
 
 1. **指派路徑校正**:prompt 給的 `m20260529_0000026_...`(7 個 0)實際不存在;真實檔為 `m20260529_000026_create_sys_token.rs`(6 個 0,3910 bytes),已在 lib.rs:28/64 註冊。
-2. **三索引 provenance 各走不同 API 但全對齊**:PK/UNIQUE 內聯於 ColumnDef(`.primary_key()` / `.unique_key()`);`idx_sys_token_user_active` 走 raw `execute_unprepared`(SeaORM 無 partial index DSL),活體 partial WHERE 與源碼逐字一致;`idx_sys_token_chain` 走 create_index DSL。
+2. **索引 provenance 走三類 API 但全對齊**:PK/UNIQUE 內聯於 ColumnDef(`.primary_key()` / `.unique_key()`);`idx_sys_token_user_active` 走 raw `execute_unprepared`(SeaORM 無 partial index DSL),活體 partial WHERE 與源碼逐字一致;`idx_sys_token_chain`(026)與 `idx_sys_token_expires_at`(030)皆走 create_index DSL。
 3. **§I.6 審計欄**:此表刻意只有 `created_at` 單欄,無 created_by/updated_at/updated_by/deleted_at/deleted_by — 非疏漏,token 列為 immutable + 狀態機(用 `used_at`/`status` 而非 soft-delete),migration 未建這些欄、活體也無,兩端一致。
 4. **FK**:migration 註解明示「無 DB-level FK(慣例:logical-only 關聯)」,`user_id` 純邏輯關聯不建 FK;活體確認無 sys_token FK。
 5. **型精確對齊**:string_len(64/36/20) → 活體 character varying(64/36/20),無無長度 varchar drift。`down()` 對稱(先 drop idx_chain → idx_user_active → table),可逆。
+6. **030 補 expires_at 索引(2026-06-09)**:feature 030 cleanup-job 以 `expires_at < cutoff` 掃過期 token,migration 030 加 plain btree `idx_sys_token_expires_at`(`create_index` DSL、非 partial)避免全表掃;`down()` 對稱 drop 該索引。活體確認存在、與 migration 一致(MATCH),不影響 026 既有 4 索引。
 
 ---
 
@@ -475,7 +478,7 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
    - **join / 狀態機表(刻意不帶或只帶 created_at)**:`sys_user_role`(複合 PK join 表,硬刪、零審計欄)、`sys_token`(immutable + 狀態機,只帶 created_at,用 used_at/status 取代 soft-delete)。
    - **非業務表(不該有審計欄)**:`casbin_rule`(adapter 標準表)。
 
-2. **`sys_token` 對齊 027**:由 feature 027 refresh-token-rotation 引入,單一 migration 026 建表,token_hash(64) + rotation_chain(36) + status(20) 狀態機 + issued/expires/used 時間戳,4 個索引物件(PK / token_hash unique / user-active partial / chain)。
+2. **`sys_token` 對齊 027 + 030**:由 feature 027 refresh-token-rotation 引入,migration 026 建表,token_hash(64) + rotation_chain(36) + status(20) 狀態機 + issued/expires/used 時間戳;feature 030 cleanup-job 再加 expires_at 索引,共 5 個索引物件(PK / token_hash unique / user-active partial / chain / expires_at〔030〕)。
 
 3. **`sys_user` session 欄來自 028(027 migration)**:`current_session_id`(varchar 36)+ `session_policy`(varchar 20, NOT NULL default `'inherit'`)由 027 migration(feature 028 single-session)加,有界長度刻意對齊。
 
@@ -493,7 +496,7 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
 
 ## 稽核結論
 
-**rev2 後端 schema 健康度:優。** 11 張表、全 29 個 migration 已套用,活體 DB 與 migration 源逐表、逐欄、逐索引、逐約束 100% `MATCH`,零 drift、零 LIVE_ONLY / MIGRATION_ONLY / 型不符;所有「看似偏離」項目(指派路徑筆誤、種子值非 DEFAULT、審計欄取捨、無 FK、欄序疊加)經逐一回溯,皆屬稽核輸入瑕疵或明確設計意圖,非真實漂移。migration 即活體的可信單一真相,schema 完全受控。
+**rev2 後端 schema 健康度:優。** 11 張表、全 30 個 migration 已套用,活體 DB 與 migration 源逐表、逐欄、逐索引、逐約束 100% `MATCH`,零 drift、零 LIVE_ONLY / MIGRATION_ONLY / 型不符;所有「看似偏離」項目(指派路徑筆誤、種子值非 DEFAULT、審計欄取捨、無 FK、欄序疊加)經逐一回溯,皆屬稽核輸入瑕疵或明確設計意圖,非真實漂移。migration 即活體的可信單一真相,schema 完全受控。
 ---
 
 ## 種子資料(seed data)
@@ -542,6 +545,7 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
 | 029 同上 | `casbin_rule` | menu policy manage_system-settings(SUPER) | 1 |
 
 > **casbin 種子總計**:2+9+5+4+4+4+19+3+6+2+3+1 = **69 列**(全 ptype='p',無 'g')。詳細矩陣見 §casbin_rule policy 種子矩陣。
+> **030 無 seed**:`m20260529_000030`(sys_token expires_at 索引、feature 030 cleanup-job)為純 schema 索引 migration、`up()` 不含 INSERT/UPDATE,故不列入本種子盤點(對齊本節「排除 schema 操作」範圍);種子總數仍為 24 處 / 13 migration / 6 表。
 
 ### sys_user(002 seed,3 帳號)
 
