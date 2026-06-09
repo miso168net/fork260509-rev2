@@ -243,7 +243,7 @@
 - [x] **no-op 仍 reload+publish → ✅ 035 US2**:新 trait `PolicyMutated`(3 impl)、`mutate_and_reload` 改條件化 `if result.mutated()`、只跳結構性零變更(Rejected / restore NoOp·NotFound / menu 查無);空-diff Applied 與 menu-found-無-policy 仍 reload(刻意、FR-006);`batch_delete_menus` `any_mutated` 追蹤。6 caller 零改、對外逐字不變。詳見 [DESIGN §10 Phase 3 #6](INTEGRATION-DESIGN.md)。
 - [ ] **archive 懸空 cruft GC(D8)**:被刪選單 archive 的 menu-visibility policy 因 route_name 被新選單重用而永不可還原(034 同代隔離後正確不誤復活、但舊代 archive 留為死 cruft)。retention/purge out-of-scope(spec Assumptions);policy 撤銷罕見、archive 小,日後可比照 030 cleanup-job 加 purge。
 - [ ] **REVIEW-DATABASE 12-table live 重稽核**:034 在 REVIEW-DATABASE 記為 worktree as-migrated intent(casbin_rule +3 治理欄 / 新 sys_casbin_policy_archive / sys_menu +protected / m031-m035),既有 11-table 總覽稽核採樣早於 034;12-table live-vs-migration 全重稽核留後續 doc pass。
-- [ ] **dev DB 3 個 `cdp*` 測試殘留 soft-deleted menu**:`sys_menu` 有 3 列 cdp 前綴 epoch-ms 名(`cdpm1_*`/`cdpm2_*`/`cdpx_m_*`、2026-06-02 CDP smoke 殘留、`deleted_at` 非 NULL、`protected=f`),非 production menu、不影響任何守恆計數;dev DB hygiene、可 hard-delete 清。
+- [x] **dev DB 3 個 `cdp*` 測試殘留 soft-deleted menu → ✅ 2026-06-09 resolved**:dev DB volume 全清 + fresh migrate/seed(`docker volume rm rev2-admin_*` → `up -d --wait`、user 親令)後,`cdp*` 殘留(`cdpm1_*`/`cdpm2_*`/`cdpx_m_*`)與先前 2 筆無主 RESTORE 審計列一併消失;sys_menu 回乾淨 10 列 seed、casbin_rule 72、operation_log 0。
 - [ ] **(非債、認知)`manual_revoke` reason 永不產生**:034 無單條撤銷端點,所有權限編輯走 `set_role_dimension`(reason=`role_set_replace`)→ 回收桶只見 `role_set_replace`(menu cascade 的 `menu_soft_delete` 被排除)。spec「單條撤銷」語意現無對應 code path(US4 收斂的正確結果);日後若加單條撤銷端點再產生 `manual_revoke`。
 
 ## 3. 已完成里程碑
@@ -282,7 +282,7 @@
 
 ### Phase 7 — 維護(持續性)
 
-- [ ] wire 細節對齊 feature(status / gender 等,走 CDP 全功能巡檢)
+- [x] **wire 細節對齊(status / gender 等,CDP 全功能巡檢)→ ✅ 2026-06-09 CDP 全功能巡檢**:Super 全頁渲染(user 3 / role 3 / menu 10 / policy-archive / settings)+ wire 細節驗(status="启用" / gender 空〔entity 無欄→null、D2〕/ null 欄不 crash / id=string / menu_type 目錄·菜单)+ RBAC §I.2 端到端(User 側欄無「系统管理」+ 直連 /manage/* → 404「返回首页」;Super/Admin 可見)+ list-load 走 nginx `/api` + **035 回收桶 restore round-trip 經真實 UI**(造 archive → 還原鈕 → 審計 `{role,target,dimension}` → net-zero)。後續若新增 wire 欄(如真 gender 欄)再開新巡檢。
 - [ ] upstream rebase feature(定期 `git rebase upstream/example`(base-web)+ `upstream/main`(rust-api))
 - [ ] graphify 圖譜更新 feature(P4 完跑 `graphify update`,refresh manifest + GRAPH_REPORT)
 - [ ] 依需求啟用觀察性 alert / 升 acme.sh 真實 cert / 等
