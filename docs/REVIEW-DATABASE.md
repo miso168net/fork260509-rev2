@@ -3,8 +3,9 @@
 > 稽核日期:2026-06-06
 > 更新:2026-06-09 — 補入 m000030(`sys_token` `expires_at` 索引、feature 030 cleanup-job;026 後唯一觸及 sys_token 的 migration)+ 重新取樣 volatile row 數;schema 仍零 drift(新索引活體與 migration 一致)、種子盤點不變(030 純索引無 seed)。
 > **2026-06-09 二次更新 — feature 034 managed-rbac-policy schema delta(worktree 已實作、本機 awaiting merge)**:新增 5 migration m031-m035、`casbin_rule` += 3 治理欄、新建 `sys_casbin_policy_archive`(表數 11→12)、`sys_menu` += `protected`、protected 種子。**本次只記「as-migrated」delta(下方 §「034 managed-rbac-policy schema delta」),前半逐表稽核仍以 30-migration 基線為準**;034 merge 後再做一次 11→12 表完整 live-vs-migration re-audit。
+> **2026-06-09 三次更新 — 034+035 已 merge,完成 11→12 表 live-vs-migration re-audit**:casbin_rule += 3 治理欄(m031)、新 `sys_casbin_policy_archive`(m032)、sys_menu += `protected`(m034)全 live-verified MATCH、零 drift;前半逐表稽核基線由 30→35 migration / 11→12 表。本次 re-audit 在 2026-06-09 全新 wipe + 重 seed(m001–m035)的乾淨 DB 上取樣,故 volatile row 數較舊版(被污染 dev DB)更乾淨。
 > 方法:`pg_dump --schema-only`(活體 ground truth)vs `rust-api/migration/src` 逐表 reconcile(欄 / 索引 / 約束 provenance + drift)
-> 結論:**全 11 表、30 migration 全套用、schema 零 drift;種子 baseline 完整(活體含全部種子,偏離皆為 runtime 業務 / 測試殘留)。**
+> 結論:**全 12 表、35 migration 全套用、schema 零 drift;種子 baseline 完整(活體含全部種子,偏離皆為 runtime 業務 / 測試殘留)。**
 > **本報告兩部分**:① 前半 = **schema(DDL)稽核**(表 / 欄 / 索引 / 約束);② 後半 = **「種子資料(seed data)」稽核**(各 migration 的 INSERT / UPDATE 種子 + 活體 reconcile + dev DB 測試殘留 finding)。
 
 ---
@@ -14,10 +15,10 @@
 本報告對 rev2 後端活體 PostgreSQL schema 做一次完整稽核,確認活體 DB 的每一張表、每一欄、每一個索引與約束,都能逐項對齊 `rust-api/migration/src` 內的 migration 意圖,沒有任何漂移(drift)。
 
 - **活體 DB**:`postgres:17-alpine`,db = `soybean_admin_rust`,user = `soybean`,container = `rev2-admin-postgres-1`,host port `25432`(容器內 `:5432`)。
-- **表數**:11 張 — `casbin_rule` / `seaql_migrations` / `sys_access_log` / `sys_login_attempt` / `sys_menu` / `sys_operation_log` / `sys_role` / `sys_token` / `sys_user` / `sys_user_role` / `system_settings`。
-- **migration**:`seaql_migrations`(sea-orm 內部追蹤表、無對應 migration 檔)記錄 **全 30 個 migration(`m000001` ~ `m000030`)皆已套用**。
+- **表數**:12 張 — `casbin_rule` / `seaql_migrations` / `sys_access_log` / `sys_casbin_policy_archive` / `sys_login_attempt` / `sys_menu` / `sys_operation_log` / `sys_role` / `sys_token` / `sys_user` / `sys_user_role` / `system_settings`。
+- **migration**:`seaql_migrations`(sea-orm 內部追蹤表、無對應 migration 檔)記錄 **全 35 個 migration(`m000001` ~ `m000035`)皆已套用**。
 - **稽核方法**:以 `pg_dump --schema-only` 抓活體 schema 作 ground truth,對每張表逐欄 / 逐索引 / 逐約束回溯到產生它的 migration(provenance),並標 `MATCH` / `LIVE_ONLY` / `MIGRATION_ONLY` / 型不符。
-- **稽核範圍**:本報告詳列其中 10 張業務 / 基礎設施表;`seaql_migrations` 為 sea-orm 框架內部表(無對應 migration 檔),僅作為「30 migration 全套用」的證據來源,不單獨展開欄位比對。
+- **稽核範圍**:本報告詳列其中 11 張業務 / 基礎設施表(含 034 新增的 `sys_casbin_policy_archive`);`seaql_migrations` 為 sea-orm 框架內部表(無對應 migration 檔),僅作為「35 migration 全套用」的證據來源,不單獨展開欄位比對。
 
 ---
 
@@ -27,17 +28,19 @@
 |---|---|---|---:|:---:|---:|
 | `sys_user` | 系統使用者帳號主表(登入 / 身分 / RBAC user 端 + soft-delete + 業務欄 + 審計欄 + single-session) | 001 建表 → 003 / 008 / 014 / 027(feature 007/009/013/014/028) | 16 | MATCH | 15 |
 | `sys_role` | RBAC 角色表(code/name/home/status + 審計欄) | 006 建表 → 016 / 021 | 12 | MATCH | 6 |
-| `sys_menu` | 後台選單 / 路由樹主表(menu/route 元資料 + button 權限) | 018 建表(feature 018) | 27 | MATCH | 12 |
-| `sys_token` | refresh token rotation chain 持久化(session/token 基礎設施) | 026 建表 → 030 加 expires_at 索引(feature 027/030) | 9 | MATCH | 101 |
-| `sys_user_role` | user↔role 多對多 join 表(複合 PK、硬刪) | 007 建表(feature 013) | 2 | MATCH | 13 |
-| `sys_operation_log` | append-only 操作審計日誌(CRUD before/after + 操作者 + trace) | 004 建表 | 10 | MATCH | 160 |
-| `sys_access_log` | append-only 存取審計(method/path/status/ip/region/trace) | 011 建表(feature 015) | 10 | MATCH | 1432 |
-| `sys_login_attempt` | append-only 登入嘗試審計(成敗 / IP / region,供 lockout) | 012 建表 | 9 | MATCH | 375 |
+| `sys_menu` | 後台選單 / 路由樹主表(menu/route 元資料 + button 權限) | 018 建表(feature 018) → 034 加 `protected` | 28 | MATCH | 10 |
+| `sys_token` | refresh token rotation chain 持久化(session/token 基礎設施) | 026 建表 → 030 加 expires_at 索引(feature 027/030) | 9 | MATCH | 12 |
+| `sys_user_role` | user↔role 多對多 join 表(複合 PK、硬刪) | 007 建表(feature 013) | 2 | MATCH | 3 |
+| `sys_operation_log` | append-only 操作審計日誌(CRUD before/after + 操作者 + trace) | 004 建表 | 10 | MATCH | 2 |
+| `sys_access_log` | append-only 存取審計(method/path/status/ip/region/trace) | 011 建表(feature 015) | 10 | MATCH | 86 |
+| `sys_login_attempt` | append-only 登入嘗試審計(成敗 / IP / region,供 lockout) | 012 建表 | 9 | MATCH | 12 |
 | `system_settings` | 系統設定 KV 地基表(setting_key/value/type + 審計欄) | 028 建表(feature 028/029) | 10 | MATCH | 1 |
-| `casbin_rule` | Casbin RBAC policy storage(sea-orm-adapter 標準格式) | 005 委派 adapter DDL,009 seed | 8 | MATCH | 69 |
-| `seaql_migrations` | sea-orm migration 追蹤表(框架內部) | 無對應 migration 檔 | — | — | 30 |
+| `casbin_rule` | Casbin RBAC policy storage(sea-orm-adapter 標準格式 + 031 治理欄) | 005 委派 adapter DDL,009 seed → 031 治理欄 | 11 | MATCH | 72 |
+| `sys_casbin_policy_archive` | restore buffer(被撤 policy 快照 + US1 復原 / US5 回收桶儲存) | 032 建表(feature 034) | 13 | MATCH | 0 |
+| `seaql_migrations` | sea-orm migration 追蹤表(框架內部) | 無對應 migration 檔 | — | — | 35 |
 
-> **row 數為精確 `count(*)`**(初稿 2026-06-06)。初稿曾用 `pg_stat_user_tables.n_live_tup`(VACUUM 估計值)、有 4 處偏差,已校正:`casbin_rule` 70→69、`sys_role` 3→6、`sys_user_role` 4→13、`sys_operation_log` 161→160。row 數含 runtime + 測試殘留(非全為種子),詳見後半「種子資料」§活體 vs 種子 reconcile。**2026-06-09 重新取樣**:volatile 表自然成長 — `sys_token` 72→101、`sys_access_log` 1401→1432、`sys_login_attempt` 345→375、`seaql_migrations` 29→30(新增 m000030);其餘 7 表 row 數不變。
+> **row 數為精確 `count(*)`**(初稿 2026-06-06)。初稿曾用 `pg_stat_user_tables.n_live_tup`(VACUUM 估計值)、有 4 處偏差,已校正:`casbin_rule` 70→69、`sys_role` 3→6、`sys_user_role` 4→13、`sys_operation_log` 161→160。row 數含 runtime + 測試殘留(非全為種子),詳見後半「種子資料」§活體 vs 種子 reconcile。
+> **2026-06-09 三次更新(034+035 re-audit、fresh-DB 取樣)**:本次 re-audit 前 dev DB 經 user 親令**全新 wipe + 重 seed(m001–m035)**,動態表(sys_user / sys_role / sys_user_role / sys_menu)回到乾淨 seed baseline、log/token 表只剩本 session(CDP + curl 驗收)的少量 runtime,故上表 row 數**較舊版乾淨**:靜態-seed 表 = seed baseline(casbin 72 / sys_user 3 / sys_role 3 / sys_user_role 3 / sys_menu 10 / system_settings 1 / archive 0);log/token 表(sys_token 12 / sys_access_log 86 / sys_login_attempt 12 / sys_operation_log 2)為本 session 測試 runtime(seed 為 0);`casbin_rule` 69→72(US5 +3)、`sys_menu` 12→10(舊污染清掉、回到 9 seed + 035 新增 1 = 10)、`seaql_migrations` 30→35(m031–m035)。
 
 ---
 
@@ -135,7 +138,7 @@ RBAC 角色表:存系統角色(code/name/home/status + §I.6 審計欄),與 `sys
 
 後台選單 / 路由樹主表(menu/route 元資料 + 每節點 button 權限與 query 參數),驅動 getUserRoutes / getConstantRoutes 與 menu CRUD。
 
-**來源**:由 feature 018(`m20260529_000018_create_sys_menu`)一次建立(§I.6 凍結後首張新建業務表,單一 create migration、無後續 alter)。後續 019/020/021/024/025 為 casbin policy seed,不改 schema。種子資料(home/manage + 4 children)亦於 018 內以 raw INSERT 植入。
+**來源**:由 feature 018(`m20260529_000018_create_sys_menu`)一次建立(§I.6 凍結後首張新建業務表,單一 create migration、原 27 欄)。後續 019/020/021/024/025 為 casbin policy seed,不改 schema;**034(`m20260529_000034_alter_sys_menu_protected`)加第 28 欄 `protected`**(治理層 data-driven 受保護旗標)。種子資料(home/manage + 4 children)於 018 內以 raw INSERT 植入,034 seed 標 7 列 protected、035 再加 manage_policy-archive 頁(共 8 列 protected)。
 
 ### 欄位比對
 
@@ -168,6 +171,7 @@ RBAC 角色表:存系統角色(code/name/home/status + §I.6 審計欄),與 `sys
 | `updated_by` | bigint | NULL | — | UpdatedBy big_integer null | MATCH |
 | `deleted_at` | timestamptz | NULL | — | DeletedAt timestamptz null | MATCH |
 | `deleted_by` | bigint | NULL | — | DeletedBy big_integer null | MATCH |
+| `protected` | boolean | NOT NULL | false | **034** alter_sys_menu_protected(Protected boolean not_null default false) | MATCH |
 
 ### 索引 / 約束比對
 
@@ -178,13 +182,14 @@ RBAC 角色表:存系統角色(code/name/home/status + §I.6 審計欄),與 `sys
 
 ### Notes
 
-全 27 欄活體與 migration 意圖逐欄 1:1 對齊(欄序亦完全一致),型映射全正確(`.string()`→character varying 無長度、`.small_integer()`→smallint、`.json_binary()`→jsonb、`.timestamp_with_time_zone()`→timestamptz、`.big_integer()`→bigint)。重點:
+全 28 欄活體與 migration 意圖逐欄 1:1 對齊(欄序亦完全一致),型映射全正確(`.string()`→character varying 無長度、`.small_integer()`→smallint、`.json_binary()`→jsonb、`.timestamp_with_time_zone()`→timestamptz、`.big_integer()`→bigint、`.boolean()`→boolean)。重點:
 
 1. **§I.6 六審計欄一次到位**:created_at / created_by / updated_at / updated_by / deleted_at / deleted_by 於 018 一次建立(凍結後首張新建表、forward-only 無 retrofit),其中僅 `created_at` NOT NULL + DEFAULT CURRENT_TIMESTAMP,其餘 5 審計欄皆 nullable 無 default。
 2. **FK**:migration create_table 未宣告任何 `.foreign_key()`,活體亦無 FK — parent_id / created_by / updated_by / deleted_by 皆裸 bigint(audit / 自參照欄不設 FK 之專案慣例)。
 3. **partial unique index** 走 raw `execute_unprepared`(對齊 006 寫法),活體定義逐字一致。
 4. 種子 6 列(home/manage + manage_user/manage_role/manage_menu/manage_user-detail)於 018 內 raw INSERT,屬資料非 schema、不影響 reconcile。
 5. 指派路徑筆誤(`m20260529_0000018`,多一個 0);實際檔為 `m20260529_000018_create_sys_menu.rs`。無任何 LIVE_ONLY / MIGRATION_ONLY / 型不符。
+6. **第 28 欄 `protected`(034、治理層)**:`m20260529_000034_alter_sys_menu_protected` ADD COLUMN `protected` boolean NOT NULL DEFAULT false,活體 default `false` 與 migration 一致(MATCH)。此 **data-driven `protected` 欄退役了舊 `is_seed_menu` code-based 守衛**(原 4 caller 改吃此欄):受保護選單(治理頁/路由)不可被 runtime 刪改。同 up() seed UPDATE 標 7 列 protected=true(`home` / `manage` / `manage_user` / `manage_role` / `manage_menu` / `manage_user-detail` / `manage_system-settings`),035 再加 `manage_policy-archive` 頁(protected=true)→ 活體共 **8 列 protected**(`SELECT count(*) WHERE protected=true` = 8)。down() drop 欄、seed 值隨欄消失、對稱可逆。
 
 ---
 
@@ -421,7 +426,7 @@ append-only 審計表:記錄每次登入嘗試的成敗、來源 IP、xff、regi
 
 Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer 的 p/g policy rules。
 
-**來源**:由 migration 005(`m20260529_000005_create_casbin_rule.rs`)建立,但 DDL **委派給 sea-orm-adapter crate** 的 `up()`(`rust-api/sea-orm-adapter/src/migration.rs`),為單一 schema 來源避免手寫 drift。資料層面由 009(`m20260529_000009_seed_casbin_policy.rs`)seed,021 feature 後續可動 data(非 schema)。
+**來源**:由 migration 005(`m20260529_000005_create_casbin_rule.rs`)建立 adapter 標準 8 欄,但 DDL **委派給 sea-orm-adapter crate** 的 `up()`(`rust-api/sea-orm-adapter/src/migration.rs`),為單一 schema 來源避免手寫 drift。資料層面由 009(`m20260529_000009_seed_casbin_policy.rs`)seed,021 feature 後續可動 data(非 schema)。**031(`m20260529_000031_alter_casbin_rule_governance`)加 3 治理欄 `protected` / `created_at` / `created_by`(8→11 欄;feature 034)**,033/035 後續再動 data(protected 旗標 + US5 policy)、不動 schema。
 
 ### 欄位比對
 
@@ -435,6 +440,9 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
 | `v3` | character varying(125) | NOT NULL | — | L36 string_len(125) not_null | MATCH |
 | `v4` | character varying(125) | NOT NULL | — | L37 string_len(125) not_null | MATCH |
 | `v5` | character varying(125) | NOT NULL | — | L38 string_len(125) not_null | MATCH |
+| `protected` | boolean | NOT NULL | false | **031** alter_casbin_rule_governance(Protected boolean not_null default false) | MATCH |
+| `created_at` | timestamptz | NOT NULL | CURRENT_TIMESTAMP | **031**(CreatedAt timestamptz not_null default current_timestamp) | MATCH |
+| `created_by` | bigint | NULL | — | **031**(CreatedBy big_integer null) | MATCH |
 
 ### 索引 / 約束比對
 
@@ -445,20 +453,67 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
 
 ### Notes
 
-活體與 adapter DDL 逐欄 / 索引 / 約束完全一致,零 drift。重點:
+活體(11 欄、含 031 治理欄)與 adapter DDL + 031 ALTER 逐欄 / 索引 / 約束完全一致,零 drift。重點:
 
-1. **DDL 委派**:005 migration 檔本身不含 DDL,僅委派 `sea_orm_adapter::up()/down()`(註解明示「單一 schema 來源 = sea-orm-adapter;不在此手寫 DDL,避免與 adapter drift」)— 真正 DDL provenance 在 `rust-api/sea-orm-adapter/src/migration.rs`。
+1. **DDL 委派**:005 migration 檔本身不含 DDL,僅委派 `sea_orm_adapter::up()/down()`(註解明示「單一 schema 來源 = sea-orm-adapter;不在此手寫 DDL,避免與 adapter drift」)— 原 8 欄 DDL provenance 在 `rust-api/sea-orm-adapter/src/migration.rs`。
 2. **欄寬設計理由**(原始註解):MySQL utf8mb4 max key length 3072 bytes → 3072/4=768 chars,18 + 125×6 = 768。
-3. **UNIQUE 渲染**:adapter 用 `Index::create().unique()` 宣告,PG live 渲染成 UNIQUE CONSTRAINT(背後 btree index),功能等價、非 drift。
-4. **FK**:無 FK(adapter 表獨立、不參照 sys_* 表),符合預期。
-5. **§I.6 審計欄**:無 —— 正確,此為 casbin adapter 自有標準表,非 rev2 業務 sys_* 表,不應有 audit columns。
-6. 021 feature 對此表只動 data(seed/policy 變更)、不動 schema。
+3. **UNIQUE 渲染**:adapter 用 `Index::create().unique()` 宣告,PG live 渲染成 UNIQUE CONSTRAINT(背後 btree index),功能等價、非 drift。索引在 031 加治理欄後不變(治理欄不入 unique key)。
+4. **FK**:無 FK(adapter 表獨立、不參照 sys_* 表),符合預期。`created_by` 為裸 bigint 無 FK(沿審計欄慣例)。
+5. **§I.6 審計欄例外**:此為 casbin adapter 自有標準表、非 rev2 業務 sys_* 表,**不帶完整 6 審計欄**;031 加的 `protected` / `created_at` / `created_by` 是 policy「生命週期 / 保護」用的**治理欄**(非完整審計欄),仍屬 §I.6 例外範圍。
+6. **031 治理欄對 adapter 隱形(架構 B 核心)**:stock `sea-orm-adapter` 嚴格 column-scoped — `load_policy` 只 SELECT `ptype,v0..v5`、`insert_many` 只填那 6 欄,故 `protected`(NOT NULL default false → adapter insert 自動吃 default)/ `created_at`(default now())/ `created_by`(NULL)三欄對 adapter load/insert 完全隱形,**不需 fork adapter**。既有 69 列(031 ALTER 當下)自動 created_by=NULL / created_at=now()、不回填。詳見 [DESIGN §11.6 補註](INTEGRATION-DESIGN.md)。
+7. **核心不變式**:`casbin_rule` 永遠只裝 **live** policy;軟刪(撤銷)的列搬去 `sys_casbin_policy_archive`、不留在 casbin_rule(還原即從 archive 搬回)。`protected=true` 列為 seed/部署固定、執行期不可改(self-lockout 硬保證);活體 protected=true 共 19 列(m033 16 + m035 3,見後半種子稽核)。
+8. 021 / 033 / 035 feature 對此表只動 data(seed / policy / protected 旗標)、不動 schema(schema 只 005 委派 + 031 ALTER 兩次觸碰)。
 
 ---
 
-## 034 managed-rbac-policy schema delta(worktree 已實作、本機 awaiting merge)
+## sys_casbin_policy_archive
 
-> 本節記 feature 034 受管 RBAC policy 治理層的 schema 變動,**as-migrated**(`rust-api/migration/src` m031-m035 的意圖,worktree 狀態)。034 merge 後再對活體做一次完整 11→12 表 live-vs-migration re-audit;在此之前前半逐表稽核維持 30-migration 基線。**架構 B(archive 表、免 fork adapter)**:stock `sea-orm-adapter` 嚴格 column-scoped 到 `ptype,v0..v5`(`load_policy = Entity::find().all()` 只 select 那 6 欄)→ `casbin_rule` 加治理欄 + 另起 archive 表對 adapter 完全隱形 → 不 fork adapter、§I.6/§11.6 不觸,詳見 [DESIGN §11.6 補註](INTEGRATION-DESIGN.md)。
+被撤銷(軟刪)或連帶歸檔的 casbin policy 快照 + 移除中繼資料的 **restore buffer 表**(只裝「已撤未還原」列):US1 復原緩衝 + US5 回收桶頁的儲存來源。`casbin_rule` 撤銷某列即把該列搬入本表,還原即從本表搬回 `casbin_rule` 並離開本表。
+
+**來源**:由 feature 034 的 migration 032(`m20260529_000032_create_casbin_policy_archive.rs`)單一 create 建立(表 + 2 個功能索引,無後續 alter)。使表數 **11→12**。**架構 B(免 fork adapter)**:本表對 stock `sea-orm-adapter` 完全隱形(adapter 只認 `casbin_rule`),撤銷/還原由 facade 邏輯搬移、adapter 不參與。
+
+### 欄位比對
+
+| 欄名 | 活體型 | NULL | default | migration 源(032 create_casbin_policy_archive) | status |
+|---|---|:---:|---|---|:---:|
+| `id` | bigint | NOT NULL | `nextval('sys_casbin_policy_archive_id_seq')` | Id big_integer not_null auto_increment primary_key | MATCH |
+| `ptype` | character varying(18) | NOT NULL | — | Ptype string_len(18) not_null | MATCH |
+| `v0` | character varying(125) | NOT NULL | — | V0 string_len(125) not_null | MATCH |
+| `v1` | character varying(125) | NOT NULL | — | V1 string_len(125) not_null | MATCH |
+| `v2` | character varying(125) | NOT NULL | — | V2 string_len(125) not_null | MATCH |
+| `v3` | character varying(125) | NOT NULL | `''` | V3 string_len(125) not_null default "" | MATCH |
+| `v4` | character varying(125) | NOT NULL | `''` | V4 string_len(125) not_null default "" | MATCH |
+| `v5` | character varying(125) | NOT NULL | `''` | V5 string_len(125) not_null default "" | MATCH |
+| `created_at` | timestamptz | NULL | — | CreatedAt timestamp_with_time_zone null(原授予出處,可為 NULL) | MATCH |
+| `created_by` | bigint | NULL | — | CreatedBy big_integer null(原授予者) | MATCH |
+| `archived_at` | timestamptz | NOT NULL | CURRENT_TIMESTAMP | ArchivedAt timestamp_with_time_zone not_null default current_timestamp | MATCH |
+| `archived_by` | bigint | NULL | — | ArchivedBy big_integer null(撤銷操作者) | MATCH |
+| `archive_reason` | character varying(32) | NOT NULL | — | ArchiveReason string_len(32) not_null | MATCH |
+
+### 索引 / 約束比對
+
+| 名稱 | 類型 | 活體定義 | migration 源 | status |
+|---|---|---|---|:---:|
+| `sys_casbin_policy_archive_pkey` | PK | PRIMARY KEY btree (id) | 032(Id `.primary_key()`) | MATCH |
+| `idx_casbin_archive_archived_at` | INDEX | btree (archived_at) | 032 create_index(col ArchivedAt;回收桶 DESC 排序用) | MATCH |
+| `idx_casbin_archive_role_dim` | INDEX | btree (v0, v2) | 032 create_index(cols V0, V2;role+dimension 篩選,非 unique) | MATCH |
+
+### Notes
+
+全 13 欄 + PK + 2 功能索引活體與 migration 032 逐項 1:1 對齊,零 drift。重點:
+
+1. **§I.6 append-only 例外變體(governance restore-buffer)**:刻意「不帶」`updated_*` / `deleted_*` — 帶 `archived_at` / `archived_by`(= deleted_at/deleted_by 對應、記撤銷時點與操作者)+ 原授予出處欄 `created_at` / `created_by` + 移除原因 `archive_reason` + `ptype`/`v0..v5` policy 快照;**非帶完整 6 審計欄的業務表**。migration 註解明示此設計。
+2. **archive 列不可再軟刪**:本表是「半 append-only」—— 列只進(撤銷搬入)或全離(還原搬回 casbin_rule、實體刪除離開本表),沒有對本表列的 soft-delete 概念。
+3. **`v3`/`v4`/`v5` default `''`**:鏡像 stock adapter「空欄填空字串」慣例(`casbin_rule` 自身的 v3-v5 由 adapter insert 填 `''`,本表以欄 default 達成同一效果),故快照搬入時未填的高位 v 欄自動為 `''`,與 casbin_rule 語意一致。`created_at` 則刻意 nullable(原授予出處可能缺、如 seed 列 created_by=NULL)。
+4. **2 個功能索引**:`idx_casbin_archive_archived_at`(archived_at 單欄)供回收桶列表 `ORDER BY archived_at DESC` 掃描;`idx_casbin_archive_role_dim`(v0,v2 複合、非 unique)供 role+dimension 篩選(同一 policy 可多次撤銷各留一列,故不 unique)。兩索引活體 col 順序與 migration `.col()` 呼叫序逐字一致。
+5. **FK**:無 FK(logical-only、沿 sys_token / 審計表慣例),活體與 migration 兩端一致。`created_by` / `archived_by` 皆裸 bigint。
+6. **活體 0 列**:本次 fresh-DB 取樣無任何撤銷操作,archive 為空(0 列)— 正確(seed 不植入 archive 列,本表純 runtime 撤銷時才有列)。
+
+---
+
+## 034 managed-rbac-policy schema delta(034+035 已 merge、本節為 schema delta 摘要)
+
+> 本節為 feature 034+035 受管 RBAC policy 治理層的 **schema delta 摘要**;**034+035 已 merge**,逐欄 live-verified verdict 見上方各表稽核段(`casbin_rule` / `sys_menu` / `sys_casbin_policy_archive`),本節僅留 migration-delta 全貌與架構 B 理由。**架構 B(archive 表、免 fork adapter)**:stock `sea-orm-adapter` 嚴格 column-scoped 到 `ptype,v0..v5`(`load_policy = Entity::find().all()` 只 select 那 6 欄)→ `casbin_rule` 加治理欄 + 另起 archive 表對 adapter 完全隱形 → 不 fork adapter、§I.6/§11.6 不觸,詳見 [DESIGN §11.6 補註](INTEGRATION-DESIGN.md)。
 
 ### 5 新 migration(m031-m035)
 
@@ -484,21 +539,21 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
 
 ### 種子 delta（live set 計數）
 
-- **casbin_rule**:US5 +3 新治理列(`getArchivedPolicies` / `restorePolicy` 端點 + 回收桶頁 role-menu 可見性)→ **live set 69→72**;protected 標記 = m033 16 列 + 後續 +3 = **19**。
-- **sys_menu**:m035 +1 回收桶頁列;protected 標記 **8 列**(m034 7 + m035 1)。
+- **casbin_rule**:US5 +3 新治理列(m035:`getArchivedPolicies` GET + `restorePolicy` POST 端點 + 回收桶頁 `manage_policy-archive` menu-visibility)→ **live set 69→72**(活體 `count(*)` = 72 已驗);protected 標記 = m033 16 列 + m035 3 = **19 列**(活體 `count(*) WHERE protected=true` = 19 已驗)。
+- **sys_menu**:m035 +1 回收桶頁列(`manage_policy-archive`)→ live set 9→10;protected 標記 **8 列**(m034 7 + m035 1,活體已驗 = 8)。
 - migration 計數 **30→35**、表數 **11→12**。
 
-> **provenance / verdict 留待 034 merge 後 re-audit**:本節為 worktree as-migrated 意圖記錄,尚未對活體 DB 做 m031-m035 的 live-vs-migration 逐欄 reconcile;034 merge 後補完整 12 表稽核(含本 delta 的 MATCH 判定 + volatile row 重新取樣)。
+> ✅ **2026-06-09 re-audit 完成**:m031–m035 全 live-vs-migration **MATCH、零 drift**;`casbin_rule` / `sys_menu` / `sys_casbin_policy_archive` 逐欄 verdict 見上方各表稽核段;volatile row 已重新取樣(fresh wipe baseline)。本節保留 5-migration delta 表供速查,逐欄事實已落地各表稽核段。
 
 ---
 
 ## Drift / 發現彙整(跨表)
 
-> 按 severity 收攏全 10 表的 `drift_findings`。
+> 按 severity 收攏全 12 表的 `drift_findings`。
 
 **結論:活體 schema 與 migration 源完全一致、零 drift。**
 
-- **HIGH / 結構性 drift**:無。10 張表逐欄、逐索引、逐約束全 `MATCH`,無任何 `LIVE_ONLY`(活體有、migration 沒有)、`MIGRATION_ONLY`(migration 有、活體沒有)、或型不符。
+- **HIGH / 結構性 drift**:無。12 張表逐欄、逐索引、逐約束全 `MATCH`,無任何 `LIVE_ONLY`(活體有、migration 沒有)、`MIGRATION_ONLY`(migration 有、活體沒有)、或型不符。034+035 新增/變動的 3 項 —— `casbin_rule` += 3 治理欄(m031)、新表 `sys_casbin_policy_archive`(m032,13 欄 + 2 索引)、`sys_menu` += `protected`(m034)—— 經 live `\d` 逐欄對齊,**全 MATCH**。
 - **MEDIUM / 行為差異**:無。
 - **LOW / 非-drift 提示性事項**(僅記錄,均屬設計意圖或稽核輸入的小瑕疵,皆非真實 drift):
   - **指派路徑檔名筆誤(多一個 0)**:`sys_role`(006/016/021)、`sys_menu`(018)、`sys_token`(026)、`sys_access_log`(011)、`sys_login_attempt`(012)、`system_settings`(028)的指派路徑寫成 7 位數 `m20260529_0000NN`,實際檔名為 6 位數 `m20260529_000NN`;內容均相符,僅路徑字串瑕疵。
@@ -513,7 +568,8 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
    - **business 表(帶滿 6 審計欄)**:`sys_user`、`sys_role`、`sys_menu`、`system_settings`。其中 `sys_user` / `sys_role` 的審計欄是**跨 migration 疊加**(deleted_at 先於建表 / soft-delete 階段加,其餘 5 欄由後續 business_audit alter 補),而 `sys_menu` / `system_settings` 是**單檔一次到位**(§I.6 凍結後 forward-only,無 retrofit)。
    - **append-only 審計表(只帶 created_at,有的加 operator_id)**:`sys_operation_log`(僅 created_at)、`sys_access_log`(created_at + operator_id)、`sys_login_attempt`(created_at + operator_id)。不設 updated_*/deleted_*,符合不可變語意。
    - **join / 狀態機表(刻意不帶或只帶 created_at)**:`sys_user_role`(複合 PK join 表,硬刪、零審計欄)、`sys_token`(immutable + 狀態機,只帶 created_at,用 used_at/status 取代 soft-delete)。
-   - **非業務表(不該有審計欄)**:`casbin_rule`(adapter 標準表)。
+   - **治理 restore-buffer(append-only 變體)**:`sys_casbin_policy_archive`(032,帶 `archived_at`/`archived_by` + 原授予出處 `created_at`/`created_by` + `archive_reason`,非完整 6 審計欄;列只進或全離)。
+   - **非業務表(不該有完整審計欄)**:`casbin_rule`(adapter 標準表;031 加的 protected/created_at/created_by 為治理欄、非完整審計欄,仍屬 §I.6 例外)。
 
 2. **`sys_token` 對齊 027 + 030**:由 feature 027 refresh-token-rotation 引入,migration 026 建表,token_hash(64) + rotation_chain(36) + status(20) 狀態機 + issued/expires/used 時間戳;feature 030 cleanup-job 再加 expires_at 索引,共 5 個索引物件(PK / token_hash unique / user-active partial / chain / expires_at〔030〕)。
 
@@ -523,17 +579,19 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
 
 5. **欄序歷史(ALTER 疊加痕跡)**:`sys_user` 與 `sys_role` 的活體欄序保留了 014 / 016 `add_column` 的呼叫順序,造成 `updated_by` / `deleted_by` 排在 `updated_at` 之前 — 是 ALTER TABLE ADD COLUMN 逐次 append 的自然結果,非 drift。
 
-6. **FK 一律「無」**:全 11 表沒有任何外鍵約束。審計欄(created_by/updated_by/deleted_by)、join 欄(sys_user_role 的 user_id/role_id)、邏輯關聯(sys_token.user_id、各 log.operator_id)皆裸 bigint 無 FK —— 這是貫穿整個 codebase 的一致慣例(審計表保留歷史、join 表靠 seed 邏輯解析、token 邏輯關聯),migration 與活體兩端一致。
+6. **FK 一律「無」**:全 12 表沒有任何外鍵約束。審計欄(created_by/updated_by/deleted_by)、join 欄(sys_user_role 的 user_id/role_id)、邏輯關聯(sys_token.user_id、各 log.operator_id、archive 的 archived_by/created_by)皆裸 bigint 無 FK —— 這是貫穿整個 codebase 的一致慣例(審計表保留歷史、join 表靠 seed 邏輯解析、token / archive 邏輯關聯),migration 與活體兩端一致;新表 `sys_casbin_policy_archive` 同樣 logical-only 無 FK。
 
-7. **`casbin_rule` DDL 委派 sea-orm-adapter**:005 migration 不含 DDL,委派給 `sea-orm-adapter/src/migration.rs` 的 `up()/down()`,刻意以 adapter 作單一 schema 來源,避免手寫 DDL 與 adapter 版本 drift;欄寬 18 + 125×6 = 768 源自 MySQL utf8mb4 key length 上限換算。
+7. **`casbin_rule` DDL 委派 sea-orm-adapter**:005 migration 不含 DDL,委派給 `sea-orm-adapter/src/migration.rs` 的 `up()/down()`,刻意以 adapter 作單一 schema 來源,避免手寫 DDL 與 adapter 版本 drift;欄寬 18 + 125×6 = 768 源自 MySQL utf8mb4 key length 上限換算。031 加治理欄是直接 ALTER `casbin_rule`(非經 adapter),adapter 對這 3 欄隱形(見下一條)。
 
-8. **`partial unique index` 模式一致**:`sys_user` / `sys_role` / `sys_menu` 的 active-only unique(`WHERE deleted_at IS NULL`)皆走 raw `execute_unprepared`(SeaORM 無 partial index DSL),活體 WHERE 子句逐字對齊 — soft-delete 友善的 unique 慣例。
+8. **治理層 schema(034 架構 B「免 fork adapter」)**:034+035 治理層用兩招對 stock adapter 隱形 ——(a)`casbin_rule` 直接 ALTER 加 3 治理欄(`protected`/`created_at`/`created_by`),因 stock adapter `load_policy` 只 SELECT `ptype,v0..v5`、`insert_many` 只填那 6 欄,治理欄(NOT NULL+default / nullable)對 adapter load/insert 完全不可見;(b)被撤銷的 policy 列搬去**獨立 archive 表 `sys_casbin_policy_archive`**(adapter 只認 `casbin_rule`、不掃 archive)。兩招使「policy 治理 / 受保護 / 軟刪復原」全達成而**不 fork adapter**、§I.6/§11.6 不觸,cross-ref [DESIGN §11.6 補註](INTEGRATION-DESIGN.md)。
+
+9. **`partial unique index` 模式一致**:`sys_user` / `sys_role` / `sys_menu` 的 active-only unique(`WHERE deleted_at IS NULL`)皆走 raw `execute_unprepared`(SeaORM 無 partial index DSL),活體 WHERE 子句逐字對齊 — soft-delete 友善的 unique 慣例。
 
 ---
 
 ## 稽核結論
 
-**rev2 後端 schema 健康度:優。** 11 張表、全 30 個 migration 已套用,活體 DB 與 migration 源逐表、逐欄、逐索引、逐約束 100% `MATCH`,零 drift、零 LIVE_ONLY / MIGRATION_ONLY / 型不符;所有「看似偏離」項目(指派路徑筆誤、種子值非 DEFAULT、審計欄取捨、無 FK、欄序疊加)經逐一回溯,皆屬稽核輸入瑕疵或明確設計意圖,非真實漂移。migration 即活體的可信單一真相,schema 完全受控。
+**rev2 後端 schema 健康度:優。** 12 張表、全 35 個 migration 已套用,活體 DB 與 migration 源逐表、逐欄、逐索引、逐約束 100% `MATCH`,零 drift、零 LIVE_ONLY / MIGRATION_ONLY / 型不符;所有「看似偏離」項目(指派路徑筆誤、種子值非 DEFAULT、審計欄取捨、無 FK、欄序疊加)經逐一回溯,皆屬稽核輸入瑕疵或明確設計意圖,非真實漂移。034+035 治理層 delta(casbin_rule +3 治理欄、新 archive 表、sys_menu +protected)亦已 live-verified 全 MATCH 納入基線。migration 即活體的可信單一真相,schema 完全受控。
 ---
 
 ## 種子資料(seed data)
@@ -580,9 +638,16 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
 | 029 `seed_settings_admin` | `casbin_rule` | endpoint 3(settings 治理,SUPER only) | 3 |
 | 029 同上 | `sys_menu` | INSERT manage_system-settings 列 | 1 |
 | 029 同上 | `casbin_rule` | menu policy manage_system-settings(SUPER) | 1 |
+| 033 `seed_protected_policy` | `casbin_rule` | **UPDATE** protected=true(3 menu + 7 GET + 6 POST 治理列) | 16U |
+| 034 `alter_sys_menu_protected` | `sys_menu` | **UPDATE** protected=true(7 治理選單) | 7U |
+| 035 `seed_policy_archive_page` | `casbin_rule` | INSERT US5 端點 2(getArchivedPolicies GET + restorePolicy POST,SUPER only) | 2 |
+| 035 同上 | `sys_menu` | INSERT manage_policy-archive 頁(protected=true) | 1 |
+| 035 同上 | `casbin_rule` | menu policy manage_policy-archive(SUPER)+ **UPDATE** 3 新列 protected=true | 1 |
 
-> **casbin 種子總計**:2+9+5+4+4+4+19+3+6+2+3+1 = **69 列**(全 ptype='p',無 'g')。詳細矩陣見 §casbin_rule policy 種子矩陣。
-> **030 無 seed**:`m20260529_000030`(sys_token expires_at 索引、feature 030 cleanup-job)為純 schema 索引 migration、`up()` 不含 INSERT/UPDATE,故不列入本種子盤點(對齊本節「排除 schema 操作」範圍);種子總數仍為 24 處 / 13 migration / 6 表。
+> **casbin 種子總計**:009:2 + 010:9 + 013:5 + 015:4 + 017:4 + 019:3 + 020:4 + 021:4 + 022:19 + 023:3 + 024:6 + 025:2 + 029:(3+1) + 035:(2+1) = **72 列**(全 ptype='p',無 'g';舊版 029 止 = 69、035 US5 +3 → 72)。033 為純 `UPDATE`(標 16 列 protected=true、不新增列、不計入 72);035 新增 3 列(2 endpoint + 1 menu)。詳細矩陣見 §casbin_rule policy 種子矩陣。
+> **030 無 seed**:`m20260529_000030`(sys_token expires_at 索引、feature 030 cleanup-job)為純 schema 索引 migration、`up()` 不含 INSERT/UPDATE,故不列入本種子盤點(對齊本節「排除 schema 操作」範圍)。
+> **031/032 無 seed**:031(casbin_rule 治理欄 ALTER)、032(create archive 表)為純 schema migration、`up()` 不含 INSERT/UPDATE,不列入種子盤點。
+> **種子總數更新**:含 033(+1 UPDATE 批)、034(+1 UPDATE 批)、035(+2 INSERT 批 + 1 UPDATE) → 共 **28 處 seed 操作 / 16 migration / 6 表**(seed-touched 表集合不變:casbin_rule / sys_user / sys_role / sys_user_role / sys_menu / system_settings)。
 
 ### sys_user(002 seed,3 帳號)
 
@@ -626,7 +691,7 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
 
 ### sys_menu(seed 選單樹)
 
-種子分兩批落地:018 種 home + manage 樹(6 列)、022 種 function 樹(2 列)、029 種 manage_system-settings(1 列),共 **9 列 seed 選單**;另有 022/024 對既有列的 `buttons` 回填(見 §UPDATE 回填)。
+種子分批落地:018 種 home + manage 樹(6 列)、022 種 function 樹(2 列)、029 種 manage_system-settings(1 列)、035 種 manage_policy-archive(1 列),共 **10 列 seed 選單**;另有 022/024 對既有列的 `buttons` 回填(見 §UPDATE 回填)。
 
 | migration | route_name | menu_type | parent | route_path | 備註 |
 |---|---|:---:|---|---|---|
@@ -639,12 +704,13 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
 | 022 | `function` | 1 | (top) | `/function` | order=6,目錄容器 |
 | 022 | `function_toggle-auth` | 2 | function | `/function/toggle-auth` | order=4,buttons=三碼 demo registry |
 | 029 | `manage_system-settings` | 2 | manage | `/manage/system-settings` | order=4,icon='mdi:cog' |
+| 035 | `manage_policy-archive` | 2 | manage | `/manage/policy-archive` | order=5,icon='mdi:recycle',**protected=true**(US5 回收桶頁) |
 
-- **逐字重現後端路由樹**:018 的 6 選單逐字重現 `server/src/route/menu.rs::business_routes()`(D5 回歸鐵律);029 鏡像 018 `manage_user` 列形。
+- **逐字重現後端路由樹**:018 的 6 選單逐字重現 `server/src/route/menu.rs::business_routes()`(D5 回歸鐵律);029 鏡像 018 `manage_user` 列形;035 鏡像 029 `manage_system-settings` 列形(parent=manage subquery)。
 - **parent 用 subquery 解析**:children 用 `(SELECT id FROM sys_menu WHERE route_name='manage'/'function' AND deleted_at IS NULL)` 動態解析 parent_id,故 INSERT 順序刻意「先父後子」。
-- **審計欄**:系統種子的 `created_by` 一律 NULL;`status=1` 全部直接給(非後續回填)。
+- **審計欄**:系統種子的 `created_by` 一律 NULL;`status=1` 全部直接給(非後續回填)。035 的 `manage_policy-archive` 是唯一 seed 即帶 `protected=true` 的選單列(其餘 7 protected 列由 034 UPDATE 標)。
 - **冪等**:全部 `ON CONFLICT DO NOTHING`。
-- **down**:018 `DROP TABLE`(連 6 列 seed)、022/029 精準刪本 migration 引入的列。
+- **down**:018 `DROP TABLE`(連 6 列 seed)、022/029/035 精準刪本 migration 引入的列(035 by `route_name='manage_policy-archive'`)。
 
 ### system_settings(028 seed,1 列)
 
@@ -689,8 +755,10 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
 | R_SUPER | `/systemManage/restoreMenu` | POST | 025 |
 | R_SUPER | `/systemManage/getSystemSettings` | GET | 029 |
 | R_SUPER | `/systemManage/updateSystemSetting`,`/updateUserSessionPolicy` | POST | 029 |
+| R_SUPER | `/systemManage/getArchivedPolicies` | GET | 035 |
+| R_SUPER | `/systemManage/restorePolicy` | POST | 035 |
 
-> endpoint 維度小計:**GET 18 + POST 13 + DELETE 6 = 37 列**。
+> endpoint 維度小計:**GET 19 + POST 14 + DELETE 6 = 39 列**(035 US5 +GET 1 +POST 1,活體 `count` GET=19 / POST=14 / DELETE=6 已驗)。
 
 #### 維度二:menu 可見度 policy(v2 = 'menu')
 
@@ -704,8 +772,9 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
 | `function` | ✓ | ✓ | ✓ | 022 |
 | `function_toggle-auth` | ✓ | ✓ | ✓ | 022 |
 | `manage_system-settings` | ✓ | — | — | 029 |
+| `manage_policy-archive` | ✓ | — | — | 035 |
 
-> menu 維度小計:010 種 9 列 + 022 種 6 列 + 029 種 1 列 = **16 列**。父層 `manage` 不 seed menu policy(容器目錄,可見性由子節點決定)。
+> menu 維度小計:010 種 9 列 + 022 種 6 列 + 029 種 1 列 + 035 種 1 列 = **17 列**(活體 `count WHERE v2='menu'` = 17 已驗)。父層 `manage` 不 seed menu policy(容器目錄,可見性由子節點決定)。
 
 #### 維度三:button 級權限(v2 = 'button')
 
@@ -730,14 +799,14 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
 
 | 維度 | 種子列數 | 種者 migration |
 |---|---:|---|
-| endpoint(GET 18 / POST 13 / DELETE 6) | 37 | 009/013/015/017/019/020/021/022/023/025/029 |
-| menu(v2='menu') | 16 | 010/022/029 |
+| endpoint(GET 19 / POST 14 / DELETE 6) | 39 | 009/013/015/017/019/020/021/022/023/025/029/**035** |
+| menu(v2='menu') | 17 | 010/022/029/**035** |
 | button(v2='button') | 16 | 022/024 |
-| **合計** | **69** | — |
+| **合計** | **72** | — |
 
-**權限設計重點**:R_SUPER 涵蓋幾乎全部治理端點與權限;R_ADMIN 只有讀端(getUserList/getRoleList/getAllRoles)+ 部分 menu(home/manage_user/manage_user-detail/function/function_toggle-auth)+ 3 個 button(B_CODE2/B_CODE3/user:edit),**無任何寫端 endpoint**;R_USER_COMMON 最小集(home/function/function_toggle-auth menu + getAllRoles role-picker + B_CODE3)。**所有寫端 endpoint(add/update/delete/batchDelete)與所有治理端點(getAll*/getRole*/updateRole*)皆 R_SUPER only**,非 Super 經 `enforce_mw` 拒 403。其餘角色的進階授權刻意**不 seed**,由運維經 modal(updateRoleButton / updateRoleEndpoints / updateRoleMenu)runtime 指派。
+**權限設計重點**:R_SUPER 涵蓋幾乎全部治理端點與權限;R_ADMIN 只有讀端(getUserList/getRoleList/getAllRoles)+ 部分 menu(home/manage_user/manage_user-detail/function/function_toggle-auth)+ 3 個 button(B_CODE2/B_CODE3/user:edit),**無任何寫端 endpoint**;R_USER_COMMON 最小集(home/function/function_toggle-auth menu + getAllRoles role-picker + B_CODE3)。**所有寫端 endpoint(add/update/delete/batchDelete)與所有治理端點(getAll*/getRole*/updateRole*、含 035 US5 getArchivedPolicies/restorePolicy + manage_policy-archive 回收桶頁可見性)皆 R_SUPER only**,非 Super 經 `enforce_mw` 拒 403。其餘角色的進階授權刻意**不 seed**,由運維經 modal(updateRoleButton / updateRoleEndpoints / updateRoleMenu)runtime 指派。
 
-**冪等與 down 紀律**:全 12 個 casbin seed migration 皆 `ON CONFLICT DO NOTHING`;各 `down()` 嚴格只反轉自己(by `v1 IN(...)` 精確刪,**不裸刪維度**)—— 例如 022 down 刪 button 必須帶 `v1 IN(B_CODE*/user:*)` 避免誤刪;024 down 刪 button 必須帶 `v1 IN(role:*/menu:*)` 避免誤刪 022 的 10 列;010 的 9 列 menu 也靠 022 down 的 `v1 IN('function','function_toggle-auth')` 守衛避開。
+**冪等與 down 紀律**:全 13 個 casbin seed migration(009/010/013/015/017/019/020/021/022/023/024/025/029,加 035 INSERT 共 14 個觸 casbin data 的 migration)皆 `ON CONFLICT DO NOTHING`;各 `down()` 嚴格只反轉自己(by `v1 IN(...)` 精確刪,**不裸刪維度**)—— 例如 022 down 刪 button 必須帶 `v1 IN(B_CODE*/user:*)` 避免誤刪;024 down 刪 button 必須帶 `v1 IN(role:*/menu:*)` 避免誤刪 022 的 10 列;010 的 9 列 menu 也靠 022 down 的 `v1 IN('function','function_toggle-auth')` 守衛避開;035 down 以唯一 `v1`(getArchivedPolicies/restorePolicy)+ `v1='manage_policy-archive' AND v2='menu'` 精確刪自己 3 列。**033 protected 旗標**:純 `UPDATE protected=true`(16 列),down 對稱 `UPDATE protected=false` 同 16 列(欄本身由 031 owns);035 同 up 內 UPDATE 3 新列 protected=true、down 隨列刪除一併消失。
 
 ### UPDATE 回填
 
@@ -758,40 +827,33 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
 
 ### 活體 vs 種子 reconcile
 
-逐表標記 2026-06-06 活體相對種子 baseline 的關係:
+逐表標記**2026-06-09 fresh-DB(全新 wipe + 重 seed m001–m035)**活體相對種子 baseline 的關係。本次因 dev DB 經 user 親令全新重建,**靜態-seed 表已回到乾淨種子 baseline**(舊版 2026-06-06 的測試殘留全部清除):
 
 | 表 | 種子列 | 活體列 | 關係 | 說明 |
 |---|---:|---:|:---:|---|
-| `casbin_rule` | 69 | 69(ptype='p',0 個 'g') | **== 種子(靜態)** | 詳見下方逐維度核對 |
+| `casbin_rule` | 72 | 72(ptype='p',0 個 'g') | **== 種子(靜態)** | 詳見下方逐維度核對;069→72(US5 +3) |
+| `sys_casbin_policy_archive` | 0 | 0 | **== 種子(空)** | seed 不植入 archive 列,純 runtime 撤銷時才有列;本次無撤銷 |
 | `system_settings` | 1 | 1 | **== 種子(靜態)** | single_session_default=off,未經 runtime 編輯 |
-| `sys_role` | 3 | 6 | 種子 + runtime 累積 | seed id 1/2/3 完整在活體;多出 16/17/18 為測試殘留(見 §dev DB 測試殘留) |
-| `sys_user` | 3 | 15 | 種子 + runtime 累積 | seed id 1/2/3(cby=∅)完整在活體;其餘為 runtime + 測試殘留 |
-| `sys_user_role` | 3 | 13 | 種子 + runtime 累積 | seed 1→1/2→2/3→3 完整;其餘對應 runtime/測試 user |
-| `sys_menu` | 9 | 12 | 種子 + runtime 累積 | seed 9 列(018×6 + 022×2 + 029×1)完整;多出 13/14/15 為 CDP 測試殘留 |
+| `sys_role` | 3 | 3 | **== 種子(靜態)** | fresh wipe 後僅 seed id 1/2/3(舊測試殘留 16-18 已清) |
+| `sys_user` | 3 | 3 | **== 種子(靜態)** | fresh wipe 後僅 seed id 1/2/3(舊 runtime/測試 user 已清) |
+| `sys_user_role` | 3 | 3 | **== 種子(靜態)** | fresh wipe 後僅 seed 1→1/2→2/3→3 |
+| `sys_menu` | 10 | 10 | **== 種子(靜態)** | seed 10 列(018×6 + 022×2 + 029×1 + 035×1)完整;舊 CDP 殘留 13-15 已清 |
 
-**casbin_rule 是本次最重要的 reconcile 結論**:活體 69 列與種子 69 列**逐列完全相同、零差異**(seed 集合 ∖ live = ∅,live ∖ seed = ∅)。維度核對:
+**casbin_rule 是本次最重要的 reconcile 結論**:活體 72 列與種子 72 列**逐列完全相同、零差異**(seed 集合 ∖ live = ∅,live ∖ seed = ∅)。維度核對:
 
-- GET 18 / POST 13 / DELETE 6(= endpoint 37)、menu 16、button 16 —— **每個維度的活體計數都精確等於種子計數**。
-- **task 提示中標為「可能 runtime 授權編輯」的列,經核對全部是種子 baseline**:`R_ADMIN | B_CODE2 | button`、`R_ADMIN | B_CODE3 | button`、`R_ADMIN | user:edit | button`、`R_USER_COMMON | B_CODE3 | button` 四列**均由 022 `seed_button_auth` 種入**(022 的 R_ADMIN 3 + R_USER_COMMON 1 分級正是這四列),**不是** runtime modal 授權。
-- 因此本次取樣的 casbin **沒有任何 runtime 授權編輯殘留** —— 雖然 `updateRoleButton`/`updateRoleEndpoints`/`updateRoleMenu` 提供了合法 runtime 變更通道,但取樣當下活體政策恰好停在乾淨種子 baseline 上。
+- GET 19 / POST 14 / DELETE 6(= endpoint 39)、menu 17、button 16 —— **每個維度的活體計數都精確等於種子計數**(活體 `count` 已逐維度驗:GET 19 / POST 14 / DELETE 6 / menu 17 / button 16)。
+- **protected 旗標**:活體 `count WHERE protected=true` = **19**(m033 16 + m035 3),與種子定義一致。
+- 因此本次 fresh-DB 取樣的 casbin **== 乾淨種子 baseline、零 runtime 授權編輯殘留**(`updateRoleButton`/`updateRoleEndpoints`/`updateRoleMenu`/`restorePolicy` 等合法 runtime 通道本次皆未動 policy)。
 
-> **note(casbin 精確列數 = 69)**:`SELECT count(*) FROM casbin_rule` 精確值 = **69**(ptype='p' 69 + ptype='g' 0)。本報告前半總覽表初稿的 row 數取自 `pg_stat_user_tables.n_live_tup`(VACUUM 估計值)有偏差,已**同批校正為精確 count(*)**:`casbin_rule` 70→69、`sys_role` 3→6、`sys_user_role` 4→13、`sys_operation_log` 161→160(其餘表估計值與精確值相符)。兩半部現一致。
+> **note(casbin 精確列數 = 72)**:`SELECT count(*) FROM casbin_rule` 精確值 = **72**(ptype='p' 72 + ptype='g' 0)。前半總覽表與本節 row 數一致;舊版(2026-06-06)的 69 已隨 035 US5 +3 列升至 72。本次 fresh-DB 使所有靜態-seed 表 row 數即種子精確值,無 VACUUM 估計偏差問題。
 
-### dev DB 測試殘留 finding
+### dev DB 測試殘留 finding(2026-06-09 已清)
 
-活體 DB 除「種子」與「runtime-業務」兩類列外,還夾帶第三類:**測試殘留** —— CDP 自動化測試 / 整合測試建立、未清理的列。這些列**既非種子 baseline、也非真實業務 runtime**,僅是 dev DB 上累積的 test fixture,值得標記:
+> **✅ 2026-06-09 更新**:舊版(2026-06-06)記錄的測試殘留 —— `sys_role` id 16-18(`CDPR1_*`/`CDPR2_*`/`CDPX_R_*`)、`sys_user` id 4-19(alice/bob/cdp*/test/rv017)+ **900001-3**(`audit_it_user_*` 整合測試 fixture)、`sys_menu` id 13-15(`cdpm*`)及其 `sys_user_role` 指派 —— **已由 user 親令的 dev-DB volume 全新 wipe + 重 seed(m001–m035)整批清除**。fresh DB 現為**乾淨種子 + 本 session 最少 runtime**:靜態-seed 表(sys_user / sys_role / sys_user_role / sys_menu / casbin / system_settings / archive)= seed baseline、無任何殘留列;log/token 表(sys_token / sys_access_log / sys_login_attempt / sys_operation_log)僅含本次 re-audit 的 CDP + curl 驗收 runtime。**舊 §2.39 cdp\* 殘留項在此次 wipe 後已解決(resolved)**。
 
-| 表 | 測試殘留列 | 來源 |
-|---|---|---|
-| `sys_role` | id 16(`CDPR1_*`)、17(`CDPR2_*`)、18(`CDPX_R_*`) | CDP role CRUD 測試 |
-| `sys_user` | id 4–7(alice/bob/cdpuser/cdpdisabled)、15(test)、16–18(cdp*)、19(rv017);id **900001/900002/900003**(`audit_it_user_*`,900003 single-session on) | runtime/CDP 測試(4-19,cby=1)+ 高 id **整合測試殘留**(900001-3,cby=∅) |
-| `sys_menu` | id 13(`cdpm1`)、14(`cdpm2`)、15(`cdpx_m2`)(cby=1) | CDP menu CRUD 測試 |
-| `sys_user_role` | 4→3/5→3/6→2/6→3/7→3/15→2/16→3/17→3/18→3/19→3 | 對應上述測試 user 的角色指派 |
-
-- **特別點名 900001-3**:這三列 `audit_it_user_*`(cby=∅、高 id 區段)是 **rust-api in-crate 整合測試**(`#[ignore]` live-postgres 測試)的 fixture,跑完未回滾;cby=∅ 容易被誤判為種子(種子也 cby=∅),但種子帳號只有 id 1/2/3,**900001-3 確定是測試殘留**,id 區段(900000+)即是隔離標記。
-- **casbin / system_settings 無測試殘留**:這兩表活體 == 種子,測試未在其上留污染列(casbin 測試列若有也已清,或測試走 throwaway DB)。
-- **建議**:這些殘留**不影響種子完整性**(種子 baseline 全在),但污染 dev DB 取樣、易混淆「種子 vs 活體」判讀。建議二選一 ——(a)以 throwaway DB 重跑 `migration up` 取得乾淨種子 baseline 快照供對照;或(b)寫一支 cleanup 腳本清掉測試 id 區段(sys_role 16-18、sys_user 4-19 + 900001-3、sys_menu 13-15 及其 sys_user_role / 任何 runtime casbin 列),讓 dev DB 回到「種子 + 真實業務」的乾淨狀態。整合測試本身宜改用 throwaway DB 或測試後 rollback,避免持續累積。
+- **此次 wipe 為一次性 reset**:整合測試(`#[ignore]` live-postgres)與 CDP 自動化測試**仍會持續累積進這個長壽 dev DB**(本次 wipe 並未改變測試本身的清理紀律)。下次取樣若再見高 id(900000+)/ `cdp*` / `CDPR*` 列即是新累積的測試殘留,判讀方式同舊版:id 區段 900000+ 與 `cdp*`/`CDPR*` 前綴是隔離標記,種子帳號永遠只有 id 1/2/3。
+- **建議(沿用)**:整合測試宜改用 throwaway DB 或測試後 rollback、避免再次污染;或週期性重跑此 wipe + 重 seed 取乾淨 baseline 快照。
 
 ### 種子完整性結論
 
-**migration 種子齊備,活體含全部種子 baseline。** 24 處 seed 操作(21 INSERT 批 + 3 類 UPDATE 回填)分布在 13 個 migration,涵蓋 6 張表;全部 idempotent(`ON CONFLICT DO NOTHING` / 固定-id UPDATE),down 各自精確反轉。逐表 reconcile 確認:每一條種子列都能在活體找到對應(seed ⊆ live,無「該有卻消失的種子」);`casbin_rule` 與 `system_settings` 活體**恰好 == 種子靜態 baseline**(casbin 69 列零 runtime 編輯殘留),`sys_user`/`sys_role`/`sys_menu`/`sys_user_role` 活體 = 種子 + runtime 累積 + 可清理的測試殘留。**種子層健康度:優** —— 種子定義完整、idempotent、down 對稱,活體偏離全部歸因明確(runtime 業務 / 測試殘留),無種子 drift。
+**migration 種子齊備,活體含全部種子 baseline。** 28 處 seed 操作(23 INSERT 批 + 5 類 UPDATE 回填〔原 3 + 033 protected + 034 protected〕)分布在 16 個 migration,涵蓋 6 張表(seed-touched 集合不變:casbin_rule / sys_user / sys_role / sys_user_role / sys_menu / system_settings);全部 idempotent(`ON CONFLICT DO NOTHING` / 固定-id 或精確-where UPDATE),down 各自精確反轉。逐表 reconcile 確認:每一條種子列都能在活體找到對應(seed ⊆ live,無「該有卻消失的種子」);本次 **2026-06-09 fresh-DB(wipe + 重 seed m001–m035)後,全部靜態-seed 表活體恰好 == 種子 baseline**(`casbin_rule` 72 列 / `sys_menu` 10 列 / `sys_role` 3 / `sys_user` 3 / `sys_user_role` 3 / `system_settings` 1 / archive 0,零 runtime 編輯殘留),舊版的測試殘留已整批清除。**種子層健康度:優** —— 種子定義完整、idempotent、down 對稱,034+035 治理層 seed(033 protected 16 列 + 034 sys_menu protected 7 列 + 035 US5 +3 casbin +1 menu)全 live-verified MATCH,無種子 drift。
