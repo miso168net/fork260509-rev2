@@ -16,7 +16,7 @@
 
 > 以下為預計`下一步` (不要再被合到`最新進展`了)
 
-**下一步**: **034 已收尾完成**(merge `8e95fa1` + 推 origin、034 branch 保留、MILESTONES row `00f7e69`)。後續候選(user 擇期啟動):**obs prod 對外暴露 + 採集端硬化**(security pass、§2.36)/ **least-priv exporter / cleanup PG role**(§2.35 + 032 follow-up §2.37)/ **034 follow-up**(restore audit payload 豐富化〔RestoreOutcome 帶 v0/v1/v2〕/ no-op reload 跳過 / archive 懸空 GC〔D8〕/ REVIEW-DATABASE 12-table live 重稽核 / dev DB 3 個 cdp* 測試殘留 soft-deleted menu 清理)。
+**下一步**: **035-policy-governance-hardening brainstorm spec-design 定案**(`5fc2cfb`、推 origin;034 follow-up 第一刀 = US1 restore audit 豐富化〔`RestoreOutcome::Restored` 帶 `{v0,v1,v2}`〕 + US2 no-op reload 跳過〔trait `PolicyMutated`、只跳明確 no-op〕,純 rust-api、無 migration/端點、base-web 零改)→ **待 user 手動 `/speckit-specify`** 從 rev2-admin-root 建 035 feature branch。其餘候選(擇期):obs prod 對外暴露+採集端硬化(§2.36)/ least-priv exporter+cleanup PG role(§2.35+§2.37)/ casbin archive 懸空 GC(D8、§2.39)。
 
 ---
 
