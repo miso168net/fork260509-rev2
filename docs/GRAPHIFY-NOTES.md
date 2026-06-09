@@ -7,12 +7,13 @@
 
 ## 現況
 
-圖譜已建好(**2,099 nodes / 2,578 edges / 355 communities**,236 shown / 119 thin omitted),2026-05-26 完成 initial build + update + 2 次 prune-only。
+圖譜已建好(**3,555 nodes / 4,468 edges / 550 communities**),2026-06-10 完成 **rev2 全量重建**(commit `db29cba`):換掉舊的 example 分支 mock 圖、改索引 rev2 真實整合碼。
 
-- **Extraction 品質**:93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS;INFERRED 179 edges 平均 confidence 0.86
-- **Token 用量累計**:1,699,624 input · 188,835 output(5 次 runs 含 prune)
-- **抓取範圍**:`fork260509-soybean-admin-base/`(378 files)+ `fork260509-soybean-admin-docs/`(174 files);共 552 files
-- **未涵蓋**:`fork260509-rev2-anew-rust-api/`(Rust 源倉**完全沒抓**)— 問 rust-api 後端設計時要直接讀 source,圖譜目前對 rust-api 零覆蓋
+- **Extraction 品質**:91% EXTRACTED · 9% INFERRED · 0% AMBIGUOUS(5 條);INFERRED 407 edges 平均 confidence 0.82
+- **node 來源分佈**:`base-web/`(rev2 worktree)2,076 + `rust-api/`(rev2 worktree)1,178 + `fork260509-soybean-admin-docs/`(docs 源倉)283 + `docker-compose.yml` 18;共 618 distinct source files
+- **node 型別**:code 3,306 · concept 124 · rationale 49 · document 45 · image 31(語意抽取產出 concept/rationale 節點承載設計意圖)
+- **抓取範圍**:Rust axum+Casbin 後端(`rust-api/server/`、`entity/`、`migration/` 等)+ Vue3 前端(`base-web/` .ts/.vue)+ soybean-admin 框架文件。**Rust 後端已全覆蓋**(舊圖完全沒有)。
+- **跨棧 wire 鏈已捕捉**:語意層抓到 base-web `fetch*` 前端 wire client ↔ rust-api `facade::find_active` 等後端的 `semantically_similar_to` / `shares_data_with` 邊 — 整合專案核心關係。
 
 ---
 
@@ -20,38 +21,35 @@
 
 ### 抓取盲點(graphify 工具屬性、跨專案通用)
 
-- **Vue component composition 破碎**:AST extractor 抓不到 `<template>` 標籤對應到 `import` 元件的關係。`.vue` 元件常呈現孤立或低 degree;問 Vue SFC 之間 wiring 要直接讀 SFC,別只信圖。
+- **Vue component composition 破碎**:AST extractor 抓不到 `<template>` 標籤對應到 `import` 元件的關係。`.vue` 元件(本圖 159 檔)常呈現孤立或低 degree;問 Vue SFC 之間 wiring 要直接讀 SFC,別只信圖。
 - **TypeScript module 間 import 關係可能破碎**:類似 Vue,部分 `import` 關係未被抽取,community 結構可參考但具體 call edges 仍要校驗。
-- **AST EXTRACTED 邊方向不全可信**:原本以為 AST 抓的 EXTRACTED 邊 100% 正確,但**同 file 內 fn 互調**可能方向反。引用 EXTRACTED 邊前若涉及同 file fn 互調,仍要掃一眼 source 確認方向。
-- **INFERRED edges 方向偶有反向**:LLM 推測邊偶見 caller ↔ callee 倒置。引用 INFERRED edges(7% / 179 條,平均 confidence 0.86)前最好掃一眼 source 確認方向。
+- **AST EXTRACTED 邊方向不全可信**:**同 file 內 fn 互調**可能方向反。引用 EXTRACTED 邊前若涉及同 file fn 互調,仍要掃一眼 source 確認方向。
+- **INFERRED edges 方向偶有反向**:LLM 推測邊偶見 caller ↔ callee 倒置。引用 INFERRED edges(9% / 407 條,平均 confidence 0.82)前最好掃一眼 source 確認方向。
 
-### 重跑後的 community 結構變化
+### Community label 信任度(本次重建特別注意)
 
-- **Community label 在 prune / update 後可能失準**:rev2 跑了 5 次 runs(initial build + update + update-tiny + 2 次 prune-only),社群結構重組過幾次;部分繼承 label 不再準確。引用 `graphify query` 返回的 Suggested Questions 時,「bridge to <community label>」要回頭核對社群實際 membership,**不要把 label 當社群純度的保證**。
+- **550 社群中僅 28 個手標、522 個自動命名**:自動名是「主要來源目錄 + 最高頻 token」啟發式(如 `web: xxx`、`rust: xxx`),**不是語意摘要**。引用 `graphify query` 返回的 Suggested Questions「bridge to <community label>」時,小社群(size ≤ 8 佔多數、302 個是 size 1-2)的 label 尤其不可當社群純度保證,要回頭核對實際 membership。
+- 手標的前 28 大社群(size ≥ 31、涵蓋約 73% 節點的核心)label 可信:涵蓋 Casbin 政策歸檔/Enforcer、Menu 樹組裝、登入發 token、Role/User 建立稽核(rust)、Auth Store/路由、System-Manage API、主題 i18n(web)等。
 
 ### LLM 抽取行為偏差
 
-- **同質條目可能標籤不一致**:同一文件內並列的同類條目(如 README 列出 N 個 variants),LLM 可能用不同 relation / confidence 標籤(`references` + EXTRACTED vs `semantically_similar_to` + INFERRED 混用)。引用 INFERRED semantic-similarity 邊時,若同段文字有 EXTRACTED `references` 的同類兄弟,多半 INFERRED 那條內容也屬實,只是 confidence 標籤偏差。
+- **同質條目可能標籤不一致**:同一文件內並列的同類條目,LLM 可能用不同 relation / confidence 標籤(`references` + EXTRACTED vs `semantically_similar_to` + INFERRED 混用)。引用 INFERRED semantic-similarity 邊時,若同段有 EXTRACTED `references` 的同類兄弟,多半 INFERRED 那條內容也屬實,只是 confidence 標籤偏差。
 
 ### Suggested Questions 假信號(graphify 自評演算法的盲點)
 
-- **「weakly-connected = doc gap」是假信號**:`GRAPH_REPORT.md` Suggested Questions 演算法看到 weakly-connected nodes 會推斷「documentation gap / missing edges」,但這假設對 graphify 自己抓不到的 ecosystem 不成立(Vue component composition / TypeScript 部分 import 等盲點)。看到「weakly-connected nodes found」建議先核對該 ecosystem 是否在上述盲點清單內。
+- **「weakly-connected = doc gap」是假信號**:Suggested Questions 演算法看到 weakly-connected nodes 會推斷「documentation gap / missing edges」,但這假設對 graphify 自己抓不到的 ecosystem 不成立(Vue component composition / TypeScript 部分 import 等盲點)。看到「weakly-connected nodes found」先核對該 ecosystem 是否在上述盲點清單內。
 - **Community cohesion score 低(< 0.1)對盲點 ecosystem 也是假信號**,**不該據此判斷「該不該拆 module」**。
 
 ---
 
 ## rev2 特殊狀況
 
-- **抓的是 fork 源倉、不是 worktree**:graphify 跑於 `fork260509-soybean-admin-base/` + `fork260509-soybean-admin-docs/`,**不是** worktree(`base-web/`)。fork 源倉分支 `example`(base)+ `main`(docs)。若 worktree(`rev2-admin-base-web`)已有 rev2 自家 commit、圖譜會落後於 worktree;**問 base-web 程式碼結構時、若要對齊 rev2 最新版本,要直接讀 `base-web/` 或重跑 graphify**。
-- **rust-api 完全未抓**:rust-api 源倉設計問題不能用 graphify 查,要直接讀 `rust-api/server/` 或 grep。將來若要納入,跑 `graphify update`(`.graphifyignore` 沒排 rust-api 源倉,但歷次 runs 沒包含、可能因 .graphifyignore 早期內容或當時 source dir 設定排除)。
-- **`.graphifyignore` 排除清單**:`base-web/` / `rust-api/`(worktree,避免與 fork 源倉雙倍索引)、`graphify-out/`(自輸出)、`specs/`、`docs/`、`target/`、`.specify/`、`.claude/`、`CLAUDE.md`。
-- **5 次 runs 歷史**(`graphify-out/cost.json`):
-  1. 2026-05-26 00:31 — initial build,378 files,999K + 111K tokens
-  2. 2026-05-26 01:14 — update,178 files,652K + 72K tokens
-  3. 2026-05-26 02:13 — update-tiny,2 files,49K + 5K tokens
-  4. 2026-05-26 02:20 — prune-only(3 files 新排除 → 30 nodes pruned)
-  5. 2026-05-26 03:36 — prune-only(`.graphifyignore` 加 `docs/` + `specs/` → 12 nodes pruned;INTEGRATION-CHECKLIST / RESEARCH + superpowers 000 退出圖譜)
+- **抓的是 worktree、不是 fork 源倉**(2026-06-10 起政策反轉):graphify 現索引 `base-web/`(分支 `rev2-admin-base-web`)+ `rust-api/`(分支 `rev2-admin-rust-api`)兩個 worktree = **rev2 真實整合碼**。對應源倉 `fork260509-soybean-admin-base/`(example 分支)+ `fork260509-rev2-anew-rust-api/` 已加入 `.graphifyignore` 排除(worktree 與源倉共用 `.git`、內容高度重疊、101/102 .ts 同相對路徑會撞 node ID)。**問 base-web/rust-api 程式結構直接信圖即可對齊 rev2 最新**(worktree 累積新 commit 後重跑 `graphify update` 同步)。
+- **rust-api 已全覆蓋**:Rust 後端設計問題現可用 `graphify query` 查(舊圖零覆蓋、需直接讀 source 的限制已解除)。
+- **docs 源倉仍索引但屬參考**:`fork260509-soybean-admin-docs/`(283 節點)是 soybean-admin 上游框架文件站(中/日/英),非 worktree、與 rev2 整合僅鬆散相關;node 數不低但整合相關性低,query 結果含大量 docs 節點時注意過濾。
+- **`.graphifyignore` 排除清單**(現行):源倉 `fork260509-soybean-admin-base/` + `fork260509-rev2-anew-rust-api/`、`graphify-out/`(自輸出)、`specs/`、`docs/`、`target/`、`.specify/`、`.claude/`、`CLAUDE.md`、`README.md`、`deploy/*`、`docker-compose.*.yml`、`tests/`、lock files。worktree `base-web/` `rust-api/` **不再排除**。
+- **runs 歷史**(`graphify-out/cost.json`):前 5 次(2026-05-26)是舊 example-分支 圖的 initial build + update + 2 prune;第 6 次(2026-06-10、commit `db29cba`)是本次 rev2 全量重建,31 個語意 subagent 並行、638 檔、合計 ~2.77M token。
 
 ---
 
-> base-web 源倉分支是 `example`(不是 `main`),與 rev2 worktree(`rev2-admin-base-web`)目前同源、但後續若 worktree 累積 rev2 自家 commit、graphify 圖譜不會自動同步。建議在大規模設計問題前先跑 `graphify update`、看是否 diff。
+> 圖譜現以 rev2 worktree 為來源、與整合分支同步。worktree 累積新 commit 後,大規模設計問題前先跑 `graphify update` 看 diff;`.graphifyignore` 已排除對應源倉,不會再雙倍索引。

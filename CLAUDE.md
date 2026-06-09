@@ -554,4 +554,4 @@ docker compose exec acme acme.sh --version    # sanity check
 **graphify 守則**：
 - 重跑前先讀 `graphify-out/cost.json` 看是否真有需要 —— 多數時候 `graphify update`（增量）即可。
 - 不要改 `graphify-out/cache/` —— graphify 內部 LLM 擷取快取，手改破壞下次 update 的 diff。
-- 新功能設計問題先用 `graphify query "..."` 試 —— 但 NestJS / Vue component 部分警覺圖譜盲點（見 `docs/GRAPHIFY-NOTES.md`），且 base-web 來源是 example 分支、與圖譜抓取點不一致。
+- 新功能設計問題先用 `graphify query "..."` 試 —— 圖譜現索引 rev2 worktree（`base-web` / `rust-api` 整合分支、含 Rust 後端），與整合碼同步（2026-06-10 全量重建 `db29cba`，舊 example-分支圖已淘汰）；但 Vue component composition 仍是 graphify 工具盲點（`.vue` 的 template↔import 抓不全，見 `docs/GRAPHIFY-NOTES.md`），問 Vue SFC 之間 wiring 要直接讀 SFC。
