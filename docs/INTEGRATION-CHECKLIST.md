@@ -145,12 +145,12 @@
 - [ ] **cosmetic:toggle-auth B_CODE3 鈕 caption vs registry desc 用字異**:頁面 i18n `adminOrUserVisible`→「管理员和用户可见」 vs migration seed registry desc(data-model §1.2)「管理员或普通用户可见」;皆指 B_CODE3、gating 走 **code** 不受影響、非缺陷。若要求字面一致可對齊 seed desc 與頁面 i18n(後續、非 gating 範圍)。
 - [~] **其餘業務頁 button gating(FR-009 out)— 角色/選單頁 ✅ 024 rollout 完成**:022 pilot 僅用戶管理頁;**024 已 rollout 到角色/選單管理頁**(三頁 hasAuth gating 完整);其他業務頁(若未來新增)操作鈕 gating 仍沿三頁 reactive pattern。
 - [ ] **prod image build 非強制未跑**:022 無新 crate(只加 module 到既有 server crate)→ 不適用「加 crate 須 prod image build」守則;final review 確認 Dockerfile 無新 COPY 缺口風險。若要絕對保險可選跑一次 prod target build。
-- [ ] **`set_role_button` 非原子窗口 + 多 instance redis reload 未驗**:承 [§2.25](#225-feature-021-manage-menu-auth-follow-up) 同款(button_auth 共用 021 機制:`add_policies` 逐 rule loop 非單 txn / audit-fail-after-change / 單 instance only);final review 確認與已合併 021 baseline 一致、accepted。
+- [~] **`set_role_button` 非原子窗口 ✅ 034 RESOLVED;多 instance redis reload 仍未驗**:① 非原子(`add_policies` 逐 rule loop 非單 txn + audit-fail-after-change)**✅ 034 US4 解**(button 經 DB-first `set_role_dimension`、變更+audit 同 `mutate_in_txn` 原子,見 [§2.25](#225-feature-021-manage-menu-auth-follow-up));② **多 instance 真實 fan-out 仍未驗**(034 沿單 instance publish、D7 out-of-scope)。
 - [x] **用戶頁 row 操作鈕 reactive ✅ 機制閉合 (2026-06-04,024)**:024 三頁(user/role/menu)reactive-columns retrofit —— 加 `watch(()=>authStore.userInfo.buttons,()=>reloadColumns())`(鏡像既有 `watch(appStore.locale)→reloadColumns`、shallow watch 正確:store `Object.assign` 替換 buttons 新陣列)、三頁 byte-consistent。**gating 結果正確性** CDP 5/5 驗(撤碼後 fresh login 即隱);**in-session 即時重繪路徑機制經 code review 驗證、行為測試仍缺**(CDP 全用 fresh mount)→ 見 [§2.28](#228-feature-024-button-auth-rollout-follow-up)。
 
 ### 2.27 feature 023-manage-endpoint-auth follow-up
 
-- [ ] **`set_role_endpoint` 非原子窗口 + 多 instance redis reload 未驗**:承 [§2.25](#225-feature-021-manage-menu-auth-follow-up)/[§2.26](#226-feature-022-manage-button-auth-follow-up) 同款(endpoint_auth 共用 021 機制:`add_policies` 逐 rule loop 非單 txn / audit-fail-after-change 硬 5000 但變更已 live / redis pub-sub 僅單 instance 自收驗、多 instance 真實 fan-out 未驗);final review 確認與已合併 021/022 baseline 一致、accepted。
+- [~] **`set_role_endpoint` 非原子窗口 ✅ 034 RESOLVED;多 instance redis reload 仍未驗**:① 非原子 **✅ 034 US4 解**(endpoint 經 `set_role_dimension` per-(path,method) diff〔結構消滅裸空-v2 wildcard footgun〕、DB-first + audit 同 txn,見 [§2.25](#225-feature-021-manage-menu-auth-follow-up));② **多 instance 真實 fan-out 仍未驗**(D7 out-of-scope)。
 - [ ] **D1 coverage lint parser hardening(code review M1/M2、理論性、非現行缺陷)**:(a) `read_string_literal` 接受空字串 → `("GET","")` 理論可過(但 28-count + registry==routes 對稱差會抓、空 path 不 match 真 route);(b) `detect_verb` 取 span 內首個 verb、未斷言屬該 route handler(現每 route 恰一 verb、span 由下個 `.route(` 界定 → 不可達)。皆「收緊網、非修 bug」;adversarial 真注入無 seed route 已證守衛咬合。動該 test 時可順手加 fixture pin。
 - [ ] **`get_all_endpoints` unused state param(cosmetic、deliberate)**:`State(_state)` 僅為對齊 `enforce_mw` layer 的 state-extractor 型,handler 本身 infallible 不用 state;編譯無警告、刻意保留。
 - [x] **spec doc 行號 off-by-one(cosmetic)** ✅ (2026-06-05):`specs/023-manage-endpoint-auth/research.md` R7 補 as-built 行號漂移注記 —— DESIGN 已多次編輯(至 026)行號位移 → 改指 §4.6.3/§6.3/§11.22 **section anchor**(勿信字面行號);reconcile 內容已落地、不受漂移影響。
@@ -161,15 +161,15 @@
 - [ ] **ButtonAuth「完整版」aligned visible=clickable(FR-008 decoupled 債、刻意)**:024 按鈕碼授權(v2='button')與 023 端點權限(v2=method)為兩套獨立可指派維度 → 可勾 role:edit 顯鈕但端點 Super-only→5003(CDP/對抗式實證)。brainstorm K1 親決 decoupled(user 要可獨立指派);visible=clickable 自動對齊(derive 自端點、零漂移)留「完整版」未來 feature(需動 getUserInfo + 兩套機制,K2)。
 - [ ] **跨維度:非-Super 預設無 manage_role/manage_menu 選單可見性(021)**:role/menu 頁 024 button gating 只在能檢視該頁的角色可觀察(預設僅 Super);非-Super 須先經 021 `updateRoleMenu` 授選單可見性才看得到頁(進而觀察 button gating)。三維度 button≠menu≠endpoint 刻意正交;CDP check 5 以「先授 Admin manage_role 選單 + role:edit 按鈕」證 literal US1。文件記錄(DESIGN §10)、非缺陷。
 - [ ] **cosmetic:既有 022 down() 註解 stale**:`m20260529_000022:104` 註「022 是唯一引入 v2='button' 的 migration」在 024 落地後不再為真;reverse-order rolldown(024.down 先於 022.down)+ 024.down by-code 精準避此 → 無害、不修(越界改既有 migration);若要註解保真可一行更正。
-- [ ] **set_role_button 非原子窗口 + 多 instance redis reload 未驗**(承 [§2.25](#225-feature-021-manage-menu-auth-follow-up)/[§2.26](#226-feature-022-manage-button-auth-follow-up)/[§2.27](#227-feature-023-manage-endpoint-auth-follow-up) 同款):024 沿 022 既有 `set_role_button`、無新風險;final review confirmed 與已合併 baseline 一致、accepted。
+- [~] **set_role_button 非原子 ✅ 034 RESOLVED;多 instance redis reload 仍未驗**(承 [§2.25](#225-feature-021-manage-menu-auth-follow-up)/[§2.26](#226-feature-022-manage-button-auth-follow-up)/[§2.27](#227-feature-023-manage-endpoint-auth-follow-up)):024 沿 022 `set_role_button`、034 US4 收斂後一併解非原子;多 instance fan-out 仍 D7 out-of-scope。
 - [ ] **§2.26 reactive watch 的 in-session 即時重繪路徑未經行為測試(僅機制驗證)**:CDP 5/5 全用 fresh login/navigate 驗 gating 結果(fresh mount 的 columns factory 已含正確 buttons、**不經 watch**);reactive watch(`userInfo.buttons` 變→`reloadColumns`→`$columns` 重算→render 重評 hasAuth)的 in-session 即時重繪**機制經 code review 驗證**、但**無測試 trigger 一次「停留頁面時 buttons 變動」**。現實 app 中 `userInfo.buttons` 停留頁面時罕變(modal 改 target 角色、不 re-fetch 當前 user)→ 屬防禦性;日後若加「刷新本人權限」流程,補 CDP 驗(操控 pinia store 或觸 getUserInfo re-fetch 後驗 row 鈕**不重登即時**重繪)。
 
 ### 2.29 feature 025-menu-restore-reparent follow-up
 
-- [ ] **孤兒 casbin menu-visibility 列已知債**:軟刪選單留 `[role,route_name,'menu']` 孤兒 policy(讀路徑略過、無害);新建/restore 同 route_name 選單會繼承舊可見性 grant,唯一性 guard 只擋 **active** route_name 撞、不擋 **deleted** 撞。日後若要嚴格,軟刪時連帶清/標記 menu-visibility 列(動 010 casbin、權衡 R6 restore 自動套回的 payoff)。
+- [x] **孤兒 casbin menu-visibility 列已知債 ✅ 034 US3 RESOLVED (2026-06-09)**:軟刪選單留 `[role,route_name,'menu']` 孤兒 policy + 同 route_name 新建/restore 繼承舊可見性 grant —— **034 US3 menu↔policy 同 txn 連動解**:軟刪 cascade revoke 該 route_name 跨 role 的 menu-visibility→archive(reason=`menu_soft_delete`)、還原 cascade restore(**限同代 archive**:`archived_at = sys_menu.deleted_at` 同 txn transaction_timestamp 不變式、不誤復活舊代)、同名重建零繼承(DRIFT-3)。無孤兒。詳見 [DESIGN §10 Phase 3 #6](INTEGRATION-DESIGN.md)。
 - [ ] **restore route_name TOCTOU(race→5000)**(同 [§2.24](#224-feature-020-manage-menu-write-follow-up) create_menu):restore handler active 唯一前檢在 txn 外 + DB partial-unique `sys_menu_route_name_active_uniq` 最終防線;並發撞→`DbErr`→5000(罕見、資料完整性保住)。若要 race 也回 2222 可偵測 PG 23505。
 - [ ] **re-parent 跨頂層邊界 component 殘留**(T007 code review 抓、已部分修):`getSubmitParams` 以 `effectiveLayout = parentId===0 || menuType==='1' ? layout : ''` 修掉「頂層葉搬 nested 殘留 `layout.X$` 汙染 component」;**殘留** = nested-directory re-parent 保守不重算其 component、nested→頂層須 user 在浮現的 layout 欄補選(與既有頂層建立行為一致)。日後若要全自動重算 component 須懂 soybean 多層 layout 模型。
-- [ ] **SEED_MENU_ROUTE_NAMES 前後端 duplication**:base-web modal disable hint 硬編 6 種子 route name 鏡像後端 `is_seed_menu`(server/src/handler/system_manage.rs),後端新增種子須同步 base-web。UI disable 僅 hint、後端 guard (a) 為權威。根治 = 後端 wire 加 `isSeed` 欄(屬 wire 變更、未來)。
+- [x] **SEED_MENU_ROUTE_NAMES 前後端 duplication ✅ 034 US5 D10 RESOLVED (2026-06-09)**:根治法「後端 wire 加 isSeed/protected 欄」已落 —— 034 D10 給 menu list wire 加 `protected` 欄、base-web `menu-operate-modal.vue` 改讀 `row.protected`(退役硬編 6 名單)、後端 `is_seed_menu` 亦退役改 data-driven `sys_menu.protected`(US2)。三端對齊、無前後端 dup。
 - [ ] **getMenuItem inline-map 與 get_menu_list 重複**(T003 review):`get_deleted_menus` 逐字 copy `get_menu_list` 的 26-欄 MenuItem map(沿 codebase inline-per-handler 慣例、刻意)。若出現第 3 消費者再抽 `to_menu_item(Model)->MenuItem` 共用 helper(屆時須一併動 get_menu_list)。
 - [x] **contracts §1/§2 deleteMenu curl `-d`(POST)應為 `-X DELETE`** ✅ (2026-06-05):`specs/025-menu-restore-reparent/contracts/verification-commands.md` 的 3 條 deleteMenu 命令已加 `-X DELETE` + §1 註一行(restoreMenu 為 POST、`-d` 正確不變)。
 - [ ] **CDP ④ 僅 cycle 路徑 UI-driven**:T009 CDP ④ 用 cycle reject(move-self)觸 2222 toast;`上层菜单已删除,请先复原上层`(孤兒父 restore)與 `路由名已被占用`(restore route_name 佔用)兩 guard 已 **code + curl 驗**(T008/手動 acceptance)、未單獨 UI-driven。日後 CDP 巡檢可補。
@@ -185,7 +185,7 @@
 
 - [x] **025-I1 頂層葉選單編輯吃掉 component layout 前綴** ✅ (2026-06-05):`menu-operate-modal.vue handleInitModel` 把 wire string `parentId` 正規化為 `Number()`(同修 M1 NTreeSelect 預選態);live CDP 驗綠(home 布局選擇器顯示+值 base、manage_user 巢狀隱藏)。type-lie 消費端鐵律固化 [DESIGN §9.1](INTEGRATION-DESIGN.md)。
 - [x] **doc-debt 批次回填** ✅ (2026-06-05,as-built 驗證後 surgical 修、未碰 code;詳見 commit):018-M1(種子編輯範例補 `status:"1"`+guard 註)·M2(data-model 回填整欄替換 NULL 語意);019-M1(contracts 補 getUserRoutes 5000 錯誤面);020(spec FR-011 + data-model §7 加 025 supersede cross-ref、不改原 OUT 陳述);023-M2(contracts 加 28→30 drift 註、保 023 歷史不回改);025-M2(tasks T001-T010 勾 merged)·M3(data-model 補 SEED list duplication known-debt)·M4(data-model 補 guard② `ids_for_route_names` as-built);026-M1(6 處 `jwt::Error`→`jwt::JwtError`)·M2(spec 唯一差異措辭補 ctx_mw+refresh log)。
-- [ ] **021-M2 menu policy 編輯 audit 非原子**(已誠實 inline 標明):`set_role_menu` casbin mutation 與 011 audit 非同 txn,audit 失敗時 policy 已上線無稽核;併入 §2.25-28「受管 RBAC policy 層」feature 一起處理。
+- [x] **021-M2 menu policy 編輯 audit 非原子 ✅ 034 RESOLVED (2026-06-09)**:`set_role_menu` casbin mutation 與 011 audit 非同 txn(audit 失敗時 policy 已上線無稽核)—— 034 US1+US4 改 DB-first `set_role_dimension`、變更+audit 同 `mutate_in_txn` both-or-neither 解(三維度一致,見 [§2.25](#225-feature-021-manage-menu-auth-follow-up))。
 
 ### 2.32 feature 027-refresh-token-rotation follow-up
 
@@ -237,6 +237,15 @@
 - [ ] **cleanup-job 經 `docker run` 跑時 log 被 alloy 依 image 標成 `service=rust-api`(污染 rust-api loki 串流)**:033 acceptance C0 用 `docker run rev2-admin-rust-api:dev` 跑 cleanup-job、alloy docker-SD 依 image 派 service label → 其純文字 stdout("would delete 0 rows" 等)灌進 `service=rust-api` → 無 guard 的 `| json` 板回 400 JSONParserErr(已在 audit-log 板補 `|~ \`^{\`` guard 化解、commit `5fa6a1c`)。**症狀已解、log 歸屬根因未除**:改經 compose `--profile jobs` cleanup-job service 跑(alloy relabel compose-service→service、得乾淨 `service=cleanup-job` label)、或精修 alloy labeling 規則。dashboards 已 guard、不阻塞;屬 obs log 歸屬 hygiene、合 §2.36 alloy 硬化軌道。
 - [ ] **(minor)postgres 板 PG17 bgwriter gap(82% match、1 panel No data)**:pin `postgres_mixin@v0.19.1` 的 bgwriter buffers panel 用 PG17 移除的 `pg_stat_bgwriter_buffers_{backend,checkpoint}_total`(折進 `pg_stat_checkpointer`)→ 該 1 panel 永 No data。upstream/PG17 gap、非 bug;日後 postgres_mixin 出 PG17 對齊版可重 pin 升級。
 
+### 2.39 feature 034-managed-rbac-policy follow-up
+
+- [ ] **restore audit payload 過簡(只記 `{archive_id}`、還原後即懸空)**:`restore_policy` + menu restore cascade 的 011 Restore audit 只帶 `archive_id`(archive 列同 txn 刪除→id dangling、forensic 價值低);`restore` facade 的 `RestoreOutcome::Restored` 為 unit variant 無載資料。harden:`Restored` 帶 `(v0,v1,v2)` → handler 寫 `{role, target, dimension}` 有意義審計(零額外 DB round-trip)。屬 facade 簽名變更、deliberate 做(觸 US1/US3/US5)。
+- [ ] **no-op 仍 reload+publish**:`mutate_and_reload` 在 `SetRoleOutcome::Rejected`(protected 拒、零 mutation)+ Applied 空 diff(更新成同集)兩路徑仍無條件 `load_policy()`+publish(idempotent 無害、但浪費一次全量 reload + redis fan-out)。優化:closure 回「是否真 mutate」旗標、no-op 跳過。低頻 admin 路徑、非阻擋。
+- [ ] **archive 懸空 cruft GC(D8)**:被刪選單 archive 的 menu-visibility policy 因 route_name 被新選單重用而永不可還原(034 同代隔離後正確不誤復活、但舊代 archive 留為死 cruft)。retention/purge out-of-scope(spec Assumptions);policy 撤銷罕見、archive 小,日後可比照 030 cleanup-job 加 purge。
+- [ ] **REVIEW-DATABASE 12-table live 重稽核**:034 在 REVIEW-DATABASE 記為 worktree as-migrated intent(casbin_rule +3 治理欄 / 新 sys_casbin_policy_archive / sys_menu +protected / m031-m035),既有 11-table 總覽稽核採樣早於 034;12-table live-vs-migration 全重稽核留後續 doc pass。
+- [ ] **dev DB 3 個 `cdp*` 測試殘留 soft-deleted menu**:`sys_menu` 有 3 列 cdp 前綴 epoch-ms 名(`cdpm1_*`/`cdpm2_*`/`cdpx_m_*`、2026-06-02 CDP smoke 殘留、`deleted_at` 非 NULL、`protected=f`),非 production menu、不影響任何守恆計數;dev DB hygiene、可 hard-delete 清。
+- [ ] **(非債、認知)`manual_revoke` reason 永不產生**:034 無單條撤銷端點,所有權限編輯走 `set_role_dimension`(reason=`role_set_replace`)→ 回收桶只見 `role_set_replace`(menu cascade 的 `menu_soft_delete` 被排除)。spec「單條撤銷」語意現無對應 code path(US4 收斂的正確結果);日後若加單條撤銷端點再產生 `manual_revoke`。
+
 ## 3. 已完成里程碑
 
 完整 commit 里程碑歷史見 [`docs/INTEGRATION-MILESTONES.md`](INTEGRATION-MILESTONES.md)(append-only、不在 SOP 注入,避免本檔膨脹)。
@@ -261,9 +270,9 @@
 
 > 後端基礎設施 6 feature 全交(007 連線層+config+JWT secret 吸收 `928949d` / 008 envelope Res<T>+12-code 矩陣 `7bdf5bb` / 009 soft-delete 三重防護+entity crate `88312b6` / 010 migration 自動套+migrate gate `e4ff2b2` / 011 audit-log+mutate_in_txn `2be489f` / 012 sub-crate sea-orm-adapter+xdb+casbin 2.20 `774f7b3`),各 feature branch 保留供 audit;詳細 deliverable 見 [DESIGN §10 Phase 2](INTEGRATION-DESIGN.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
 
-### Phase 3 — 認證 + 動態選單 ✅ 全完成+已歸檔 (2026-06-05;#6 受管 RBAC policy 治理層 ✅ 034 補完 2026-06-09、本機 awaiting merge)
+### Phase 3 — 認證 + 動態選單 ✅ 全完成+已歸檔 (2026-06-05;#6 受管 RBAC policy 治理層 ✅ 034 merge `8e95fa1`+推 origin 2026-06-09 → Phase 3 全收)
 
-> **#6 受管 RBAC policy 治理層 ✅ 034-managed-rbac-policy(2026-06-09、已實作+雙審、本機 awaiting merge)** — 架構 B(archive 表、免 fork adapter、§11.6 後端不觸、無 backend amendment)、5 US/5 migration m031-m035。deliverable 詳見 [DESIGN §10 Phase 3 #6](INTEGRATION-DESIGN.md);merge SHA 待 T054 收尾。
+> **#6 受管 RBAC policy 治理層 ✅ 034-managed-rbac-policy(2026-06-09、merge `8e95fa1` --no-ff 回 rev2-admin-root + 推 origin、保留 034 branch)** — 架構 B(archive 表、免 fork adapter、§11.6 後端不觸、無 backend amendment)、5 US/5 migration m031-m035。各單元 spec+code-quality 雙審 + 最終整體 review(16 FR/7 SC 全 MET);US5 回收桶頁 user 親決落 MODAL-WIRING use (e) v1.6.0、不需 amendment。deliverable 詳見 [DESIGN §10 Phase 3 #6](INTEGRATION-DESIGN.md);merge 史見 [MILESTONES §1](INTEGRATION-MILESTONES.md)。
 
 ### Phase 4 — 主流業務 ✅ 全完成+已歸檔 (2026-06-06)
 
