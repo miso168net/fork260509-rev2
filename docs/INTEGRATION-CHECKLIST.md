@@ -239,8 +239,8 @@
 
 ### 2.39 feature 034-managed-rbac-policy follow-up
 
-- [ ] **restore audit payload 過簡(只記 `{archive_id}`、還原後即懸空)**:`restore_policy` + menu restore cascade 的 011 Restore audit 只帶 `archive_id`(archive 列同 txn 刪除→id dangling、forensic 價值低);`restore` facade 的 `RestoreOutcome::Restored` 為 unit variant 無載資料。harden:`Restored` 帶 `(v0,v1,v2)` → handler 寫 `{role, target, dimension}` 有意義審計(零額外 DB round-trip)。屬 facade 簽名變更、deliberate 做(觸 US1/US3/US5)。
-- [ ] **no-op 仍 reload+publish**:`mutate_and_reload` 在 `SetRoleOutcome::Rejected`(protected 拒、零 mutation)+ Applied 空 diff(更新成同集)兩路徑仍無條件 `load_policy()`+publish(idempotent 無害、但浪費一次全量 reload + redis fan-out)。優化:closure 回「是否真 mutate」旗標、no-op 跳過。低頻 admin 路徑、非阻擋。
+- [x] **restore audit payload 過簡(只記 `{archive_id}`、還原後即懸空)→ ✅ 035 US1**:`RestoreOutcome::Restored` 改帶 `{v0,v1,v2}`、`restore_policy` 審計 `payload_after` 改記 `{role, target, dimension}`(新增 `restore_audit_payload` 純函式 + 既有 `dimension_from_v2`、零額外 query、FR-002 還原後仍可解析);menu cascade match 臂同步、summary 審計不改。詳見 [DESIGN §10 Phase 3 #6](INTEGRATION-DESIGN.md)。
+- [x] **no-op 仍 reload+publish → ✅ 035 US2**:新 trait `PolicyMutated`(3 impl)、`mutate_and_reload` 改條件化 `if result.mutated()`、只跳結構性零變更(Rejected / restore NoOp·NotFound / menu 查無);空-diff Applied 與 menu-found-無-policy 仍 reload(刻意、FR-006);`batch_delete_menus` `any_mutated` 追蹤。6 caller 零改、對外逐字不變。詳見 [DESIGN §10 Phase 3 #6](INTEGRATION-DESIGN.md)。
 - [ ] **archive 懸空 cruft GC(D8)**:被刪選單 archive 的 menu-visibility policy 因 route_name 被新選單重用而永不可還原(034 同代隔離後正確不誤復活、但舊代 archive 留為死 cruft)。retention/purge out-of-scope(spec Assumptions);policy 撤銷罕見、archive 小,日後可比照 030 cleanup-job 加 purge。
 - [ ] **REVIEW-DATABASE 12-table live 重稽核**:034 在 REVIEW-DATABASE 記為 worktree as-migrated intent(casbin_rule +3 治理欄 / 新 sys_casbin_policy_archive / sys_menu +protected / m031-m035),既有 11-table 總覽稽核採樣早於 034;12-table live-vs-migration 全重稽核留後續 doc pass。
 - [ ] **dev DB 3 個 `cdp*` 測試殘留 soft-deleted menu**:`sys_menu` 有 3 列 cdp 前綴 epoch-ms 名(`cdpm1_*`/`cdpm2_*`/`cdpx_m_*`、2026-06-02 CDP smoke 殘留、`deleted_at` 非 NULL、`protected=f`),非 production menu、不影響任何守恆計數;dev DB hygiene、可 hard-delete 清。
