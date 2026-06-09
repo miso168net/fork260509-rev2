@@ -272,13 +272,21 @@
 
 ### Phase 3 — 認證 + 動態選單 ✅ 全完成+已歸檔 (2026-06-05;#6 受管 RBAC policy 治理層 ✅ 034 merge `8e95fa1`+推 origin 2026-06-09 → Phase 3 全收)
 
+> 認證 + 動態選單 6 主軸全交:**#1** 登入+getUserInfo(013-auth-login-enforce `ade723d`,首個 Casbin enforce 點)/ **#2** dynamic-routes(014-dynamic-routes `9d06347`,menu 可見性走 Casbin enforce)+ ★ audit-middleware(015-audit-middleware `589a553`,request-context + 2 審計表 + 首個 xdb/INET 消費者)/ **#3** Casbin redis pub-sub(021-manage-menu-auth `827d1e9` 順帶啟用 `casbin:policy:invalidate`)/ **#4** policy seed 矩陣(013 第一刀 + 023-manage-endpoint-auth `ef5ebe0` 交付 runtime 可編輯 + D1 三方守衛)/ **#5** axum-casbin 收口(核心由 013/018/023/026 增量吸收、metrics 尾 ✅ 032)+ ★ auth DRY refactor(026-auth-dry-refactor `4553892`,wire 逐字不變)/ **#6** 受管 RBAC policy 治理層。各 feature branch 保留供 audit;詳細 deliverable 見 [DESIGN §10 Phase 3](INTEGRATION-DESIGN.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
+>
 > **#6 受管 RBAC policy 治理層 ✅ 034-managed-rbac-policy(2026-06-09、merge `8e95fa1` --no-ff 回 rev2-admin-root + 推 origin、保留 034 branch)** — 架構 B(archive 表、免 fork adapter、§11.6 後端不觸、無 backend amendment)、5 US/5 migration m031-m035。各單元 spec+code-quality 雙審 + 最終整體 review(16 FR/7 SC 全 MET);US5 回收桶頁 user 親決落 MODAL-WIRING use (e) v1.6.0、不需 amendment。deliverable 詳見 [DESIGN §10 Phase 3 #6](INTEGRATION-DESIGN.md);merge 史見 [MILESTONES §1](INTEGRATION-MILESTONES.md)。**收尾硬化 ✅ 035-policy-governance-hardening(2026-06-09、merge `e841225`、保留 035 branch、已推 origin)**:收 034 治理 facade 兩內部債 — US1 restore 審計記 `{role,target,dimension}`(取代懸空 archive_id) + US2 no-op reload 跳過(trait `PolicyMutated` 條件化、只跳結構性零變更),純 rust-api、無 migration/端點/crate、對外逐項不變、SC-001~004 全 MET、Constitution v1.6.0 8/8 PASS 無 amendment(詳見 DESIGN §10 Phase 3 #6 治理層收尾硬化 sub-bullet)。
 
 ### Phase 4 — 主流業務 ✅ 全完成+已歸檔 (2026-06-06)
 
+> 主流業務 10 feature 全交:016-manage-role-user-list `5969d08`(讀端三條 + PageRes 骨架)/ 017-manage-user-write `617136d`(user CRUD + sys_user 審計欄 retrofit)/ 018-manage-role-write `8844105`(role CRUD + enforce 改讀 DB-fresh 有效角色)/ 019-manage-menu-list `a07ff13`(menu DB-driven、sys_menu 建表 + 三讀端)/ 020-manage-menu-write `0c73e3b`(menu CRUD)/ 021-manage-menu-auth `827d1e9`(MenuAuth runtime 可見性 + per-role home)/ 022-manage-button-auth `e103de0`(ButtonAuth runtime + toggle-auth 救活)/ 023-manage-endpoint-auth `ef5ebe0`(EndpointAuth runtime + D1 三方守衛)/ 024-button-auth-rollout `64d9bec`(button gating rollout 角色/選單頁)/ 025-menu-restore-reparent `6225bd8`(選單 restore + re-parent)。跨切項 ✅ 隨各端點增量落地(wire shape mapping / alova-only ⊘ moot / 菜單樹 `assemble_menu_tree` / 審計欄 retrofit〔sys_user 017 + sys_role 018〕)。**deferred status/gender wire 細節已補完 ✅ 2026-06-09 經 CDP 全功能巡檢**(見 Phase 7 已勾項)。各 feature branch 保留供 audit;詳細 deliverable 見 [DESIGN §10 Phase 4](INTEGRATION-DESIGN.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
+
 ### Phase 5 — 補位 + 抽離項 ✅ 全完成+已歸檔 (2026-06-06)
 
+> 補位 + 抽離項全交:027-refresh-token-rotation `2d4d8d4`(DB 持久化 rotation chain + 盜用偵測 + SHA-256 雜湊、wire 中性)/ 028-single-session-enforcement `d528e61`(per-account 可控單一 session、policy=開新登入即時踢舊 `7777`、預設 off dormant)/ 029-single-session-admin-ui `1ce835a`(028 policy 的 admin UI + system_settings KV 表 + settings_watcher)/ 030-cleanup-job `d3bc391`(on-demand 過期 sys_token 清理 binary + jti 修同秒撞鍵)。抽離項 stub(`/auth/error`·`sendCaptcha`·`verifyCaptcha`)= ⊘ moot 不實作(僅服務 alova demo 頁、dynamic 模式不可達)。各 feature branch 保留供 audit;詳細 deliverable 見 [DESIGN §10 Phase 5](INTEGRATION-DESIGN.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
+
 ### Phase 6 — 觀察性(可選,生產 ready) ✅ 全完成+已歸檔 (2026-06-08)
+
+> 觀察性(生產 ready)三件全交:031-obs-min `3383828`(opt-in `profiles:[obs]` 純 log 三件套 loki ← alloy → grafana、trace_id 跨服務關聯、72h retention)/ 032-obs-full `a13f85f`(opt-in `profiles:[metrics]` prometheus + 2 exporter + pushgateway → grafana + baseline alert,順閉 Phase 3 #5 enforce metrics 債)/ 033-dashboard-provisioning `3d27cd5`(6 張現成監控面板 provisioning、4 greenfield + 2 community pin)。各 feature branch 保留供 audit;詳細 deliverable 見 [DESIGN §10 Phase 6](INTEGRATION-DESIGN.md) + [MILESTONES](INTEGRATION-MILESTONES.md)。
 
 ### Phase 7 — 維護(持續性)
 
