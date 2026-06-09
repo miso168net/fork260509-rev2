@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-menu/context/index.ts"
+source_file: "base-web/src/layouts/modules/global-menu/context/index.ts"
 type: "code"
-community: "Community 83"
+community: "web: router"
 location: "L9"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_83
+  - community/web_router
 ---
 
 # [provideMixMenuContext, useMixMenuContext]
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[index.ts_22]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_83
+#graphify/code #graphify/EXTRACTED #community/web_router

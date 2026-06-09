@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/dark.json"
+source_file: "base-web/src/theme/preset/dark.json"
 type: "code"
-community: "Community 98"
+community: "web: tab"
 location: "L45"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_98
+  - community/web_tab
 ---
 
 # closeTabByMiddleClick
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[tab_2]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_98
+#graphify/code #graphify/EXTRACTED #community/web_tab

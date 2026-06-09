@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/src/shared/colord.ts"
+source_file: "base-web/packages/color/src/shared/colord.ts"
 type: "code"
-community: "Alova Request Adapter (+docs)"
+community: "Theme & Color Config (web)"
 location: "L65"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Alova_Request_Adapter_docs
+  - community/Theme__Color_Config_web
 ---
 
 # transformColorWithOpacity()
@@ -17,4 +17,4 @@ tags:
 - [[createTabCssVars()]] - `calls` [EXTRACTED]
 - [[shared.ts_2]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Alova_Request_Adapter_docs
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

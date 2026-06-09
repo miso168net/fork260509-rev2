@@ -1,22 +1,20 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/dark.json"
+source_file: "base-web/src/theme/preset/azir.json"
 type: "code"
-community: "Community 62"
-location: "L84"
+community: "Theme Tokens (web)"
+location: "L31"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_62
+  - community/Theme_Tokens_web
 ---
 
 # colors
 
 ## Connections
-- [[base-text_1]] - `contains` [EXTRACTED]
-- [[container_1]] - `contains` [EXTRACTED]
-- [[dark_2]] - `contains` [EXTRACTED]
-- [[inverted_2]] - `contains` [EXTRACTED]
-- [[layout_1]] - `contains` [EXTRACTED]
-- [[light_2]] - `contains` [EXTRACTED]
+- [[base-text]] - `contains` [EXTRACTED]
+- [[container]] - `contains` [EXTRACTED]
+- [[dark_1]] - `contains` [EXTRACTED]
+- [[layout]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_62
+#graphify/code #graphify/EXTRACTED #community/Theme_Tokens_web

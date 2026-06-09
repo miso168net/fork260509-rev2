@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/common/router.ts"
+source_file: "base-web/src/hooks/common/router.ts"
 type: "code"
-community: "Community 83"
+community: "web: router"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_83
+  - community/web_router
 ---
 
 # router.ts
@@ -19,4 +19,4 @@ tags:
 - [[router]] - `imports` [EXTRACTED]
 - [[useRouterPush()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_83
+#graphify/code #graphify/EXTRACTED #community/web_router

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/package.json"
+source_file: "base-web/packages/color/package.json"
 type: "code"
-community: "Routing Guide Docs (CN/JP)"
+community: "web: package"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Routing_Guide_Docs_CN/JP
+  - community/web_package
 ---
 
 # package.json
@@ -14,8 +14,8 @@ tags:
 ## Connections
 - [[dependencies_3]] - `contains` [EXTRACTED]
 - [[exports_2]] - `contains` [EXTRACTED]
-- [[name_3]] - `contains` [EXTRACTED]
+- [[name_4]] - `contains` [EXTRACTED]
 - [[typesVersions_2]] - `contains` [EXTRACTED]
 - [[version_4]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Routing_Guide_Docs_CN/JP
+#graphify/code #graphify/EXTRACTED #community/web_package

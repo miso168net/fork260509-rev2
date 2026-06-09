@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/tsconfig.json"
+source_file: "base-web/packages/color/tsconfig.json"
 type: "code"
-community: "Per-Package TSConfig (sub-29)"
+community: "web: tsconfig"
 location: "L4"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-29
+  - community/web_tsconfig
 ---
 
 # jsx
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[compilerOptions_3]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-29
+#graphify/code #graphify/EXTRACTED #community/web_tsconfig

@@ -1,17 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/service-alova/api/system-manage.ts"
+source_file: "base-web/src/service/api/system-manage.ts"
 type: "code"
-community: "API Service Aliases (auth/captcha)"
-location: "L18"
+community: "System-Manage API Calls (web)"
+location: "L25"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/API_Service_Aliases_auth/captcha
+  - community/System-Manage_API_Calls_web
 ---
 
 # fetchGetUserList()
 
 ## Connections
-- [[system-manage.ts_1]] - `contains` [EXTRACTED]
+- [[request]] - `calls` [EXTRACTED]
+- [[system-manage.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha
+#graphify/code #graphify/EXTRACTED #community/System-Manage_API_Calls_web

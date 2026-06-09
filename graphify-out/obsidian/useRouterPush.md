@@ -1,20 +1,21 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/common/router.ts"
+source_file: "base-web/src/components/common/exception-base.vue"
 type: "code"
-community: "Global Layout Components"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Global_Layout_Components
+  - community/Global_App_Types__Provider_web
 ---
 
 # useRouterPush
 
 ## Connections
+- [[ExceptionBase]] - `calls` [EXTRACTED]
 - [[GlobalBreadcrumb]] - `calls` [EXTRACTED]
-- [[HorizontalMenu]] - `calls` [EXTRACTED]
-- [[TopHybridHeaderFirst]] - `calls` [EXTRACTED]
-- [[UserAvatar]] - `shares_data_with` [INFERRED]
-- [[useMixMenuContext]] - `calls` [EXTRACTED]
+- [[HorizontalMenu]] - `references` [EXTRACTED]
+- [[UserAvatar]] - `references` [EXTRACTED]
+- [[VerticalMenu]] - `references` [EXTRACTED]
+- [[useMixMenu()]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Global_Layout_Components
+#graphify/code #graphify/EXTRACTED #community/Global_App_Types__Provider_web

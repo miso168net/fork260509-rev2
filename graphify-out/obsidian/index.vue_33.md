@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/manage/user/index.vue"
+source_file: "base-web/src/views/manage/role/index.vue"
 type: "code"
-community: "Community 169"
+community: "web: vue"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_169
+  - community/web_vue
 ---
 
 # index.vue
 
 ## Connections
-- [[label_2]] - `contains` [EXTRACTED]
+- [[label_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_169
+#graphify/code #graphify/EXTRACTED #community/web_vue

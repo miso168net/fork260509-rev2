@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/store/modules/route/shared.ts"
+source_file: "base-web/src/store/modules/route/shared.ts"
 type: "code"
-community: "SVG Icon System"
+community: "Route & SVG Icon (web)"
 location: "L12"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/SVG_Icon_System
+  - community/Route__SVG_Icon_web
 ---
 
 # filterAuthRoutesByRoles()
@@ -14,5 +14,7 @@ tags:
 ## Connections
 - [[index.ts_35]] - `imports` [EXTRACTED]
 - [[shared.ts_6]] - `contains` [EXTRACTED]
+- [[useAuthStore]] - `shares_data_with` [INFERRED]
+- [[useRouteStore]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/SVG_Icon_System
+#graphify/code #graphify/EXTRACTED #community/Route__SVG_Icon_web

@@ -1,16 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/full-screen.vue"
+source_file: "base-web/src/components/common/full-screen.vue"
 type: "code"
-community: "Community 143"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_143
+  - community/Global_App_Types__Provider_web
 ---
 
 # FullScreen
 
 ## Connections
-- [[ExceptionBase]] - `semantically_similar_to` [INFERRED]
+- [[ButtonIcon]] - `references` [INFERRED]
+- [[ReloadButton]] - `semantically_similar_to` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Community_143
+#graphify/code #graphify/INFERRED #community/Global_App_Types__Provider_web

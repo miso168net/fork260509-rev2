@@ -1,14 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/elegant-router.d.ts"
+source_file: "base-web/src/typings/elegant-router.d.ts"
 type: "code"
-community: "Community 227"
-location: "L267"
+community: "web: elegant"
+location: "L271"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_227
+  - community/web_elegant
 ---
 
 # CustomFirstLevelRouteNotSingleKey
 
-#graphify/code #graphify/EXTRACTED #community/Community_227
+## Connections
+- [[elegant-router.d.ts]] - `contains` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/web_elegant

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/naive-ui.d.ts"
+source_file: "base-web/src/typings/naive-ui.d.ts"
 type: "code"
-community: "Community 60"
+community: "web: naive"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_60
+  - community/web_naive
 ---
 
 # naive-ui.d.ts
@@ -20,8 +20,9 @@ tags:
 - [[TableColumn]] - `contains` [EXTRACTED]
 - [[TableColumnCheck_1]] - `contains` [EXTRACTED]
 - [[TableColumnFixed]] - `contains` [EXTRACTED]
+- [[TableColumnGroup]] - `contains` [EXTRACTED]
 - [[TableColumnWithKey]] - `contains` [EXTRACTED]
 - [[TableOperateType]] - `contains` [EXTRACTED]
 - [[ThemeColor_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_60
+#graphify/code #graphify/EXTRACTED #community/web_naive

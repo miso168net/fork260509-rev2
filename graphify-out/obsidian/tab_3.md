@@ -1,23 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/default.json"
+source_file: "base-web/src/theme/preset/dark.json"
 type: "code"
-community: "Community 100"
-location: "L40"
+community: "web: header"
+location: "L80"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_100
+  - community/web_header
 ---
 
 # tab
 
 ## Connections
-- [[boxShadow_2]] - `contains` [EXTRACTED]
-- [[cache_2]] - `contains` [EXTRACTED]
-- [[closeTabByMiddleClick_2]] - `contains` [EXTRACTED]
-- [[default.json]] - `contains` [EXTRACTED]
-- [[height_2]] - `contains` [EXTRACTED]
-- [[mode_2]] - `contains` [EXTRACTED]
-- [[visible_2]] - `contains` [EXTRACTED]
+- [[boxShadow_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_100
+#graphify/code #graphify/EXTRACTED #community/web_header

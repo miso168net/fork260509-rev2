@@ -1,18 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-header/components/user-avatar.vue"
+source_file: "base-web/src/layouts/modules/global-header/components/user-avatar.vue"
 type: "code"
-community: "API Service Aliases (auth/captcha)"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/API_Service_Aliases_auth/captcha
+  - community/Global_App_Types__Provider_web
 ---
 
 # UserAvatar
 
 ## Connections
-- [[GlobalHeader]] - `references` [EXTRACTED]
-- [[useRouterPush()]] - `shares_data_with` [INFERRED]
-- [[useSvgIcon()]] - `calls` [EXTRACTED]
+- [[useAuthStore_1]] - `references` [EXTRACTED]
+- [[useRouterPush]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha
+#graphify/code #graphify/EXTRACTED #community/Global_App_Types__Provider_web

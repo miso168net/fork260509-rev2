@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-docs/package.json"
 type: "code"
-community: "Route Helpers & Tab Filters"
+community: "docs: vitepress"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Route_Helpers__Tab_Filters
+  - community/docs_vitepress
 ---
 
 # soybean-admin-docs package.json (VitePress 1.6.4 site)
@@ -15,4 +15,4 @@ tags:
 - [[VitePress config (locales enzhjp, sidebar, algolia)]] - `references` [INFERRED]
 - [[eslint.config.js (@soybeanjseslint-config + markdown formatter)]] - `references` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Route_Helpers__Tab_Filters
+#graphify/code #graphify/INFERRED #community/docs_vitepress

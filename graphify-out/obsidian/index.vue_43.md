@@ -1,17 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/excel/index.vue"
+source_file: "base-web/src/views/plugin/editor/markdown/index.vue"
 type: "code"
-community: "Community 148"
+community: "web: vue"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_148
+  - community/web_vue
 ---
 
 # index.vue
 
-## Connections
-- [[label_3]] - `contains` [EXTRACTED]
-
-#graphify/code #graphify/EXTRACTED #community/Community_148
+#graphify/code #graphify/EXTRACTED #community/web_vue

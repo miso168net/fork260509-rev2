@@ -1,11 +1,11 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/utils/src/crypto.ts"
+source_file: "base-web/packages/utils/src/crypto.ts"
 type: "code"
-community: "Community 134"
+community: "web: crypto"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_134
+  - community/web_crypto
 ---
 
 # Crypto
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[createStorage]] - `conceptually_related_to` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Community_134
+#graphify/code #graphify/INFERRED #community/web_crypto

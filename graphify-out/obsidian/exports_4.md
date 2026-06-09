@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/package.json"
+source_file: "base-web/packages/materials/package.json"
 type: "code"
-community: "Community 65"
+community: "web: package"
 location: "L11"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_65
+  - community/web_package
 ---
 
 # exports
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[package.json_5]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_65
+#graphify/code #graphify/EXTRACTED #community/web_package

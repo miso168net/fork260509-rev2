@@ -1,0 +1,88 @@
+---
+source_file: "rust-api/server/src/model/facade/sys_casbin_rule.rs"
+type: "code"
+community: "Casbin Policy Archive & Enforcer (rust)"
+location: "L1"
+tags:
+  - graphify/code
+  - graphify/EXTRACTED
+  - community/Casbin_Policy_Archive__Enforcer_rust
+---
+
+# sys_casbin_rule.rs
+
+## Connections
+- [[DiffPlan]] - `contains` [EXTRACTED]
+- [[Dimension]] - `contains` [EXTRACTED]
+- [[RestoreOutcome_1]] - `contains` [EXTRACTED]
+- [[RevokeOutcome]] - `contains` [EXTRACTED]
+- [[SetRoleOutcome_1]] - `contains` [EXTRACTED]
+- [[archive_count_for_role()]] - `contains` [EXTRACTED]
+- [[archive_rows()]] - `contains` [EXTRACTED]
+- [[archive_rows_us2()]] - `contains` [EXTRACTED]
+- [[archive_snapshot_active_model_builds_correct_insert_sql()]] - `contains` [EXTRACTED]
+- [[archives_for_route()]] - `contains` [EXTRACTED]
+- [[audit_rows()]] - `contains` [EXTRACTED]
+- [[clean()]] - `contains` [EXTRACTED]
+- [[clean_audit()]] - `contains` [EXTRACTED]
+- [[clean_regen()]] - `contains` [EXTRACTED]
+- [[clean_us2()]] - `contains` [EXTRACTED]
+- [[connect()_1]] - `contains` [EXTRACTED]
+- [[current()]] - `contains` [EXTRACTED]
+- [[desired()]] - `contains` [EXTRACTED]
+- [[diff_plan()]] - `contains` [EXTRACTED]
+- [[diff_plan_dedups_duplicate_desired()]] - `contains` [EXTRACTED]
+- [[diff_plan_empty_desired_no_protected_clears_cleanly()]] - `contains` [EXTRACTED]
+- [[diff_plan_empty_desired_removes_all_and_flags_protected()]] - `contains` [EXTRACTED]
+- [[diff_plan_endpoint_pair_dimension()]] - `contains` [EXTRACTED]
+- [[diff_plan_keeping_protected_row_is_fine()]] - `contains` [EXTRACTED]
+- [[diff_plan_noop_when_current_equals_desired()]] - `contains` [EXTRACTED]
+- [[diff_plan_omitting_protected_row_flags_rejection()]] - `contains` [EXTRACTED]
+- [[diff_plan_same_path_different_method_are_distinct()]] - `contains` [EXTRACTED]
+- [[diff_plan_string_dimension_basic()]] - `contains` [EXTRACTED]
+- [[enforce()]] - `contains` [EXTRACTED]
+- [[enforce_menu()]] - `contains` [EXTRACTED]
+- [[grant()]] - `contains` [EXTRACTED]
+- [[grant_active_model_builds_correct_insert_sql()]] - `contains` [EXTRACTED]
+- [[grant_event()]] - `contains` [EXTRACTED]
+- [[grant_menu_vis()]] - `contains` [EXTRACTED]
+- [[grant_regen()]] - `contains` [EXTRACTED]
+- [[live_all()]] - `contains` [EXTRACTED]
+- [[live_audit_failure_rolls_back_grant()]] - `contains` [EXTRACTED]
+- [[live_drift3_rebuild_same_name_zero_inheritance()]] - `contains` [EXTRACTED]
+- [[live_for_role()]] - `contains` [EXTRACTED]
+- [[live_grant_round_trip_and_audit()]] - `contains` [EXTRACTED]
+- [[live_menu_restore_brings_policy_back()]] - `contains` [EXTRACTED]
+- [[live_menu_soft_delete_cascades_policy()]] - `contains` [EXTRACTED]
+- [[live_menu_vis_count()]] - `contains` [EXTRACTED]
+- [[live_protected_kept_applies_normally()]] - `contains` [EXTRACTED]
+- [[live_protected_removal_rejects_whole_batch()]] - `contains` [EXTRACTED]
+- [[live_protected_seed_is_correct()]] - `contains` [EXTRACTED]
+- [[live_regen_restore_only_own_generation()]] - `contains` [EXTRACTED]
+- [[live_replace_one_dimension_leaves_others_untouched()]] - `contains` [EXTRACTED]
+- [[live_restore_audit_records_role_target_dimension()]] - `contains` [EXTRACTED]
+- [[live_restore_brings_back_and_allows()]] - `contains` [EXTRACTED]
+- [[live_restore_noop_when_already_live()]] - `contains` [EXTRACTED]
+- [[live_revoke_archives_and_denies()]] - `contains` [EXTRACTED]
+- [[live_revoke_protected_is_rejected()]] - `contains` [EXTRACTED]
+- [[live_row()]] - `contains` [EXTRACTED]
+- [[live_row_us2()]] - `contains` [EXTRACTED]
+- [[live_set()]] - `contains` [EXTRACTED]
+- [[live_set_button_hard_replace()]] - `contains` [EXTRACTED]
+- [[live_set_endpoint_hard_replace_multi_method()]] - `contains` [EXTRACTED]
+- [[live_set_menu_hard_replace()]] - `contains` [EXTRACTED]
+- [[menu_deleted_at_set()]] - `contains` [EXTRACTED]
+- [[pairs()]] - `contains` [EXTRACTED]
+- [[replace()]] - `contains` [EXTRACTED]
+- [[restore()]] - `contains` [EXTRACTED]
+- [[restore_event()]] - `contains` [EXTRACTED]
+- [[revoke()]] - `contains` [EXTRACTED]
+- [[revoke_event()]] - `contains` [EXTRACTED]
+- [[roles_with_menu_visibility()]] - `contains` [EXTRACTED]
+- [[seed_grant()]] - `contains` [EXTRACTED]
+- [[seed_menu()]] - `contains` [EXTRACTED]
+- [[set_role_dimension()]] - `contains` [EXTRACTED]
+- [[sorted()]] - `contains` [EXTRACTED]
+- [[test_enforce()]] - `contains` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/Casbin_Policy_Archive__Enforcer_rust

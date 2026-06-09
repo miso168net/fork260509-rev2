@@ -1,19 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/locales/index.ts"
+source_file: "base-web/src/locales/index.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "web: vchart"
 location: "L24"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - community/web_vchart
 ---
 
 # setLocale()
 
 ## Connections
-- [[App.I18n.LangType (zh-CNen-US)]] - `references` [EXTRACTED]
 - [[index.ts_23]] - `contains` [EXTRACTED]
 - [[index.ts_33]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/EXTRACTED #community/web_vchart

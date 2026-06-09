@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/elegant-router.d.ts"
+source_file: "base-web/src/typings/elegant-router.d.ts"
 type: "code"
-community: "Route Type Hierarchy"
+community: "web: elegant"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Route_Type_Hierarchy
+  - community/web_elegant
 ---
 
 # elegant-router.d.ts
@@ -42,4 +42,4 @@ tags:
 - [[SingleLevelRoute]] - `contains` [EXTRACTED]
 - [[SingleLevelRouteKey]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Route_Type_Hierarchy
+#graphify/code #graphify/EXTRACTED #community/web_elegant

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/azir.json"
+source_file: "base-web/src/theme/preset/azir.json"
 type: "code"
-community: "Naive UI Theme Tokens"
+community: "Theme Tokens (web)"
 location: "L49"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Naive_UI_Theme_Tokens
+  - community/Theme_Tokens_web
 ---
 
 # borderRadius
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[Input]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Naive_UI_Theme_Tokens
+#graphify/code #graphify/EXTRACTED #community/Theme_Tokens_web

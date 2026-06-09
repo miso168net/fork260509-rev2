@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/utils/src/klona.ts"
+source_file: "base-web/packages/utils/src/klona.ts"
 type: "code"
-community: "Community 50"
+community: "Auth Store (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_50
+  - community/Auth_Store_web
 ---
 
 # klona.ts
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[index.ts_20]] - `re_exports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_50
+#graphify/code #graphify/EXTRACTED #community/Auth_Store_web

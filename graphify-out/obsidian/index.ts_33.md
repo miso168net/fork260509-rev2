@@ -1,18 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/store/modules/app/index.ts"
+source_file: "base-web/src/store/modules/app/index.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "web: vchart"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - community/web_vchart
 ---
 
 # index.ts
 
 ## Connections
-- [[$t (i18n global translator)]] - `imports` [EXTRACTED]
 - [[SetupStoreId]] - `imports` [EXTRACTED]
 - [[dayjs.ts]] - `imports_from` [EXTRACTED]
 - [[index.ts_7]] - `imports_from` [EXTRACTED]
@@ -33,4 +32,4 @@ tags:
 - [[useTabStore]] - `imports` [EXTRACTED]
 - [[useThemeStore]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/EXTRACTED #community/web_vchart

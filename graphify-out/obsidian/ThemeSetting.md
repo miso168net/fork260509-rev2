@@ -1,20 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/app.d.ts"
+source_file: "base-web/src/typings/app.d.ts"
 type: "code"
-community: "Elegant Router DSL"
+community: "App Type Declarations (web)"
 location: "L11"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Elegant_Router_DSL
+  - community/App_Type_Declarations_web
 ---
 
 # ThemeSetting
 
 ## Connections
-- [[App.Theme.ThemeSetting]] - `implements` [EXTRACTED]
 - [[app.d.ts]] - `contains` [EXTRACTED]
-- [[settings.ts]] - `contains` [EXTRACTED]
-- [[shared.ts_8]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Elegant_Router_DSL
+#graphify/code #graphify/EXTRACTED #community/App_Type_Declarations_web

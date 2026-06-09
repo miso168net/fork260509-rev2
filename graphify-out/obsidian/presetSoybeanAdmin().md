@@ -1,19 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/uno-preset/src/index.ts"
+source_file: "base-web/packages/uno-preset/src/index.ts"
 type: "code"
-community: "Community 53"
+community: "Theme & Color Config (web)"
 location: "L6"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_53
+  - community/Theme__Color_Config_web
 ---
 
 # presetSoybeanAdmin()
 
 ## Connections
-- [[UnoCSS Shortcuts]] - `implements` [INFERRED]
 - [[index.ts_19]] - `contains` [EXTRACTED]
 - [[uno.config.ts]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_53
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

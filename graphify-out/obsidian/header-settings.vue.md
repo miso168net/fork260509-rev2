@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/header-settings.vue"
+source_file: "base-web/src/layouts/modules/theme-drawer/modules/layout/modules/header-settings.vue"
 type: "code"
-community: "Community 212"
+community: "web: header"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_212
+  - community/web_header
 ---
 
 # header-settings.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_212
+#graphify/code #graphify/EXTRACTED #community/web_header

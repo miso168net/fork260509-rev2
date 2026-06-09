@@ -1,13 +1,13 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/common/form.ts"
+source_file: "base-web/src/hooks/common/form.ts"
 type: "code"
-community: "Community 313"
+community: "web: usenaiveform"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_313
+  - community/web_usenaiveform
 ---
 
 # useNaiveForm
 
-#graphify/code #graphify/EXTRACTED #community/Community_313
+#graphify/code #graphify/EXTRACTED #community/web_usenaiveform

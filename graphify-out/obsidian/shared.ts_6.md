@@ -1,19 +1,19 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/store/modules/route/shared.ts"
+source_file: "base-web/src/store/modules/route/shared.ts"
 type: "code"
-community: "Community 45"
+community: "Route & SVG Icon (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_45
+  - community/Route__SVG_Icon_web
 ---
 
 # shared.ts
 
 ## Connections
-- [[$t (i18n global translator)]] - `imports` [EXTRACTED]
 - [[filterAuthRouteByRoles()]] - `contains` [EXTRACTED]
+- [[filterAuthRoutesByRoles()]] - `contains` [EXTRACTED]
 - [[findMenuPath()]] - `contains` [EXTRACTED]
 - [[getBreadcrumbsByRoute()]] - `contains` [EXTRACTED]
 - [[getCacheRouteNames()]] - `contains` [EXTRACTED]
@@ -26,9 +26,10 @@ tags:
 - [[isRouteExistByRouteName()]] - `contains` [EXTRACTED]
 - [[recursiveGetIsRouteExistByRouteName()]] - `contains` [EXTRACTED]
 - [[sortRouteByOrder()]] - `contains` [EXTRACTED]
+- [[sortRoutesByOrder()]] - `contains` [EXTRACTED]
 - [[transformMenuToBreadcrumb()]] - `contains` [EXTRACTED]
 - [[transformMenuToSearchMenus()]] - `contains` [EXTRACTED]
 - [[updateLocaleOfGlobalMenus()]] - `contains` [EXTRACTED]
 - [[useSvgIcon()]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_45
+#graphify/code #graphify/EXTRACTED #community/Route__SVG_Icon_web

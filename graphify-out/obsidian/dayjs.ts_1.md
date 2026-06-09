@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/plugins/dayjs.ts"
+source_file: "base-web/src/plugins/dayjs.ts"
 type: "code"
-community: "Dev Dependencies"
+community: "App Bootstrap (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Dev_Dependencies
+  - community/App_Bootstrap_web
 ---
 
 # dayjs.ts
@@ -17,4 +17,4 @@ tags:
 - [[setDayjsLocale()]] - `imports` [EXTRACTED]
 - [[setupDayjs()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Dev_Dependencies
+#graphify/code #graphify/EXTRACTED #community/App_Bootstrap_web

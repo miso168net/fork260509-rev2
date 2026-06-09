@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/azir.json"
+source_file: "base-web/packages/utils/package.json"
 type: "code"
-community: "Global Type Declarations"
+community: "web: crypto"
 location: "L2"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Global_Type_Declarations
+  - community/web_crypto
 ---
 
 # name
 
 ## Connections
-- [[azir.json]] - `contains` [EXTRACTED]
+- [[package.json_8]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Global_Type_Declarations
+#graphify/code #graphify/EXTRACTED #community/web_crypto

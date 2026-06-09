@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/router/routes/index.ts"
+source_file: "base-web/src/router/routes/index.ts"
 type: "code"
-community: "Router Guard Flow (diagram)"
+community: "web: route"
 location: "L11"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Router_Guard_Flow_diagram
+  - community/web_route
 ---
 
 # customRoutes
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[index.ts_27]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Router_Guard_Flow_diagram
+#graphify/code #graphify/EXTRACTED #community/web_route

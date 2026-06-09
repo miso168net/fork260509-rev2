@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/theme-schema-switch.vue"
+source_file: "base-web/src/components/common/theme-schema-switch.vue"
 type: "code"
-community: "Community 193"
+community: "web: theme"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_193
+  - community/web_theme
 ---
 
 # theme-schema-switch.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_193
+#graphify/code #graphify/EXTRACTED #community/web_theme

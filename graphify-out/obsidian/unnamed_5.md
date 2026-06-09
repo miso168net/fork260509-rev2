@@ -1,19 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/scripts/package.json"
+source_file: "base-web/packages/scripts/package.json"
 type: "code"
-community: "Color Palette Engine"
+community: "Build/Release Scripts (web)"
 location: "L9"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Build/Release_Scripts_web
 ---
 
 # *
 
 ## Connections
-- [[scriptsbin entry]] - `references` [EXTRACTED]
-- [[scriptssrcindex]] - `references` [EXTRACTED]
 - [[typesVersions_5]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Build/Release_Scripts_web

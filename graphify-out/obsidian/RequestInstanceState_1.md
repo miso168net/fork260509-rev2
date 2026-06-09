@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/service-alova/request/type.ts"
+source_file: "base-web/src/service-alova/request/type.ts"
 type: "code"
-community: "Community 66"
+community: "web: constant"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_66
+  - community/web_constant
 ---
 
 # RequestInstanceState
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[type.ts_3]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_66
+#graphify/code #graphify/EXTRACTED #community/web_constant

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/home/modules/pie-chart.vue"
+source_file: "base-web/src/views/home/modules/pie-chart.vue"
 type: "code"
-community: "Community 163"
+community: "web: pie"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_163
+  - community/web_pie
 ---
 
 # pie-chart.vue
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[originOpts_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_163
+#graphify/code #graphify/EXTRACTED #community/web_pie

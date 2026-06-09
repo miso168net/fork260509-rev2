@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/alova/src/constant.ts"
+source_file: "base-web/packages/alova/src/constant.ts"
 type: "code"
-community: "Build & Release Scripts"
+community: "web: constant"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Build__Release_Scripts
+  - community/web_constant
 ---
 
 # constant.ts
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[index.ts]] - `re_exports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Build__Release_Scripts
+#graphify/code #graphify/EXTRACTED #community/web_constant

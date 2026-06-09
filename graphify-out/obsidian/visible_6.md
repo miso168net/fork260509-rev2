@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/dark.json"
+source_file: "base-web/src/theme/preset/dark.json"
 type: "code"
-community: "Community 71"
+community: "web: visible"
 location: "L34"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_71
+  - community/web_visible
 ---
 
 # visible
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[multilingual_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_71
+#graphify/code #graphify/EXTRACTED #community/web_visible

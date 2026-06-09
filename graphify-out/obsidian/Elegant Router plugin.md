@@ -1,19 +1,19 @@
 ---
-source_file: ""
+source_file: "fork260509-soybean-admin-docs/src/guide/router/intro.md"
 type: "concept"
-community: "Community 96"
+community: "docs: route"
 tags:
   - graphify/concept
   - graphify/EXTRACTED
-  - community/Community_96
+  - community/docs_route
 ---
 
 # Elegant Router plugin
 
 ## Connections
-- [[JP Guide Intro]] - `mentions` [EXTRACTED]
-- [[JP Route Creation]] - `depends_on` [EXTRACTED]
-- [[JP Router Cache]] - `depends_on` [EXTRACTED]
-- [[JP Router Intro]] - `documents` [EXTRACTED]
+- [[Project directory structure (jp)]] - `references` [EXTRACTED]
+- [[Route keepAlive caching]] - `references` [EXTRACTED]
+- [[SoybeanAdmin (jp intro)]] - `references` [EXTRACTED]
+- [[type RouteKey]] - `references` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Community_96
+#graphify/concept #graphify/EXTRACTED #community/docs_route

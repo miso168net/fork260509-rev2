@@ -1,20 +1,20 @@
 ---
-source_file: "fork260509-soybean-admin-base/package.json"
+source_file: "base-web/package.json"
 type: "code"
-community: "Global Layout Components"
+community: "web: url"
 location: "L20"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Global_Layout_Components
+  - community/web_url
 ---
 
 # author
 
 ## Connections
 - [[email]] - `contains` [EXTRACTED]
-- [[name]] - `contains` [EXTRACTED]
+- [[name_1]] - `contains` [EXTRACTED]
 - [[package.json]] - `contains` [EXTRACTED]
-- [[url]] - `contains` [EXTRACTED]
+- [[url_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Global_Layout_Components
+#graphify/code #graphify/EXTRACTED #community/web_url

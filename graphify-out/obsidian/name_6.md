@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/scripts/package.json"
+source_file: "base-web/packages/materials/package.json"
 type: "code"
-community: "Color Palette Engine"
+community: "web: package"
 location: "L2"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/web_package
 ---
 
 # name
 
 ## Connections
-- [[package.json_6]] - `contains` [EXTRACTED]
+- [[package.json_5]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/web_package

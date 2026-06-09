@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/icon-tooltip.vue"
+source_file: "base-web/src/components/common/icon-tooltip.vue"
 type: "code"
-community: "Community 187"
+community: "web: icon"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_187
+  - community/web_icon
 ---
 
 # icon-tooltip.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_187
+#graphify/code #graphify/EXTRACTED #community/web_icon

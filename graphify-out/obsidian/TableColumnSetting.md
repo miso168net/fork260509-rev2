@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/advanced/table-column-setting.vue"
+source_file: "base-web/src/components/advanced/table-column-setting.vue"
 type: "code"
-community: "Community 124"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
-  - graphify/INFERRED
-  - community/Community_124
+  - graphify/EXTRACTED
+  - community/Global_App_Types__Provider_web
 ---
 
 # TableColumnSetting
 
 ## Connections
-- [[Table Column Settings Model]] - `implements` [INFERRED]
-- [[TableHeaderOperation]] - `shares_data_with` [INFERRED]
+- [[ButtonIcon]] - `references` [INFERRED]
+- [[TableHeaderOperation]] - `shares_data_with` [EXTRACTED]
 
-#graphify/code #graphify/INFERRED #community/Community_124
+#graphify/code #graphify/EXTRACTED #community/Global_App_Types__Provider_web

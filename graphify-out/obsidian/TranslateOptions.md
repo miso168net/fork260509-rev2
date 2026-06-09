@@ -1,17 +1,16 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/app.d.ts"
+source_file: "base-web/src/utils/common.ts"
 type: "code"
-community: "Theme Constants & Maps"
-location: "L859"
+community: "web: transformrecordtooption"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Theme_Constants__Maps
+  - graphify/INFERRED
+  - community/web_transformrecordtooption
 ---
 
-# TranslateOptions
+# translateOptions
 
 ## Connections
-- [[app.d.ts]] - `contains` [EXTRACTED]
+- [[transformRecordToOption]] - `conceptually_related_to` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Theme_Constants__Maps
+#graphify/code #graphify/INFERRED #community/web_transformrecordtooption

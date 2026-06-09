@@ -1,18 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/App.vue"
+source_file: "base-web/src/App.vue"
 type: "code"
-community: "App Bootstrap & Providers"
+community: "web: icon"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/App_Bootstrap__Providers
+  - community/web_icon
 ---
 
 # App.vue
 
 ## Connections
-- [[AppProvider]] - `references` [EXTRACTED]
-- [[ContextHolder]] - `shares_data_with` [INFERRED]
-- [[setupApp()]] - `references` [EXTRACTED]
+- [[setupApp]] - `references` [EXTRACTED]
+- [[useAppStore (consumed by App)]] - `shares_data_with` [EXTRACTED]
+- [[useThemeStore (consumed by App)]] - `shares_data_with` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/App_Bootstrap__Providers
+#graphify/code #graphify/EXTRACTED #community/web_icon

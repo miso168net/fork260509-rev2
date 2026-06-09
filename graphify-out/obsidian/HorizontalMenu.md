@@ -1,19 +1,21 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-menu/modules/horizontal-menu.vue"
+source_file: "base-web/src/layouts/modules/global-menu/modules/horizontal-menu.vue"
 type: "code"
-community: "Community 83"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_83
+  - community/Global_App_Types__Provider_web
 ---
 
 # HorizontalMenu
 
 ## Connections
+- [[GLOBAL_HEADER_MENU_ID_1]] - `references` [EXTRACTED]
 - [[GlobalMenu]] - `references` [EXTRACTED]
-- [[VerticalMenu]] - `semantically_similar_to` [INFERRED]
+- [[Teleport-based menu mounting]] - `rationale_for` [INFERRED]
 - [[useMenu()]] - `calls` [EXTRACTED]
-- [[useRouterPush()]] - `calls` [EXTRACTED]
+- [[useRouteStore_1]] - `references` [EXTRACTED]
+- [[useRouterPush]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_83
+#graphify/code #graphify/EXTRACTED #community/Global_App_Types__Provider_web

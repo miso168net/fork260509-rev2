@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/src/palette/antd.ts"
+source_file: "base-web/packages/color/src/palette/antd.ts"
 type: "code"
-community: "Color Conversion (colord/antd)"
+community: "Theme & Color Config (web)"
 location: "L50"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Conversion_colord/antd
+  - community/Theme__Color_Config_web
 ---
 
 # darkColorMap
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[antd.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Conversion_colord/antd
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

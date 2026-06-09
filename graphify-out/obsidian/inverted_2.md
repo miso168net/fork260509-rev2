@@ -1,18 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/dark.json"
+source_file: "base-web/src/theme/preset/dark.json"
 type: "code"
-community: "Community 62"
+community: "web: sider"
 location: "L49"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_62
+  - community/web_sider
 ---
 
 # inverted
 
 ## Connections
-- [[colors_1]] - `contains` [EXTRACTED]
 - [[sider_2]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_62
+#graphify/code #graphify/EXTRACTED #community/web_sider

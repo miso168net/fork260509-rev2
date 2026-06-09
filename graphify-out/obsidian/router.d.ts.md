@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/router.d.ts"
+source_file: "base-web/src/typings/router.d.ts"
 type: "code"
-community: "Community 168"
+community: "web: router"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_168
+  - community/web_router
 ---
 
 # router.d.ts
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[RouteMeta]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_168
+#graphify/code #graphify/EXTRACTED #community/web_router

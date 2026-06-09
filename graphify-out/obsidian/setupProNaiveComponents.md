@@ -1,16 +1,13 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/plugins/components.ts"
+source_file: "base-web/src/plugins/components.ts"
 type: "code"
-community: "App Bootstrap & Providers"
+community: "web: setuppronaivecomponents"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/App_Bootstrap__Providers
+  - community/web_setuppronaivecomponents
 ---
 
 # setupProNaiveComponents
 
-## Connections
-- [[plugins index barrel]] - `references` [EXTRACTED]
-
-#graphify/code #graphify/EXTRACTED #community/App_Bootstrap__Providers
+#graphify/code #graphify/EXTRACTED #community/web_setuppronaivecomponents

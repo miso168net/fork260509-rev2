@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/charts/echarts/index.vue"
+source_file: "base-web/src/views/plugin/charts/echarts/index.vue"
 type: "code"
-community: "Community 129"
+community: "web: vue"
 location: "L27"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_129
+  - community/web_vue
 ---
 
 # second
 
 ## Connections
-- [[index.vue_38]] - `contains` [EXTRACTED]
+- [[index.vue_40]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_129
+#graphify/code #graphify/EXTRACTED #community/web_vue

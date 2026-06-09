@@ -1,16 +1,16 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/src/shared/colord.ts"
+source_file: "base-web/packages/color/src/shared/colord.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "web: getantdcolorpalette"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/web_getantdcolorpalette
 ---
 
 # getRgb
 
 ## Connections
-- [[getColorName (nearest-name lookup over colorNames)]] - `calls` [EXTRACTED]
+- [[getColorName]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/web_getantdcolorpalette

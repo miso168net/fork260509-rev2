@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/src/shared/colord.ts"
+source_file: "base-web/packages/color/src/shared/colord.ts"
 type: "code"
-community: "Alova Request Adapter (+docs)"
+community: "Theme & Color Config (web)"
 location: "L43"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Alova_Request_Adapter_docs
+  - community/Theme__Color_Config_web
 ---
 
 # addColorAlpha()
@@ -19,4 +19,4 @@ tags:
 - [[shared.ts_8]] - `imports` [EXTRACTED]
 - [[transformColorWithOpacity()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Alova_Request_Adapter_docs
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

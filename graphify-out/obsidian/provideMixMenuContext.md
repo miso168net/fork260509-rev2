@@ -1,16 +1,13 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-menu/context/index.ts"
+source_file: "base-web/src/layouts/modules/global-menu/context/index.ts"
 type: "code"
-community: "Common UI Toggle Components"
+community: "web: providemixmenucontext"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Common_UI_Toggle_Components
+  - community/web_providemixmenucontext
 ---
 
 # provideMixMenuContext
 
-## Connections
-- [[BaseLayout]] - `calls` [EXTRACTED]
-
-#graphify/code #graphify/EXTRACTED #community/Common_UI_Toggle_Components
+#graphify/code #graphify/EXTRACTED #community/web_providemixmenucontext

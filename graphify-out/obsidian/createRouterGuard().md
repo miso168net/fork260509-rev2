@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/router/guard/index.ts"
+source_file: "base-web/src/router/guard/index.ts"
 type: "code"
-community: "Community 55"
+community: "web: router"
 location: "L11"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_55
+  - community/web_router
 ---
 
 # createRouterGuard()
@@ -19,4 +19,4 @@ tags:
 - [[index.ts_26]] - `contains` [EXTRACTED]
 - [[setupRouter()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_55
+#graphify/code #graphify/EXTRACTED #community/web_router

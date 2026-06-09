@@ -1,19 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/business/auth.ts"
+source_file: "base-web/src/hooks/business/auth.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - graphify/INFERRED
+  - community/Global_App_Types__Provider_web
 ---
 
 # useAuth
 
 ## Connections
-- [[Button-level Permission Check]] - `implements` [INFERRED]
-- [[SetupStoreId]] - `shares_data_with` [INFERRED]
-- [[auth.ts]] - `contains` [EXTRACTED]
-- [[useAuthStore]] - `calls` [EXTRACTED]
+- [[BaseLayout]] - `conceptually_related_to` [INFERRED]
+- [[SetupStoreId_1]] - `conceptually_related_to` [INFERRED]
+- [[enableStatusRecord_1]] - `conceptually_related_to` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/INFERRED #community/Global_App_Types__Provider_web

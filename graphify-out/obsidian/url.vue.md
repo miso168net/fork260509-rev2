@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/_builtin/iframe-page/[url].vue"
+source_file: "base-web/src/views/_builtin/iframe-page/[url].vue"
 type: "code"
-community: "Community 279"
+community: "web: url"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_279
+  - community/web_url
 ---
 
 # [url].vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_279
+#graphify/code #graphify/EXTRACTED #community/web_url

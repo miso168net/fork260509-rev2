@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/icon/icons.ts"
+source_file: "base-web/src/views/plugin/icon/icons.ts"
 type: "code"
-community: "Community 104"
+community: "web: icons"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_104
+  - community/web_icons
 ---
 
 # icons.ts
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[icons]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_104
+#graphify/code #graphify/EXTRACTED #community/web_icons

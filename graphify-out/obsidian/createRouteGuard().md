@@ -1,25 +1,19 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/router/guard/route.ts"
+source_file: "base-web/src/router/guard/route.ts"
 type: "code"
-community: "TypeScript Compiler Config (root)"
+community: "web: router"
 location: "L13"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/TypeScript_Compiler_Config_root
+  - community/web_router
 ---
 
 # createRouteGuard()
 
 ## Connections
-- [[Auth + role-based route gate]] - `implements` [EXTRACTED]
-- [[createDocumentTitleGuard()]] - `calls` [EXTRACTED]
-- [[createProgressGuard()]] - `calls` [EXTRACTED]
-- [[getRouteName()]] - `calls` [EXTRACTED]
-- [[index.ts_25]] - `imports` [EXTRACTED]
-- [[index.ts_26]] - `contains` [EXTRACTED]
-- [[initRoute()]] - `calls` [EXTRACTED]
+- [[createRouterGuard()]] - `calls` [EXTRACTED]
+- [[index.ts_26]] - `imports` [EXTRACTED]
 - [[route.ts]] - `contains` [EXTRACTED]
-- [[setupRouter()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/TypeScript_Compiler_Config_root
+#graphify/code #graphify/EXTRACTED #community/web_router

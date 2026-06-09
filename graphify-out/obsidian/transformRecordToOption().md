@@ -1,21 +1,20 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/utils/common.ts"
+source_file: "base-web/src/utils/common.ts"
 type: "code"
-community: "Community 52"
+community: "web: common"
 location: "L21"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_52
+  - community/web_common
 ---
 
 # transformRecordToOption()
 
 ## Connections
-- [[CommonType namespace]] - `references` [EXTRACTED]
 - [[app.ts]] - `imports` [EXTRACTED]
 - [[business.ts]] - `imports` [EXTRACTED]
 - [[common.ts]] - `imports` [EXTRACTED]
 - [[common.ts_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_52
+#graphify/code #graphify/EXTRACTED #community/web_common

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/service-alova/api/system-manage.ts"
+source_file: "base-web/src/service-alova/api/system-manage.ts"
 type: "code"
-community: "Community 52"
+community: "web: adduser"
 location: "L18"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_52
+  - community/web_adduser
 ---
 
 # fetchGetUserList()
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[system-manage.ts_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_52
+#graphify/code #graphify/EXTRACTED #community/web_adduser

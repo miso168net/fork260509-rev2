@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/manage/role/modules/button-auth-modal.vue"
+source_file: "base-web/src/views/manage/role/modules/button-auth-modal.vue"
 type: "code"
-community: "Community 253"
+community: "web: button"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_253
+  - community/web_button
 ---
 
 # button-auth-modal.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_253
+#graphify/code #graphify/EXTRACTED #community/web_button

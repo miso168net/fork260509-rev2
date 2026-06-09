@@ -1,18 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/gantt/dhtmlx/data.ts"
+source_file: "base-web/src/views/plugin/gantt/dhtmlx/data.ts"
 type: "code"
-community: "Community 92"
+community: "web: plugin"
 location: "L3"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_92
+  - community/web_plugin
 ---
 
 # ganttTasks
 
 ## Connections
-- [[DhtmlxGanttView]] - `references` [EXTRACTED]
 - [[data.ts_3]] - `contains` [EXTRACTED]
+- [[pluginganttdhtmlxindex.vue]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_92
+#graphify/code #graphify/EXTRACTED #community/web_plugin

@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/swiper.d.ts"
+source_file: "base-web/src/typings/swiper.d.ts"
 type: "code"
-community: "Community 236"
+community: "web: swiper"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_236
+  - community/web_swiper
 ---
 
 # swiper.d.ts
 
-#graphify/code #graphify/EXTRACTED #community/Community_236
+#graphify/code #graphify/EXTRACTED #community/web_swiper

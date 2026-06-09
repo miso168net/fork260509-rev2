@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/constants/app.ts"
+source_file: "base-web/src/constants/app.ts"
 type: "code"
-community: "Theme Constants & Maps"
+community: "web: common"
 location: "L39"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Theme_Constants__Maps
+  - community/web_common
 ---
 
 # themeScrollModeOptions
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[app.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Theme_Constants__Maps
+#graphify/code #graphify/EXTRACTED #community/web_common

@@ -1,16 +1,13 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/custom/better-scroll.vue"
+source_file: "base-web/src/components/custom/better-scroll.vue"
 type: "code"
-community: "Form & Table Hooks"
+community: "web: betterscroll"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Form__Table_Hooks
+  - community/web_betterscroll
 ---
 
 # BetterScroll
 
-## Connections
-- [[dependencies]] - `contains` [EXTRACTED]
-
-#graphify/code #graphify/EXTRACTED #community/Form__Table_Hooks
+#graphify/code #graphify/EXTRACTED #community/web_betterscroll

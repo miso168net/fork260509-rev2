@@ -1,18 +1,16 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts"
+source_file: "base-web/src/typings/api/system-manage.d.ts"
 type: "code"
-community: "Community 48"
+community: "web: api"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_48
+  - community/web_api
 ---
 
 # Api.SystemManage.Menu
 
 ## Connections
-- [[Api.Common.CommonRecord]] - `references` [EXTRACTED]
-- [[App.Global.Menu]] - `semantically_similar_to` [INFERRED]
-- [[RouteMeta augmentation]] - `references` [EXTRACTED]
+- [[Api.SystemManage.MenuButton]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_48
+#graphify/code #graphify/EXTRACTED #community/web_api

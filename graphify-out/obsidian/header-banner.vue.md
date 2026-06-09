@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/home/modules/header-banner.vue"
+source_file: "base-web/src/views/home/modules/header-banner.vue"
 type: "code"
-community: "Community 251"
+community: "web: header"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_251
+  - community/web_header
 ---
 
 # header-banner.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_251
+#graphify/code #graphify/EXTRACTED #community/web_header

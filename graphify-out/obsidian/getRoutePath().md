@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/router/elegant/transform.ts"
+source_file: "base-web/src/router/elegant/transform.ts"
 type: "code"
-community: "Per-Package TSConfig (sub-26)"
-location: "L251"
+community: "web: nkey"
+location: "L253"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-26
+  - community/web_nkey
 ---
 
 # getRoutePath()
@@ -19,4 +19,4 @@ tags:
 - [[shared.ts_7]] - `imports` [EXTRACTED]
 - [[transform.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-26
+#graphify/code #graphify/EXTRACTED #community/web_nkey

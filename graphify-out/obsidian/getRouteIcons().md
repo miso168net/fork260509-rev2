@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/store/modules/tab/shared.ts"
+source_file: "base-web/src/store/modules/tab/shared.ts"
 type: "code"
-community: "Per-Package TSConfig (sub-26)"
+community: "web: nkey"
 location: "L93"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-26
+  - community/web_nkey
 ---
 
 # getRouteIcons()
@@ -15,4 +15,4 @@ tags:
 - [[getTabByRoute()]] - `calls` [EXTRACTED]
 - [[shared.ts_7]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-26
+#graphify/code #graphify/EXTRACTED #community/web_nkey

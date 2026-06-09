@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/index.vue"
+source_file: "base-web/src/views/plugin/gantt/vtable/index.vue"
 type: "code"
-community: "Community 78"
+community: "web: barcolors"
 location: "L408"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_78
+  - community/web_barcolors
 ---
 
 # customGanttColumns
 
 ## Connections
-- [[index.vue_45]] - `contains` [EXTRACTED]
+- [[index.vue_47]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_78
+#graphify/code #graphify/EXTRACTED #community/web_barcolors

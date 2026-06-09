@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/package.json"
+source_file: "base-web/packages/axios/package.json"
 type: "code"
-community: "Routing Guide Docs (CN/JP)"
+community: "web: axios"
 location: "L2"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Routing_Guide_Docs_CN/JP
+  - community/web_axios
 ---
 
 # name
 
 ## Connections
-- [[package.json_3]] - `contains` [EXTRACTED]
+- [[package.json_2]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Routing_Guide_Docs_CN/JP
+#graphify/code #graphify/EXTRACTED #community/web_axios

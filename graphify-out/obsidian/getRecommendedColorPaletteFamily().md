@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/src/palette/recommend.ts"
+source_file: "base-web/packages/color/src/palette/recommend.ts"
 type: "code"
-community: "Color Conversion (colord/antd)"
+community: "Theme & Color Config (web)"
 location: "L57"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Conversion_colord/antd
+  - community/Theme__Color_Config_web
 ---
 
 # getRecommendedColorPaletteFamily()
@@ -19,4 +19,4 @@ tags:
 - [[isValidColor()]] - `calls` [EXTRACTED]
 - [[recommend.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Conversion_colord/antd
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

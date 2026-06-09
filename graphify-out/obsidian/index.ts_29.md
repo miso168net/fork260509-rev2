@@ -1,22 +1,22 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/service/request/index.ts"
+source_file: "base-web/src/service/request/index.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "Auth Store (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - community/Auth_Store_web
 ---
 
 # index.ts
 
 ## Connections
-- [[$t (i18n global translator)]] - `imports` [EXTRACTED]
 - [[auth.ts_1]] - `imports_from` [EXTRACTED]
-- [[createFlatRequest 实例创建实战]] - `imports` [EXTRACTED]
+- [[createFlatRequest()]] - `imports` [EXTRACTED]
 - [[createRequest()]] - `imports` [EXTRACTED]
 - [[demoRequest]] - `contains` [EXTRACTED]
+- [[getAuthorization (axios)]] - `imports` [EXTRACTED]
 - [[getServiceBaseURL()]] - `imports` [EXTRACTED]
 - [[handleExpiredRequest()]] - `imports` [EXTRACTED]
 - [[index.ts_1]] - `imports_from` [EXTRACTED]
@@ -24,6 +24,7 @@ tags:
 - [[index.ts_34]] - `imports_from` [EXTRACTED]
 - [[localStg]] - `imports` [EXTRACTED]
 - [[request]] - `contains` [EXTRACTED]
+- [[rev2-system-manage.ts]] - `imports_from` [EXTRACTED]
 - [[route.ts_1]] - `imports_from` [EXTRACTED]
 - [[service.ts]] - `imports_from` [EXTRACTED]
 - [[shared.ts_3]] - `imports_from` [EXTRACTED]
@@ -33,4 +34,4 @@ tags:
 - [[useAuthStore]] - `imports` [EXTRACTED]
 - [[{ baseURL, otherBaseURL }]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/EXTRACTED #community/Auth_Store_web

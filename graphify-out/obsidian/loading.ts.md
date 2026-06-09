@@ -1,21 +1,20 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/plugins/loading.ts"
+source_file: "base-web/src/plugins/loading.ts"
 type: "code"
-community: "Community 38"
+community: "App Bootstrap (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_38
+  - community/App_Bootstrap_web
 ---
 
 # loading.ts
 
 ## Connections
-- [[$t (i18n global translator)]] - `imports` [EXTRACTED]
-- [[ColorPalette]] - `imports` [EXTRACTED]
 - [[app.ts]] - `imports_from` [EXTRACTED]
 - [[common.ts_1]] - `imports_from` [EXTRACTED]
+- [[getColorPalette()]] - `imports` [EXTRACTED]
 - [[getLogoSvg()]] - `contains` [EXTRACTED]
 - [[getRgb()]] - `imports` [EXTRACTED]
 - [[index.ts_2]] - `imports_from` [EXTRACTED]
@@ -26,4 +25,4 @@ tags:
 - [[storage.ts_1]] - `imports_from` [EXTRACTED]
 - [[toggleHtmlClass()]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_38
+#graphify/code #graphify/EXTRACTED #community/App_Bootstrap_web

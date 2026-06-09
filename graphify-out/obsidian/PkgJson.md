@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/about/index.vue"
+source_file: "base-web/src/views/about/index.vue"
 type: "code"
-community: "Community 123"
+community: "web: pkgjson"
 location: "L33"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_123
+  - community/web_pkgjson
 ---
 
 # PkgJson
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[index.vue_19]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_123
+#graphify/code #graphify/EXTRACTED #community/web_pkgjson

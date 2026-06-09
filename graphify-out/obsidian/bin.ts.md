@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/scripts/bin.ts"
+source_file: "base-web/packages/scripts/bin.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "Build/Release Scripts (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Build/Release_Scripts_web
 ---
 
 # bin.ts
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[index.ts_13]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Build/Release_Scripts_web

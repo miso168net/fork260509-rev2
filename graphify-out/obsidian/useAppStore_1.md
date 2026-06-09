@@ -1,16 +1,20 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/store/modules/app/index.ts"
+source_file: "base-web/src/store/modules/app/index.ts"
 type: "code"
-community: "Community 76"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_76
+  - community/Global_App_Types__Provider_web
 ---
 
 # useAppStore
 
 ## Connections
-- [[ProConfigProvider wrapper]] - `references` [EXTRACTED]
+- [[GlobalMenu]] - `references` [EXTRACTED]
+- [[GlobalSider]] - `references` [EXTRACTED]
+- [[GlobalTab]] - `references` [EXTRACTED]
+- [[SearchModal]] - `references` [EXTRACTED]
+- [[ThemeDrawer]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_76
+#graphify/code #graphify/EXTRACTED #community/Global_App_Types__Provider_web

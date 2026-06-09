@@ -1,14 +1,25 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/print/index.vue"
+source_file: "base-web/src/views/plugin/pdf/index.vue"
 type: "code"
-community: "Community 265"
+community: "web: vue"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_265
+  - community/web_vue
 ---
 
 # index.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_265
+## Connections
+- [[currentRotation]] - `contains` [EXTRACTED]
+- [[handleDownload()]] - `contains` [EXTRACTED]
+- [[handlePrint()]] - `contains` [EXTRACTED]
+- [[handleRotate()]] - `contains` [EXTRACTED]
+- [[onPdfRendered()]] - `contains` [EXTRACTED]
+- [[pageCount]] - `contains` [EXTRACTED]
+- [[rotations]] - `contains` [EXTRACTED]
+- [[showAllPages]] - `contains` [EXTRACTED]
+- [[showAllPagesChange()]] - `contains` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/web_vue

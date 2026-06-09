@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/compact.json"
+source_file: "base-web/src/theme/preset/compact.json"
 type: "code"
-community: "Per-Package TSConfig (sub-36)"
+community: "web: visible"
 location: "L4"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-36
+  - community/web_visible
 ---
 
 # i18nkey
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[compact.json]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-36
+#graphify/code #graphify/EXTRACTED #community/web_visible

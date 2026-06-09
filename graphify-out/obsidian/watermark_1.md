@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/default.json"
+source_file: "base-web/src/theme/preset/default.json"
 type: "code"
-community: "Community 110"
+community: "web: watermark"
 location: "L62"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_110
+  - community/web_watermark
 ---
 
 # watermark
@@ -17,6 +17,6 @@ tags:
 - [[enableUserName_1]] - `contains` [EXTRACTED]
 - [[text_1]] - `contains` [EXTRACTED]
 - [[timeFormat_1]] - `contains` [EXTRACTED]
-- [[visible_2]] - `contains` [EXTRACTED]
+- [[visible_16]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_110
+#graphify/code #graphify/EXTRACTED #community/web_watermark

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/hooks/src/use-context.ts"
+source_file: "base-web/packages/hooks/src/use-context.ts"
 type: "code"
-community: "Form & Table Hooks"
+community: "web: use"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Form__Table_Hooks
+  - community/web_use
 ---
 
 # use-context.ts
@@ -19,4 +19,4 @@ tags:
 - [[index.ts_7]] - `imports_from` [EXTRACTED]
 - [[useContext()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Form__Table_Hooks
+#graphify/code #graphify/EXTRACTED #community/web_use

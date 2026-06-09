@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-docs/.vitepress/types.d.ts"
 type: "code"
-community: "Community 156"
+community: "docs: types"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_156
+  - community/docs_types
 ---
 
 # types.d.ts
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[LocaleSpecificConfig]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_156
+#graphify/code #graphify/EXTRACTED #community/docs_types

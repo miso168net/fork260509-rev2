@@ -1,18 +1,16 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/theme-schema-switch.vue"
+source_file: "base-web/src/components/common/theme-schema-switch.vue"
 type: "code"
-community: "Global Search Module"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Global_Search_Module
+  - community/Global_App_Types__Provider_web
 ---
 
 # ThemeSchemaSwitch
 
 ## Connections
-- [[ButtonIcon]] - `references` [EXTRACTED]
-- [[LangSwitch]] - `semantically_similar_to` [INFERRED]
-- [[Theme Schema RecordOptions Pattern]] - `references` [INFERRED]
+- [[ButtonIcon]] - `references` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Global_Search_Module
+#graphify/code #graphify/INFERRED #community/Global_App_Types__Provider_web

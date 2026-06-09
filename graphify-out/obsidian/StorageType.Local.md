@@ -1,18 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/storage.d.ts"
+source_file: "base-web/src/typings/storage.d.ts"
 type: "code"
-community: "Community 48"
+community: "i18n & Theme Schema (web)"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Community_48
+  - graphify/AMBIGUOUS
+  - community/i18n__Theme_Schema_web
 ---
 
 # StorageType.Local
 
 ## Connections
-- [[App.Global.Tab]] - `references` [EXTRACTED]
+- [[Api.Auth.LoginToken]] - `shares_data_with` [INFERRED]
 - [[App.Theme.ThemeSetting]] - `references` [EXTRACTED]
-- [[CommonType namespace]] - `references` [EXTRACTED]
+- [[resetSetupStore]] - `conceptually_related_to` [AMBIGUOUS]
 
-#graphify/code #graphify/EXTRACTED #community/Community_48
+#graphify/code #graphify/AMBIGUOUS #community/i18n__Theme_Schema_web

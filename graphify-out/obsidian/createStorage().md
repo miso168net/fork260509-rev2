@@ -1,20 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/utils/src/storage.ts"
+source_file: "base-web/packages/utils/src/storage.ts"
 type: "code"
-community: "Community 50"
+community: "Auth Store (web)"
 location: "L6"
 tags:
   - graphify/code
-  - graphify/INFERRED
-  - community/Community_50
+  - graphify/EXTRACTED
+  - community/Auth_Store_web
 ---
 
 # createStorage()
 
 ## Connections
-- [[Crypto]] - `conceptually_related_to` [INFERRED]
-- [[createLocalforage()]] - `semantically_similar_to` [INFERRED]
 - [[storage.ts]] - `contains` [EXTRACTED]
 - [[storage.ts_1]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/INFERRED #community/Community_50
+#graphify/code #graphify/EXTRACTED #community/Auth_Store_web

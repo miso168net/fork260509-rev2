@@ -1,20 +1,19 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-menu/components/first-level-menu.vue"
+source_file: "base-web/src/layouts/modules/global-menu/components/first-level-menu.vue"
 type: "code"
-community: "Common UI Toggle Components"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Common_UI_Toggle_Components
+  - community/Global_App_Types__Provider_web
 ---
 
 # FirstLevelMenu
 
 ## Connections
+- [[App.Global.Menu]] - `shares_data_with` [INFERRED]
 - [[TopHybridSidebarFirst]] - `references` [EXTRACTED]
 - [[VerticalHybridHeaderFirst]] - `references` [EXTRACTED]
-- [[VerticalMenu]] - `references` [EXTRACTED]
-- [[dark]] - `contains` [EXTRACTED]
-- [[light]] - `contains` [EXTRACTED]
+- [[VerticalMixMenu]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Common_UI_Toggle_Components
+#graphify/code #graphify/EXTRACTED #community/Global_App_Types__Provider_web

@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-menu/modules/vertical-hybrid-header-first.vue"
+source_file: "base-web/src/layouts/modules/global-menu/modules/vertical-hybrid-header-first.vue"
 type: "code"
-community: "Community 210"
+community: "web: vertical"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_210
+  - community/web_vertical
 ---
 
 # vertical-hybrid-header-first.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_210
+#graphify/code #graphify/EXTRACTED #community/web_vertical

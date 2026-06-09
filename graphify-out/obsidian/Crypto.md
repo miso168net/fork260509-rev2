@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/utils/src/crypto.ts"
+source_file: "base-web/packages/utils/src/crypto.ts"
 type: "code"
-community: "Community 50"
+community: "web: crypto"
 location: "L3"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_50
+  - community/web_crypto
 ---
 
 # Crypto
@@ -15,7 +15,6 @@ tags:
 - [[.constructor()]] - `method` [EXTRACTED]
 - [[.decrypt()]] - `method` [EXTRACTED]
 - [[.encrypt()]] - `method` [EXTRACTED]
-- [[createStorage()]] - `conceptually_related_to` [INFERRED]
 - [[crypto.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_50
+#graphify/code #graphify/EXTRACTED #community/web_crypto

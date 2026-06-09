@@ -1,14 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/video/index.vue"
+source_file: "base-web/src/views/plugin/tables/vtable/index.vue"
 type: "code"
-community: "Community 268"
+community: "web: vue"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_268
+  - community/web_vue
 ---
 
 # index.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_268
+## Connections
+- [[color()]] - `contains` [EXTRACTED]
+- [[index]] - `contains` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/web_vue

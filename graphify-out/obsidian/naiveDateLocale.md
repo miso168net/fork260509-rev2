@@ -1,18 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/App.vue"
+source_file: "base-web/src/App.vue"
 type: "code"
-community: "Community 79"
+community: "App Bootstrap (web)"
 location: "L22"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_79
+  - community/App_Bootstrap_web
 ---
 
 # naiveDateLocale
 
 ## Connections
 - [[App.vue]] - `contains` [EXTRACTED]
-- [[naive.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_79
+#graphify/code #graphify/EXTRACTED #community/App_Bootstrap_web

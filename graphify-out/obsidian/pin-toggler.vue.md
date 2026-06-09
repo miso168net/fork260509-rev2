@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/pin-toggler.vue"
+source_file: "base-web/src/components/common/pin-toggler.vue"
 type: "code"
-community: "Community 185"
+community: "web: pin"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_185
+  - community/web_pin
 ---
 
 # pin-toggler.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_185
+#graphify/code #graphify/EXTRACTED #community/web_pin

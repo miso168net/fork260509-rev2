@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/store/modules/auth/shared.ts"
+source_file: "base-web/src/store/modules/auth/shared.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "Auth Store (web)"
 location: "L9"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - community/Auth_Store_web
 ---
 
 # clearAuthStorage()
@@ -15,4 +15,4 @@ tags:
 - [[index.ts_34]] - `imports` [EXTRACTED]
 - [[shared.ts_5]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/EXTRACTED #community/Auth_Store_web

@@ -5,13 +5,14 @@
 
 
 # ============================================================
-# 兩個 worktree 排除
-# 理由:base-web/ 與 fork260509-soybean-admin-base/ 透過 git worktree 共用 .git,
-#      rust-api/ 與 fork260509-soybean-admin-rust/ 同理。
-#      index 源倉就涵蓋了 worktree 的內容,避免雙倍索引。
+# worktree vs 源倉:擇一索引,避免雙倍索引 / node ID 碰撞
+# 理由:base-web/ 與 fork260509-soybean-admin-base/ 透過 git worktree 共用 .git(rust 同理),
+#      內容高度重疊(101/102 .ts 同相對路徑 → 撞 node ID)。
+#      改為索引 worktree(rev2 整合分支 = 真實碼),排除對應源倉(example/main 分支)。
+#      docs 源倉 fork260509-soybean-admin-docs/ 非 worktree、純參考,保留索引。
 # ============================================================
-base-web/
-rust-api/
+fork260509-soybean-admin-base/
+fork260509-rev2-anew-rust-api/
 
 # ============================================================
 # graphify 自己的輸出
@@ -107,3 +108,4 @@ logs/
 .cache/
 *.orig
 *.rej
+tests/

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/hooks/src/use-table.ts"
+source_file: "base-web/packages/hooks/src/use-table.ts"
 type: "code"
-community: "API Service Aliases (auth/captcha)"
+community: "App Store & Composables (web)"
 location: "L66"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/API_Service_Aliases_auth/captcha
+  - community/App_Store__Composables_web
 ---
 
 # useTable()
@@ -20,4 +20,4 @@ tags:
 - [[useNaivePaginatedTable()]] - `calls` [EXTRACTED]
 - [[useNaiveTable()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha
+#graphify/code #graphify/EXTRACTED #community/App_Store__Composables_web

@@ -1,16 +1,13 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/dark-mode-container.vue"
+source_file: "base-web/src/components/common/dark-mode-container.vue"
 type: "code"
-community: "Community 79"
+community: "web: darkmodecontainer"
 tags:
   - graphify/code
-  - graphify/INFERRED
-  - community/Community_79
+  - graphify/EXTRACTED
+  - community/web_darkmodecontainer
 ---
 
 # DarkModeContainer
 
-## Connections
-- [[AppProvider]] - `conceptually_related_to` [INFERRED]
-
-#graphify/code #graphify/INFERRED #community/Community_79
+#graphify/code #graphify/EXTRACTED #community/web_darkmodecontainer

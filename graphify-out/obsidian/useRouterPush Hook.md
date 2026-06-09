@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-docs/src/zh/guide/router/push.md"
-type: "document"
-community: "Community 77"
+source_file: "fork260509-soybean-admin-docs/src/guide/router/push.md"
+type: "concept"
+community: "docs: route"
 tags:
-  - graphify/document
-  - graphify/EXTRACTED
-  - community/Community_77
+  - graphify/concept
+  - graphify/INFERRED
+  - community/docs_route
 ---
 
-# useRouterPush Hook
+# useRouterPush hook
 
 ## Connections
-- [[JP useRouterPush Doc]] - `documents` [EXTRACTED]
-- [[系统路由总览与 RouteMeta]] - `` [EXTRACTED]
+- [[type LoginModule]] - `references` [EXTRACTED]
+- [[type RouteKey]] - `references` [INFERRED]
 
-#graphify/document #graphify/EXTRACTED #community/Community_77
+#graphify/concept #graphify/INFERRED #community/docs_route

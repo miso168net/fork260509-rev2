@@ -1,19 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/shared.ts"
+source_file: "base-web/packages/materials/src/libs/admin-layout/shared.ts"
 type: "code"
-community: "Alova Request Adapter (+docs)"
-location: "14"
+community: "Layout Composition (web)"
+location: "L14"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Alova_Request_Adapter_docs
+  - community/Layout_Composition_web
 ---
 
 # createLayoutCssVarsByCssVarsProps()
 
 ## Connections
-- [[LayoutCssVars  LayoutCssVarsProps]] - `references` [EXTRACTED]
 - [[createLayoutCssVars()]] - `calls` [EXTRACTED]
 - [[shared.ts_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Alova_Request_Adapter_docs
+#graphify/code #graphify/EXTRACTED #community/Layout_Composition_web

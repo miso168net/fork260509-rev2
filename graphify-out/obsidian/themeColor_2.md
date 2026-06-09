@@ -1,17 +1,20 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/default.json"
+source_file: "base-web/src/layouts/modules/theme-drawer/modules/appearance/modules/theme-color.vue"
 type: "code"
-community: "Community 58"
-location: "L10"
+community: "i18n & Theme Schema (web)"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_58
+  - community/i18n__Theme_Schema_web
 ---
 
-# themeColor
+# ThemeColor
 
 ## Connections
-- [[default.json]] - `contains` [EXTRACTED]
+- [[$t]] - `calls` [EXTRACTED]
+- [[AppearanceSettings]] - `references` [EXTRACTED]
+- [[en-US i18n schema]] - `semantically_similar_to` [INFERRED]
+- [[useThemeStore_2]] - `shares_data_with` [EXTRACTED]
+- [[zh-CN i18n schema]] - `semantically_similar_to` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_58
+#graphify/code #graphify/EXTRACTED #community/i18n__Theme_Schema_web

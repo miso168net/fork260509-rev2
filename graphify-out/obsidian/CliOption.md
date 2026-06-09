@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/scripts/src/types/index.ts"
+source_file: "base-web/packages/scripts/src/types/index.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "Build/Release Scripts (web)"
 location: "L3"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Build/Release_Scripts_web
 ---
 
 # CliOption
@@ -17,4 +17,4 @@ tags:
 - [[index.ts_18]] - `contains` [EXTRACTED]
 - [[loadCliOptions()]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Build/Release_Scripts_web

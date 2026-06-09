@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/router/guard/progress.ts"
+source_file: "base-web/src/router/guard/progress.ts"
 type: "code"
-community: "Community 55"
+community: "web: router"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_55
+  - community/web_router
 ---
 
 # progress.ts
@@ -15,4 +15,4 @@ tags:
 - [[createProgressGuard()]] - `contains` [EXTRACTED]
 - [[index.ts_26]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_55
+#graphify/code #graphify/EXTRACTED #community/web_router

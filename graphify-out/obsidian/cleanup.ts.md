@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/scripts/src/commands/cleanup.ts"
+source_file: "base-web/packages/scripts/src/commands/cleanup.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "Build/Release Scripts (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Build/Release_Scripts_web
 ---
 
 # cleanup.ts
@@ -15,4 +15,4 @@ tags:
 - [[cleanup()]] - `contains` [EXTRACTED]
 - [[index.ts_14]] - `re_exports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Build/Release_Scripts_web

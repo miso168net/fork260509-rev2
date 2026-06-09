@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/custom/wave-bg.vue"
+source_file: "base-web/src/components/custom/wave-bg.vue"
 type: "code"
-community: "Docs Site npm Scripts"
+community: "web: wave"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Docs_Site_npm_Scripts
+  - community/web_wave
 ---
 
 # wave-bg.vue
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[darkColor]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Docs_Site_npm_Scripts
+#graphify/code #graphify/EXTRACTED #community/web_wave

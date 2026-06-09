@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-tab/context-menu.vue"
+source_file: "base-web/src/layouts/modules/global-tab/context-menu.vue"
 type: "code"
-community: "Admin Layout Package"
+community: "web: context"
 location: "L116"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Admin_Layout_Package
+  - community/web_context
 ---
 
 # closeAll()
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[context-menu.vue]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Admin_Layout_Package
+#graphify/code #graphify/EXTRACTED #community/web_context

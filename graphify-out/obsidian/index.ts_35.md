@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/store/modules/route/index.ts"
+source_file: "base-web/src/store/modules/route/index.ts"
 type: "code"
-community: "Community 45"
+community: "Route & SVG Icon (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_45
+  - community/Route__SVG_Icon_web
 ---
 
 # index.ts
@@ -16,7 +16,10 @@ tags:
 - [[SetupStoreId]] - `imports` [EXTRACTED]
 - [[builtin.ts]] - `imports_from` [EXTRACTED]
 - [[createStaticRoutes()]] - `imports` [EXTRACTED]
-- [[filterAuthRouteByRoles()]] - `imports` [EXTRACTED]
+- [[fetchGetConstantRoutes_1]] - `imports` [EXTRACTED]
+- [[fetchGetUserRoutes_1]] - `imports` [EXTRACTED]
+- [[fetchIsRouteExist_1]] - `imports` [EXTRACTED]
+- [[filterAuthRoutesByRoles()]] - `imports` [EXTRACTED]
 - [[getAuthVueRoutes()]] - `imports` [EXTRACTED]
 - [[getBreadcrumbsByRoute()]] - `imports` [EXTRACTED]
 - [[getCacheRouteNames()]] - `imports` [EXTRACTED]
@@ -37,7 +40,7 @@ tags:
 - [[route.ts]] - `imports_from` [EXTRACTED]
 - [[router]] - `imports` [EXTRACTED]
 - [[shared.ts_6]] - `imports_from` [EXTRACTED]
-- [[sortRouteByOrder()]] - `imports` [EXTRACTED]
+- [[sortRoutesByOrder()]] - `imports` [EXTRACTED]
 - [[transform.ts]] - `imports_from` [EXTRACTED]
 - [[transformMenuToSearchMenus()]] - `imports` [EXTRACTED]
 - [[updateLocaleOfGlobalMenus()]] - `imports` [EXTRACTED]
@@ -45,4 +48,4 @@ tags:
 - [[useRouteStore]] - `contains` [EXTRACTED]
 - [[useTabStore]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_45
+#graphify/code #graphify/EXTRACTED #community/Route__SVG_Icon_web

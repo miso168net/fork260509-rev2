@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/api/common.d.ts"
+source_file: "base-web/src/typings/api/common.d.ts"
 type: "code"
-community: "Community 91"
+community: "web: commonrecord"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_91
+  - community/web_commonrecord
 ---
 
 # common.d.ts
@@ -18,4 +18,4 @@ tags:
 - [[PaginatingCommonParams]] - `contains` [EXTRACTED]
 - [[PaginatingQueryRecord]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_91
+#graphify/code #graphify/EXTRACTED #community/web_commonrecord

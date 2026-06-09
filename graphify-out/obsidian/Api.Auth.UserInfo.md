@@ -1,16 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/api/auth.d.ts"
+source_file: "base-web/src/typings/api/auth.d.ts"
 type: "code"
-community: "Community 48"
+community: "i18n & Theme Schema (web)"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_48
+  - community/i18n__Theme_Schema_web
 ---
 
 # Api.Auth.UserInfo
 
 ## Connections
-- [[Api.SystemManage.User]] - `semantically_similar_to` [INFERRED]
+- [[find_active()_3]] - `semantically_similar_to` [INFERRED]
+- [[manage.user.sessionPolicy (i18n)]] - `conceptually_related_to` [INFERRED]
+- [[vue-router RouteMeta]] - `shares_data_with` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Community_48
+#graphify/code #graphify/INFERRED #community/i18n__Theme_Schema_web

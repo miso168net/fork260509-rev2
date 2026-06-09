@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/router/guard/index.ts"
+source_file: "base-web/src/router/guard/index.ts"
 type: "code"
-community: "TypeScript Compiler Config (root)"
+community: "web: router"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/TypeScript_Compiler_Config_root
+  - community/web_router
 ---
 
 # index.ts
@@ -14,10 +14,11 @@ tags:
 ## Connections
 - [[createDocumentTitleGuard()]] - `imports` [EXTRACTED]
 - [[createProgressGuard()]] - `imports` [EXTRACTED]
-- [[createRouteGuard()]] - `contains` [EXTRACTED]
+- [[createRouteGuard()]] - `imports` [EXTRACTED]
+- [[createRouterGuard()]] - `contains` [EXTRACTED]
 - [[index.ts_25]] - `imports_from` [EXTRACTED]
-- [[nprogress.ts]] - `imports_from` [EXTRACTED]
+- [[progress.ts]] - `imports_from` [EXTRACTED]
 - [[route.ts]] - `imports_from` [EXTRACTED]
 - [[title.ts]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/TypeScript_Compiler_Config_root
+#graphify/code #graphify/EXTRACTED #community/web_router

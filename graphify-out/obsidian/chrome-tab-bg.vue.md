@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/chrome-tab-bg.vue"
+source_file: "base-web/packages/materials/src/libs/page-tab/chrome-tab-bg.vue"
 type: "code"
-community: "Community 176"
+community: "web: chrome"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_176
+  - community/web_chrome
 ---
 
 # chrome-tab-bg.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_176
+#graphify/code #graphify/EXTRACTED #community/web_chrome

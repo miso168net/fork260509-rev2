@@ -1,18 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/compact.json"
+source_file: "base-web/src/theme/preset/compact.json"
 type: "code"
-community: "Per-Package TSConfig (sub-36)"
-location: "L22"
+community: "web: visible"
+location: "L8"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-36
+  - community/web_visible
 ---
 
 # height
 
 ## Connections
 - [[header_1]] - `contains` [EXTRACTED]
-- [[tab_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-36
+#graphify/code #graphify/EXTRACTED #community/web_visible

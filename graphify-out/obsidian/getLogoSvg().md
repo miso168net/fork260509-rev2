@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/plugins/loading.ts"
+source_file: "base-web/src/plugins/loading.ts"
 type: "code"
-community: "Community 38"
+community: "App Bootstrap (web)"
 location: "L60"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_38
+  - community/App_Bootstrap_web
 ---
 
 # getLogoSvg()
@@ -15,4 +15,4 @@ tags:
 - [[loading.ts]] - `contains` [EXTRACTED]
 - [[setupLoading()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_38
+#graphify/code #graphify/EXTRACTED #community/App_Bootstrap_web

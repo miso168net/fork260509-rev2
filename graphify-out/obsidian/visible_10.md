@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/dark.json"
+source_file: "base-web/src/theme/preset/dark.json"
 type: "code"
-community: "Community 89"
+community: "web: watermark"
 location: "L63"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_89
+  - community/web_watermark
 ---
 
 # visible
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[watermark]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_89
+#graphify/code #graphify/EXTRACTED #community/web_watermark

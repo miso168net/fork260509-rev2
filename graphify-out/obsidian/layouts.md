@@ -1,20 +1,19 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/router/elegant/imports.ts"
+source_file: "base-web/src/router/elegant/imports.ts"
 type: "code"
-community: "Router Guard Flow (diagram)"
+community: "web: route"
 location: "L12"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Router_Guard_Flow_diagram
+  - community/web_route
 ---
 
 # layouts
 
 ## Connections
 - [[builtin.ts]] - `imports` [EXTRACTED]
-- [[createBuiltinVueRoutes()]] - `references` [EXTRACTED]
 - [[imports.ts]] - `contains` [EXTRACTED]
 - [[index.ts_27]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Router_Guard_Flow_diagram
+#graphify/code #graphify/EXTRACTED #community/web_route

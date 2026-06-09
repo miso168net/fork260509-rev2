@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/default.json"
+source_file: "base-web/src/theme/preset/default.json"
 type: "code"
-community: "Community 70"
+community: "web: footer"
 location: "L56"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_70
+  - community/web_footer
 ---
 
 # footer
@@ -14,8 +14,8 @@ tags:
 ## Connections
 - [[default.json]] - `contains` [EXTRACTED]
 - [[fixed_1]] - `contains` [EXTRACTED]
-- [[height_2]] - `contains` [EXTRACTED]
+- [[height_7]] - `contains` [EXTRACTED]
 - [[right_1]] - `contains` [EXTRACTED]
-- [[visible_2]] - `contains` [EXTRACTED]
+- [[visible_15]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_70
+#graphify/code #graphify/EXTRACTED #community/web_footer

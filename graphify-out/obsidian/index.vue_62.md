@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/_builtin/404/index.vue"
+source_file: "base-web/src/views/user-center/index.vue"
 type: "code"
-community: "Community 277"
+community: "web: vue"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_277
+  - community/web_vue
 ---
 
 # index.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_277
+#graphify/code #graphify/EXTRACTED #community/web_vue

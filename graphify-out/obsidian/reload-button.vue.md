@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/reload-button.vue"
+source_file: "base-web/src/components/common/reload-button.vue"
 type: "code"
-community: "Community 191"
+community: "web: reload"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_191
+  - community/web_reload
 ---
 
 # reload-button.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_191
+#graphify/code #graphify/EXTRACTED #community/web_reload

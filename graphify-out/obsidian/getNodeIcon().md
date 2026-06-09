@@ -1,20 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/status.ts"
+source_file: "base-web/src/views/plugin/charts/antv/modules/status.ts"
 type: "code"
-community: "Runtime Dependencies"
+community: "web: nodestatus"
 location: "L73"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Runtime_Dependencies
+  - community/web_nodestatus
 ---
 
 # getNodeIcon()
 
 ## Connections
 - [[antv-g6-flow.ts]] - `imports` [EXTRACTED]
-- [[nodeStatus]] - `references` [EXTRACTED]
 - [[status.ts]] - `contains` [EXTRACTED]
-- [[useAntFlow]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies
+#graphify/code #graphify/EXTRACTED #community/web_nodestatus

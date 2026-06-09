@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/utils/tsconfig.json"
+source_file: "base-web/packages/utils/tsconfig.json"
 type: "code"
-community: "Community 40"
+community: "web: tsconfig"
 location: "L11"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_40
+  - community/web_tsconfig
 ---
 
 # strictNullChecks
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[compilerOptions_8]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_40
+#graphify/code #graphify/EXTRACTED #community/web_tsconfig

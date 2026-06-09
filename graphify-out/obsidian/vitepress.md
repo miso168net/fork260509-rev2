@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-docs/package.json"
 type: "code"
-community: "Docs Site Package Metadata"
+community: "Package Metadata (docs)"
 location: "L45"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Docs_Site_Package_Metadata
+  - community/Package_Metadata_docs
 ---
 
 # vitepress
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[devDependencies_5]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Docs_Site_Package_Metadata
+#graphify/code #graphify/EXTRACTED #community/Package_Metadata_docs

@@ -1,16 +1,16 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/_builtin/login/modules/bind-wechat.vue"
+source_file: "base-web/src/views/_builtin/login/modules/bind-wechat.vue"
 type: "code"
-community: "Community 87"
+community: "web: login"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_87
+  - community/web_login
 ---
 
 # BindWechat
 
 ## Connections
-- [[login index]] - `references` [EXTRACTED]
+- [[_builtinlogin index.vue]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_87
+#graphify/code #graphify/EXTRACTED #community/web_login

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/package.json"
+source_file: "base-web/package.json"
 type: "code"
-community: "Runtime Dependencies"
+community: "Runtime Dependencies (web)"
 location: "L68"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Runtime_Dependencies
+  - community/Runtime_Dependencies_web
 ---
 
 # dhtmlx-gantt
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[dependencies]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies
+#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies_web

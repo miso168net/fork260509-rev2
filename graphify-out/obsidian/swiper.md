@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/package.json"
+source_file: "base-web/package.json"
 type: "code"
-community: "Form & Table Hooks"
+community: "Runtime Dependencies (web)"
 location: "L79"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Form__Table_Hooks
+  - community/Runtime_Dependencies_web
 ---
 
 # swiper
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[dependencies]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Form__Table_Hooks
+#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies_web

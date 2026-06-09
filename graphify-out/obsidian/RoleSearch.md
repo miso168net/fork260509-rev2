@@ -1,17 +1,16 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/manage/role/modules/role-search.vue"
+source_file: "base-web/src/views/manage/role/modules/role-search.vue"
 type: "code"
-community: "Community 51"
+community: "web: wire"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Community_51
+  - graphify/INFERRED
+  - community/web_wire
 ---
 
 # RoleSearch
 
 ## Connections
 - [[UserSearch]] - `semantically_similar_to` [INFERRED]
-- [[managerole admin page]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_51
+#graphify/code #graphify/INFERRED #community/web_wire

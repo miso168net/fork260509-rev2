@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/custom/github-link.vue"
+source_file: "base-web/src/components/custom/github-link.vue"
 type: "code"
-community: "Community 187"
+community: "web: github"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_187
+  - community/web_github
 ---
 
 # github-link.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_187
+#graphify/code #graphify/EXTRACTED #community/web_github

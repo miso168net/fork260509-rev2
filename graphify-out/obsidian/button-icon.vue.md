@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/custom/button-icon.vue"
+source_file: "base-web/src/components/custom/button-icon.vue"
 type: "code"
-community: "Community 195"
+community: "web: button"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_195
+  - community/web_button
 ---
 
 # button-icon.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_195
+#graphify/code #graphify/EXTRACTED #community/web_button

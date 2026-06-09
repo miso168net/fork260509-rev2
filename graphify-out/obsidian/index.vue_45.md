@@ -1,24 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/index.vue"
+source_file: "base-web/src/views/plugin/excel/index.vue"
 type: "code"
-community: "Community 78"
+community: "web: vue"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_78
+  - community/web_vue
 ---
 
 # index.vue
 
 ## Connections
-- [[GanttConstructorOptions]] - `contains` [EXTRACTED]
-- [[barColors]] - `contains` [EXTRACTED]
-- [[barColors0]] - `contains` [EXTRACTED]
-- [[customGanttColumns]] - `contains` [EXTRACTED]
-- [[format()_1]] - `contains` [EXTRACTED]
-- [[getOption()]] - `contains` [EXTRACTED]
-- [[initVTableGantt()]] - `contains` [EXTRACTED]
-- [[stopHandle]] - `contains` [EXTRACTED]
+- [[label_3]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_78
+#graphify/code #graphify/EXTRACTED #community/web_vue

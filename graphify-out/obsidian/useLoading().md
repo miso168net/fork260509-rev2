@@ -1,23 +1,21 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/hooks/src/use-loading.ts"
+source_file: "base-web/packages/hooks/src/use-loading.ts"
 type: "code"
-community: "API Service Aliases (auth/captcha)"
+community: "App Store & Composables (web)"
 location: "L8"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/API_Service_Aliases_auth/captcha
+  - community/App_Store__Composables_web
 ---
 
 # useLoading()
 
 ## Connections
 - [[createHookRequest()]] - `calls` [EXTRACTED]
-- [[index.ts_7]] - `imports_from` [EXTRACTED]
-- [[use-request.ts]] - `imports_from` [EXTRACTED]
-- [[use-table.ts]] - `imports_from` [EXTRACTED]
+- [[use-loading.ts]] - `contains` [EXTRACTED]
 - [[useBoolean()]] - `calls` [EXTRACTED]
-- [[useCaptcha]] - `calls` [INFERRED]
+- [[useCaptcha()]] - `calls` [INFERRED]
 - [[useTable()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha
+#graphify/code #graphify/EXTRACTED #community/App_Store__Composables_web

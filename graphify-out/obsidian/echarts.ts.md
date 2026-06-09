@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/common/echarts.ts"
+source_file: "base-web/src/hooks/common/echarts.ts"
 type: "code"
-community: "Runtime Dependencies"
+community: "web: vchart"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Runtime_Dependencies
+  - community/web_vchart
 ---
 
 # echarts.ts
@@ -19,4 +19,4 @@ tags:
 - [[useEcharts()]] - `contains` [EXTRACTED]
 - [[useThemeStore]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies
+#graphify/code #graphify/EXTRACTED #community/web_vchart

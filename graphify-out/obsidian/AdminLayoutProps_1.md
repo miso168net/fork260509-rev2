@@ -1,18 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/types/index.ts"
+source_file: "base-web/packages/materials/src/types/index.ts"
 type: "code"
-community: "Admin Layout Package"
-location: "148"
+community: "web: component"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Admin_Layout_Package
+  - community/web_component
 ---
 
 # AdminLayoutProps
 
 ## Connections
-- [[AdminLayout component]] - `implements` [EXTRACTED]
-- [[createLayoutCssVars()_1]] - `references` [EXTRACTED]
+- [[AdminLayout component (index.vue)]] - `references` [EXTRACTED]
+- [[createLayoutCssVars]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Admin_Layout_Package
+#graphify/code #graphify/EXTRACTED #community/web_component

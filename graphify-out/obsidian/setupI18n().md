@@ -1,20 +1,19 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/locales/index.ts"
+source_file: "base-web/src/locales/index.ts"
 type: "code"
-community: "Community 88"
+community: "App Bootstrap (web)"
 location: "L18"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_88
+  - community/App_Bootstrap_web
 ---
 
 # setupI18n()
 
 ## Connections
 - [[index.ts_23]] - `contains` [EXTRACTED]
-- [[locales]] - `references` [EXTRACTED]
 - [[main.ts]] - `imports` [EXTRACTED]
 - [[setupApp()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_88
+#graphify/code #graphify/EXTRACTED #community/App_Bootstrap_web

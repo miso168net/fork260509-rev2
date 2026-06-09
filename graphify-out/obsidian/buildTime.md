@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/vite.config.ts"
+source_file: "base-web/vite.config.ts"
 type: "code"
-community: "SVG Icon System"
+community: "web: buildtime"
 location: "L10"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/SVG_Icon_System
+  - community/web_buildtime
 ---
 
 # buildTime
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[vite.config.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/SVG_Icon_System
+#graphify/code #graphify/EXTRACTED #community/web_buildtime

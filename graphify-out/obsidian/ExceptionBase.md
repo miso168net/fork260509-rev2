@@ -1,16 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/exception-base.vue"
+source_file: "base-web/src/components/common/exception-base.vue"
 type: "code"
-community: "Community 143"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_143
+  - community/Global_App_Types__Provider_web
 ---
 
 # ExceptionBase
 
 ## Connections
-- [[FullScreen]] - `semantically_similar_to` [INFERRED]
+- [[Local SVG sprite icon system]] - `conceptually_related_to` [INFERRED]
+- [[SvgIcon]] - `references` [INFERRED]
+- [[useRouterPush]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/INFERRED #community/Community_143
+#graphify/code #graphify/INFERRED #community/Global_App_Types__Provider_web

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/vars.ts"
+source_file: "base-web/src/theme/vars.ts"
 type: "code"
-community: "Community 53"
+community: "Theme & Color Config (web)"
 location: "L18"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_53
+  - community/Theme__Color_Config_web
 ---
 
 # colorPaletteVars
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[vars.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_53
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

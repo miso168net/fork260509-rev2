@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/dark-mode-container.vue"
+source_file: "base-web/src/components/common/dark-mode-container.vue"
 type: "code"
-community: "Community 184"
+community: "web: dark"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_184
+  - community/web_dark
 ---
 
 # dark-mode-container.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_184
+#graphify/code #graphify/EXTRACTED #community/web_dark

@@ -1,18 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/antv-flow.vue"
+source_file: "base-web/src/views/plugin/charts/antv/modules/antv-flow.vue"
 type: "code"
-community: "Runtime Dependencies"
+community: "web: antvflow"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Runtime_Dependencies
+  - community/web_antvflow
 ---
 
 # AntvFlow
 
 ## Connections
-- [[AntvPluginView]] - `references` [EXTRACTED]
-- [[draw]] - `calls` [EXTRACTED]
-- [[nodeStatus]] - `references` [EXTRACTED]
+- [[AntvChartsView]] - `references` [EXTRACTED]
+- [[nodeStatus_1]] - `references` [EXTRACTED]
+- [[useAntFlow]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies
+#graphify/code #graphify/EXTRACTED #community/web_antvflow

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/common/table.ts"
+source_file: "base-web/src/hooks/common/table.ts"
 type: "code"
-community: "API Service Aliases (auth/captcha)"
+community: "App Store & Composables (web)"
 location: "L256"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/API_Service_Aliases_auth/captcha
+  - community/App_Store__Composables_web
 ---
 
 # getColumnChecks()
@@ -15,4 +15,4 @@ tags:
 - [[table.ts]] - `contains` [EXTRACTED]
 - [[useTable()]] - `calls` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/API_Service_Aliases_auth/captcha
+#graphify/code #graphify/INFERRED #community/App_Store__Composables_web

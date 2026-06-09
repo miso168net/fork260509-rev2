@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/app.d.ts"
+source_file: "base-web/src/typings/app.d.ts"
 type: "code"
-community: "Theme Constants & Maps"
+community: "App Type Declarations (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Theme_Constants__Maps
+  - community/App_Type_Declarations_web
 ---
 
 # app.d.ts
@@ -40,6 +40,7 @@ tags:
 - [[RouterPushOptions]] - `contains` [EXTRACTED]
 - [[Schema]] - `contains` [EXTRACTED]
 - [[ServiceConfig]] - `contains` [EXTRACTED]
+- [[ServiceConfigItem]] - `contains` [EXTRACTED]
 - [[SimpleServiceConfig]] - `contains` [EXTRACTED]
 - [[Tab]] - `contains` [EXTRACTED]
 - [[TabRoute]] - `contains` [EXTRACTED]
@@ -49,9 +50,10 @@ tags:
 - [[ThemeSetting]] - `contains` [EXTRACTED]
 - [[ThemeSettingToken]] - `contains` [EXTRACTED]
 - [[ThemeSettingTokenBoxShadow]] - `contains` [EXTRACTED]
+- [[ThemeSettingTokenColor]] - `contains` [EXTRACTED]
 - [[ThemeTokenCSSVars]] - `contains` [EXTRACTED]
 - [[ThemeTokenColor]] - `contains` [EXTRACTED]
 - [[TranslateOptions]] - `contains` [EXTRACTED]
 - [[VNode]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Theme_Constants__Maps
+#graphify/code #graphify/EXTRACTED #community/App_Type_Declarations_web

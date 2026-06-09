@@ -1,23 +1,24 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/src/palette/recommend.ts"
+source_file: "base-web/packages/color/src/palette/recommend.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "web: getantdcolorpalette"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/web_getantdcolorpalette
 ---
 
 # getRecommendedColorPaletteFamily
 
 ## Connections
-- [[colorPalettes (Tailwind-style 22 families x 11 shades)]] - `references` [EXTRACTED]
-- [[getAntDPaletteColorByIndex]] - `semantically_similar_to` [INFERRED]
-- [[getColorName (nearest-name lookup over colorNames)]] - `calls` [EXTRACTED]
+- [[ColorPaletteFamily_1]] - `references` [EXTRACTED]
+- [[colorPalettes_1]] - `references` [EXTRACTED]
+- [[getAntDColorPalette]] - `semantically_similar_to` [INFERRED]
+- [[getColorName]] - `calls` [EXTRACTED]
+- [[getDeltaE]] - `calls` [EXTRACTED]
 - [[getHsl]] - `calls` [EXTRACTED]
-- [[getNearestColorPaletteFamily (private)]] - `calls` [EXTRACTED]
 - [[getRecommendedColorPalette]] - `calls` [EXTRACTED]
 - [[isValidColor]] - `calls` [EXTRACTED]
 - [[transformHslToHex]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/web_getantdcolorpalette

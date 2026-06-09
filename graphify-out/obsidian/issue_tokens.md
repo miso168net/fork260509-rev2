@@ -1,0 +1,18 @@
+---
+source_file: "rust-api/server/src/handler/auth.rs"
+type: "code"
+community: "Login & Token Issuance (rust)"
+tags:
+  - graphify/code
+  - graphify/EXTRACTED
+  - community/Login__Token_Issuance_rust
+---
+
+# issue_tokens
+
+## Connections
+- [[login]] - `calls` [INFERRED]
+- [[refresh_token]] - `calls` [EXTRACTED]
+- [[sign]] - `calls` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/Login__Token_Issuance_rust

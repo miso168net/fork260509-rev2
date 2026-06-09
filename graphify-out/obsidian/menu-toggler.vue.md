@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/menu-toggler.vue"
+source_file: "base-web/src/components/common/menu-toggler.vue"
 type: "code"
-community: "Community 184"
+community: "web: menu"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_184
+  - community/web_menu
 ---
 
 # menu-toggler.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_184
+#graphify/code #graphify/EXTRACTED #community/web_menu

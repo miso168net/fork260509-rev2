@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/charts/echarts/data.ts"
+source_file: "base-web/src/views/plugin/charts/echarts/data.ts"
 type: "code"
-community: "Runtime Dependencies"
+community: "web: vchart"
 location: "L41"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Runtime_Dependencies
+  - community/web_vchart
 ---
 
 # lineOptions
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[data.ts_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies
+#graphify/code #graphify/EXTRACTED #community/web_vchart

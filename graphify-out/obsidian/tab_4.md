@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/default.json"
+source_file: "base-web/src/theme/preset/default.json"
 type: "code"
-community: "Community 83"
+community: "web: tab"
 location: "L40"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_83
+  - community/web_tab
 ---
 
 # tab
@@ -19,4 +19,4 @@ tags:
 - [[mode_4]] - `contains` [EXTRACTED]
 - [[visible_14]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_83
+#graphify/code #graphify/EXTRACTED #community/web_tab

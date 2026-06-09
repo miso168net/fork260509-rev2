@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/axios/src/index.ts"
+source_file: "base-web/packages/axios/src/index.ts"
 type: "code"
-community: "Build & Release Scripts"
+community: "Common Request Composable (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Build__Release_Scripts
+  - community/Common_Request_Composable_web
 ---
 
 # index.ts
@@ -22,7 +22,7 @@ tags:
 - [[createAxiosConfig()]] - `imports` [EXTRACTED]
 - [[createCommonRequest()]] - `contains` [EXTRACTED]
 - [[createDefaultOptions()]] - `imports` [EXTRACTED]
-- [[createFlatRequest 实例创建实战]] - `contains` [EXTRACTED]
+- [[createFlatRequest()]] - `contains` [EXTRACTED]
 - [[createRequest()]] - `contains` [EXTRACTED]
 - [[createRetryOptions()]] - `imports` [EXTRACTED]
 - [[index.ts_20]] - `imports_from` [EXTRACTED]
@@ -34,4 +34,4 @@ tags:
 - [[type.ts_1]] - `re_exports` [EXTRACTED]
 - [[use-request.ts]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Build__Release_Scripts
+#graphify/code #graphify/EXTRACTED #community/Common_Request_Composable_web

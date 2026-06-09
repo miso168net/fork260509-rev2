@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/utils/package.json"
+source_file: "base-web/packages/uno-preset/package.json"
 type: "code"
-community: "Community 49"
+community: "web: package"
 location: "L2"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_49
+  - community/web_package
 ---
 
 # name
 
 ## Connections
-- [[package.json_8]] - `contains` [EXTRACTED]
+- [[package.json_7]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_49
+#graphify/code #graphify/EXTRACTED #community/web_package

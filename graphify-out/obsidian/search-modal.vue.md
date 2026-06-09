@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-search/components/search-modal.vue"
+source_file: "base-web/src/layouts/modules/global-search/components/search-modal.vue"
 type: "code"
-community: "Docs Site TSConfig (NEW)"
+community: "web: search"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Docs_Site_TSConfig_NEW
+  - community/web_search
 ---
 
 # search-modal.vue
@@ -15,7 +15,7 @@ tags:
 - [[activePath]] - `contains` [EXTRACTED]
 - [[getActivePathIndex()]] - `contains` [EXTRACTED]
 - [[handleClose()]] - `contains` [EXTRACTED]
-- [[handleDownload()]] - `contains` [EXTRACTED]
+- [[handleDown()]] - `contains` [EXTRACTED]
 - [[handleEnter()]] - `contains` [EXTRACTED]
 - [[handleSearch]] - `contains` [EXTRACTED]
 - [[handleUp()]] - `contains` [EXTRACTED]
@@ -23,4 +23,4 @@ tags:
 - [[registerShortcut()]] - `contains` [EXTRACTED]
 - [[search()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Docs_Site_TSConfig_NEW
+#graphify/code #graphify/EXTRACTED #community/web_search

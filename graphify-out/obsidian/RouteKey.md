@@ -1,18 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/app.d.ts"
+source_file: "base-web/src/typings/app.d.ts"
 type: "code"
-community: "Community 96"
+community: "App Type Declarations (web)"
 location: "L190"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_96
+  - community/App_Type_Declarations_web
 ---
 
 # RouteKey
 
 ## Connections
-- [[JP Router Intro]] - `documents` [EXTRACTED]
 - [[app.d.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_96
+#graphify/code #graphify/EXTRACTED #community/App_Type_Declarations_web

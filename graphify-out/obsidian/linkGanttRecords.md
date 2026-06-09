@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/gantt/vtable/data.ts"
+source_file: "base-web/src/views/plugin/gantt/vtable/data.ts"
 type: "code"
-community: "Community 122"
+community: "web: basicganttrecords"
 location: "L539"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_122
+  - community/web_basicganttrecords
 ---
 
 # linkGanttRecords
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[data.ts_4]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_122
+#graphify/code #graphify/EXTRACTED #community/web_basicganttrecords

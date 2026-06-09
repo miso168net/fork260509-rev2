@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/package.json"
+source_file: "base-web/package.json"
 type: "code"
-community: "Layout Geometry & Scroll"
+community: "Dev Dependencies (web)"
 location: "L100"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Layout_Geometry__Scroll
+  - community/Dev_Dependencies_web
 ---
 
 # @types/node
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[devDependencies]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Layout_Geometry__Scroll
+#graphify/code #graphify/EXTRACTED #community/Dev_Dependencies_web

@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/_builtin/login/modules/register.vue"
+source_file: "base-web/src/views/_builtin/login/modules/register.vue"
 type: "code"
-community: "Community 282"
+community: "web: register"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_282
+  - community/web_register
 ---
 
 # register.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_282
+#graphify/code #graphify/EXTRACTED #community/web_register

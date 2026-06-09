@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/package.json"
+source_file: "base-web/package.json"
 type: "code"
-community: "Community 140"
+community: "web: url"
 location: "L129"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_140
+  - community/web_url
 ---
 
 # engines
@@ -16,4 +16,4 @@ tags:
 - [[package.json]] - `contains` [EXTRACTED]
 - [[pnpm]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_140
+#graphify/code #graphify/EXTRACTED #community/web_url

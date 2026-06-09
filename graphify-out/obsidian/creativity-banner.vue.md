@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/home/modules/creativity-banner.vue"
+source_file: "base-web/src/views/home/modules/creativity-banner.vue"
 type: "code"
-community: "Community 250"
+community: "web: creativity"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_250
+  - community/web_creativity
 ---
 
 # creativity-banner.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_250
+#graphify/code #graphify/EXTRACTED #community/web_creativity

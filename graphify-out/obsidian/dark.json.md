@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/dark.json"
+source_file: "base-web/src/theme/preset/dark.json"
 type: "code"
-community: "Community 44"
+community: "web: dark"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_44
+  - community/web_dark
 ---
 
 # dark.json
@@ -21,17 +21,17 @@ tags:
 - [[i18nkey_2]] - `contains` [EXTRACTED]
 - [[isInfoFollowPrimary_1]] - `contains` [EXTRACTED]
 - [[layout_1]] - `contains` [EXTRACTED]
-- [[name_11]] - `contains` [EXTRACTED]
+- [[name_12]] - `contains` [EXTRACTED]
 - [[otherColor_1]] - `contains` [EXTRACTED]
 - [[page]] - `contains` [EXTRACTED]
 - [[recommendColor_1]] - `contains` [EXTRACTED]
 - [[sider_2]] - `contains` [EXTRACTED]
 - [[tab_2]] - `contains` [EXTRACTED]
 - [[themeColor_1]] - `contains` [EXTRACTED]
-- [[themeRadius]] - `contains` [EXTRACTED]
+- [[themeRadius_1]] - `contains` [EXTRACTED]
 - [[themeScheme_1]] - `contains` [EXTRACTED]
 - [[tokens_1]] - `contains` [EXTRACTED]
 - [[version_12]] - `contains` [EXTRACTED]
 - [[watermark]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_44
+#graphify/code #graphify/EXTRACTED #community/web_dark

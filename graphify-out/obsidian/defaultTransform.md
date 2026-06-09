@@ -1,13 +1,16 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/common/table.ts"
+source_file: "base-web/src/hooks/common/table.ts"
 type: "code"
-community: "Community 315"
+community: "System-Manage API Types (web)"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Community_315
+  - graphify/INFERRED
+  - community/System-Manage_API_Types_web
 ---
 
 # defaultTransform
 
-#graphify/code #graphify/EXTRACTED #community/Community_315
+## Connections
+- [[useNaivePaginatedTable]] - `conceptually_related_to` [INFERRED]
+
+#graphify/code #graphify/INFERRED #community/System-Manage_API_Types_web

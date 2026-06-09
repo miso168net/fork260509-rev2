@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/types/index.ts"
+source_file: "base-web/packages/materials/src/types/index.ts"
 type: "code"
-community: "Layout Geometry & Scroll"
+community: "Layout Composition (web)"
 location: "L220"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Layout_Geometry__Scroll
+  - community/Layout_Composition_web
 ---
 
 # LayoutCssVarsProps
@@ -15,4 +15,4 @@ tags:
 - [[index.ts_12]] - `contains` [EXTRACTED]
 - [[shared.ts_1]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Layout_Geometry__Scroll
+#graphify/code #graphify/EXTRACTED #community/Layout_Composition_web

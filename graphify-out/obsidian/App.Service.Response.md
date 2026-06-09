@@ -1,13 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/app.d.ts"
+source_file: "base-web/src/typings/app.d.ts"
 type: "code"
-community: "Community 302"
+community: "i18n & Theme Schema (web)"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Community_302
+  - graphify/INFERRED
+  - community/i18n__Theme_Schema_web
 ---
 
 # App.Service.Response
 
-#graphify/code #graphify/EXTRACTED #community/Community_302
+## Connections
+- [[CommonType namespace]] - `conceptually_related_to` [INFERRED]
+- [[Env.ImportMeta]] - `conceptually_related_to` [INFERRED]
+
+#graphify/code #graphify/INFERRED #community/i18n__Theme_Schema_web

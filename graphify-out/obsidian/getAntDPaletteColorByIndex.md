@@ -1,23 +1,20 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/src/palette/antd.ts"
+source_file: "base-web/packages/color/src/palette/antd.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "web: getantdcolorpalette"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/web_getantdcolorpalette
 ---
 
 # getAntDPaletteColorByIndex
 
 ## Connections
+- [[ColorIndex_1]] - `references` [EXTRACTED]
 - [[getAntDColorPalette]] - `calls` [EXTRACTED]
 - [[getHex]] - `calls` [EXTRACTED]
 - [[getHsv]] - `calls` [EXTRACTED]
-- [[getHue (private)]] - `calls` [EXTRACTED]
-- [[getRecommendedColorPaletteFamily]] - `semantically_similar_to` [INFERRED]
-- [[getSaturation (private)]] - `calls` [EXTRACTED]
-- [[getValue (private)]] - `calls` [EXTRACTED]
 - [[isValidColor]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/web_getantdcolorpalette

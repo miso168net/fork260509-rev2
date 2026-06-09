@@ -1,13 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/common/table.ts"
+source_file: "base-web/src/hooks/common/table.ts"
 type: "code"
-community: "Community 314"
+community: "System-Manage API Types (web)"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_314
+  - community/System-Manage_API_Types_web
 ---
 
 # useTableOperate
 
-#graphify/code #graphify/EXTRACTED #community/Community_314
+## Connections
+- [[managemenuindex.vue]] - `calls` [EXTRACTED]
+- [[manageroleindex.vue]] - `calls` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/System-Manage_API_Types_web

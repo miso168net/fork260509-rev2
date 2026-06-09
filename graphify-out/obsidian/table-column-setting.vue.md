@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/advanced/table-column-setting.vue"
+source_file: "base-web/src/components/advanced/table-column-setting.vue"
 type: "code"
-community: "Community 181"
+community: "web: table"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_181
+  - community/web_table
 ---
 
 # table-column-setting.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_181
+#graphify/code #graphify/EXTRACTED #community/web_table

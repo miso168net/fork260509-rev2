@@ -1,18 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts"
+source_file: "base-web/src/typings/api/system-manage.d.ts"
 type: "code"
-community: "Community 48"
+community: "User Creation & Audit (rust)"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Community_48
+  - graphify/INFERRED
+  - community/User_Creation__Audit_rust
 ---
 
 # Api.SystemManage.User
 
 ## Connections
-- [[Api.Auth.UserInfo]] - `semantically_similar_to` [INFERRED]
-- [[Api.Common.CommonRecord]] - `references` [EXTRACTED]
-- [[CommonType namespace]] - `references` [EXTRACTED]
+- [[Api.SystemManage.SessionPolicy]] - `references` [INFERRED]
+- [[find_active()_3]] - `semantically_similar_to` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_48
+#graphify/code #graphify/INFERRED #community/User_Creation__Audit_rust

@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/app-provider.vue"
+source_file: "base-web/src/components/common/app-provider.vue"
 type: "code"
-community: "Community 183"
+community: "web: app"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_183
+  - community/web_app
 ---
 
 # app-provider.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_183
+#graphify/code #graphify/EXTRACTED #community/web_app

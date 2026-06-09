@@ -1,19 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/alova/scenes/modules/cross-component-request.vue"
+source_file: "base-web/src/views/alova/scenes/modules/cross-component-request.vue"
 type: "code"
-community: "Community 90"
+community: "web: alova"
 tags:
   - graphify/code
-  - graphify/INFERRED
-  - community/Community_90
+  - graphify/EXTRACTED
+  - community/web_alova
 ---
 
 # CrossComponentRequest
 
 ## Connections
-- [[BrowserVisibilityRequest]] - `shares_data_with` [INFERRED]
-- [[NetworkToggleRequest]] - `shares_data_with` [INFERRED]
-- [[PollingRequest]] - `shares_data_with` [INFERRED]
-- [[alova scenes index]] - `references` [EXTRACTED]
+- [[BrowserVisibilityRequest]] - `conceptually_related_to` [INFERRED]
+- [[alovascenes index.vue]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/INFERRED #community/Community_90
+#graphify/code #graphify/EXTRACTED #community/web_alova

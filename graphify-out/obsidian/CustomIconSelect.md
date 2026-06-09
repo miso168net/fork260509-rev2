@@ -1,21 +1,16 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/custom/custom-icon-select.vue"
+source_file: "base-web/src/components/custom/custom-icon-select.vue"
 type: "code"
-community: "Global Search Module"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Global_Search_Module
+  - graphify/INFERRED
+  - community/Global_App_Types__Provider_web
 ---
 
 # CustomIconSelect
 
 ## Connections
-- [[IconTooltip]] - `semantically_similar_to` [INFERRED]
-- [[SvgIcon]] - `references` [EXTRACTED]
-- [[handleChange()]] - `contains` [EXTRACTED]
-- [[iconsList]] - `contains` [EXTRACTED]
-- [[searchValue]] - `contains` [EXTRACTED]
-- [[selectedIcon]] - `contains` [EXTRACTED]
+- [[SvgIcon]] - `references` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Global_Search_Module
+#graphify/code #graphify/INFERRED #community/Global_App_Types__Provider_web

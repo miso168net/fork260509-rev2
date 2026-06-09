@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/custom/soybean-avatar.vue"
+source_file: "base-web/src/components/custom/soybean-avatar.vue"
 type: "code"
-community: "Community 189"
+community: "web: soybean"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_189
+  - community/web_soybean
 ---
 
 # soybean-avatar.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_189
+#graphify/code #graphify/EXTRACTED #community/web_soybean

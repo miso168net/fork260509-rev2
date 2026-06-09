@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/azir.json"
+source_file: "base-web/src/theme/preset/azir.json"
 type: "code"
-community: "Global Type Declarations"
+community: "Theme Tokens (web)"
 location: "L3"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Global_Type_Declarations
+  - community/Theme_Tokens_web
 ---
 
 # desc
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[azir.json]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Global_Type_Declarations
+#graphify/code #graphify/EXTRACTED #community/Theme_Tokens_web

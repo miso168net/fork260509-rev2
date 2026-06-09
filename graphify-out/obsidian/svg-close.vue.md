@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/svg-close.vue"
+source_file: "base-web/packages/materials/src/libs/page-tab/svg-close.vue"
 type: "code"
-community: "Community 180"
+community: "web: svg"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_180
+  - community/web_svg
 ---
 
 # svg-close.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_180
+#graphify/code #graphify/EXTRACTED #community/web_svg

@@ -1,0 +1,17 @@
+---
+source_file: "rust-api/server/src/auth/endpoint_auth.rs"
+type: "code"
+community: "rust: endpoint"
+location: "L167"
+tags:
+  - graphify/code
+  - graphify/EXTRACTED
+  - community/rust_endpoint
+---
+
+# get_role_endpoints_sort_is_stable_by_path_then_method()
+
+## Connections
+- [[endpoint_auth.rs]] - `contains` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/rust_endpoint

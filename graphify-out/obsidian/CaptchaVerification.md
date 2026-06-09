@@ -1,16 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/alova/scenes/modules/captcha-verification.vue"
+source_file: "base-web/src/views/alova/scenes/modules/captcha-verification.vue"
 type: "code"
-community: "Community 90"
+community: "web: alova"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_90
+  - community/web_alova
 ---
 
 # CaptchaVerification
 
 ## Connections
-- [[alova scenes index]] - `references` [EXTRACTED]
+- [[alovascenes index.vue]] - `references` [EXTRACTED]
+- [[captcha sendverify wire]] - `references` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_90
+#graphify/code #graphify/EXTRACTED #community/web_alova

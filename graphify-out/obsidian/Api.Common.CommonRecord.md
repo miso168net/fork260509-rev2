@@ -1,18 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/api/common.d.ts"
+source_file: "base-web/src/typings/api/common.d.ts"
 type: "code"
-community: "Community 48"
+community: "web: api"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Community_48
+  - graphify/INFERRED
+  - community/web_api
 ---
 
 # Api.Common.CommonRecord
 
 ## Connections
-- [[Api.SystemManage.Menu]] - `references` [EXTRACTED]
-- [[Api.SystemManage.Role]] - `references` [EXTRACTED]
-- [[Api.SystemManage.User]] - `references` [EXTRACTED]
+- [[Api.Common.EnableStatus]] - `references` [EXTRACTED]
+- [[Api.Common.PaginatingQueryRecord]] - `conceptually_related_to` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_48
+#graphify/code #graphify/INFERRED #community/web_api

@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/lang-switch.vue"
+source_file: "base-web/src/components/common/lang-switch.vue"
 type: "code"
-community: "Community 183"
+community: "web: lang"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_183
+  - community/web_lang
 ---
 
 # lang-switch.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_183
+#graphify/code #graphify/EXTRACTED #community/web_lang

@@ -1,17 +1,13 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts"
+source_file: "base-web/src/typings/api/system-manage.d.ts"
 type: "code"
-community: "Community 48"
+community: "web: api"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_48
+  - community/web_api
 ---
 
 # Api.SystemManage.Role
 
-## Connections
-- [[Api.Common.CommonRecord]] - `references` [EXTRACTED]
-- [[CommonType namespace]] - `references` [EXTRACTED]
-
-#graphify/code #graphify/EXTRACTED #community/Community_48
+#graphify/code #graphify/EXTRACTED #community/web_api

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/admin-layout/index.vue"
+source_file: "base-web/packages/materials/src/libs/admin-layout/index.vue"
 type: "code"
-community: "Form Validation & Bootstrap"
+community: "Layout Composition (web)"
 location: "L66"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Form_Validation__Bootstrap
+  - community/Layout_Composition_web
 ---
 
 # isContentScroll
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[index.vue]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Form_Validation__Bootstrap
+#graphify/code #graphify/EXTRACTED #community/Layout_Composition_web

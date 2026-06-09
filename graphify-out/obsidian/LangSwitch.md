@@ -1,18 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/lang-switch.vue"
+source_file: "base-web/src/components/common/lang-switch.vue"
 type: "code"
-community: "Global Search Module"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Global_Search_Module
+  - graphify/INFERRED
+  - community/Global_App_Types__Provider_web
 ---
 
 # LangSwitch
 
 ## Connections
-- [[ButtonIcon]] - `references` [EXTRACTED]
-- [[SvgIcon]] - `references` [EXTRACTED]
-- [[ThemeSchemaSwitch]] - `semantically_similar_to` [INFERRED]
+- [[ButtonIcon]] - `references` [INFERRED]
+- [[SvgIcon]] - `references` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Global_Search_Module
+#graphify/code #graphify/INFERRED #community/Global_App_Types__Provider_web

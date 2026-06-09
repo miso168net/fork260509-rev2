@@ -1,19 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/function/hide-child/one/index.vue"
-type: "concept"
-community: "Community 107"
+source_file: "base-web/src/views/multi-menu/first_child/index.vue"
+type: "code"
+community: "web: multimenufirstchild"
 tags:
-  - graphify/concept
+  - graphify/code
   - graphify/EXTRACTED
-  - community/Community_107
+  - community/web_multimenufirstchild
 ---
 
 # LookForward
 
 ## Connections
-- [[hide-child one]] - `references` [EXTRACTED]
-- [[hide-child three]] - `references` [EXTRACTED]
-- [[hide-child two]] - `references` [EXTRACTED]
-- [[multi-tab]] - `references` [EXTRACTED]
+- [[MultiMenuFirstChild]] - `references` [EXTRACTED]
+- [[MultiMenuSecondChildHome]] - `references` [EXTRACTED]
+- [[UserDetailView]] - `references` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Community_107
+#graphify/code #graphify/EXTRACTED #community/web_multimenufirstchild

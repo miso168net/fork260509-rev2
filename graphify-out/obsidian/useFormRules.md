@@ -1,13 +1,19 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/common/form.ts"
+source_file: "base-web/src/hooks/common/form.ts"
 type: "code"
-community: "Community 312"
+community: "web: reg"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_312
+  - community/web_reg
 ---
 
 # useFormRules
 
-#graphify/code #graphify/EXTRACTED #community/Community_312
+## Connections
+- [[REG_PHONE]] - `references` [EXTRACTED]
+- [[REG_PWD]] - `references` [EXTRACTED]
+- [[REG_USER_NAME]] - `references` [EXTRACTED]
+- [[useCaptcha]] - `conceptually_related_to` [INFERRED]
+
+#graphify/code #graphify/EXTRACTED #community/web_reg

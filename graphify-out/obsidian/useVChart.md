@@ -1,11 +1,11 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/common/vchart.ts"
+source_file: "base-web/src/hooks/common/vchart.ts"
 type: "code"
-community: "Community 156"
+community: "web: useecharts"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_156
+  - community/web_useecharts
 ---
 
 # useVChart
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[useEcharts]] - `semantically_similar_to` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Community_156
+#graphify/code #graphify/INFERRED #community/web_useecharts

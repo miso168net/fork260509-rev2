@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/custom/custom-icon-select.vue"
+source_file: "base-web/src/components/custom/custom-icon-select.vue"
 type: "code"
-community: "Global Search Module"
+community: "web: custom"
 location: "L36"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Global_Search_Module
+  - community/web_custom
 ---
 
 # searchValue
 
 ## Connections
-- [[CustomIconSelect]] - `contains` [EXTRACTED]
+- [[custom-icon-select.vue]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Global_Search_Module
+#graphify/code #graphify/EXTRACTED #community/web_custom

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/utils/service.ts"
+source_file: "base-web/src/utils/service.ts"
 type: "code"
-community: "Community 63"
+community: "web: constant"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_63
+  - community/web_constant
 ---
 
 # service.ts
@@ -18,4 +18,4 @@ tags:
 - [[index.ts_29]] - `imports_from` [EXTRACTED]
 - [[index.ts_31]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_63
+#graphify/code #graphify/EXTRACTED #community/web_constant

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/package.json"
+source_file: "base-web/package.json"
 type: "code"
-community: "Form & Table Hooks"
+community: "Runtime Dependencies (web)"
 location: "L46"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Form__Table_Hooks
+  - community/Runtime_Dependencies_web
 ---
 
 # dependencies
@@ -15,6 +15,7 @@ tags:
 - [[@antvdata-set]] - `contains` [EXTRACTED]
 - [[@antvg2]] - `contains` [EXTRACTED]
 - [[@antvg6]] - `contains` [EXTRACTED]
+- [[@better-scrollcore]] - `contains` [EXTRACTED]
 - [[@iconifyvue]] - `contains` [EXTRACTED]
 - [[@saalova]] - `contains` [EXTRACTED]
 - [[@saaxios]] - `contains` [EXTRACTED]
@@ -29,11 +30,10 @@ tags:
 - [[@visactorvue-vtable]] - `contains` [EXTRACTED]
 - [[@vueusecomponents]] - `contains` [EXTRACTED]
 - [[@vueusecore]] - `contains` [EXTRACTED]
-- [[BetterScroll]] - `contains` [EXTRACTED]
-- [[DhtmlxGanttView]] - `contains` [EXTRACTED]
 - [[clipboard]] - `contains` [EXTRACTED]
 - [[dayjs]] - `contains` [EXTRACTED]
 - [[defu]] - `contains` [EXTRACTED]
+- [[dhtmlx-gantt]] - `contains` [EXTRACTED]
 - [[dompurify]] - `contains` [EXTRACTED]
 - [[echarts]] - `contains` [EXTRACTED]
 - [[jsbarcode]] - `contains` [EXTRACTED]
@@ -58,4 +58,4 @@ tags:
 - [[xgplayer]] - `contains` [EXTRACTED]
 - [[xlsx]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Form__Table_Hooks
+#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies_web

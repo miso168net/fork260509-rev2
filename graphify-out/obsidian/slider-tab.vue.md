@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/slider-tab.vue"
+source_file: "base-web/packages/materials/src/libs/page-tab/slider-tab.vue"
 type: "code"
-community: "Community 179"
+community: "web: slider"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_179
+  - community/web_slider
 ---
 
 # slider-tab.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_179
+#graphify/code #graphify/EXTRACTED #community/web_slider

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-search/components/search-modal.vue"
+source_file: "base-web/src/layouts/modules/global-search/components/search-modal.vue"
 type: "code"
-community: "Community 59"
+community: "web: search"
 location: "L59"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_59
+  - community/web_search
 ---
 
 # handleDown()
@@ -15,4 +15,4 @@ tags:
 - [[getActivePathIndex()]] - `calls` [EXTRACTED]
 - [[search-modal.vue]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_59
+#graphify/code #graphify/EXTRACTED #community/web_search

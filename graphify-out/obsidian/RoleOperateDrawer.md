@@ -1,20 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/manage/role/modules/role-operate-drawer.vue"
+source_file: "base-web/src/views/manage/role/modules/role-operate-drawer.vue"
 type: "code"
-community: "Community 51"
+community: "web: wire"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_51
+  - community/web_wire
 ---
 
 # RoleOperateDrawer
 
 ## Connections
 - [[ButtonAuthModal]] - `references` [EXTRACTED]
+- [[EndpointAuthModal]] - `references` [EXTRACTED]
 - [[MenuAuthModal]] - `references` [EXTRACTED]
-- [[MenuOperateModal]] - `semantically_similar_to` [INFERRED]
-- [[UserOperateDrawer]] - `semantically_similar_to` [INFERRED]
-- [[managerole admin page]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_51
+#graphify/code #graphify/EXTRACTED #community/web_wire

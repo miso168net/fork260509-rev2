@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/dark.json"
+source_file: "base-web/src/theme/preset/dark.json"
 type: "code"
-community: "Community 43"
+community: "web: footer"
 location: "L56"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_43
+  - community/web_footer
 ---
 
 # footer
@@ -14,8 +14,8 @@ tags:
 ## Connections
 - [[dark.json]] - `contains` [EXTRACTED]
 - [[fixed]] - `contains` [EXTRACTED]
-- [[height_1]] - `contains` [EXTRACTED]
+- [[height_4]] - `contains` [EXTRACTED]
 - [[right]] - `contains` [EXTRACTED]
-- [[visible_1]] - `contains` [EXTRACTED]
+- [[visible_9]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_43
+#graphify/code #graphify/EXTRACTED #community/web_footer

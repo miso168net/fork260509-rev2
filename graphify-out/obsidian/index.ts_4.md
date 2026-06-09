@@ -1,21 +1,21 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/src/palette/index.ts"
+source_file: "base-web/packages/color/src/palette/index.ts"
 type: "code"
-community: "Community 38"
+community: "Theme & Color Config (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_38
+  - community/Theme__Color_Config_web
 ---
 
 # index.ts
 
 ## Connections
-- [[ColorPalette]] - `contains` [EXTRACTED]
 - [[ColorPaletteNumber]] - `imports` [EXTRACTED]
 - [[antd.ts]] - `imports_from` [EXTRACTED]
 - [[getAntDColorPalette()]] - `imports` [EXTRACTED]
+- [[getColorPalette()]] - `contains` [EXTRACTED]
 - [[getHex()]] - `imports` [EXTRACTED]
 - [[getPaletteColorByNumber()]] - `contains` [EXTRACTED]
 - [[getRecommendedColorPalette()]] - `imports` [EXTRACTED]
@@ -24,4 +24,4 @@ tags:
 - [[index.ts_6]] - `imports_from` [EXTRACTED]
 - [[recommend.ts]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_38
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

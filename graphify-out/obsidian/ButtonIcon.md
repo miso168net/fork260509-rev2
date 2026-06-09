@@ -1,23 +1,23 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/custom/button-icon.vue"
+source_file: "base-web/src/components/custom/button-icon.vue"
 type: "code"
-community: "Global Search Module"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Global_Search_Module
+  - graphify/INFERRED
+  - community/Global_App_Types__Provider_web
 ---
 
 # ButtonIcon
 
 ## Connections
-- [[IconTooltip]] - `semantically_similar_to` [INFERRED]
-- [[LangSwitch]] - `references` [EXTRACTED]
-- [[MenuToggler]] - `references` [EXTRACTED]
-- [[PinToggler]] - `references` [EXTRACTED]
-- [[ReloadButton]] - `references` [EXTRACTED]
-- [[SvgIcon]] - `references` [EXTRACTED]
-- [[ThemeSchemaSwitch]] - `references` [EXTRACTED]
-- [[Tooltip-wrapped Icon Button Pattern]] - `implements` [INFERRED]
+- [[FullScreen]] - `references` [INFERRED]
+- [[LangSwitch]] - `references` [INFERRED]
+- [[MenuToggler]] - `references` [INFERRED]
+- [[PinToggler]] - `references` [INFERRED]
+- [[ReloadButton]] - `references` [INFERRED]
+- [[SvgIcon]] - `references` [INFERRED]
+- [[TableColumnSetting]] - `references` [INFERRED]
+- [[ThemeSchemaSwitch]] - `references` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Global_Search_Module
+#graphify/code #graphify/INFERRED #community/Global_App_Types__Provider_web

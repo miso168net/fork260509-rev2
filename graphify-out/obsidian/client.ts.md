@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/alova/src/client.ts"
+source_file: "base-web/packages/alova/src/client.ts"
 type: "code"
-community: "Community 171"
+community: "web: client"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_171
+  - community/web_client
 ---
 
 # client.ts
 
-#graphify/code #graphify/EXTRACTED #community/Community_171
+#graphify/code #graphify/EXTRACTED #community/web_client

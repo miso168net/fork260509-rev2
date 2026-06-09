@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/router/elegant/transform.ts"
+source_file: "base-web/src/router/elegant/transform.ts"
 type: "code"
-community: "TypeScript Compiler Config (root)"
+community: "web: route"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/TypeScript_Compiler_Config_root
+  - community/web_route
 ---
 
 # transform.ts
@@ -21,5 +21,6 @@ tags:
 - [[routeMap]] - `contains` [EXTRACTED]
 - [[shared.ts_7]] - `imports_from` [EXTRACTED]
 - [[transformElegantRouteToVueRoute()]] - `contains` [EXTRACTED]
+- [[transformElegantRoutesToVueRoutes()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/TypeScript_Compiler_Config_root
+#graphify/code #graphify/EXTRACTED #community/web_route

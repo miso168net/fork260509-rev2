@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/default.json"
+source_file: "base-web/src/theme/preset/default.json"
 type: "code"
-community: "Community 109"
+community: "web: othercolor"
 location: "L11"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_109
+  - community/web_othercolor
 ---
 
 # otherColor
@@ -18,4 +18,4 @@ tags:
 - [[success_2]] - `contains` [EXTRACTED]
 - [[warning_2]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_109
+#graphify/code #graphify/EXTRACTED #community/web_othercolor

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/service/api/system-manage.ts"
+source_file: "base-web/src/service/api/system-manage.ts"
 type: "code"
-community: "Community 41"
+community: "System-Manage API Calls (web)"
 location: "L42"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_41
+  - community/System-Manage_API_Calls_web
 ---
 
 # fetchGetAllPages()
@@ -15,4 +15,4 @@ tags:
 - [[request]] - `calls` [EXTRACTED]
 - [[system-manage.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_41
+#graphify/code #graphify/EXTRACTED #community/System-Manage_API_Calls_web

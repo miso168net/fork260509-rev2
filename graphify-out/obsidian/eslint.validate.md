@@ -1,18 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/.vscode/settings.json"
+source_file: "base-web/.vscode/settings.json"
 type: "code"
-community: "Chart Plugin Views"
+community: "web: ally"
 location: "L8"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Chart_Plugin_Views
+  - community/web_ally
 ---
 
 # eslint.validate
 
 ## Connections
 - [[settings.json]] - `contains` [EXTRACTED]
-- [[settings.json_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Chart_Plugin_Views
+#graphify/code #graphify/EXTRACTED #community/web_ally

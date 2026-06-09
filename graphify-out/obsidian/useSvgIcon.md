@@ -1,16 +1,13 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/common/icon.ts"
+source_file: "base-web/src/hooks/common/icon.ts"
 type: "code"
-community: "Global Layout Components"
+community: "web: usesvgicon"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Global_Layout_Components
+  - community/web_usesvgicon
 ---
 
 # useSvgIcon
 
-## Connections
-- [[UserAvatar]] - `calls` [EXTRACTED]
-
-#graphify/code #graphify/EXTRACTED #community/Global_Layout_Components
+#graphify/code #graphify/EXTRACTED #community/web_usesvgicon

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/service-alova/api/auth.ts"
+source_file: "base-web/src/service-alova/api/auth.ts"
 type: "code"
-community: "Docs Site Config Files"
+community: "web: sendcaptcha"
 location: "L14"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Docs_Site_Config_Files
+  - community/web_sendcaptcha
 ---
 
 # fetchGetUserInfo()
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[auth.ts_2]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Docs_Site_Config_Files
+#graphify/code #graphify/EXTRACTED #community/web_sendcaptcha

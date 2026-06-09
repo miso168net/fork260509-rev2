@@ -1,17 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/scripts/src/locales/index.ts"
+source_file: "base-web/packages/scripts/src/locales/index.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "Build/Release Scripts (web)"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Build/Release_Scripts_web
 ---
 
 # locales
 
 ## Connections
-- [[Conventional Commits CLI tooling]] - `references` [INFERRED]
 - [[git-commit.ts]] - `imports` [EXTRACTED]
+- [[gitCommit()]] - `references` [EXTRACTED]
+- [[gitCommitVerify()]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Build/Release_Scripts_web

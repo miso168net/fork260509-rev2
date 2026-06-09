@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/package.json"
+source_file: "base-web/package.json"
 type: "code"
-community: "Workspace Package Manifests"
+community: "web: url"
 location: "L26"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Workspace_Package_Manifests
+  - community/web_url
 ---
 
 # url
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[repository]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Workspace_Package_Manifests
+#graphify/code #graphify/EXTRACTED #community/web_url

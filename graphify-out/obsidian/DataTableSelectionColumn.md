@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/naive-ui.d.ts"
+source_file: "base-web/src/typings/naive-ui.d.ts"
 type: "code"
-community: "Community 60"
+community: "web: naive"
 location: "L7"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_60
+  - community/web_naive
 ---
 
 # DataTableSelectionColumn
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[naive-ui.d.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_60
+#graphify/code #graphify/EXTRACTED #community/web_naive

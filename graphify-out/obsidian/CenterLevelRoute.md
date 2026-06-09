@@ -1,14 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/elegant-router.d.ts"
+source_file: "base-web/src/typings/elegant-router.d.ts"
 type: "code"
-community: "Community 230"
-location: "L313"
+community: "web: elegant"
+location: "L317"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_230
+  - community/web_elegant
 ---
 
 # CenterLevelRoute
 
-#graphify/code #graphify/EXTRACTED #community/Community_230
+## Connections
+- [[elegant-router.d.ts]] - `contains` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/web_elegant

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/plugins/app.ts"
+source_file: "base-web/src/plugins/app.ts"
 type: "code"
-community: "TypeScript Compiler Config (root)"
+community: "App Bootstrap (web)"
 location: "L91"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/TypeScript_Compiler_Config_root
+  - community/App_Bootstrap_web
 ---
 
 # getHtmlBuildTime()
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[app.ts_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/TypeScript_Compiler_Config_root
+#graphify/code #graphify/EXTRACTED #community/App_Bootstrap_web

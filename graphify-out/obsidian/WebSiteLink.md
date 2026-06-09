@@ -1,11 +1,11 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/custom/web-site-link.vue"
+source_file: "base-web/src/components/custom/web-site-link.vue"
 type: "code"
-community: "Community 147"
+community: "web: githublink"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_147
+  - community/web_githublink
 ---
 
 # WebSiteLink
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[GithubLink]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_147
+#graphify/code #graphify/EXTRACTED #community/web_githublink

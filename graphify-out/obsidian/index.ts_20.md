@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/utils/src/index.ts"
+source_file: "base-web/packages/utils/src/index.ts"
 type: "code"
-community: "Community 50"
+community: "Auth Store (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_50
+  - community/Auth_Store_web
 ---
 
 # index.ts
@@ -21,4 +21,4 @@ tags:
 - [[storage.ts_1]] - `imports_from` [EXTRACTED]
 - [[table.ts]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_50
+#graphify/code #graphify/EXTRACTED #community/Auth_Store_web

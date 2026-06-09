@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/default.json"
+source_file: "base-web/src/theme/preset/dark.json"
 type: "code"
-community: "Community 58"
+community: "web: dark"
 location: "L17"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_58
+  - community/web_dark
 ---
 
 # themeRadius
 
 ## Connections
-- [[default.json]] - `contains` [EXTRACTED]
+- [[dark.json]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_58
+#graphify/code #graphify/EXTRACTED #community/web_dark

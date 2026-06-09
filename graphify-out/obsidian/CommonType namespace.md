@@ -1,19 +1,16 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/common.d.ts"
+source_file: "base-web/src/typings/common.d.ts"
 type: "code"
-community: "Community 48"
+community: "i18n & Theme Schema (web)"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Community_48
+  - graphify/INFERRED
+  - community/i18n__Theme_Schema_web
 ---
 
 # CommonType namespace
 
 ## Connections
-- [[Api.SystemManage.Role]] - `references` [EXTRACTED]
-- [[Api.SystemManage.User]] - `references` [EXTRACTED]
-- [[StorageType.Local]] - `references` [EXTRACTED]
-- [[transformRecordToOption()]] - `references` [EXTRACTED]
+- [[App.Service.Response]] - `conceptually_related_to` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_48
+#graphify/code #graphify/INFERRED #community/i18n__Theme_Schema_web

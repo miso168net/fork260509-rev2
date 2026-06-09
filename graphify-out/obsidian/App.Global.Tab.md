@@ -1,17 +1,16 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/app.d.ts"
+source_file: "base-web/src/typings/app.d.ts"
 type: "code"
-community: "Community 48"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Community_48
+  - graphify/INFERRED
+  - community/Global_App_Types__Provider_web
 ---
 
 # App.Global.Tab
 
 ## Connections
-- [[RouteMap (elegant-router)]] - `references` [EXTRACTED]
-- [[StorageType.Local]] - `references` [EXTRACTED]
+- [[GlobalTab]] - `shares_data_with` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_48
+#graphify/code #graphify/INFERRED #community/Global_App_Types__Provider_web

@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-menu/components/first-level-menu.vue"
+source_file: "base-web/src/layouts/modules/global-menu/components/first-level-menu.vue"
 type: "code"
-community: "Common UI Toggle Components"
+community: "web: first"
 location: "L45"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Common_UI_Toggle_Components
+  - community/web_first
 ---
 
 # light
 
 ## Connections
-- [[FirstLevelMenu]] - `contains` [EXTRACTED]
+- [[first-level-menu.vue]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Common_UI_Toggle_Components
+#graphify/code #graphify/EXTRACTED #community/web_first

@@ -1,19 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/settings.ts"
+source_file: "base-web/src/theme/settings.ts"
 type: "code"
-community: "Elegant Router DSL"
+community: "Theme & Color Config (web)"
 location: "L96"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Elegant_Router_DSL
+  - community/Theme__Color_Config_web
 ---
 
 # overrideThemeSettings
 
 ## Connections
-- [[App.Theme.ThemeSetting]] - `references` [EXTRACTED]
 - [[settings.ts]] - `contains` [EXTRACTED]
 - [[shared.ts_8]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Elegant_Router_DSL
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

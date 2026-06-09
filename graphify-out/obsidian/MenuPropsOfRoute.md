@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/api/system-manage.d.ts"
+source_file: "base-web/src/typings/api/system-manage.d.ts"
 type: "code"
-community: "Per-Package TSConfig (sub-34)"
-location: "L91"
+community: "web: allrole"
+location: "L109"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-34
+  - community/web_allrole
 ---
 
 # MenuPropsOfRoute
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[system-manage.d.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-34
+#graphify/code #graphify/EXTRACTED #community/web_allrole

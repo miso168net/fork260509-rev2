@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/theme-drawer/modules/layout/modules/tab-settings.vue"
+source_file: "base-web/src/layouts/modules/theme-drawer/modules/layout/modules/tab-settings.vue"
 type: "code"
-community: "Community 214"
+community: "web: tab"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_214
+  - community/web_tab
 ---
 
 # tab-settings.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_214
+#graphify/code #graphify/EXTRACTED #community/web_tab

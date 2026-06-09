@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/alova/src/index.ts"
+source_file: "base-web/packages/alova/src/index.ts"
 type: "code"
-community: "Build & Release Scripts"
+community: "web: constant"
 location: "L11"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Build__Release_Scripts
+  - community/web_constant
 ---
 
 # createAlovaRequest()
@@ -15,4 +15,4 @@ tags:
 - [[index.ts]] - `contains` [EXTRACTED]
 - [[index.ts_31]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Build__Release_Scripts
+#graphify/code #graphify/EXTRACTED #community/web_constant

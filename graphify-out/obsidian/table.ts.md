@@ -1,22 +1,22 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/common/table.ts"
+source_file: "base-web/src/hooks/common/table.ts"
 type: "code"
-community: "API Service Aliases (auth/captcha)"
+community: "App Store & Composables (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/API_Service_Aliases_auth/captcha
+  - community/App_Store__Composables_web
 ---
 
 # table.ts
 
 ## Connections
-- [[$t (i18n global translator)]] - `imports` [EXTRACTED]
 - [[FlatResponseData]] - `imports` [EXTRACTED]
 - [[PaginationData]] - `imports` [EXTRACTED]
 - [[PaginationParams]] - `contains` [EXTRACTED]
 - [[TableColumnCheck]] - `imports` [EXTRACTED]
+- [[UseNaivePaginatedTableOptions]] - `contains` [EXTRACTED]
 - [[UseNaiveTableOptions]] - `contains` [EXTRACTED]
 - [[UseTableOptions]] - `imports` [EXTRACTED]
 - [[defaultTransform()]] - `contains` [EXTRACTED]
@@ -35,4 +35,4 @@ tags:
 - [[useTable()]] - `imports` [EXTRACTED]
 - [[useTableOperate()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha
+#graphify/code #graphify/EXTRACTED #community/App_Store__Composables_web

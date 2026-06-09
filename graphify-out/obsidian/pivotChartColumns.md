@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/tables/vtable/data.ts"
+source_file: "base-web/src/views/plugin/tables/vtable/data.ts"
 type: "code"
-community: "Community 93"
+community: "web: customlistrecords"
 location: "L769"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_93
+  - community/web_customlistrecords
 ---
 
 # pivotChartColumns
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[data.ts_5]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_93
+#graphify/code #graphify/EXTRACTED #community/web_customlistrecords

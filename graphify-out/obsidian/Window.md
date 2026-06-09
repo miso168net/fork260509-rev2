@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/global.d.ts"
+source_file: "base-web/src/typings/global.d.ts"
 type: "code"
-community: "Workspace Integration Docs (empty placeholders)"
+community: "web: global"
 location: "L4"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Workspace_Integration_Docs_empty_placeholders
+  - community/web_global
 ---
 
 # Window
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[global.d.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Workspace_Integration_Docs_empty_placeholders
+#graphify/code #graphify/EXTRACTED #community/web_global

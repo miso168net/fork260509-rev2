@@ -1,14 +1,24 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/map/index.vue"
+source_file: "base-web/src/views/plugin/gantt/vtable/index.vue"
 type: "code"
-community: "Community 263"
+community: "web: barcolors"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_263
+  - community/web_barcolors
 ---
 
 # index.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_263
+## Connections
+- [[GanttConstructorOptions]] - `contains` [EXTRACTED]
+- [[barColors]] - `contains` [EXTRACTED]
+- [[barColors0]] - `contains` [EXTRACTED]
+- [[customGanttColumns]] - `contains` [EXTRACTED]
+- [[format()_1]] - `contains` [EXTRACTED]
+- [[getOption()]] - `contains` [EXTRACTED]
+- [[initVTableGantt()]] - `contains` [EXTRACTED]
+- [[stopHandle]] - `contains` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/web_barcolors

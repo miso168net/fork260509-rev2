@@ -1,20 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/package.json"
+source_file: "base-web/package.json"
 type: "code"
-community: "Global Layout Components"
-location: "L125"
+community: "Dev Dependencies (web)"
+location: "L111"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Global_Layout_Components
+  - community/Dev_Dependencies_web
 ---
 
 # simple-git-hooks
 
 ## Connections
-- [[commit-msg]] - `contains` [EXTRACTED]
 - [[devDependencies]] - `contains` [EXTRACTED]
-- [[package.json]] - `contains` [EXTRACTED]
-- [[pre-commit]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Global_Layout_Components
+#graphify/code #graphify/EXTRACTED #community/Dev_Dependencies_web

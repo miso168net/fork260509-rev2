@@ -1,22 +1,20 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/shared.ts"
+source_file: "base-web/packages/materials/src/libs/page-tab/shared.ts"
 type: "code"
-community: "Alova Request Adapter (+docs)"
-location: "20"
+community: "Theme & Color Config (web)"
+location: "L20"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Alova_Request_Adapter_docs
+  - community/Theme__Color_Config_web
 ---
 
 # createTabCssVars()
 
 ## Connections
-- [[PageTab component]] - `calls` [EXTRACTED]
 - [[addColorAlpha()]] - `calls` [EXTRACTED]
 - [[createCssVars()]] - `calls` [EXTRACTED]
-- [[createLayoutCssVars()]] - `semantically_similar_to` [INFERRED]
 - [[shared.ts_2]] - `contains` [EXTRACTED]
 - [[transformColorWithOpacity()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Alova_Request_Adapter_docs
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

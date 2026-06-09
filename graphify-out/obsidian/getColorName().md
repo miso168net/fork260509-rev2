@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/src/shared/name.ts"
+source_file: "base-web/packages/color/src/shared/name.ts"
 type: "code"
-community: "VS Code Workspace Settings"
+community: "Theme & Color Config (web)"
 location: "L9"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/VS_Code_Workspace_Settings
+  - community/Theme__Color_Config_web
 ---
 
 # getColorName()
@@ -14,9 +14,9 @@ tags:
 ## Connections
 - [[getHex()]] - `calls` [EXTRACTED]
 - [[getHsl()]] - `calls` [EXTRACTED]
-- [[getRecommendedColorPalette()]] - `calls` [EXTRACTED]
+- [[getRecommendedColorPaletteFamily()]] - `calls` [EXTRACTED]
 - [[getRgb()]] - `calls` [EXTRACTED]
 - [[name.ts_1]] - `contains` [EXTRACTED]
 - [[recommend.ts]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/VS_Code_Workspace_Settings
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

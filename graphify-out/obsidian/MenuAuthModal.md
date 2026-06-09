@@ -1,11 +1,11 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/manage/role/modules/menu-auth-modal.vue"
+source_file: "base-web/src/views/manage/role/modules/menu-auth-modal.vue"
 type: "code"
-community: "Community 51"
+community: "web: wire"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_51
+  - community/web_wire
 ---
 
 # MenuAuthModal
@@ -13,5 +13,6 @@ tags:
 ## Connections
 - [[ButtonAuthModal]] - `semantically_similar_to` [INFERRED]
 - [[RoleOperateDrawer]] - `references` [EXTRACTED]
+- [[UserSessionPolicyModal]] - `semantically_similar_to` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Community_51
+#graphify/code #graphify/INFERRED #community/web_wire

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/custom/count-to.vue"
+source_file: "base-web/src/components/custom/count-to.vue"
 type: "code"
-community: "Community 146"
+community: "web: count"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_146
+  - community/web_count
 ---
 
 # count-to.vue
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[start()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_146
+#graphify/code #graphify/EXTRACTED #community/web_count

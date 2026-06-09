@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/store/modules/route/shared.ts"
+source_file: "base-web/src/store/modules/route/shared.ts"
 type: "code"
-community: "Community 45"
+community: "Route & SVG Icon (web)"
 location: "L127"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_45
+  - community/Route__SVG_Icon_web
 ---
 
 # getGlobalMenuByBaseRoute()
@@ -16,4 +16,4 @@ tags:
 - [[shared.ts_6]] - `contains` [EXTRACTED]
 - [[useSvgIcon()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_45
+#graphify/code #graphify/EXTRACTED #community/Route__SVG_Icon_web

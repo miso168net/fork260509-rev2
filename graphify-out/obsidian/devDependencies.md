@@ -1,28 +1,30 @@
 ---
-source_file: "fork260509-soybean-admin-base/package.json"
+source_file: "base-web/package.json"
 type: "code"
-community: "Layout Geometry & Scroll"
+community: "Dev Dependencies (web)"
 location: "L92"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Layout_Geometry__Scroll
+  - community/Dev_Dependencies_web
 ---
 
 # devDependencies
 
 ## Connections
 - [[@amapamap-jsapi-types]] - `contains` [EXTRACTED]
+- [[@elegant-routervue]] - `contains` [EXTRACTED]
+- [[@iconifyjson]] - `contains` [EXTRACTED]
 - [[@sascripts]] - `contains` [EXTRACTED]
 - [[@sauno-preset]] - `contains` [EXTRACTED]
-- [[@soybeanjseslint-config]] - `contains` [EXTRACTED]
+- [[@soybeanjseslint-config-vue]] - `contains` [EXTRACTED]
 - [[@typesbmapgl]] - `contains` [EXTRACTED]
 - [[@typesnode]] - `contains` [EXTRACTED]
 - [[@typesnprogress]] - `contains` [EXTRACTED]
 - [[@vitejsplugin-vue]] - `contains` [EXTRACTED]
+- [[@vitejsplugin-vue-jsx]] - `contains` [EXTRACTED]
 - [[consola]] - `contains` [EXTRACTED]
 - [[eslint]] - `contains` [EXTRACTED]
-- [[iconify.ts]] - `contains` [EXTRACTED]
 - [[kolorist]] - `contains` [EXTRACTED]
 - [[oxfmt]] - `contains` [EXTRACTED]
 - [[oxlint]] - `contains` [EXTRACTED]
@@ -43,4 +45,4 @@ tags:
 - [[vue-eslint-parser]] - `contains` [EXTRACTED]
 - [[vue-tsc]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Layout_Geometry__Scroll
+#graphify/code #graphify/EXTRACTED #community/Dev_Dependencies_web

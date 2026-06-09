@@ -1,18 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/_builtin/login/index.vue"
+source_file: "base-web/src/views/_builtin/404/index.vue"
 type: "code"
-community: "Global Type Declarations"
+community: "web: vue"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Global_Type_Declarations
+  - community/web_vue
 ---
 
 # index.vue
 
-## Connections
-- [[bgColor]] - `contains` [EXTRACTED]
-- [[themeColor]] - `contains` [EXTRACTED]
-
-#graphify/code #graphify/EXTRACTED #community/Global_Type_Declarations
+#graphify/code #graphify/EXTRACTED #community/web_vue

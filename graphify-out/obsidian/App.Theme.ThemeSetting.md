@@ -1,25 +1,22 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/app.d.ts"
+source_file: "base-web/src/typings/app.d.ts"
 type: "code"
-community: "Community 53"
+community: "i18n & Theme Schema (web)"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_53
+  - community/i18n__Theme_Schema_web
 ---
 
 # App.Theme.ThemeSetting
 
 ## Connections
-- [[Azir Preset]] - `implements` [INFERRED]
-- [[Compact Preset]] - `implements` [INFERRED]
-- [[Dark Preset]] - `implements` [INFERRED]
-- [[Default Preset]] - `implements` [INFERRED]
+- [[Azir theme preset]] - `implements` [INFERRED]
 - [[StorageType.Local]] - `references` [EXTRACTED]
-- [[ThemeSetting]] - `implements` [EXTRACTED]
-- [[UnionKey namespace]] - `references` [EXTRACTED]
-- [[overrideThemeSettings]] - `references` [EXTRACTED]
-- [[resetSetupStore()]] - `conceptually_related_to` [INFERRED]
-- [[themeVars]] - `references` [EXTRACTED]
+- [[compact theme preset]] - `implements` [INFERRED]
+- [[dark theme preset]] - `implements` [INFERRED]
+- [[default theme preset]] - `implements` [INFERRED]
+- [[overrideThemeSettings_1]] - `references` [EXTRACTED]
+- [[themeSettings_1]] - `implements` [EXTRACTED]
 
-#graphify/code #graphify/INFERRED #community/Community_53
+#graphify/code #graphify/INFERRED #community/i18n__Theme_Schema_web

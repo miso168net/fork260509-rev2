@@ -1,22 +1,22 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/service-alova/request/index.ts"
+source_file: "base-web/src/service-alova/request/index.ts"
 type: "code"
-community: "Community 63"
+community: "web: constant"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_63
+  - community/web_constant
 ---
 
 # index.ts
 
 ## Connections
-- [[$t (i18n global translator)]] - `imports` [EXTRACTED]
 - [[alova_1]] - `contains` [EXTRACTED]
 - [[auth.ts_2]] - `imports_from` [EXTRACTED]
 - [[createAlovaRequest()]] - `imports` [EXTRACTED]
 - [[feature-users-20241014.ts]] - `imports_from` [EXTRACTED]
+- [[getAuthorization (axios)]] - `imports` [EXTRACTED]
 - [[getServiceBaseURL()]] - `imports` [EXTRACTED]
 - [[index.ts]] - `imports_from` [EXTRACTED]
 - [[index.ts_23]] - `imports_from` [EXTRACTED]
@@ -31,4 +31,4 @@ tags:
 - [[useAuthStore]] - `imports` [EXTRACTED]
 - [[{ baseURL }]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_63
+#graphify/code #graphify/EXTRACTED #community/web_constant

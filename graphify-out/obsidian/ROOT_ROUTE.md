@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/router/routes/builtin.ts"
+source_file: "base-web/src/router/routes/builtin.ts"
 type: "code"
-community: "Router Guard Flow (diagram)"
+community: "web: route"
 location: "L5"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Router_Guard_Flow_diagram
+  - community/web_route
 ---
 
 # ROOT_ROUTE
@@ -15,4 +15,4 @@ tags:
 - [[builtin.ts]] - `contains` [EXTRACTED]
 - [[index.ts_35]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Router_Guard_Flow_diagram
+#graphify/code #graphify/EXTRACTED #community/web_route

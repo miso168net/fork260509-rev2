@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/store/modules/theme/shared.ts"
+source_file: "base-web/src/store/modules/theme/shared.ts"
 type: "code"
-community: "Elegant Router DSL"
+community: "Theme & Color Config (web)"
 location: "L212"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Elegant_Router_DSL
+  - community/Theme__Color_Config_web
 ---
 
 # getNaiveThemeColors()
@@ -17,4 +17,4 @@ tags:
 - [[getPaletteColorByNumber()]] - `calls` [EXTRACTED]
 - [[shared.ts_8]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Elegant_Router_DSL
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

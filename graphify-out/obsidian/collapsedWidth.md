@@ -1,18 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/dark.json"
+source_file: "base-web/src/theme/preset/compact.json"
 type: "code"
-community: "Community 97"
-location: "L51"
+community: "web: visible"
+location: "L29"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_97
+  - community/web_visible
 ---
 
 # collapsedWidth
 
 ## Connections
 - [[sider_1]] - `contains` [EXTRACTED]
-- [[sider_2]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_97
+#graphify/code #graphify/EXTRACTED #community/web_visible

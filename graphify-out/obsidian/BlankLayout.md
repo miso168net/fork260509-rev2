@@ -1,11 +1,11 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/blank-layout/index.vue"
+source_file: "base-web/src/layouts/blank-layout/index.vue"
 type: "code"
-community: "Common UI Toggle Components"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Common_UI_Toggle_Components
+  - community/Global_App_Types__Provider_web
 ---
 
 # BlankLayout
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[GlobalContent]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Common_UI_Toggle_Components
+#graphify/code #graphify/EXTRACTED #community/Global_App_Types__Provider_web

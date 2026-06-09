@@ -1,13 +1,13 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/utils/src/klona.ts"
+source_file: "base-web/packages/utils/src/klona.ts"
 type: "code"
-community: "Community 296"
+community: "web: jsonclone"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_296
+  - community/web_jsonclone
 ---
 
 # jsonClone
 
-#graphify/code #graphify/EXTRACTED #community/Community_296
+#graphify/code #graphify/EXTRACTED #community/web_jsonclone

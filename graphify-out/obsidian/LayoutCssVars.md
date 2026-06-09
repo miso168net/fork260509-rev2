@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/types/index.ts"
+source_file: "base-web/packages/materials/src/types/index.ts"
 type: "code"
-community: "Alova Request Adapter (+docs)"
+community: "Layout Composition (web)"
 location: "L231"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Alova_Request_Adapter_docs
+  - community/Layout_Composition_web
 ---
 
 # LayoutCssVars
@@ -15,4 +15,4 @@ tags:
 - [[index.ts_12]] - `contains` [EXTRACTED]
 - [[shared.ts_1]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Alova_Request_Adapter_docs
+#graphify/code #graphify/EXTRACTED #community/Layout_Composition_web

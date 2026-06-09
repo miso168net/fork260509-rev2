@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/tsconfig.json"
+source_file: "base-web/packages/materials/tsconfig.json"
 type: "code"
-community: "Per-Package TSConfig (sub-35)"
+community: "web: tsconfig"
 location: "L13"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-35
+  - community/web_tsconfig
 ---
 
 # allowSyntheticDefaultImports
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[compilerOptions_5]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-35
+#graphify/code #graphify/EXTRACTED #community/web_tsconfig

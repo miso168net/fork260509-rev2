@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/locales/naive.ts"
+source_file: "base-web/src/locales/naive.ts"
 type: "code"
-community: "Auth Storage & Locale Boot"
+community: "web: naive"
 location: "L9"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Storage__Locale_Boot
+  - community/web_naive
 ---
 
 # naiveDateLocales
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[naive.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Storage__Locale_Boot
+#graphify/code #graphify/EXTRACTED #community/web_naive

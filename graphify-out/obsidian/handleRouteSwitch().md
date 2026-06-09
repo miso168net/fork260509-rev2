@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/router/guard/route.ts"
+source_file: "base-web/src/router/guard/route.ts"
 type: "code"
-community: "TypeScript Compiler Config (root)"
+community: "Route & SVG Icon (web)"
 location: "L153"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/TypeScript_Compiler_Config_root
+  - community/Route__SVG_Icon_web
 ---
 
 # handleRouteSwitch()
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[route.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/TypeScript_Compiler_Config_root
+#graphify/code #graphify/EXTRACTED #community/Route__SVG_Icon_web

@@ -1,20 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/locales/locale.ts"
+source_file: "base-web/src/locales/locale.ts"
 type: "code"
-community: "Community 88"
+community: "web: local"
 location: "L4"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_88
+  - community/web_local
 ---
 
 # locales
 
 ## Connections
-- [[local]] - `references` [EXTRACTED]
-- [[local_1]] - `references` [EXTRACTED]
 - [[locale.ts]] - `contains` [EXTRACTED]
-- [[setupI18n()]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_88
+#graphify/code #graphify/EXTRACTED #community/web_local

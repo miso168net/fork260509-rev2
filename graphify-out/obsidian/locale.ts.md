@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/locales/locale.ts"
+source_file: "base-web/src/locales/locale.ts"
 type: "code"
-community: "Community 88"
+community: "web: local"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_88
+  - community/web_local
 ---
 
 # locale.ts
@@ -17,4 +17,4 @@ tags:
 - [[locales]] - `contains` [EXTRACTED]
 - [[zh-cn.ts]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_88
+#graphify/code #graphify/EXTRACTED #community/web_local

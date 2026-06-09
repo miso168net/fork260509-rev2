@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/src/palette/recommend.ts"
+source_file: "base-web/packages/color/src/palette/recommend.ts"
 type: "code"
-community: "VS Code Workspace Settings"
+community: "Theme & Color Config (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/VS_Code_Workspace_Settings
+  - community/Theme__Color_Config_web
 ---
 
 # recommend.ts
@@ -17,11 +17,13 @@ tags:
 - [[ColorPaletteFamilyWithNearestPalette]] - `imports` [EXTRACTED]
 - [[ColorPaletteMatch]] - `imports` [EXTRACTED]
 - [[ColorPaletteNumber]] - `imports` [EXTRACTED]
+- [[colorPalettes]] - `imports` [EXTRACTED]
 - [[getColorName()]] - `imports` [EXTRACTED]
 - [[getDeltaE()]] - `imports` [EXTRACTED]
 - [[getHsl()]] - `imports` [EXTRACTED]
 - [[getNearestColorPaletteFamily()]] - `contains` [EXTRACTED]
 - [[getRecommendedColorPalette()]] - `contains` [EXTRACTED]
+- [[getRecommendedColorPaletteFamily()]] - `contains` [EXTRACTED]
 - [[getRecommendedPaletteColorByNumber()]] - `contains` [EXTRACTED]
 - [[index.ts_3]] - `imports_from` [EXTRACTED]
 - [[index.ts_4]] - `imports_from` [EXTRACTED]
@@ -30,4 +32,4 @@ tags:
 - [[isValidColor()]] - `imports` [EXTRACTED]
 - [[transformHslToHex()]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/VS_Code_Workspace_Settings
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

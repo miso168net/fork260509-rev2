@@ -1,26 +1,23 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/src/shared/colord.ts"
+source_file: "base-web/packages/color/src/shared/colord.ts"
 type: "code"
-community: "VS Code Workspace Settings"
+community: "Theme & Color Config (web)"
 location: "L13"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/VS_Code_Workspace_Settings
+  - community/Theme__Color_Config_web
 ---
 
 # getHex()
 
 ## Connections
-- [[ColorPalette]] - `calls` [EXTRACTED]
 - [[antd.ts]] - `imports` [EXTRACTED]
-- [[colord (3rd-party color utility lib)]] - `references` [EXTRACTED]
 - [[colord.ts]] - `contains` [EXTRACTED]
-- [[getAntDColorPalette()]] - `calls` [EXTRACTED]
 - [[getAntDPaletteColorByIndex()]] - `calls` [EXTRACTED]
-- [[getColorName (nearest-name lookup over colorNames)]] - `calls` [EXTRACTED]
 - [[getColorName()]] - `calls` [EXTRACTED]
+- [[getColorPalette()]] - `calls` [EXTRACTED]
 - [[index.ts_4]] - `imports` [EXTRACTED]
 - [[name.ts_1]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/VS_Code_Workspace_Settings
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

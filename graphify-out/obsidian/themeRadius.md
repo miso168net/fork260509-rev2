@@ -1,18 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/dark.json"
+source_file: "base-web/src/layouts/modules/theme-drawer/modules/appearance/modules/theme-radius.vue"
 type: "code"
-community: "Per-Package TSConfig (sub-36)"
-location: "L17"
+community: "i18n & Theme Schema (web)"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-36
+  - community/i18n__Theme_Schema_web
 ---
 
-# themeRadius
+# ThemeRadius
 
 ## Connections
-- [[compact.json]] - `contains` [EXTRACTED]
-- [[dark.json]] - `contains` [EXTRACTED]
+- [[$t]] - `calls` [EXTRACTED]
+- [[AppearanceSettings]] - `references` [EXTRACTED]
+- [[useThemeStore_2]] - `shares_data_with` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-36
+#graphify/code #graphify/EXTRACTED #community/i18n__Theme_Schema_web

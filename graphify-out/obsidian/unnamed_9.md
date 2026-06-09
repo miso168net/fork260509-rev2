@@ -1,22 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-tab/index.vue"
+source_file: "base-web/src/layouts/modules/global-tab/index.vue"
 type: "code"
-community: "Admin Layout Package"
+community: "web: vue"
 location: "L75"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Admin_Layout_Package
+  - community/web_vue
 ---
 
 # []
 
 ## Connections
-- [[SearchModal (search-modal.vue)]] - `conceptually_related_to` [INFERRED]
-- [[unnamed_8]] - `references` [EXTRACTED]
 - [[index.vue_13]] - `contains` [EXTRACTED]
-- [[useAppStore (concept)]] - `shares_data_with` [EXTRACTED]
-- [[useTabStore (concept)]] - `shares_data_with` [EXTRACTED]
-- [[useThemeStore (concept)]] - `shares_data_with` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Admin_Layout_Package
+#graphify/code #graphify/EXTRACTED #community/web_vue

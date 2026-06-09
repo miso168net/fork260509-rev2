@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/alova/scenes/modules/cross-component-request.vue"
+source_file: "base-web/src/views/alova/scenes/modules/cross-component-request.vue"
 type: "code"
-community: "Community 239"
+community: "web: cross"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_239
+  - community/web_cross
 ---
 
 # cross-component-request.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_239
+#graphify/code #graphify/EXTRACTED #community/web_cross

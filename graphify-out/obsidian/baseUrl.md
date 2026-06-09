@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/.vscode/settings.json"
+source_file: "base-web/.vscode/settings.json"
 type: "code"
-community: "Chart Plugin Views"
+community: "web: ally"
 location: "L19"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Chart_Plugin_Views
+  - community/web_ally
 ---
 
 # baseUrl
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[i18n-ally.parsers.typescript.compilerOptions]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Chart_Plugin_Views
+#graphify/code #graphify/EXTRACTED #community/web_ally

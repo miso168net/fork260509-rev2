@@ -1,21 +1,20 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/router/index.ts"
+source_file: "base-web/src/router/index.ts"
 type: "code"
-community: "Dev Dependencies"
+community: "web: router"
 location: "L26"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Dev_Dependencies
+  - community/web_router
 ---
 
 # setupRouter()
 
 ## Connections
-- [[createRouteGuard()]] - `calls` [EXTRACTED]
+- [[createRouterGuard()]] - `calls` [EXTRACTED]
 - [[index.ts_25]] - `contains` [EXTRACTED]
 - [[main.ts]] - `imports` [EXTRACTED]
-- [[router]] - `references` [EXTRACTED]
 - [[setupApp()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Dev_Dependencies
+#graphify/code #graphify/EXTRACTED #community/web_router

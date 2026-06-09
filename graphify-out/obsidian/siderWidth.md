@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/base-layout/index.vue"
+source_file: "base-web/src/layouts/base-layout/index.vue"
 type: "code"
-community: "Form Validation & Bootstrap"
+community: "web: getsiderandcollapsedwidth"
 location: "L80"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Form_Validation__Bootstrap
+  - community/web_getsiderandcollapsedwidth
 ---
 
 # siderWidth
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[index.vue_3]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Form_Validation__Bootstrap
+#graphify/code #graphify/EXTRACTED #community/web_getsiderandcollapsedwidth

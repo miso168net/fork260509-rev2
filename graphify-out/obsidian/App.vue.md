@@ -1,21 +1,19 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/App.vue"
+source_file: "base-web/src/App.vue"
 type: "code"
-community: "Community 79"
+community: "App Bootstrap (web)"
+location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_79
+  - community/App_Bootstrap_web
 ---
 
 # App.vue
 
 ## Connections
-- [[AppProvider]] - `references` [EXTRACTED]
-- [[ContextHolder]] - `shares_data_with` [INFERRED]
 - [[main.ts]] - `imports_from` [EXTRACTED]
 - [[naiveDateLocale]] - `contains` [EXTRACTED]
 - [[naiveLocale]] - `contains` [EXTRACTED]
-- [[setupApp()]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_79
+#graphify/code #graphify/EXTRACTED #community/App_Bootstrap_web

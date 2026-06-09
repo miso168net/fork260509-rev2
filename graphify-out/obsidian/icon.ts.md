@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/common/icon.ts"
+source_file: "base-web/src/hooks/common/icon.ts"
 type: "code"
-community: "API Service Aliases (auth/captcha)"
+community: "Route & SVG Icon (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/API_Service_Aliases_auth/captcha
+  - community/Route__SVG_Icon_web
 ---
 
 # icon.ts
@@ -17,4 +17,4 @@ tags:
 - [[svg-icon.vue]] - `imports_from` [EXTRACTED]
 - [[useSvgIcon()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha
+#graphify/code #graphify/EXTRACTED #community/Route__SVG_Icon_web

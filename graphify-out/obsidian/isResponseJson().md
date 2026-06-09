@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/axios/src/shared.ts"
+source_file: "base-web/packages/axios/src/shared.ts"
 type: "code"
-community: "Build & Release Scripts"
+community: "Common Request Composable (web)"
 location: "L25"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Build__Release_Scripts
+  - community/Common_Request_Composable_web
 ---
 
 # isResponseJson()
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[shared.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Build__Release_Scripts
+#graphify/code #graphify/EXTRACTED #community/Common_Request_Composable_web

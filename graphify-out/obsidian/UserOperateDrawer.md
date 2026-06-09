@@ -1,17 +1,16 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/manage/user/modules/user-operate-drawer.vue"
+source_file: "base-web/src/views/manage/user/modules/user-operate-drawer.vue"
 type: "code"
-community: "Community 51"
+community: "web: wire"
 tags:
   - graphify/code
-  - graphify/INFERRED
-  - community/Community_51
+  - graphify/EXTRACTED
+  - community/web_wire
 ---
 
 # UserOperateDrawer
 
 ## Connections
-- [[RoleOperateDrawer]] - `semantically_similar_to` [INFERRED]
-- [[manageuser admin page]] - `references` [EXTRACTED]
+- [[UserManageView]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/INFERRED #community/Community_51
+#graphify/code #graphify/EXTRACTED #community/web_wire

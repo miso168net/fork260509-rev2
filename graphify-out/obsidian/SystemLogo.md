@@ -1,11 +1,11 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/system-logo.vue"
-type: "code"
-community: "Community 143"
+source_file: "base-web/src/components/common/system-logo.vue"
+type: "image"
+community: "web: getpalettecolorbynumber"
 tags:
-  - graphify/code
+  - graphify/image
   - graphify/INFERRED
-  - community/Community_143
+  - community/web_getpalettecolorbynumber
 ---
 
 # SystemLogo
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[WaveBg]] - `semantically_similar_to` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Community_143
+#graphify/image #graphify/INFERRED #community/web_getpalettecolorbynumber

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/utils/common.ts"
+source_file: "base-web/src/utils/common.ts"
 type: "code"
-community: "Community 38"
+community: "App Bootstrap (web)"
 location: "L45"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_38
+  - community/App_Bootstrap_web
 ---
 
 # toggleHtmlClass()
@@ -18,4 +18,4 @@ tags:
 - [[shared.ts_8]] - `imports` [EXTRACTED]
 - [[toggleCssDarkMode()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_38
+#graphify/code #graphify/EXTRACTED #community/App_Bootstrap_web

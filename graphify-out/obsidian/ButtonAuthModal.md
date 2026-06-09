@@ -1,11 +1,11 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/manage/role/modules/button-auth-modal.vue"
+source_file: "base-web/src/views/manage/role/modules/button-auth-modal.vue"
 type: "code"
-community: "Community 51"
+community: "web: wire"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_51
+  - community/web_wire
 ---
 
 # ButtonAuthModal
@@ -14,4 +14,4 @@ tags:
 - [[MenuAuthModal]] - `semantically_similar_to` [INFERRED]
 - [[RoleOperateDrawer]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_51
+#graphify/code #graphify/EXTRACTED #community/web_wire

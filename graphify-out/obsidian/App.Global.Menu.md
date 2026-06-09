@@ -1,17 +1,19 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/app.d.ts"
+source_file: "base-web/src/typings/app.d.ts"
 type: "code"
-community: "Community 48"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Community_48
+  - graphify/INFERRED
+  - community/Global_App_Types__Provider_web
 ---
 
 # App.Global.Menu
 
 ## Connections
-- [[Api.SystemManage.Menu]] - `semantically_similar_to` [INFERRED]
-- [[RouteMap (elegant-router)]] - `references` [EXTRACTED]
+- [[FirstLevelMenu]] - `shares_data_with` [INFERRED]
+- [[SearchModal]] - `shares_data_with` [INFERRED]
+- [[SearchResult]] - `shares_data_with` [INFERRED]
+- [[useMixMenu()]] - `shares_data_with` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_48
+#graphify/code #graphify/INFERRED #community/Global_App_Types__Provider_web

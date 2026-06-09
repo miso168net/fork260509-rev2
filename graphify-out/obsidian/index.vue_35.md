@@ -1,14 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/multi-menu/second_child_home/index.vue"
+source_file: "base-web/src/views/manage/user/index.vue"
 type: "code"
-community: "Community 256"
+community: "web: vue"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_256
+  - community/web_vue
 ---
 
 # index.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_256
+## Connections
+- [[label_2]] - `contains` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/web_vue

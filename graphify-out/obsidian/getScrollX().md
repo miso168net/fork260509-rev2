@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/common/table.ts"
+source_file: "base-web/src/hooks/common/table.ts"
 type: "code"
-community: "API Service Aliases (auth/captcha)"
+community: "App Store & Composables (web)"
 location: "L322"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/API_Service_Aliases_auth/captcha
+  - community/App_Store__Composables_web
 ---
 
 # getScrollX()
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[table.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha
+#graphify/code #graphify/EXTRACTED #community/App_Store__Composables_web

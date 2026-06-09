@@ -1,20 +1,20 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/store/modules/tab/shared.ts"
+source_file: "base-web/src/store/modules/tab/shared.ts"
 type: "code"
-community: "Per-Package TSConfig (sub-26)"
+community: "web: nkey"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-26
+  - community/web_nkey
 ---
 
 # shared.ts
 
 ## Connections
-- [[$t (i18n global translator)]] - `imports` [EXTRACTED]
 - [[extractTabsByAllRoutes()]] - `contains` [EXTRACTED]
 - [[filterTabsById()]] - `contains` [EXTRACTED]
+- [[filterTabsByIds()]] - `contains` [EXTRACTED]
 - [[findTabByRouteName()]] - `contains` [EXTRACTED]
 - [[getAllTabs()]] - `contains` [EXTRACTED]
 - [[getDefaultHomeTab()]] - `contains` [EXTRACTED]
@@ -31,6 +31,7 @@ tags:
 - [[reorderFixedTabs()]] - `contains` [EXTRACTED]
 - [[transform.ts]] - `imports_from` [EXTRACTED]
 - [[updateTabByI18nKey()]] - `contains` [EXTRACTED]
+- [[updateTabsByI18nKey()]] - `contains` [EXTRACTED]
 - [[updateTabsLabel()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-26
+#graphify/code #graphify/EXTRACTED #community/web_nkey

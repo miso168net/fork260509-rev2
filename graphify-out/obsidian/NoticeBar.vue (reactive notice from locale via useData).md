@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-docs/.vitepress/theme/NoticeBar.vue"
 type: "code"
-community: "Route Helpers & Tab Filters"
+community: "docs: vitepress"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Route_Helpers__Tab_Filters
+  - community/docs_vitepress
 ---
 
 # NoticeBar.vue (reactive notice from locale via useData)
@@ -16,4 +16,4 @@ tags:
 - [[types.d.ts (augments vitepress LocaleSpecificConfig with notice)]] - `references` [INFERRED]
 - [[zh.ts (Simplified Chinese VitePress locale)]] - `shares_data_with` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Route_Helpers__Tab_Filters
+#graphify/code #graphify/INFERRED #community/docs_vitepress

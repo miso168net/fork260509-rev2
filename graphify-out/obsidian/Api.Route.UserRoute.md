@@ -1,16 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/api/route.d.ts"
+source_file: "base-web/src/typings/api/route.d.ts"
 type: "code"
-community: "Community 48"
+community: "web: api"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_48
+  - community/web_api
 ---
 
 # Api.Route.UserRoute
 
 ## Connections
 - [[Api.Route.MenuRoute]] - `references` [EXTRACTED]
+- [[RouteMap (elegant-router)]] - `shares_data_with` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_48
+#graphify/code #graphify/EXTRACTED #community/web_api

@@ -1,17 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/service-alova/request/shared.ts"
+source_file: "base-web/src/service-alova/request/shared.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "Auth Store (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - community/Auth_Store_web
 ---
 
 # shared.ts
 
 ## Connections
+- [[fetchRefreshToken_1]] - `imports` [EXTRACTED]
 - [[getAuthorization()_1]] - `contains` [EXTRACTED]
 - [[handleRefreshToken()_1]] - `contains` [EXTRACTED]
 - [[index.ts_30]] - `imports_from` [EXTRACTED]
@@ -23,4 +24,4 @@ tags:
 - [[type.ts_3]] - `imports_from` [EXTRACTED]
 - [[useAuthStore]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/EXTRACTED #community/Auth_Store_web

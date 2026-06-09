@@ -1,20 +1,19 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/types/index.ts"
+source_file: "base-web/packages/materials/src/types/index.ts"
 type: "code"
-community: "Admin Layout Package"
-location: "245"
+community: "web: component"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Admin_Layout_Package
+  - community/web_component
 ---
 
 # PageTabProps
 
 ## Connections
-- [[ButtonTab component]] - `implements` [EXTRACTED]
-- [[ChromeTab component]] - `implements` [EXTRACTED]
-- [[PageTab component]] - `implements` [EXTRACTED]
-- [[SliderTab component]] - `implements` [EXTRACTED]
+- [[ButtonTab component]] - `references` [EXTRACTED]
+- [[ChromeTab component]] - `references` [EXTRACTED]
+- [[PageTab component (index.vue)]] - `references` [EXTRACTED]
+- [[SliderTab component]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Admin_Layout_Package
+#graphify/code #graphify/EXTRACTED #community/web_component

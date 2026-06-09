@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/compact.json"
+source_file: "base-web/src/theme/preset/azir.json"
 type: "code"
-community: "Per-Package TSConfig (sub-36)"
+community: "Theme Tokens (web)"
 location: "L2"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-36
+  - community/Theme_Tokens_web
 ---
 
 # name
 
 ## Connections
-- [[compact.json]] - `contains` [EXTRACTED]
+- [[azir.json]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-36
+#graphify/code #graphify/EXTRACTED #community/Theme_Tokens_web

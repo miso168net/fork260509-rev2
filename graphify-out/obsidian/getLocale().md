@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/locales/index.ts"
+source_file: "base-web/src/locales/index.ts"
 type: "code"
-community: "Dev Dependencies"
+community: "App Bootstrap (web)"
 location: "L30"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Dev_Dependencies
+  - community/App_Bootstrap_web
 ---
 
 # getLocale()
@@ -16,4 +16,4 @@ tags:
 - [[main.ts]] - `imports` [EXTRACTED]
 - [[setupApp()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Dev_Dependencies
+#graphify/code #graphify/EXTRACTED #community/App_Bootstrap_web

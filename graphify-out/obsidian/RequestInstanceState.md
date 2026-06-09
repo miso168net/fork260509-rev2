@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/service-alova/request/type.ts"
+source_file: "base-web/src/service/request/type.ts"
 type: "code"
-community: "Community 63"
+community: "Auth Store (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_63
+  - community/Auth_Store_web
 ---
 
 # RequestInstanceState
 
 ## Connections
-- [[type.ts_3]] - `contains` [EXTRACTED]
+- [[type.ts_2]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_63
+#graphify/code #graphify/EXTRACTED #community/Auth_Store_web

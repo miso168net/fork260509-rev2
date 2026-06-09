@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-tab/index.vue"
+source_file: "base-web/src/layouts/modules/global-tab/index.vue"
 type: "code"
-community: "Admin Layout Package"
+community: "web: vue"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Admin_Layout_Package
+  - community/web_vue
 ---
 
 # index.vue
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[unnamed_9]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Admin_Layout_Package
+#graphify/code #graphify/EXTRACTED #community/web_vue

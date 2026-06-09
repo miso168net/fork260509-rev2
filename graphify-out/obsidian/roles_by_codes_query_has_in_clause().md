@@ -1,0 +1,18 @@
+---
+source_file: "rust-api/server/src/model/facade/sys_user_role.rs"
+type: "code"
+community: "rust: user"
+location: "L322"
+tags:
+  - graphify/code
+  - graphify/EXTRACTED
+  - community/rust_user
+---
+
+# roles_by_codes_query_has_in_clause()
+
+## Connections
+- [[roles_by_codes_query()]] - `calls` [EXTRACTED]
+- [[sys_user_role.rs_1]] - `contains` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/rust_user

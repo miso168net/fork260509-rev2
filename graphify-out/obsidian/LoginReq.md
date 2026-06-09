@@ -1,0 +1,17 @@
+---
+source_file: "rust-api/server/src/handler/auth.rs"
+type: "code"
+community: "Auth Request & Routing (web)"
+location: "L38"
+tags:
+  - graphify/code
+  - graphify/EXTRACTED
+  - community/Auth_Request__Routing_web
+---
+
+# LoginReq
+
+## Connections
+- [[auth.rs]] - `contains` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/Auth_Request__Routing_web

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/compact.json"
+source_file: "base-web/src/theme/preset/compact.json"
 type: "code"
-community: "Community 97"
+community: "web: visible"
 location: "L26"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_97
+  - community/web_visible
 ---
 
 # sider
@@ -16,7 +16,8 @@ tags:
 - [[compact.json]] - `contains` [EXTRACTED]
 - [[inverted_1]] - `contains` [EXTRACTED]
 - [[mixChildMenuWidth]] - `contains` [EXTRACTED]
+- [[mixCollapsedWidth]] - `contains` [EXTRACTED]
 - [[mixWidth]] - `contains` [EXTRACTED]
 - [[width]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_97
+#graphify/code #graphify/EXTRACTED #community/web_visible

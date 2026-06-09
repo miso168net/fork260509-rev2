@@ -1,19 +1,19 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/button-tab.vue"
+source_file: "base-web/packages/materials/src/libs/page-tab/button-tab.vue"
 type: "code"
-community: "Alova Request Adapter (+docs)"
+community: "web: component"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Alova_Request_Adapter_docs
+  - community/web_component
 ---
 
 # ButtonTab component
 
 ## Connections
 - [[ChromeTab component]] - `semantically_similar_to` [INFERRED]
-- [[PageTab component]] - `references` [EXTRACTED]
-- [[PageTabProps]] - `implements` [EXTRACTED]
+- [[PageTab component (index.vue)]] - `references` [EXTRACTED]
+- [[PageTabProps_1]] - `references` [EXTRACTED]
 - [[SliderTab component]] - `semantically_similar_to` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Alova_Request_Adapter_docs
+#graphify/code #graphify/EXTRACTED #community/web_component

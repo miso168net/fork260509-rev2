@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/alova/package.json"
+source_file: "base-web/packages/alova/package.json"
 type: "code"
-community: "Community 56"
+community: "web: alova"
 location: "L4"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_56
+  - community/web_alova
 ---
 
 # typesVersions
@@ -15,4 +15,4 @@ tags:
 - [[unnamed]] - `contains` [EXTRACTED]
 - [[package.json_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_56
+#graphify/code #graphify/EXTRACTED #community/web_alova

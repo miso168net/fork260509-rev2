@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/vite-env.d.ts"
+source_file: "base-web/src/typings/vite-env.d.ts"
 type: "code"
-community: "Docs Site Engines Constraint"
+community: "web: vite"
 location: "L8"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Docs_Site_Engines_Constraint
+  - community/web_vite
 ---
 
 # RouterHistoryMode
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[vite-env.d.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Docs_Site_Engines_Constraint
+#graphify/code #graphify/EXTRACTED #community/web_vite

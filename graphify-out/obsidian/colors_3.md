@@ -1,17 +1,20 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/charts/vchart/data.ts"
+source_file: "base-web/src/theme/preset/dark.json"
 type: "code"
-community: "Community 67"
-location: "L373"
+community: "web: colors"
+location: "L84"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_67
+  - community/web_colors
 ---
 
 # colors
 
 ## Connections
-- [[data.ts_2]] - `contains` [EXTRACTED]
+- [[base-text_1]] - `contains` [EXTRACTED]
+- [[container_1]] - `contains` [EXTRACTED]
+- [[dark_2]] - `contains` [EXTRACTED]
+- [[layout_2]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_67
+#graphify/code #graphify/EXTRACTED #community/web_colors

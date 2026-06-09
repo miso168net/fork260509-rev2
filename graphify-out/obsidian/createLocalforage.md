@@ -1,11 +1,11 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/utils/src/storage.ts"
+source_file: "base-web/packages/utils/src/storage.ts"
 type: "code"
-community: "Community 134"
+community: "web: crypto"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_134
+  - community/web_crypto
 ---
 
 # createLocalforage
@@ -13,4 +13,4 @@ tags:
 ## Connections
 - [[createStorage]] - `semantically_similar_to` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Community_134
+#graphify/code #graphify/INFERRED #community/web_crypto

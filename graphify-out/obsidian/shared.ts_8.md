@@ -1,29 +1,28 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/store/modules/theme/shared.ts"
+source_file: "base-web/src/store/modules/theme/shared.ts"
 type: "code"
-community: "Elegant Router DSL"
+community: "Theme & Color Config (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Elegant_Router_DSL
+  - community/Theme__Color_Config_web
 ---
 
 # shared.ts
 
 ## Connections
-- [[ColorPalette]] - `imports` [EXTRACTED]
 - [[NaiveColorAction]] - `contains` [EXTRACTED]
 - [[NaiveColorKey]] - `contains` [EXTRACTED]
 - [[NaiveColorScene]] - `contains` [EXTRACTED]
 - [[NaiveThemeColor]] - `contains` [EXTRACTED]
-- [[ThemeSetting]] - `imports` [EXTRACTED]
 - [[addColorAlpha()]] - `imports` [EXTRACTED]
 - [[addThemeVarsToGlobal()]] - `contains` [EXTRACTED]
 - [[app.ts]] - `imports_from` [EXTRACTED]
 - [[common.ts_1]] - `imports_from` [EXTRACTED]
 - [[createThemePaletteColors()]] - `contains` [EXTRACTED]
 - [[createThemeToken()]] - `contains` [EXTRACTED]
+- [[getColorPalette()]] - `imports` [EXTRACTED]
 - [[getCssVarByTokens()]] - `contains` [EXTRACTED]
 - [[getNaiveTheme()]] - `contains` [EXTRACTED]
 - [[getNaiveThemeColors()]] - `contains` [EXTRACTED]
@@ -36,10 +35,11 @@ tags:
 - [[overrideThemeSettings]] - `imports` [EXTRACTED]
 - [[settings.ts]] - `imports_from` [EXTRACTED]
 - [[storage.ts_1]] - `imports_from` [EXTRACTED]
+- [[themeSettings]] - `imports` [EXTRACTED]
 - [[themeVars]] - `imports` [EXTRACTED]
 - [[toggleAuxiliaryColorModes()]] - `contains` [EXTRACTED]
 - [[toggleCssDarkMode()]] - `contains` [EXTRACTED]
 - [[toggleHtmlClass()]] - `imports` [EXTRACTED]
 - [[vars.ts]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Elegant_Router_DSL
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

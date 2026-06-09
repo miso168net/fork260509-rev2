@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/system-logo.vue"
+source_file: "base-web/src/components/common/system-logo.vue"
 type: "code"
-community: "Community 192"
+community: "web: system"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_192
+  - community/web_system
 ---
 
 # system-logo.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_192
+#graphify/code #graphify/EXTRACTED #community/web_system

@@ -1,13 +1,13 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/custom/count-to.vue"
+source_file: "base-web/src/components/custom/count-to.vue"
 type: "code"
-community: "Community 298"
+community: "web: countto"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_298
+  - community/web_countto
 ---
 
 # CountTo
 
-#graphify/code #graphify/EXTRACTED #community/Community_298
+#graphify/code #graphify/EXTRACTED #community/web_countto

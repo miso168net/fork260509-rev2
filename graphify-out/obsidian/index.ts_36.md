@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/store/modules/tab/index.ts"
+source_file: "base-web/src/store/modules/tab/index.ts"
 type: "code"
-community: "Per-Package TSConfig (sub-26)"
+community: "web: nkey"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-26
+  - community/web_nkey
 ---
 
 # index.ts
@@ -14,7 +14,7 @@ tags:
 ## Connections
 - [[SetupStoreId]] - `imports` [EXTRACTED]
 - [[extractTabsByAllRoutes()]] - `imports` [EXTRACTED]
-- [[filterTabsById()]] - `imports` [EXTRACTED]
+- [[filterTabsByIds()]] - `imports` [EXTRACTED]
 - [[findTabByRouteName()]] - `imports` [EXTRACTED]
 - [[getAllTabs()]] - `imports` [EXTRACTED]
 - [[getDefaultHomeTab()]] - `imports` [EXTRACTED]
@@ -35,9 +35,10 @@ tags:
 - [[shared.ts_7]] - `imports_from` [EXTRACTED]
 - [[storage.ts_1]] - `imports_from` [EXTRACTED]
 - [[updateTabByI18nKey()]] - `imports` [EXTRACTED]
+- [[updateTabsByI18nKey()]] - `imports` [EXTRACTED]
 - [[useRouteStore]] - `imports` [EXTRACTED]
 - [[useRouterPush()]] - `imports` [EXTRACTED]
 - [[useTabStore]] - `contains` [EXTRACTED]
 - [[useThemeStore]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-26
+#graphify/code #graphify/EXTRACTED #community/web_nkey

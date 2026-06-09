@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/app.d.ts"
+source_file: "base-web/src/typings/app.d.ts"
 type: "code"
-community: "Community 48"
+community: "i18n & Theme Schema (web)"
 tags:
   - graphify/code
-  - graphify/INFERRED
-  - community/Community_48
+  - graphify/EXTRACTED
+  - community/i18n__Theme_Schema_web
 ---
 
 # App.I18n.Schema
 
 ## Connections
-- [[RouteMeta augmentation]] - `references` [EXTRACTED]
-- [[translateOptions()]] - `references` [INFERRED]
+- [[Azir theme preset]] - `references` [EXTRACTED]
+- [[GlobalComponents (auto-gen)]] - `conceptually_related_to` [AMBIGUOUS]
 
-#graphify/code #graphify/INFERRED #community/Community_48
+#graphify/code #graphify/EXTRACTED #community/i18n__Theme_Schema_web

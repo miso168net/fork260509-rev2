@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-docs/.vitepress/config.ts"
 type: "code"
-community: "Route Helpers & Tab Filters"
+community: "docs: vitepress"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Route_Helpers__Tab_Filters
+  - community/docs_vitepress
 ---
 
 # VitePress config (locales en/zh/jp, sidebar, algolia)
@@ -16,7 +16,7 @@ tags:
 - [[soybean-admin-docs package.json (VitePress 1.6.4 site)]] - `references` [INFERRED]
 - [[tsconfig.json (strict ESNext, includes .vitepress + src)]] - `references` [EXTRACTED]
 - [[types.d.ts (augments vitepress LocaleSpecificConfig with notice)]] - `conceptually_related_to` [INFERRED]
-- [[useTable hook]] - `references` [EXTRACTED]
+- [[useTable hook (sidebar Hooks Function entry)]] - `references` [EXTRACTED]
 - [[zh.ts (Simplified Chinese VitePress locale)]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Route_Helpers__Tab_Filters
+#graphify/code #graphify/EXTRACTED #community/docs_vitepress

@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/manage/user/modules/user-search.vue"
+source_file: "base-web/src/views/manage/user/modules/user-search.vue"
 type: "code"
-community: "Community 51"
+community: "web: wire"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Community_51
+  - community/web_wire
 ---
 
 # UserSearch
 
 ## Connections
 - [[RoleSearch]] - `semantically_similar_to` [INFERRED]
-- [[manageuser admin page]] - `references` [EXTRACTED]
+- [[UserManageView]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/INFERRED #community/Community_51
+#graphify/code #graphify/INFERRED #community/web_wire

@@ -1,16 +1,20 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/types.ts"
+source_file: "base-web/src/views/plugin/charts/antv/modules/status.ts"
 type: "code"
-community: "Chart Plugin Views"
+community: "web: antvflow"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Chart_Plugin_Views
+  - community/web_antvflow
 ---
 
-# NodeStatus
+# nodeStatus
 
 ## Connections
-- [[CustomNodeData]] - `references` [EXTRACTED]
+- [[AntvFlow]] - `references` [EXTRACTED]
+- [[getFlowData]] - `shares_data_with` [INFERRED]
+- [[getNodeIcon]] - `references` [EXTRACTED]
+- [[getNodeStatusTag]] - `references` [EXTRACTED]
+- [[useAntFlow]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Chart_Plugin_Views
+#graphify/code #graphify/EXTRACTED #community/web_antvflow

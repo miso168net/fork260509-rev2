@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/axios/src/index.ts"
+source_file: "base-web/packages/axios/src/index.ts"
 type: "code"
-community: "HTTP Request Layer"
+community: "Common Request Composable (web)"
 location: "L142"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/HTTP_Request_Layer
+  - community/Common_Request_Composable_web
 ---
 
 # createFlatRequest()
@@ -18,4 +18,4 @@ tags:
 - [[index.ts_29]] - `imports` [EXTRACTED]
 - [[use-request.ts]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/HTTP_Request_Layer
+#graphify/code #graphify/EXTRACTED #community/Common_Request_Composable_web

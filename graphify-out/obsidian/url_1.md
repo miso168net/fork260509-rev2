@@ -1,19 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-docs/package.json"
+source_file: "base-web/package.json"
 type: "code"
-community: "Naive UI Theme Tokens"
-location: "L17"
+community: "web: url"
+location: "L23"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Naive_UI_Theme_Tokens
+  - community/web_url
 ---
 
 # url
 
 ## Connections
-- [[author_1]] - `contains` [EXTRACTED]
-- [[bugs_1]] - `contains` [EXTRACTED]
-- [[repository_1]] - `contains` [EXTRACTED]
+- [[author]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Naive_UI_Theme_Tokens
+#graphify/code #graphify/EXTRACTED #community/web_url

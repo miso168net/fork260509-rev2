@@ -1,21 +1,19 @@
 ---
-source_file: "fork260509-soybean-admin-base/.vscode/settings.json"
+source_file: "base-web/.vscode/settings.json"
 type: "code"
-community: "Chart Plugin Views"
+community: "web: ally"
 location: "L2"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Chart_Plugin_Views
+  - community/web_ally
 ---
 
 # editor.codeActionsOnSave
 
 ## Connections
 - [[settings.json]] - `contains` [EXTRACTED]
-- [[settings.json_1]] - `contains` [EXTRACTED]
 - [[source.fixAll.eslint]] - `contains` [EXTRACTED]
 - [[source.fixAll.oxc]] - `contains` [EXTRACTED]
-- [[source.organizeImports]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Chart_Plugin_Views
+#graphify/code #graphify/EXTRACTED #community/web_ally

@@ -1,16 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/custom/wave-bg.vue"
+source_file: "base-web/src/components/custom/wave-bg.vue"
 type: "code"
-community: "Getting Started / CLI Docs"
+community: "web: getpalettecolorbynumber"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Getting_Started_/_CLI_Docs
+  - community/web_getpalettecolorbynumber
 ---
 
 # WaveBg
 
 ## Connections
-- [[SystemLogo 组件]] - `semantically_similar_to` [INFERRED]
+- [[SystemLogo]] - `semantically_similar_to` [INFERRED]
+- [[getPaletteColorByNumber_1]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/INFERRED #community/Getting_Started_/_CLI_Docs
+#graphify/code #graphify/INFERRED #community/web_getpalettecolorbynumber

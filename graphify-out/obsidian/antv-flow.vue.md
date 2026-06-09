@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/charts/antv/modules/antv-flow.vue"
+source_file: "base-web/src/views/plugin/charts/antv/modules/antv-flow.vue"
 type: "code"
-community: "Community 162"
+community: "web: antv"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_162
+  - community/web_antv
 ---
 
 # antv-flow.vue
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[{ graph }]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_162
+#graphify/code #graphify/EXTRACTED #community/web_antv

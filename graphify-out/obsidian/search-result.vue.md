@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-search/components/search-result.vue"
+source_file: "base-web/src/layouts/modules/global-search/components/search-result.vue"
 type: "code"
-community: "Community 199"
+community: "web: search"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_199
+  - community/web_search
 ---
 
 # search-result.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_199
+#graphify/code #graphify/EXTRACTED #community/web_search

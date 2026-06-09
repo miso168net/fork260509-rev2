@@ -1,11 +1,11 @@
 ---
 source_file: "fork260509-soybean-admin-docs/.vitepress/locales/jp.ts"
 type: "code"
-community: "Route Helpers & Tab Filters"
+community: "docs: vitepress"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Route_Helpers__Tab_Filters
+  - community/docs_vitepress
 ---
 
 # jp.ts (Japanese VitePress locale)
@@ -15,4 +15,4 @@ tags:
 - [[VitePress config (locales enzhjp, sidebar, algolia)]] - `references` [EXTRACTED]
 - [[zh.ts (Simplified Chinese VitePress locale)]] - `semantically_similar_to` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Route_Helpers__Tab_Filters
+#graphify/code #graphify/INFERRED #community/docs_vitepress

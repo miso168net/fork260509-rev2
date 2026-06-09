@@ -1,20 +1,20 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/store/index.ts"
+source_file: "base-web/src/store/index.ts"
 type: "code"
-community: "Dev Dependencies"
+community: "web: vchart"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Dev_Dependencies
+  - community/web_vchart
 ---
 
 # index.ts
 
 ## Connections
-- [[SetupStoreId]] - `contains` [EXTRACTED]
 - [[index.ts_38]] - `imports_from` [EXTRACTED]
 - [[main.ts]] - `imports_from` [EXTRACTED]
 - [[resetSetupStore()]] - `imports` [EXTRACTED]
+- [[setupStore()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Dev_Dependencies
+#graphify/code #graphify/EXTRACTED #community/web_vchart

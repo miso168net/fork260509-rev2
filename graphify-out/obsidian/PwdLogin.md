@@ -1,20 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/_builtin/login/modules/pwd-login.vue"
+source_file: "base-web/src/views/_builtin/login/modules/pwd-login.vue"
 type: "code"
-community: "Community 87"
+community: "web: login"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_87
+  - community/web_login
 ---
 
 # PwdLogin
 
 ## Connections
-- [[CodeLogin]] - `references` [EXTRACTED]
-- [[Register]] - `references` [EXTRACTED]
-- [[ResetPwd]] - `references` [EXTRACTED]
-- [[alova request demo]] - `conceptually_related_to` [INFERRED]
-- [[login index]] - `references` [EXTRACTED]
+- [[_builtinlogin index.vue]] - `references` [EXTRACTED]
+- [[seed account quick-login]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_87
+#graphify/code #graphify/EXTRACTED #community/web_login

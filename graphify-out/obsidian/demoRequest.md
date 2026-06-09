@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/service/request/index.ts"
+source_file: "base-web/src/service/request/index.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "Auth Store (web)"
 location: "L130"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - community/Auth_Store_web
 ---
 
 # demoRequest
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[index.ts_29]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/EXTRACTED #community/Auth_Store_web

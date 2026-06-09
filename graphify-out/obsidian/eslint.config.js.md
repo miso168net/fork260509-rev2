@@ -1,17 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/eslint.config.js"
+source_file: "base-web/eslint.config.js"
 type: "code"
-community: "Deploy & Integration Concepts"
+community: "web: eslint"
 location: "L1"
 tags:
   - graphify/code
-  - graphify/INFERRED
-  - community/Deploy__Integration_Concepts
+  - graphify/EXTRACTED
+  - community/web_eslint
 ---
 
 # eslint.config.js
 
-## Connections
-- [[.oxlintrc.json]] - `conceptually_related_to` [INFERRED]
-
-#graphify/code #graphify/INFERRED #community/Deploy__Integration_Concepts
+#graphify/code #graphify/EXTRACTED #community/web_eslint

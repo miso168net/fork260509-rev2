@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/button-tab.vue"
+source_file: "base-web/packages/materials/src/libs/page-tab/button-tab.vue"
 type: "code"
-community: "Community 175"
+community: "web: button"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_175
+  - community/web_button
 ---
 
 # button-tab.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_175
+#graphify/code #graphify/EXTRACTED #community/web_button

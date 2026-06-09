@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/gantt/dhtmlx/data.ts"
+source_file: "base-web/src/views/plugin/gantt/dhtmlx/data.ts"
 type: "code"
-community: "Community 92"
+community: "web: plugin"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_92
+  - community/web_plugin
 ---
 
 # data.ts
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[ganttTasks]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_92
+#graphify/code #graphify/EXTRACTED #community/web_plugin

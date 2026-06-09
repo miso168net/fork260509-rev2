@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/scripts/src/commands/release.ts"
+source_file: "base-web/packages/scripts/src/commands/release.ts"
 type: "code"
-community: "Color Palette Engine"
+community: "Build/Release Scripts (web)"
 location: "L3"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Build/Release_Scripts_web
 ---
 
 # release()
@@ -14,6 +14,5 @@ tags:
 ## Connections
 - [[index.ts_13]] - `imports` [EXTRACTED]
 - [[release.ts]] - `contains` [EXTRACTED]
-- [[updatePkg()]] - `semantically_similar_to` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Build/Release_Scripts_web

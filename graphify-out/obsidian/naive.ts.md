@@ -1,18 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/locales/naive.ts"
+source_file: "base-web/src/locales/naive.ts"
 type: "code"
-community: "Community 79"
+community: "web: naive"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_79
+  - community/web_naive
 ---
 
 # naive.ts
 
 ## Connections
-- [[naiveDateLocale]] - `contains` [EXTRACTED]
-- [[naiveLocale]] - `contains` [EXTRACTED]
+- [[naiveDateLocales]] - `contains` [EXTRACTED]
+- [[naiveLocales]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_79
+#graphify/code #graphify/EXTRACTED #community/web_naive

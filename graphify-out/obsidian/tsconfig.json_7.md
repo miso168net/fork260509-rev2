@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/uno-preset/tsconfig.json"
+source_file: "base-web/packages/uno-preset/tsconfig.json"
 type: "code"
-community: "Community 39"
+community: "web: tsconfig"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_39
+  - community/web_tsconfig
 ---
 
 # tsconfig.json
@@ -16,4 +16,4 @@ tags:
 - [[exclude_7]] - `contains` [EXTRACTED]
 - [[include_7]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_39
+#graphify/code #graphify/EXTRACTED #community/web_tsconfig

@@ -1,19 +1,19 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/default.json"
+source_file: "base-web/src/theme/preset/default.json"
 type: "code"
-community: "Community 70"
+community: "web: visible"
 location: "L29"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_70
+  - community/web_visible
 ---
 
 # breadcrumb
 
 ## Connections
-- [[header_3]] - `contains` [EXTRACTED]
+- [[header_4]] - `contains` [EXTRACTED]
 - [[showIcon_1]] - `contains` [EXTRACTED]
-- [[visible_2]] - `contains` [EXTRACTED]
+- [[visible_11]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_70
+#graphify/code #graphify/EXTRACTED #community/web_visible

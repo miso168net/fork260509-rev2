@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/axios/package.json"
+source_file: "base-web/packages/axios/package.json"
 type: "code"
-community: "Community 54"
+community: "web: axios"
 location: "L16"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_54
+  - community/web_axios
 ---
 
 # axios
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[dependencies_2]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_54
+#graphify/code #graphify/EXTRACTED #community/web_axios

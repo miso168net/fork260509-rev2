@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/business/captcha.ts"
+source_file: "base-web/src/hooks/business/captcha.ts"
 type: "code"
-community: "Form & Table Hooks"
+community: "App Store & Composables (web)"
 location: "L6"
 tags:
   - graphify/code
   - graphify/INFERRED
-  - community/Form__Table_Hooks
+  - community/App_Store__Composables_web
 ---
 
 # useCaptcha()
@@ -16,4 +16,4 @@ tags:
 - [[useCountDown()]] - `calls` [INFERRED]
 - [[useLoading()]] - `calls` [INFERRED]
 
-#graphify/code #graphify/INFERRED #community/Form__Table_Hooks
+#graphify/code #graphify/INFERRED #community/App_Store__Composables_web

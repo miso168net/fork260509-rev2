@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/router/index.ts"
+source_file: "base-web/src/router/index.ts"
 type: "code"
-community: "Dev Dependencies"
+community: "web: router"
 location: "L14"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Dev_Dependencies
+  - community/web_router
 ---
 
 # historyCreatorMap
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[index.ts_25]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Dev_Dependencies
+#graphify/code #graphify/EXTRACTED #community/web_router

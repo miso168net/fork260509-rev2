@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/constants/common.ts"
+source_file: "base-web/src/constants/common.ts"
 type: "code"
-community: "Community 52"
+community: "web: common"
 location: "L3"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_52
+  - community/web_common
 ---
 
 # yesOrNoRecord
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[common.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_52
+#graphify/code #graphify/EXTRACTED #community/web_common

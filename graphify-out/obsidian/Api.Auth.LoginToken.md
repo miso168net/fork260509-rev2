@@ -1,13 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/api/auth.d.ts"
+source_file: "base-web/src/typings/api/auth.d.ts"
 type: "code"
-community: "Community 306"
+community: "i18n & Theme Schema (web)"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Community_306
+  - graphify/INFERRED
+  - community/i18n__Theme_Schema_web
 ---
 
 # Api.Auth.LoginToken
 
-#graphify/code #graphify/EXTRACTED #community/Community_306
+## Connections
+- [[Env.ImportMeta]] - `conceptually_related_to` [INFERRED]
+- [[StorageType.Local]] - `shares_data_with` [INFERRED]
+
+#graphify/code #graphify/INFERRED #community/i18n__Theme_Schema_web

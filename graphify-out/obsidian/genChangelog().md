@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/scripts/src/commands/changelog.ts"
+source_file: "base-web/packages/scripts/src/commands/changelog.ts"
 type: "code"
-community: "Color Palette Engine"
-location: "4"
+community: "Build/Release Scripts (web)"
+location: "L4"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Engine
+  - community/Build/Release_Scripts_web
 ---
 
 # genChangelog()
@@ -14,6 +14,5 @@ tags:
 ## Connections
 - [[changelog.ts]] - `contains` [EXTRACTED]
 - [[index.ts_13]] - `imports` [EXTRACTED]
-- [[setupCli()]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Engine
+#graphify/code #graphify/EXTRACTED #community/Build/Release_Scripts_web

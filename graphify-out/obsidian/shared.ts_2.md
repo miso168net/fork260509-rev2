@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/page-tab/shared.ts"
+source_file: "base-web/packages/materials/src/libs/page-tab/shared.ts"
 type: "code"
-community: "Alova Request Adapter (+docs)"
+community: "Theme & Color Config (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Alova_Request_Adapter_docs
+  - community/Theme__Color_Config_web
 ---
 
 # shared.ts
@@ -21,4 +21,4 @@ tags:
 - [[index.ts_12]] - `imports_from` [EXTRACTED]
 - [[transformColorWithOpacity()]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Alova_Request_Adapter_docs
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

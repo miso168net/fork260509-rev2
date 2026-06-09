@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/tsconfig.json"
+source_file: "base-web/tsconfig.json"
 type: "code"
-community: "SVG Icon System"
+community: "web: compileroptions"
 location: "L9"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/SVG_Icon_System
+  - community/web_compileroptions
 ---
 
 # paths
@@ -15,4 +15,4 @@ tags:
 - [[@]] - `contains` [EXTRACTED]
 - [[compilerOptions]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/SVG_Icon_System
+#graphify/code #graphify/EXTRACTED #community/web_compileroptions

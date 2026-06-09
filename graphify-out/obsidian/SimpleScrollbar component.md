@@ -1,16 +1,13 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/simple-scrollbar/index.vue"
+source_file: "base-web/packages/materials/src/libs/simple-scrollbar/index.vue"
 type: "code"
-community: "Alova Request Adapter (+docs)"
+community: "web: simplescrollbar"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Alova_Request_Adapter_docs
+  - community/web_simplescrollbar
 ---
 
 # SimpleScrollbar component
 
-## Connections
-- [[simple-scrollbarindex module]] - `references` [EXTRACTED]
-
-#graphify/code #graphify/EXTRACTED #community/Alova_Request_Adapter_docs
+#graphify/code #graphify/EXTRACTED #community/web_simplescrollbar

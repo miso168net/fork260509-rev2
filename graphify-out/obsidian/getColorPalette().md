@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/src/palette/index.ts"
+source_file: "base-web/packages/color/src/palette/index.ts"
 type: "code"
-community: "Color Palette Constants"
+community: "Theme & Color Config (web)"
 location: "L13"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Color_Palette_Constants
+  - community/Theme__Color_Config_web
 ---
 
 # getColorPalette()
@@ -22,4 +22,4 @@ tags:
 - [[setupLoading()]] - `calls` [EXTRACTED]
 - [[shared.ts_8]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Color_Palette_Constants
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

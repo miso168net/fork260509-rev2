@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/compact.json"
+source_file: "base-web/src/theme/preset/compact.json"
 type: "code"
-community: "Compact Theme Preset"
+community: "web: visible"
 location: "L20"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Compact_Theme_Preset
+  - community/web_visible
 ---
 
 # visible
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[tab_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Compact_Theme_Preset
+#graphify/code #graphify/EXTRACTED #community/web_visible

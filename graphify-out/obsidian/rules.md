@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/.oxlintrc.json"
+source_file: "base-web/.oxlintrc.json"
 type: "code"
-community: "Deploy & Integration Concepts"
+community: "web: unicorn"
 location: "L7"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Deploy__Integration_Concepts
+  - community/web_unicorn
 ---
 
 # rules
@@ -19,4 +19,4 @@ tags:
 - [[unicornno-array-sort]] - `contains` [EXTRACTED]
 - [[unicornrequire-module-specifiers]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Deploy__Integration_Concepts
+#graphify/code #graphify/EXTRACTED #community/web_unicorn

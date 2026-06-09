@@ -1,18 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/constants/app.ts"
+source_file: "base-web/src/constants/app.ts"
 type: "code"
-community: "Per-Package TSConfig (sub-27)"
+community: "web: common"
 location: "L23"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-27
+  - community/web_common
 ---
 
 # themeLayoutModeRecord
 
 ## Connections
+- [[LayoutModeCard]] - `references` [EXTRACTED]
 - [[app.ts]] - `contains` [EXTRACTED]
-- [[union-key.d.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-27
+#graphify/code #graphify/EXTRACTED #community/web_common

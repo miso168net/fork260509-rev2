@@ -1,21 +1,22 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/store/modules/auth/index.ts"
+source_file: "base-web/src/store/modules/auth/index.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "Auth Store (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - community/Auth_Store_web
 ---
 
 # index.ts
 
 ## Connections
-- [[$t (i18n global translator)]] - `imports` [EXTRACTED]
 - [[SetupStoreId]] - `imports` [EXTRACTED]
 - [[auth.ts]] - `imports_from` [EXTRACTED]
 - [[clearAuthStorage()]] - `imports` [EXTRACTED]
+- [[fetchGetUserInfo_1]] - `imports` [EXTRACTED]
+- [[fetchLogin_1]] - `imports` [EXTRACTED]
 - [[getToken()]] - `imports` [EXTRACTED]
 - [[index.ts_7]] - `imports_from` [EXTRACTED]
 - [[index.ts_21]] - `imports_from` [EXTRACTED]
@@ -38,4 +39,4 @@ tags:
 - [[useRouterPush()]] - `imports` [EXTRACTED]
 - [[useTabStore]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/EXTRACTED #community/Auth_Store_web

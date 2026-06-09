@@ -1,22 +1,21 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/theme/preset/default.json"
+source_file: "base-web/src/theme/preset/dark.json"
 type: "code"
-community: "Community 82"
-location: "L84"
+community: "web: colors"
+location: "L71"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_82
+  - community/web_colors
 ---
 
 # colors
 
 ## Connections
-- [[base-text_2]] - `contains` [EXTRACTED]
-- [[container_2]] - `contains` [EXTRACTED]
-- [[dark_3]] - `contains` [EXTRACTED]
+- [[base-text_1]] - `contains` [EXTRACTED]
+- [[container_1]] - `contains` [EXTRACTED]
 - [[inverted_3]] - `contains` [EXTRACTED]
 - [[layout_2]] - `contains` [EXTRACTED]
-- [[light_3]] - `contains` [EXTRACTED]
+- [[light_2]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_82
+#graphify/code #graphify/EXTRACTED #community/web_colors

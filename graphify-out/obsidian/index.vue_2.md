@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/libs/simple-scrollbar/index.vue"
+source_file: "base-web/packages/materials/src/libs/simple-scrollbar/index.vue"
 type: "code"
-community: "Alova Request Adapter (+docs)"
+community: "Layout Composition (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Alova_Request_Adapter_docs
+  - community/Layout_Composition_web
 ---
 
 # index.vue
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[index.ts_11]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Alova_Request_Adapter_docs
+#graphify/code #graphify/EXTRACTED #community/Layout_Composition_web

@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/uno-preset/package.json"
+source_file: "base-web/packages/scripts/package.json"
 type: "code"
-community: "SPA Loading Screen UI"
+community: "Build/Release Scripts (web)"
 location: "L2"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/SPA_Loading_Screen_UI
+  - community/Build/Release_Scripts_web
 ---
 
 # name
 
 ## Connections
-- [[package.json_7]] - `contains` [EXTRACTED]
+- [[package.json_6]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/SPA_Loading_Screen_UI
+#graphify/code #graphify/EXTRACTED #community/Build/Release_Scripts_web

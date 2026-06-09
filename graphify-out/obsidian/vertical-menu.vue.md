@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-menu/modules/vertical-menu.vue"
+source_file: "base-web/src/layouts/modules/global-menu/modules/vertical-menu.vue"
 type: "code"
-community: "Community 211"
+community: "web: vertical"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_211
+  - community/web_vertical
 ---
 
 # vertical-menu.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_211
+#graphify/code #graphify/EXTRACTED #community/web_vertical

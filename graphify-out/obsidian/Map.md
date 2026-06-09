@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/package.d.ts"
+source_file: "base-web/src/typings/package.d.ts"
 type: "code"
-community: "Community 114"
+community: "web: package"
 location: "L5"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_114
+  - community/web_package
 ---
 
 # Map
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[package.d.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_114
+#graphify/code #graphify/EXTRACTED #community/web_package

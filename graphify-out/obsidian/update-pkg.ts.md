@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/scripts/src/commands/update-pkg.ts"
+source_file: "base-web/packages/scripts/src/commands/update-pkg.ts"
 type: "code"
-community: "Build & Release Scripts"
+community: "Build/Release Scripts (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Build__Release_Scripts
+  - community/Build/Release_Scripts_web
 ---
 
 # update-pkg.ts
@@ -17,4 +17,4 @@ tags:
 - [[index.ts_17]] - `imports_from` [EXTRACTED]
 - [[updatePkg()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Build__Release_Scripts
+#graphify/code #graphify/EXTRACTED #community/Build/Release_Scripts_web

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/materials/src/types/index.ts"
+source_file: "base-web/packages/materials/src/types/index.ts"
 type: "code"
-community: "Alova Request Adapter (+docs)"
+community: "Theme & Color Config (web)"
 location: "L280"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Alova_Request_Adapter_docs
+  - community/Theme__Color_Config_web
 ---
 
 # PageTabCssVarsProps
@@ -15,4 +15,4 @@ tags:
 - [[index.ts_12]] - `contains` [EXTRACTED]
 - [[shared.ts_2]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Alova_Request_Adapter_docs
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

@@ -1,18 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/alova/scenes/modules/browser-visibility-request.vue"
+source_file: "base-web/src/views/alova/scenes/modules/browser-visibility-request.vue"
 type: "code"
-community: "Community 90"
+community: "web: alova"
 tags:
   - graphify/code
-  - graphify/INFERRED
-  - community/Community_90
+  - graphify/EXTRACTED
+  - community/web_alova
 ---
 
 # BrowserVisibilityRequest
 
 ## Connections
-- [[CrossComponentRequest]] - `shares_data_with` [INFERRED]
-- [[PollingRequest]] - `semantically_similar_to` [INFERRED]
-- [[alova scenes index]] - `references` [EXTRACTED]
+- [[CrossComponentRequest]] - `conceptually_related_to` [INFERRED]
+- [[alovascenes index.vue]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/INFERRED #community/Community_90
+#graphify/code #graphify/EXTRACTED #community/web_alova

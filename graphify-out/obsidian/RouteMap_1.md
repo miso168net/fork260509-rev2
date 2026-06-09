@@ -1,14 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/elegant-router.d.ts"
+source_file: "base-web/src/router/elegant/transform.ts"
 type: "code"
-community: "Community 219"
-location: "L17"
+community: "Auth Request & Routing (web)"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_219
+  - community/Auth_Request__Routing_web
 ---
 
-# RouteMap
+# routeMap
 
-#graphify/code #graphify/EXTRACTED #community/Community_219
+## Connections
+- [[getRouteName]] - `references` [EXTRACTED]
+- [[getRoutePath]] - `references` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/Auth_Request__Routing_web

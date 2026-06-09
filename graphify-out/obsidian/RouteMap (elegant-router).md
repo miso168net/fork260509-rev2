@@ -1,19 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/elegant-router.d.ts"
+source_file: "base-web/src/typings/elegant-router.d.ts"
 type: "code"
-community: "Community 48"
+community: "web: api"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Community_48
+  - graphify/INFERRED
+  - community/web_api
 ---
 
 # RouteMap (elegant-router)
 
 ## Connections
-- [[Api.Route.MenuRoute]] - `references` [EXTRACTED]
-- [[App.Global.Menu]] - `references` [EXTRACTED]
-- [[App.Global.Tab]] - `references` [EXTRACTED]
-- [[RouteMeta augmentation]] - `references` [EXTRACTED]
+- [[Api.Route.UserRoute]] - `shares_data_with` [INFERRED]
+- [[UnionKey.LoginModule]] - `shares_data_with` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_48
+#graphify/code #graphify/INFERRED #community/web_api

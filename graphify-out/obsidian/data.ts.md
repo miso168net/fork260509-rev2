@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/charts/antv/data.ts"
+source_file: "base-web/src/views/plugin/charts/antv/data.ts"
 type: "code"
-community: "Runtime Dependencies"
+community: "web: nodestatus"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Runtime_Dependencies
+  - community/web_nodestatus
 ---
 
 # data.ts
@@ -16,4 +16,4 @@ tags:
 - [[getFlowData()]] - `contains` [EXTRACTED]
 - [[types.ts]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Runtime_Dependencies
+#graphify/code #graphify/EXTRACTED #community/web_nodestatus

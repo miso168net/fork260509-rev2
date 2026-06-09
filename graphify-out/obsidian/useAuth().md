@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/hooks/business/auth.ts"
+source_file: "base-web/src/hooks/business/auth.ts"
 type: "code"
-community: "Community 66"
+community: "Auth Store (web)"
 location: "L3"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_66
+  - community/Auth_Store_web
 ---
 
 # useAuth()
@@ -15,4 +15,4 @@ tags:
 - [[auth.ts]] - `contains` [EXTRACTED]
 - [[useAuthStore]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_66
+#graphify/code #graphify/EXTRACTED #community/Auth_Store_web

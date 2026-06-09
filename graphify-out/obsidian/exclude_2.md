@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/axios/tsconfig.json"
+source_file: "base-web/packages/axios/tsconfig.json"
 type: "code"
-community: "Per-Package TSConfig (sub-28)"
+community: "web: compileroptions"
 location: "L18"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Per-Package_TSConfig_sub-28
+  - community/web_compileroptions
 ---
 
 # exclude
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[tsconfig.json_2]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Per-Package_TSConfig_sub-28
+#graphify/code #graphify/EXTRACTED #community/web_compileroptions

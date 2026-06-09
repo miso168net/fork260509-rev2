@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/tsconfig.json"
+source_file: "base-web/tsconfig.json"
 type: "code"
-community: "SVG Icon System"
+community: "web: compileroptions"
 location: "L7"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/SVG_Icon_System
+  - community/web_compileroptions
 ---
 
 # module
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[compilerOptions]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/SVG_Icon_System
+#graphify/code #graphify/EXTRACTED #community/web_compileroptions

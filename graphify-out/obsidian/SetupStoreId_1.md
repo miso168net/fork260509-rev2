@@ -1,17 +1,16 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/enum/index.ts"
+source_file: "base-web/src/enum/index.ts"
 type: "code"
-community: "Community 103"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Community_103
+  - graphify/INFERRED
+  - community/Global_App_Types__Provider_web
 ---
 
 # SetupStoreId
 
 ## Connections
-- [[enumindex]] - `references` [EXTRACTED]
-- [[useAuth]] - `shares_data_with` [INFERRED]
+- [[useAuth]] - `conceptually_related_to` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_103
+#graphify/code #graphify/INFERRED #community/Global_App_Types__Provider_web

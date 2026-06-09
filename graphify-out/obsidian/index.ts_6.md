@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/src/types/index.ts"
+source_file: "base-web/packages/color/src/types/index.ts"
 type: "code"
-community: "Community 38"
+community: "Theme & Color Config (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_38
+  - community/Theme__Color_Config_web
 ---
 
 # index.ts
@@ -25,4 +25,4 @@ tags:
 - [[palette.ts]] - `imports_from` [EXTRACTED]
 - [[recommend.ts]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_38
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

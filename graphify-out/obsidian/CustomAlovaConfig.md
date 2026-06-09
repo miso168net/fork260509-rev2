@@ -1,19 +1,18 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/alova/src/type.ts"
+source_file: "base-web/packages/alova/src/type.ts"
 type: "code"
-community: "Build & Release Scripts"
+community: "web: constant"
 location: "L3"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Build__Release_Scripts
+  - community/web_constant
 ---
 
 # CustomAlovaConfig
 
 ## Connections
-- [[createAlovaRequest factory]] - `references` [EXTRACTED]
 - [[index.ts]] - `imports` [EXTRACTED]
 - [[type.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Build__Release_Scripts
+#graphify/code #graphify/EXTRACTED #community/web_constant

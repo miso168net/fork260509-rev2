@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/hooks/src/use-boolean.ts"
+source_file: "base-web/packages/hooks/src/use-boolean.ts"
 type: "code"
-community: "Form & Table Hooks"
+community: "App Store & Composables (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Form__Table_Hooks
+  - community/App_Store__Composables_web
 ---
 
 # use-boolean.ts
@@ -17,4 +17,4 @@ tags:
 - [[use-table.ts]] - `imports_from` [EXTRACTED]
 - [[useBoolean()]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Form__Table_Hooks
+#graphify/code #graphify/EXTRACTED #community/App_Store__Composables_web

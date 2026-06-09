@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/custom/better-scroll.vue"
+source_file: "base-web/src/components/custom/better-scroll.vue"
 type: "code"
-community: "Community 186"
+community: "web: better"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_186
+  - community/web_better
 ---
 
 # better-scroll.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_186
+#graphify/code #graphify/EXTRACTED #community/web_better

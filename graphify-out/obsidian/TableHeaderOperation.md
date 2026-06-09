@@ -1,16 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/advanced/table-header-operation.vue"
+source_file: "base-web/src/components/advanced/table-header-operation.vue"
 type: "code"
-community: "Community 124"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
-  - graphify/INFERRED
-  - community/Community_124
+  - graphify/EXTRACTED
+  - community/Global_App_Types__Provider_web
 ---
 
 # TableHeaderOperation
 
 ## Connections
-- [[TableColumnSetting]] - `shares_data_with` [INFERRED]
+- [[AppProvider]] - `conceptually_related_to` [INFERRED]
+- [[TableColumnSetting]] - `shares_data_with` [EXTRACTED]
 
-#graphify/code #graphify/INFERRED #community/Community_124
+#graphify/code #graphify/EXTRACTED #community/Global_App_Types__Provider_web

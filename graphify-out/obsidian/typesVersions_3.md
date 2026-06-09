@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/hooks/package.json"
+source_file: "base-web/packages/hooks/package.json"
 type: "code"
-community: "Docs Site DevDependencies"
+community: "web: package"
 location: "L4"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Docs_Site_DevDependencies
+  - community/web_package
 ---
 
 # typesVersions
@@ -15,4 +15,4 @@ tags:
 - [[unnamed_3]] - `contains` [EXTRACTED]
 - [[package.json_4]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Docs_Site_DevDependencies
+#graphify/code #graphify/EXTRACTED #community/web_package

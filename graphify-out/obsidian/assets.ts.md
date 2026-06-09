@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/plugins/assets.ts"
+source_file: "base-web/src/plugins/assets.ts"
 type: "code"
-community: "Dev Dependencies"
+community: "App Bootstrap (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Dev_Dependencies
+  - community/App_Bootstrap_web
 ---
 
 # assets.ts
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[main.ts]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Dev_Dependencies
+#graphify/code #graphify/EXTRACTED #community/App_Bootstrap_web

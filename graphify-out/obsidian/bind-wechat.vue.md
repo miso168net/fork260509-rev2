@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/_builtin/login/modules/bind-wechat.vue"
+source_file: "base-web/src/views/_builtin/login/modules/bind-wechat.vue"
 type: "code"
-community: "Community 280"
+community: "web: bind"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_280
+  - community/web_bind
 ---
 
 # bind-wechat.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_280
+#graphify/code #graphify/EXTRACTED #community/web_bind

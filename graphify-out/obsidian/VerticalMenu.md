@@ -1,20 +1,21 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-menu/modules/vertical-menu.vue"
+source_file: "base-web/src/layouts/modules/global-menu/modules/vertical-menu.vue"
 type: "code"
-community: "Common UI Toggle Components"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Common_UI_Toggle_Components
+  - community/Global_App_Types__Provider_web
 ---
 
 # VerticalMenu
 
 ## Connections
-- [[FirstLevelMenu]] - `references` [EXTRACTED]
+- [[GLOBAL_SIDER_MENU_ID]] - `references` [EXTRACTED]
 - [[GlobalMenu]] - `references` [EXTRACTED]
-- [[HorizontalMenu]] - `semantically_similar_to` [INFERRED]
-- [[VerticalHybridHeaderFirst]] - `semantically_similar_to` [INFERRED]
-- [[useMixMenuContext]] - `calls` [EXTRACTED]
+- [[GlobalSider]] - `shares_data_with` [INFERRED]
+- [[useMenu()]] - `calls` [EXTRACTED]
+- [[useRouteStore_1]] - `references` [EXTRACTED]
+- [[useRouterPush]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Common_UI_Toggle_Components
+#graphify/code #graphify/EXTRACTED #community/Global_App_Types__Provider_web

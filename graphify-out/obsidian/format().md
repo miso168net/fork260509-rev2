@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/gantt/dhtmlx/index.vue"
+source_file: "base-web/src/views/plugin/gantt/dhtmlx/index.vue"
 type: "code"
-community: "Community 130"
+community: "web: vue"
 location: "L88"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_130
+  - community/web_vue
 ---
 
 # format()
 
 ## Connections
-- [[index.vue_44]] - `contains` [EXTRACTED]
+- [[index.vue_46]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_130
+#graphify/code #graphify/EXTRACTED #community/web_vue

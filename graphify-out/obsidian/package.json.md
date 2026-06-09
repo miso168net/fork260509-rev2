@@ -1,19 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/package.json"
+source_file: "base-web/package.json"
 type: "code"
-community: "Global Layout Components"
+community: "web: url"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Global_Layout_Components
+  - community/web_url
 ---
 
 # package.json
 
 ## Connections
-- [[@saalova package]] - `references` [INFERRED]
-- [[@saaxios package]] - `references` [INFERRED]
 - [[author]] - `contains` [EXTRACTED]
 - [[bugs]] - `contains` [EXTRACTED]
 - [[dependencies]] - `contains` [EXTRACTED]
@@ -26,9 +24,9 @@ tags:
 - [[name]] - `contains` [EXTRACTED]
 - [[repository]] - `contains` [EXTRACTED]
 - [[scripts]] - `contains` [EXTRACTED]
-- [[simple-git-hooks]] - `contains` [EXTRACTED]
+- [[simple-git-hooks_1]] - `contains` [EXTRACTED]
 - [[type]] - `contains` [EXTRACTED]
 - [[version]] - `contains` [EXTRACTED]
 - [[website]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Global_Layout_Components
+#graphify/code #graphify/EXTRACTED #community/web_url

@@ -1,17 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/_builtin/login/index.vue"
+source_file: "base-web/src/views/_builtin/login/index.vue"
 type: "code"
-community: "Community 124"
+community: "web: vue"
 location: "L40"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_124
+  - community/web_vue
 ---
 
 # bgThemeColor
 
 ## Connections
-- [[index.vue_64]] - `contains` [EXTRACTED]
+- [[index.vue_66]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_124
+#graphify/code #graphify/EXTRACTED #community/web_vue

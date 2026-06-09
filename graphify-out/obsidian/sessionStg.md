@@ -1,18 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/utils/storage.ts"
+source_file: "base-web/src/utils/storage.ts"
 type: "code"
-community: "Auth Store & Permissions"
+community: "Auth Store (web)"
 location: "L7"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Auth_Store__Permissions
+  - community/Auth_Store_web
 ---
 
 # sessionStg
 
 ## Connections
-- [[localStg]] - `semantically_similar_to` [INFERRED]
 - [[storage.ts_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Auth_Store__Permissions
+#graphify/code #graphify/EXTRACTED #community/Auth_Store_web

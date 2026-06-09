@@ -1,21 +1,21 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/src/palette/index.ts"
+source_file: "base-web/packages/color/src/palette/index.ts"
 type: "code"
-community: "Elegant Router DSL"
+community: "Theme & Color Config (web)"
 location: "L41"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Elegant_Router_DSL
+  - community/Theme__Color_Config_web
 ---
 
 # getPaletteColorByNumber()
 
 ## Connections
-- [[ColorPalette]] - `calls` [EXTRACTED]
+- [[getColorPalette()]] - `calls` [EXTRACTED]
 - [[getNaiveThemeColors()]] - `calls` [EXTRACTED]
 - [[index.ts_4]] - `contains` [EXTRACTED]
 - [[index.ts_37]] - `imports` [EXTRACTED]
 - [[shared.ts_8]] - `imports` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Elegant_Router_DSL
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/typings/storage.d.ts"
+source_file: "base-web/src/typings/storage.d.ts"
 type: "code"
-community: "Community 141"
+community: "web: storage"
 location: "L12"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_141
+  - community/web_storage
 ---
 
 # Local
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[storage.d.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_141
+#graphify/code #graphify/EXTRACTED #community/web_storage

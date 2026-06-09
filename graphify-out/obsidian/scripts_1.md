@@ -1,12 +1,12 @@
 ---
 source_file: "fork260509-soybean-admin-docs/package.json"
 type: "code"
-community: "Naive UI Theme Tokens"
+community: "Package Metadata (docs)"
 location: "L23"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Naive_UI_Theme_Tokens
+  - community/Package_Metadata_docs
 ---
 
 # scripts
@@ -22,6 +22,6 @@ tags:
 - [[preview_1]] - `contains` [EXTRACTED]
 - [[release_1]] - `contains` [EXTRACTED]
 - [[typecheck_1]] - `contains` [EXTRACTED]
-- [[update-pkg]] - `contains` [EXTRACTED]
+- [[update-pkg_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Naive_UI_Theme_Tokens
+#graphify/code #graphify/EXTRACTED #community/Package_Metadata_docs

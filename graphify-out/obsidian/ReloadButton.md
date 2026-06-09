@@ -1,16 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/components/common/reload-button.vue"
+source_file: "base-web/src/components/common/reload-button.vue"
 type: "code"
-community: "Global Search Module"
+community: "Global App Types & Provider (web)"
 tags:
   - graphify/code
-  - graphify/EXTRACTED
-  - community/Global_Search_Module
+  - graphify/INFERRED
+  - community/Global_App_Types__Provider_web
 ---
 
 # ReloadButton
 
 ## Connections
-- [[ButtonIcon]] - `references` [EXTRACTED]
+- [[ButtonIcon]] - `references` [INFERRED]
+- [[FullScreen]] - `semantically_similar_to` [INFERRED]
 
-#graphify/code #graphify/EXTRACTED #community/Global_Search_Module
+#graphify/code #graphify/INFERRED #community/Global_App_Types__Provider_web

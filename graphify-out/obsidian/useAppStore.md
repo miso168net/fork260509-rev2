@@ -1,20 +1,24 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/store/modules/app/index.ts"
+source_file: "base-web/src/store/modules/app/index.ts"
 type: "code"
-community: "API Service Aliases (auth/captcha)"
+community: "App Store & Composables (web)"
+location: "L14"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/API_Service_Aliases_auth/captcha
+  - community/App_Store__Composables_web
 ---
 
 # useAppStore
 
 ## Connections
-- [[ProConfigProvider wrapper]] - `references` [EXTRACTED]
 - [[index.ts_33]] - `contains` [EXTRACTED]
+- [[setupStore()]] - `conceptually_related_to` [INFERRED]
 - [[table.ts]] - `imports` [EXTRACTED]
 - [[useNaivePaginatedTable()]] - `calls` [EXTRACTED]
 - [[useNaiveTable()]] - `calls` [EXTRACTED]
+- [[useRouteStore]] - `calls` [EXTRACTED]
+- [[useTabStore]] - `calls` [EXTRACTED]
+- [[useThemeStore]] - `calls` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/API_Service_Aliases_auth/captcha
+#graphify/code #graphify/EXTRACTED #community/App_Store__Composables_web

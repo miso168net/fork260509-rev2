@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/views/plugin/charts/vchart/data.ts"
+source_file: "base-web/src/views/plugin/charts/vchart/data.ts"
 type: "code"
-community: "Community 67"
+community: "web: barmarkpointspec"
 location: "L298"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_67
+  - community/web_barmarkpointspec
 ---
 
 # goldenMedals
@@ -14,4 +14,4 @@ tags:
 ## Connections
 - [[data.ts_2]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Community_67
+#graphify/code #graphify/EXTRACTED #community/web_barmarkpointspec

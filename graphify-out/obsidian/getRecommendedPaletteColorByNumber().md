@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/color/src/palette/recommend.ts"
+source_file: "base-web/packages/color/src/palette/recommend.ts"
 type: "code"
-community: "VS Code Workspace Settings"
+community: "Theme & Color Config (web)"
 location: "L44"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/VS_Code_Workspace_Settings
+  - community/Theme__Color_Config_web
 ---
 
 # getRecommendedPaletteColorByNumber()
@@ -15,4 +15,4 @@ tags:
 - [[getRecommendedColorPalette()]] - `calls` [EXTRACTED]
 - [[recommend.ts]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/VS_Code_Workspace_Settings
+#graphify/code #graphify/EXTRACTED #community/Theme__Color_Config_web

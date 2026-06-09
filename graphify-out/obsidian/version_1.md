@@ -1,18 +1,17 @@
 ---
-source_file: "fork260509-soybean-admin-base/.vscode/launch.json"
+source_file: "base-web/.vscode/launch.json"
 type: "code"
-community: "VitePress Locale Configs"
+community: "web: launch"
 location: "L2"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/VitePress_Locale_Configs
+  - community/web_launch
 ---
 
 # version
 
 ## Connections
 - [[launch.json]] - `contains` [EXTRACTED]
-- [[launch.json_1]] - `contains` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/VitePress_Locale_Configs
+#graphify/code #graphify/EXTRACTED #community/web_launch

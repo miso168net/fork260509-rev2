@@ -1,12 +1,12 @@
 ---
-source_file: "fork260509-soybean-admin-base/packages/axios/src/type.ts"
+source_file: "base-web/packages/axios/src/type.ts"
 type: "code"
-community: "Build & Release Scripts"
+community: "Common Request Composable (web)"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Build__Release_Scripts
+  - community/Common_Request_Composable_web
 ---
 
 # type.ts
@@ -20,6 +20,7 @@ tags:
 - [[FlatResponseSuccessData]] - `contains` [EXTRACTED]
 - [[MappedType]] - `contains` [EXTRACTED]
 - [[RequestInstance]] - `contains` [EXTRACTED]
+- [[RequestInstanceCommon]] - `contains` [EXTRACTED]
 - [[RequestOption]] - `contains` [EXTRACTED]
 - [[ResponseMap]] - `contains` [EXTRACTED]
 - [[ResponseTransform]] - `contains` [EXTRACTED]
@@ -28,4 +29,4 @@ tags:
 - [[options.ts]] - `imports_from` [EXTRACTED]
 - [[shared.ts]] - `imports_from` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/Build__Release_Scripts
+#graphify/code #graphify/EXTRACTED #community/Common_Request_Composable_web

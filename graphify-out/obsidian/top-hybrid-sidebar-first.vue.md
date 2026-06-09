@@ -1,14 +1,14 @@
 ---
-source_file: "fork260509-soybean-admin-base/src/layouts/modules/global-menu/modules/top-hybrid-sidebar-first.vue"
+source_file: "base-web/src/layouts/modules/global-menu/modules/top-hybrid-sidebar-first.vue"
 type: "code"
-community: "Community 209"
+community: "web: top"
 location: "L1"
 tags:
   - graphify/code
   - graphify/EXTRACTED
-  - community/Community_209
+  - community/web_top
 ---
 
 # top-hybrid-sidebar-first.vue
 
-#graphify/code #graphify/EXTRACTED #community/Community_209
+#graphify/code #graphify/EXTRACTED #community/web_top

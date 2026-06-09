@@ -1,16 +1,19 @@
 ---
-source_file: "fork260509-soybean-admin-base/README.md"
-type: "concept"
-community: "Community 45"
+source_file: "base-web/package.json"
+type: "code"
+community: "web: url"
+location: "L125"
 tags:
-  - graphify/concept
+  - graphify/code
   - graphify/EXTRACTED
-  - community/Community_45
+  - community/web_url
 ---
 
 # simple-git-hooks
 
 ## Connections
-- [[README.md (soybean-admin-base)]] - `references` [EXTRACTED]
+- [[commit-msg]] - `contains` [EXTRACTED]
+- [[package.json]] - `contains` [EXTRACTED]
+- [[pre-commit]] - `contains` [EXTRACTED]
 
-#graphify/concept #graphify/EXTRACTED #community/Community_45
+#graphify/code #graphify/EXTRACTED #community/web_url
