@@ -2,6 +2,7 @@
 
 > 稽核日期:2026-06-06
 > 更新:2026-06-09 — 補入 m000030(`sys_token` `expires_at` 索引、feature 030 cleanup-job;026 後唯一觸及 sys_token 的 migration)+ 重新取樣 volatile row 數;schema 仍零 drift(新索引活體與 migration 一致)、種子盤點不變(030 純索引無 seed)。
+> **2026-06-09 二次更新 — feature 034 managed-rbac-policy schema delta(worktree 已實作、本機 awaiting merge)**:新增 5 migration m031-m035、`casbin_rule` += 3 治理欄、新建 `sys_casbin_policy_archive`(表數 11→12)、`sys_menu` += `protected`、protected 種子。**本次只記「as-migrated」delta(下方 §「034 managed-rbac-policy schema delta」),前半逐表稽核仍以 30-migration 基線為準**;034 merge 後再做一次 11→12 表完整 live-vs-migration re-audit。
 > 方法:`pg_dump --schema-only`(活體 ground truth)vs `rust-api/migration/src` 逐表 reconcile(欄 / 索引 / 約束 provenance + drift)
 > 結論:**全 11 表、30 migration 全套用、schema 零 drift;種子 baseline 完整(活體含全部種子,偏離皆為 runtime 業務 / 測試殘留)。**
 > **本報告兩部分**:① 前半 = **schema(DDL)稽核**(表 / 欄 / 索引 / 約束);② 後半 = **「種子資料(seed data)」稽核**(各 migration 的 INSERT / UPDATE 種子 + 活體 reconcile + dev DB 測試殘留 finding)。
@@ -452,6 +453,42 @@ Casbin RBAC policy storage table(sea-orm-adapter 標準格式),存放 enforcer �
 4. **FK**:無 FK(adapter 表獨立、不參照 sys_* 表),符合預期。
 5. **§I.6 審計欄**:無 —— 正確,此為 casbin adapter 自有標準表,非 rev2 業務 sys_* 表,不應有 audit columns。
 6. 021 feature 對此表只動 data(seed/policy 變更)、不動 schema。
+
+---
+
+## 034 managed-rbac-policy schema delta(worktree 已實作、本機 awaiting merge)
+
+> 本節記 feature 034 受管 RBAC policy 治理層的 schema 變動,**as-migrated**(`rust-api/migration/src` m031-m035 的意圖,worktree 狀態)。034 merge 後再對活體做一次完整 11→12 表 live-vs-migration re-audit;在此之前前半逐表稽核維持 30-migration 基線。**架構 B(archive 表、免 fork adapter)**:stock `sea-orm-adapter` 嚴格 column-scoped 到 `ptype,v0..v5`(`load_policy = Entity::find().all()` 只 select 那 6 欄)→ `casbin_rule` 加治理欄 + 另起 archive 表對 adapter 完全隱形 → 不 fork adapter、§I.6/§11.6 不觸,詳見 [DESIGN §11.6 補註](INTEGRATION-DESIGN.md)。
+
+### 5 新 migration(m031-m035)
+
+| migration | 動作 | 對象 |
+|---|---|---|
+| `m20260529_000031_alter_casbin_rule_governance` | ALTER `casbin_rule` += `protected` / `created_at` / `created_by` | casbin_rule schema(8→11 欄) |
+| `m20260529_000032_create_casbin_policy_archive` | CREATE `sys_casbin_policy_archive`(restore buffer) | 新表(表數 11→12) |
+| `m20260529_000033_seed_protected_policy` | seed casbin protected 旗標(16 列標 `protected=true`) | casbin_rule data |
+| `m20260529_000034_alter_sys_menu_protected` | ALTER `sys_menu` += `protected` + seed(7 列) | sys_menu schema + data |
+| `m20260529_000035_seed_policy_archive_page` | seed US5 回收桶頁(sys_menu 列 + R_SUPER role-menu policy) | sys_menu + casbin_rule data |
+
+### casbin_rule 治理欄(m031)
+
+`casbin_rule` += 3 欄(adapter 標準表加治理欄,**對 adapter load/insert 隱形** —— stock adapter 只讀寫 `ptype,v0..v5`):`protected`(bool、受保護標記,seed/部署固定、執行期不可改 = self-lockout 硬保證)、`created_at`(timestamptz)、`created_by`(bigint、operator)。**§I.6 例外仍適用**:casbin_rule 為 adapter 標準表、非 rev2 業務 sys_* 表,治理欄是「policy 生命週期/保護」用、非完整 6 審計欄。**核心不變式**:`casbin_rule` 永遠只裝 **live** policy;軟刪(撤銷)列搬 `sys_casbin_policy_archive`、不留在 casbin_rule。
+
+### 新表 sys_casbin_policy_archive(m032,restore buffer)
+
+被撤銷/連帶歸檔的 policy 快照 + 移除中繼資料,US1 可復原緩衝 + US5 回收桶的儲存。**§I.6 append-only 例外變體**(governance restore-buffer):帶 `archived_at` / `archived_by`(= deleted_at/by 對應)+ 原授予出處欄(role / object / dimension / created_at / created_by)+ 移除原因 + ptype/v0..v5 policy 快照;**archive 列不可再軟刪**(還原即搬回 casbin_rule、離開此表)。非帶完整 6 審計欄的業務表。新表使表數 **11→12**。
+
+### sys_menu protected(m034)
+
+`sys_menu` += `protected`(bool)。m034 seed 標 **7 列 protected**(關鍵治理選單:角色管理 / 選單管理 / 系統設定等頁可見性,US2 補掉 D13 —— manage_role / manage_system-settings 今天未受保護的 self-lockout 漏洞);m035 US5 回收桶頁 seed 後 sys_menu protected 共 **8 列**。退役 `is_seed_menu` code-based 守衛(4 caller)、改吃此 data-driven `protected` 欄。
+
+### 種子 delta（live set 計數）
+
+- **casbin_rule**:US5 +3 新治理列(`getArchivedPolicies` / `restorePolicy` 端點 + 回收桶頁 role-menu 可見性)→ **live set 69→72**;protected 標記 = m033 16 列 + 後續 +3 = **19**。
+- **sys_menu**:m035 +1 回收桶頁列;protected 標記 **8 列**(m034 7 + m035 1)。
+- migration 計數 **30→35**、表數 **11→12**。
+
+> **provenance / verdict 留待 034 merge 後 re-audit**:本節為 worktree as-migrated 意圖記錄,尚未對活體 DB 做 m031-m035 的 live-vs-migration 逐欄 reconcile;034 merge 後補完整 12 表稽核(含本 delta 的 MATCH 判定 + volatile row 重新取樣)。
 
 ---
 
